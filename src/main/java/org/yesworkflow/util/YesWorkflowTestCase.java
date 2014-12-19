@@ -23,8 +23,6 @@ public class YesWorkflowTestCase extends TestCase {
     @Override
     public void setUp() {
 
-//        KuratorAkka.enableLog4J();
-        
         stdoutBuffer = new ByteArrayOutputStream();
         stdoutStream = new PrintStream(stdoutBuffer);
     

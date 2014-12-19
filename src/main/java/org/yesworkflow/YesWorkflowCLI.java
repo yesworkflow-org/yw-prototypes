@@ -66,6 +66,7 @@ public class YesWorkflowCLI {
             parser.printHelpOn(errStream);
         }
         
+        @SuppressWarnings("unused")
         String scriptFilePath = extractScriptPathFromOptions(options);
         
         return 0;
