@@ -21,7 +21,9 @@ public class YesWorkflowTestCase extends TestCase {
     protected PrintStream stderrStream;
 
     @Override
-    public void setUp() {
+    public void setUp() throws Exception {
+        
+        super.setUp();
 
         stdoutBuffer = new ByteArrayOutputStream();
         stdoutStream = new PrintStream(stdoutBuffer);
