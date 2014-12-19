@@ -8,6 +8,8 @@ import static java.util.Arrays.asList;
 
 import java.io.PrintStream;
 
+import org.yesworkflow.exceptions.UsageException;
+
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -29,45 +31,51 @@ public class YesWorkflowCLI {
 
     public static int runForArgs(String[] args, PrintStream outStream, PrintStream errStream) throws Exception {
         
-        OptionParser parser = null;        
-        try {
-            parser = createOptionsParser();
-        }
-        catch (OptionException exception) {
-            errStream.print("Error:  Option definition invalid");
-            errStream.println(exception.getMessage());
-            return -1;
-        }
-        
-        OptionSet options = null;
+        OptionParser parser = createOptionsParser();
         
         try {
 
-            options = parser.parse(args);
+            // parse the command line arguments and options
+            OptionSet options = null;
+            try {
+                options = parser.parse(args);
+            } catch (OptionException exception) {
+                throw new UsageException(exception.getMessage());
+            }
+            
+            // print help and exit if requested
+            if (options.has("h")) {
+                errStream.println();
+                parser.printHelpOn(errStream);
+                return 0;            
+            }
+            
+            // extract mandatory YesWorkflow command from arguments
+            String command = extractCommandFromOptions(options);                            
+            if (command == null) {
+                throw new UsageException("No command provided to YesWorkflow");
+            }
+        
+            // extract remaining arguments
+            String sourceFilePath = extractSourcePathFromOptions(options);
+            String databaseFilePath = extractDatabasePathFromOptions(options);
 
-        } catch (OptionException exception) {
-            errStream.println("Error: Unable to parse command-line options");
-            errStream.println(exception.getMessage());
+            // run extractor and exit if extract command given
+            if (command.equals("extract")) {
+                new Extractor()
+                    .inputScriptPath(sourceFilePath)
+                    .outputDbPath(databaseFilePath)
+                    .extract();
+                return 0;
+            }
+            
+        } catch (UsageException ue) {
+            errStream.print("Usage error: ");
+            errStream.println(ue.getMessage());
             errStream.println();
             parser.printHelpOn(errStream);
             return -1;
         }
-                
-        if (options.has("h")) {
-            errStream.println();
-            parser.printHelpOn(errStream);
-            return 0;            
-        }
-        
-        String command = extractCommandFromOptions(options);        
-        if (command == null) {
-            errStream.println("Error: No command provided to YesWorkflow");
-            errStream.println();
-            parser.printHelpOn(errStream);
-        }
-        
-        @SuppressWarnings("unused")
-        String scriptFilePath = extractScriptPathFromOptions(options);
         
         return 0;
     }
@@ -90,12 +98,23 @@ public class YesWorkflowCLI {
         return command;
     }
 
-    private static String extractScriptPathFromOptions(OptionSet options) {
+    private static String extractDatabasePathFromOptions(OptionSet options) {
+        
+        String path = null;
+
+        if (options.hasArgument("d")) {
+            path = (String) options.valueOf("d");
+        }
+
+        return path; 
+    }
+
+    private static String extractSourcePathFromOptions(OptionSet options) {
         
         String scriptFilePath = null;
 
-        if (options.hasArgument("f")) {
-            scriptFilePath = (String) options.valueOf("f");
+        if (options.hasArgument("s")) {
+            scriptFilePath = (String) options.valueOf("s");
         }
 
         return scriptFilePath; 
@@ -107,15 +126,20 @@ public class YesWorkflowCLI {
         
         parser = new OptionParser() {{
             
-            acceptsAll(asList("f", "file"), "path to script to analyze")
-                .withRequiredArg()
-                .ofType(String.class)
-                .describedAs("definition");
-
             acceptsAll(asList("c", "command"), "command to YesWorkflow")
                 .withRequiredArg()
                 .ofType(String.class)
                 .describedAs("command");
+
+            acceptsAll(asList("s", "source"), "path to source file to analyze")
+                .withRequiredArg()
+                .ofType(String.class)
+                .describedAs("script");
+
+            acceptsAll(asList("d", "database"), "path to database file for storing extracted workflow graph")
+                .withRequiredArg()
+                .ofType(String.class)
+                .describedAs("database");
             
             acceptsAll(asList("h", "help"), "display help");
 
