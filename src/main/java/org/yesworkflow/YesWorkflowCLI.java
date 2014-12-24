@@ -14,7 +14,6 @@ import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
-
 public class YesWorkflowCLI {
 
     public static int YW_CLI_SUCCESS = 0;
@@ -42,7 +41,8 @@ public class YesWorkflowCLI {
     private String command = null;
     private String sourceFilePath = null;
     private String databaseFilePath = null;
-    
+    private Extractor extractor = null;
+
     public YesWorkflowCLI() throws Exception {
         this(System.out, System.err);
     }
@@ -52,15 +52,12 @@ public class YesWorkflowCLI {
         this.errStream = errStream;
         this.parser = createOptionsParser();
     }
-    
-    private void initialize() {
-        options = null;
-        command = null;
-        sourceFilePath = null;
-        databaseFilePath = null;
+
+    public YesWorkflowCLI extractor(Extractor extractor) {
+        this.extractor = extractor;
+        return this;
     }
-    
-    
+
     public int runForArgs(String[] args) throws Exception {
         
         initialize();
@@ -81,7 +78,7 @@ public class YesWorkflowCLI {
                 return YW_CLI_SUCCESS;            
             }
             
-            // extract mandatory YesWorkflow command from arguments
+            // extract YesWorkflow command from arguments
             extractCommandFromOptions();                            
             if (command == null) {
                 throw new UsageException("No command provided to YesWorkflow");
@@ -93,10 +90,7 @@ public class YesWorkflowCLI {
 
             // run extractor and exit if extract command given
             if (command.equals("extract")) {
-                new Extractor()
-                    .inputScriptPath(sourceFilePath)
-                    .outputDbPath(databaseFilePath)
-                    .extract();
+                extract();
                 return YW_CLI_SUCCESS;
             }
             
@@ -111,7 +105,12 @@ public class YesWorkflowCLI {
         return YW_CLI_SUCCESS;
     }
     
-    
+    private void initialize() {
+        options = null;
+        command = null;
+        sourceFilePath = null;
+        databaseFilePath = null;
+    }
     
     private void extractCommandFromOptions() {
 
@@ -165,5 +164,16 @@ public class YesWorkflowCLI {
         }};
             
         return parser;
+    }
+    
+    public void extract() throws Exception {
+        
+        if (extractor == null) {
+           extractor = new DefaultExtractor();
+        }
+        
+        extractor.sourcePath(sourceFilePath)
+                 .databasePath(databaseFilePath)
+                 .extract();
     }
 }

@@ -75,7 +75,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             stderrBuffer.toString());
     }
 
-    public void testYesWorkflowCLI_Extract_NoSource() throws Exception {
+    public void testYesWorkflowCLI_Extract_DefaultExtractor_NoSource() throws Exception {
         String[] args = {"-c", "extract"};
         int returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
         assertEquals(YesWorkflowCLI.YW_CLI_USAGE_ERROR, returnValue);
@@ -86,11 +86,71 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             stderrBuffer.toString());
     }
 
-    public void testYesWorkflowCLI_Extract() throws Exception {
-        String[] args = {"-c", "extract", "-s", "src/main/resources/example.py"};
-        int returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
+    public void testYesWorkflowCLI_Extract_InjectedExtractor_SourceOnly() throws Exception {
+        
+        String[] args = {"-c", "extract", "-s", "script.py"};
+        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
+        MockExtractor extractor = new MockExtractor();
+        cli.extractor(extractor);      
+
+        assertNull(extractor.sourcePath);
+        assertNull(extractor.databasePath);
+        assertFalse(extractor.extracted);
+        
+        int returnValue = cli.runForArgs(args);
+        
         assertEquals(YesWorkflowCLI.YW_CLI_SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals("", stderrBuffer.toString());
+        
+        assertEquals("script.py", extractor.sourcePath);
+        assertNull(extractor.databasePath);
+        assertTrue(extractor.extracted);
+    }
+    
+    public void testYesWorkflowCLI_Extract_InjectedExtractor_SourceAndDatabase() throws Exception {
+        
+        String[] args = {"-c", "extract", "-s", "script.py", "-d", "wf.tdb"};
+        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
+        MockExtractor extractor = new MockExtractor();
+        cli.extractor(extractor);      
+
+        assertNull(extractor.sourcePath);
+        assertNull(extractor.databasePath);
+        assertFalse(extractor.extracted);
+        
+        int returnValue = cli.runForArgs(args);
+        
+        assertEquals(YesWorkflowCLI.YW_CLI_SUCCESS, returnValue);
+        assertEquals("", stdoutBuffer.toString());
+        assertEquals("", stderrBuffer.toString());
+        
+        assertEquals("script.py", extractor.sourcePath);
+        assertEquals("wf.tdb", extractor.databasePath);
+        assertTrue(extractor.extracted);
     }    
+    
+    private static class MockExtractor implements Extractor {
+
+        public String sourcePath = null;
+        public String databasePath = null;
+        public boolean extracted = false;
+        
+        @Override
+        public Extractor sourcePath(String path) {
+            this.sourcePath = path;
+            return this;
+        }
+
+        @Override
+        public Extractor databasePath(String path) {
+            this.databasePath = path;
+            return this;
+        }
+
+        @Override
+        public void extract() throws Exception {
+            this.extracted = true;
+        }
+    }
 }
