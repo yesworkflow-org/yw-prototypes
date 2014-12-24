@@ -4,6 +4,8 @@ package org.yesworkflow;
  * package as of 18Dec2014.
  */
 
+import java.util.List;
+
 import org.yesworkflow.util.YesWorkflowTestCase;
 
 public class TestYesWorkflowCLI extends YesWorkflowTestCase {
@@ -75,7 +77,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             stderrBuffer.toString());
     }
 
-    public void testYesWorkflowCLI_Extract_DefaultExtractor_NoSource() throws Exception {
+    public void testYesWorkflowCLI_Extract_DefaultExtractor_NoSourceOption() throws Exception {
         String[] args = {"-c", "extract"};
         int returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
         assertEquals(YesWorkflowCLI.YW_CLI_USAGE_ERROR, returnValue);
@@ -84,6 +86,17 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             "Usage error: No source path provided to extractor"      + EOL +
             EXPECTED_HELP_OUTPUT,
             stderrBuffer.toString());
+    }
+
+    public void testYesWorkflowCLI_Extract_DefaultExtractor_MissingSourceFile() throws Exception {
+        
+        String[] args = {"-c", "extract", "-s", "no_such_script.py"};
+        new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
+        assertEquals("", stdoutBuffer.toString());
+        assertEquals(
+                "Usage error: Input source file not found: no_such_script.py"      + EOL +
+                EXPECTED_HELP_OUTPUT,
+                stderrBuffer.toString());    
     }
 
     public void testYesWorkflowCLI_Extract_InjectedExtractor_SourceOnly() throws Exception {
@@ -136,21 +149,10 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         public String databasePath = null;
         public boolean extracted = false;
         
-        @Override
-        public Extractor sourcePath(String path) {
-            this.sourcePath = path;
-            return this;
-        }
-
-        @Override
-        public Extractor databasePath(String path) {
-            this.databasePath = path;
-            return this;
-        }
-
-        @Override
-        public void extract() throws Exception {
-            this.extracted = true;
-        }
+        public Extractor commentCharacter(char c) { return this; }
+        public Extractor sourcePath(String path) { this.sourcePath = path; return this; }
+        public Extractor databasePath(String path) { this.databasePath = path; return this; }
+        public void extract() throws Exception { this.extracted = true; }
+        public List<String> getLines() { return null; }
     }
 }
