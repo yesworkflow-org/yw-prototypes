@@ -25,7 +25,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     
     public void testYesWorkflowCLI_NoArgs() throws Exception {
         String[] args = {};
-        YesWorkflowCLI.runForArgs(args, stdoutStream, stderrStream);
+        new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
             "Usage error: No command provided to YesWorkflow"   + EOL +
@@ -35,7 +35,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_HelpOption() throws Exception {
         String[] args = {"--help"};
-        YesWorkflowCLI.runForArgs(args, stdoutStream, stderrStream);
+        int returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
+        assertEquals(YesWorkflowCLI.YW_CLI_SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
             EXPECTED_HELP_OUTPUT,
@@ -44,7 +45,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_HelpOption_Abbreviation() throws Exception {
         String[] args = {"-h"};
-        YesWorkflowCLI.runForArgs(args, stdoutStream, stderrStream);
+        int returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
+        assertEquals(YesWorkflowCLI.YW_CLI_SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
             EXPECTED_HELP_OUTPUT,
@@ -53,7 +55,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_CommandOption_NoArgument() throws Exception {
         String[] args = {"-c"};
-        YesWorkflowCLI.runForArgs(args, stdoutStream, stderrStream);
+        int returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
+        assertEquals(YesWorkflowCLI.YW_CLI_USAGE_ERROR, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
             "Usage error: Option c/command requires an argument"     + EOL +
@@ -63,7 +66,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_SourceOption_NoArgument() throws Exception {
         String[] args = {"-s"};
-        YesWorkflowCLI.runForArgs(args, stdoutStream, stderrStream);
+        int returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
+        assertEquals(YesWorkflowCLI.YW_CLI_USAGE_ERROR, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
             "Usage error: Option s/source requires an argument"      + EOL +
@@ -73,7 +77,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_Extract_NoSource() throws Exception {
         String[] args = {"-c", "extract"};
-        YesWorkflowCLI.runForArgs(args, stdoutStream, stderrStream);
+        int returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
+        assertEquals(YesWorkflowCLI.YW_CLI_USAGE_ERROR, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
             "Usage error: No source path provided to extractor"      + EOL +
@@ -83,7 +88,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_Extract() throws Exception {
         String[] args = {"-c", "extract", "-s", "src/main/resources/example.py"};
-        YesWorkflowCLI.runForArgs(args, stdoutStream, stderrStream);
+        int returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
+        assertEquals(YesWorkflowCLI.YW_CLI_SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals("", stderrBuffer.toString());
     }    
