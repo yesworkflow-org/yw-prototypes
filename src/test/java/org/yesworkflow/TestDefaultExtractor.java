@@ -59,12 +59,12 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
     public void testExtract_GetCommentLines_MultipleComments_Slash() throws Exception {
         
         String source = 
-                "// @begin step   "  + EOL +
+                "// @begin step   " + EOL +
                 "  some code "      + EOL +
-                "   // @in x  "      + EOL +
+                "   // @in x  "     + EOL +
                 "     more code"    + EOL +
                 "     more code"    + EOL +
-                " //    @out y"      + EOL +
+                " //    @out y"     + EOL +
                 "     more code"    + EOL +
                 "     more code"    + EOL;
 
