@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.yesworkflow.comments.BeginComment;
+import org.yesworkflow.comments.Comment;
+import org.yesworkflow.comments.EndComment;
+import org.yesworkflow.comments.InComment;
+import org.yesworkflow.comments.OutComment;
 import org.yesworkflow.exceptions.UsageException;
 
 public class DefaultExtractor implements Extractor {
@@ -16,6 +21,7 @@ public class DefaultExtractor implements Extractor {
     private String sourcePath = null;
     private String databasePath = null;
     private List<String> commentLines;
+    private List<Comment> comments;
     
     @Override
     public DefaultExtractor commentCharacter(char c) {
@@ -48,29 +54,74 @@ public class DefaultExtractor implements Extractor {
         }
 
         extractLines();
+        extractComments();
     }
 
     @Override    
     public List<String> getLines() {
         return commentLines;
     }
+
+    @Override
+    public List<Comment> getComments() {
+        return comments;
+    }
     
     private void extractLines() throws IOException {
+        
         commentLines = new LinkedList<String>();
+
         String line = null;
         while ((line = sourceReader.readLine()) != null) {
             String ywCommentLine = extractCommentLine(line);
             if (ywCommentLine != null) {
                 commentLines.add(ywCommentLine);
             }
-        }        
+        }
+    }
+    
+    private void extractComments() throws Exception {
+        
+        comments = new LinkedList<Comment>();
+        
+        for (String commentLine : commentLines) {
+            
+            String tag = extractTag(commentLine);
+
+            Comment comment;
+            if (tag.equalsIgnoreCase("@begin")) {
+                comment = new BeginComment(commentLine);
+            } else if (tag.equalsIgnoreCase("@end")) {
+                comment = new EndComment(commentLine);
+            } else if (tag.equalsIgnoreCase("@in")) {
+                comment = new InComment(commentLine);
+            } else if (tag.equalsIgnoreCase("@out")) {
+                comment = new OutComment(commentLine);
+            } else {
+                throw new Exception("Comment tag " + tag + " is not supported");
+            }
+            
+            comments.add(comment);
+        }
+    }
+
+    private String extractTag(String commentLine) {
+
+        int tagEndIndex = commentLine.indexOf(' ');
+        if (tagEndIndex == -1) tagEndIndex = commentLine.indexOf('\t');
+        
+        if (tagEndIndex == -1) {
+            return commentLine;
+        } else {
+            return commentLine.substring(0, tagEndIndex);
+        }
     }
 
     private String extractCommentLine(String line) {
         
         String trimmedLine = line.trim();
         
-        if (trimmedLine.charAt(0) != commentCharacter) return null;
+        if (trimmedLine.length() == 0 || trimmedLine.charAt(0) != commentCharacter) return null;
         
         int ywCommentTagBegin = trimmedLine.indexOf('@');
         if (ywCommentTagBegin == -1) return null;
@@ -91,4 +142,6 @@ public class DefaultExtractor implements Extractor {
         
         return reader;
     }
+    
+    
 }

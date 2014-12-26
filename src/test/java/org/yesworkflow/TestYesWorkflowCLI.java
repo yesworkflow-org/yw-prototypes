@@ -6,6 +6,7 @@ package org.yesworkflow;
 
 import java.util.List;
 
+import org.yesworkflow.comments.Comment;
 import org.yesworkflow.util.YesWorkflowTestCase;
 
 public class TestYesWorkflowCLI extends YesWorkflowTestCase {
@@ -154,5 +155,6 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         public Extractor databasePath(String path) { this.databasePath = path; return this; }
         public void extract() throws Exception { this.extracted = true; }
         public List<String> getLines() { return null; }
+        public List<Comment> getComments() { return null; }
     }
 }
