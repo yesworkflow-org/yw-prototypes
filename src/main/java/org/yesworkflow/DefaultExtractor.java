@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 import org.yesworkflow.comments.BeginComment;
 import org.yesworkflow.comments.Comment;
@@ -13,6 +14,8 @@ import org.yesworkflow.comments.EndComment;
 import org.yesworkflow.comments.InComment;
 import org.yesworkflow.comments.OutComment;
 import org.yesworkflow.exceptions.UsageException;
+import org.yesworkflow.model.Program;
+import org.yesworkflow.model.Workflow;
 
 public class DefaultExtractor implements Extractor {
 
@@ -22,6 +25,7 @@ public class DefaultExtractor implements Extractor {
     private String databasePath = null;
     private List<String> commentLines;
     private List<Comment> comments;
+    private Program model;
     
     @Override
     public DefaultExtractor commentCharacter(char c) {
@@ -55,6 +59,7 @@ public class DefaultExtractor implements Extractor {
 
         extractLines();
         extractComments();
+        extractWorkflow();
     }
 
     @Override    
@@ -65,6 +70,11 @@ public class DefaultExtractor implements Extractor {
     @Override
     public List<Comment> getComments() {
         return comments;
+    }
+    
+    @Override
+	public Program getModel() {
+    	return model;
     }
     
     private void extractLines() throws IOException {
@@ -105,6 +115,37 @@ public class DefaultExtractor implements Extractor {
         }
     }
 
+    public void extractWorkflow() {
+    	
+    	Workflow.Builder workflowBuilder = null;
+    	Stack<Workflow.Builder> stack = new Stack<Workflow.Builder>();
+    	
+    	for (Comment comment: comments) {
+    		
+    		if (comment instanceof BeginComment) {
+    			
+    			if (workflowBuilder != null) {
+    				stack.push(workflowBuilder);
+    			}
+
+    			workflowBuilder = new Workflow.Builder()
+    				.comment((BeginComment)comment);
+    		
+    		} else if (comment instanceof EndComment) {
+    			
+    			Program program = workflowBuilder.build();
+    			
+    			if (stack.isEmpty()) {
+    				this.model = program;
+    				return;
+    			}
+    			
+    			workflowBuilder = stack.pop();
+    			workflowBuilder.program(program);
+    		}
+    	}    
+    }
+        
     private String extractTag(String commentLine) {
 
         int tagEndIndex = commentLine.indexOf(' ');

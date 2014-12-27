@@ -7,6 +7,7 @@ package org.yesworkflow;
 import java.util.List;
 
 import org.yesworkflow.comments.Comment;
+import org.yesworkflow.model.Program;
 import org.yesworkflow.util.YesWorkflowTestCase;
 
 public class TestYesWorkflowCLI extends YesWorkflowTestCase {
@@ -156,5 +157,6 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         public void extract() throws Exception { this.extracted = true; }
         public List<String> getLines() { return null; }
         public List<Comment> getComments() { return null; }
+		public Program getModel() { return null; }
     }
 }

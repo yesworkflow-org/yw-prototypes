@@ -9,6 +9,8 @@ import org.yesworkflow.comments.Comment;
 import org.yesworkflow.comments.EndComment;
 import org.yesworkflow.comments.InComment;
 import org.yesworkflow.comments.OutComment;
+import org.yesworkflow.model.Program;
+import org.yesworkflow.model.Workflow;
 import org.yesworkflow.util.YesWorkflowTestCase;
 
 public class TestDefaultExtractor extends YesWorkflowTestCase {
@@ -263,6 +265,106 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertEquals("load_data", end11.programName);
         assertNull(end11.description);        
     }
-}
-                
+    
+    public void testExtract_GetModel_OneProgram() throws Exception {
+        
+        String source = 
+                "# @begin script"	+ EOL +
+                "  some code"		+ EOL +
+                "# @end script"		+ EOL;
 
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.sourceReader(reader)
+                 .commentCharacter('#')
+                 .extract();        
+        Program model = extractor.getModel();
+        
+        assertFalse(model instanceof Workflow);
+        assertEquals("script", model.comment.programName);
+    }
+
+    public void testExtract_GetModel_WorkflowWithOneProgram() throws Exception {
+        
+        String source = 
+                "# @begin script"		+ EOL +
+                "#   @begin program"	+ EOL +
+                "#   @end program"		+ EOL +
+                "# @end step"			+ EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.sourceReader(reader)
+                 .commentCharacter('#')
+                 .extract();        
+        Workflow model = (Workflow)extractor.getModel();
+        
+        assertEquals("script", model.comment.programName);
+        assertEquals(1, model.programs.size());
+        assertEquals(0, model.channels.size());
+        
+        Program program = model.programs.get(0);
+        assertFalse(program instanceof Workflow);
+        assertEquals("program", program.comment.programName);
+    }
+
+    public void testExtract_GetModel_WorkflowWithTwoPrograms() throws Exception {
+        
+        String source = 
+                "# @begin script"		+ EOL +
+                "#   @begin program0"	+ EOL +
+                "#   @end program0"		+ EOL +
+                "#   @begin program1"	+ EOL +
+                "#   @end program1"		+ EOL +
+                "# @end step"			+ EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.sourceReader(reader)
+                 .commentCharacter('#')
+                 .extract();        
+        Workflow model = (Workflow)extractor.getModel();
+        
+        assertEquals("script", model.comment.programName);
+        assertEquals(2, model.programs.size());
+        assertEquals(0, model.channels.size());
+
+        Program program0 = model.programs.get(0);
+        assertFalse(program0 instanceof Workflow);
+        assertEquals("program0", program0.comment.programName);        
+
+        Program program1 = model.programs.get(1);
+        assertFalse(program1 instanceof Workflow);
+        assertEquals("program1", program1.comment.programName);        
+    }
+
+    public void testExtract_GetModel_WorkflowWithSubworkflow() throws Exception {
+        
+        String source = 
+                "# @begin workflow"			+ EOL +
+                "#   @begin subworkflow"	+ EOL +
+                "#     @begin program"		+ EOL +
+                "#     @end program"		+ EOL +
+                "#   @end subworkflow"		+ EOL +
+                "# @end workflow"			+ EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.sourceReader(reader)
+                 .commentCharacter('#')
+                 .extract();
+        
+        Workflow model = (Workflow)extractor.getModel();
+        assertEquals(1, model.programs.size());
+        assertEquals(0, model.channels.size());
+        
+        Workflow subworkflow = (Workflow)model.programs.get(0);
+        assertEquals("subworkflow", subworkflow.comment.programName);
+        assertEquals(1, subworkflow.programs.size());
+        assertEquals(0, subworkflow.channels.size());
+        
+        Program program = subworkflow.programs.get(0);
+        assertFalse(program instanceof Workflow);
+        assertEquals("program", program.comment.programName);
+    }
+}
