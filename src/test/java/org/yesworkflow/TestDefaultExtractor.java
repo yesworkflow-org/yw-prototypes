@@ -9,6 +9,7 @@ import org.yesworkflow.comments.Comment;
 import org.yesworkflow.comments.EndComment;
 import org.yesworkflow.comments.InComment;
 import org.yesworkflow.comments.OutComment;
+import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.model.Program;
 import org.yesworkflow.model.Workflow;
 import org.yesworkflow.util.YesWorkflowTestCase;

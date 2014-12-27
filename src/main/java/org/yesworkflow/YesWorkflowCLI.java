@@ -9,6 +9,8 @@ import static java.util.Arrays.asList;
 import java.io.PrintStream;
 
 import org.yesworkflow.exceptions.UsageException;
+import org.yesworkflow.extract.DefaultExtractor;
+import org.yesworkflow.extract.Extractor;
 
 import joptsimple.OptionException;
 import joptsimple.OptionParser;

@@ -7,6 +7,7 @@ package org.yesworkflow;
 import java.util.List;
 
 import org.yesworkflow.comments.Comment;
+import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.model.Program;
 import org.yesworkflow.util.YesWorkflowTestCase;
 
