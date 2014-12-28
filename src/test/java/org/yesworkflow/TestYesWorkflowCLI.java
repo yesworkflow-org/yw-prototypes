@@ -158,6 +158,6 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         public void extract() throws Exception { this.extracted = true; }
         public List<String> getLines() { return null; }
         public List<Comment> getComments() { return null; }
-		public Program getModel() { return null; }
+		public Program getProgram() { return null; }
     }
 }

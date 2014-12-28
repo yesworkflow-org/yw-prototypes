@@ -10,6 +10,7 @@ import org.yesworkflow.comments.EndComment;
 import org.yesworkflow.comments.InComment;
 import org.yesworkflow.comments.OutComment;
 import org.yesworkflow.extract.DefaultExtractor;
+import org.yesworkflow.model.Channel;
 import org.yesworkflow.model.Program;
 import org.yesworkflow.model.Workflow;
 import org.yesworkflow.util.YesWorkflowTestCase;
@@ -278,11 +279,12 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         extractor.sourceReader(reader)
                  .commentCharacter('#')
-                 .extract();        
-        Program model = extractor.getModel();
+                 .extract();
         
-        assertFalse(model instanceof Workflow);
-        assertEquals("script", model.comment.programName);
+        Program program = extractor.getProgram();
+        
+        assertFalse(program instanceof Workflow);
+        assertEquals("script", program.beginComment.programName);
     }
 
     public void testExtract_GetModel_WorkflowWithOneProgram() throws Exception {
@@ -291,22 +293,22 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                 "# @begin script"		+ EOL +
                 "#   @begin program"	+ EOL +
                 "#   @end program"		+ EOL +
-                "# @end step"			+ EOL;
+                "# @end script"			+ EOL;
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         extractor.sourceReader(reader)
                  .commentCharacter('#')
                  .extract();        
-        Workflow model = (Workflow)extractor.getModel();
+        Workflow workflow = (Workflow)extractor.getProgram();
         
-        assertEquals("script", model.comment.programName);
-        assertEquals(1, model.programs.size());
-        assertEquals(0, model.channels.size());
+        assertEquals("script", workflow.beginComment.programName);
+        assertEquals(1, workflow.programs.length);
+        assertEquals(0, workflow.channels.length);
         
-        Program program = model.programs.get(0);
+        Program program = workflow.programs[0];
         assertFalse(program instanceof Workflow);
-        assertEquals("program", program.comment.programName);
+        assertEquals("program", program.beginComment.programName);
     }
 
     public void testExtract_GetModel_WorkflowWithTwoPrograms() throws Exception {
@@ -317,26 +319,26 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                 "#   @end program0"		+ EOL +
                 "#   @begin program1"	+ EOL +
                 "#   @end program1"		+ EOL +
-                "# @end step"			+ EOL;
+                "# @end script"			+ EOL;
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         extractor.sourceReader(reader)
                  .commentCharacter('#')
                  .extract();        
-        Workflow model = (Workflow)extractor.getModel();
+        Workflow workflow = (Workflow)extractor.getProgram();
         
-        assertEquals("script", model.comment.programName);
-        assertEquals(2, model.programs.size());
-        assertEquals(0, model.channels.size());
+        assertEquals("script", workflow.beginComment.programName);
+        assertEquals(2, workflow.programs.length);
+        assertEquals(0, workflow.channels.length);
 
-        Program program0 = model.programs.get(0);
+        Program program0 = workflow.programs[0];
         assertFalse(program0 instanceof Workflow);
-        assertEquals("program0", program0.comment.programName);        
+        assertEquals("program0", program0.beginComment.programName);        
 
-        Program program1 = model.programs.get(1);
+        Program program1 = workflow.programs[1];
         assertFalse(program1 instanceof Workflow);
-        assertEquals("program1", program1.comment.programName);        
+        assertEquals("program1", program1.beginComment.programName);        
     }
 
     public void testExtract_GetModel_WorkflowWithSubworkflow() throws Exception {
@@ -355,17 +357,129 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                  .commentCharacter('#')
                  .extract();
         
-        Workflow model = (Workflow)extractor.getModel();
-        assertEquals(1, model.programs.size());
-        assertEquals(0, model.channels.size());
+        Workflow workflow = (Workflow)extractor.getProgram();
+        assertEquals(1, workflow.programs.length);
+        assertEquals(0, workflow.channels.length);
         
-        Workflow subworkflow = (Workflow)model.programs.get(0);
-        assertEquals("subworkflow", subworkflow.comment.programName);
-        assertEquals(1, subworkflow.programs.size());
-        assertEquals(0, subworkflow.channels.size());
+        Workflow subworkflow = (Workflow)workflow.programs[0];
+        assertEquals("subworkflow", subworkflow.beginComment.programName);
+        assertEquals(1, subworkflow.programs.length);
+        assertEquals(0, subworkflow.channels.length);
         
-        Program program = subworkflow.programs.get(0);
+        Program program = subworkflow.programs[0];
         assertFalse(program instanceof Workflow);
-        assertEquals("program", program.comment.programName);
+        assertEquals("program", program.beginComment.programName);
+    }
+    
+    public void testExtract_GetModel_OneProgramInAndOut() throws Exception {
+        
+        String source = 
+                "# @begin script"	+ EOL +
+                "# @in x"			+ EOL +
+                "# @in y"			+ EOL +
+                "# @out z"			+ EOL +
+                "  some code"		+ EOL +
+                "# @end script"		+ EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.sourceReader(reader)
+                 .commentCharacter('#')
+                 .extract();
+        
+        Program program = extractor.getProgram();
+        
+        assertFalse(program instanceof Workflow);
+        assertEquals("script", program.beginComment.programName);
+    }
+    
+    public void testExtract_GetModel_TwoProgramsWithOneChannel() throws Exception {
+        
+        String source = 
+                "# @begin script"		+ EOL +
+                "#   @begin program0"	+ EOL +
+                "#	 @out channel"		+ EOL +
+                "#   @end program0"		+ EOL +                
+                "#   @begin program1"	+ EOL +
+                "#	 @in channel"		+ EOL +
+                "#   @end program1"		+ EOL +
+                "# @end script"			+ EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.sourceReader(reader)
+                 .commentCharacter('#')
+                 .extract();
+        Workflow workflow = (Workflow)extractor.getProgram();
+        
+        assertEquals("script", workflow.beginComment.programName);
+        assertEquals(2, workflow.programs.length);
+        assertEquals(1, workflow.channels.length);
+
+        Program program0 = workflow.programs[0];
+        assertFalse(program0 instanceof Workflow);
+        assertEquals("program0", program0.beginComment.programName);
+
+        Program program1 = workflow.programs[1];
+        assertFalse(program1 instanceof Workflow);
+        assertEquals("program1", program1.beginComment.programName);
+        
+        Channel channel = workflow.channels[0];
+        assertEquals("program0", channel.sourceProgram.beginComment.programName);
+        assertEquals("channel", channel.sourcePort.comment.binding);
+        assertEquals("program1", channel.sinkProgram.beginComment.programName);
+        assertEquals("channel", channel.sinkPort.comment.binding);
+    }
+    
+    public void testExtract_GetModel_ThreeProgramsMultipleChannels() throws Exception {
+        
+        String source = 
+                "# @begin script"		+ EOL +
+                "#"						+ EOL +
+                "#   @begin program0"	+ EOL +
+                "#	 @out channel0"		+ EOL +
+                "#	 @out channel1"		+ EOL +
+                "#   @end program0"		+ EOL +                
+                "#"						+ EOL +
+                "#   @begin program1"	+ EOL +
+                "#	 @in channel0"		+ EOL +
+                "#   @end program1"		+ EOL +
+                "#"						+ EOL +
+                "#   @begin program2"	+ EOL +
+                "#	 @in channel1"		+ EOL +
+                "#   @end program2"		+ EOL +
+                "#"						+ EOL +
+                "# @end script"			+ EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.sourceReader(reader)
+                 .commentCharacter('#')
+                 .extract();
+        Workflow workflow = (Workflow)extractor.getProgram();
+        
+        assertEquals("script", workflow.beginComment.programName);
+        assertEquals(3, workflow.programs.length);
+        assertEquals(2, workflow.channels.length);
+
+        Program program0 = workflow.programs[0];
+        assertFalse(program0 instanceof Workflow);
+        assertEquals("program0", program0.beginComment.programName);
+
+        Program program1 = workflow.programs[1];
+        assertFalse(program1 instanceof Workflow);
+        assertEquals("program1", program1.beginComment.programName);
+        
+        Channel channel0 = workflow.channels[0];
+        assertEquals("program0", channel0.sourceProgram.beginComment.programName);
+        assertEquals("channel0", channel0.sourcePort.comment.binding);
+        assertEquals("program1", channel0.sinkProgram.beginComment.programName);
+        assertEquals("channel0", channel0.sinkPort.comment.binding);
+
+        Channel channel1 = workflow.channels[1];
+        assertEquals("program0", channel1.sourceProgram.beginComment.programName);
+        assertEquals("channel1", channel1.sourcePort.comment.binding);
+        assertEquals("program2", channel1.sinkProgram.beginComment.programName);
+        assertEquals("channel1", channel1.sinkPort.comment.binding);
     }
 }

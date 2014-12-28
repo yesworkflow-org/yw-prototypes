@@ -25,7 +25,7 @@ public class DefaultExtractor implements Extractor {
     private String databasePath = null;
     private List<String> commentLines;
     private List<Comment> comments;
-    private Program model;
+    private Program program;
     
     @Override
     public DefaultExtractor commentCharacter(char c) {
@@ -73,8 +73,8 @@ public class DefaultExtractor implements Extractor {
     }
     
     @Override
-	public Program getModel() {
-    	return model;
+	public Program getProgram() {
+    	return program;
     }
     
     private void extractLines() throws IOException {
@@ -115,37 +115,55 @@ public class DefaultExtractor implements Extractor {
         }
     }
 
-    public void extractWorkflow() {
+    public void extractWorkflow() throws Exception {
     	
     	Workflow.Builder workflowBuilder = null;
-    	Stack<Workflow.Builder> stack = new Stack<Workflow.Builder>();
+    	Workflow.Builder parentBuilder = null;
+    	Stack<Workflow.Builder> parentWorkflowBuilders = new Stack<Workflow.Builder>();
     	
     	for (Comment comment: comments) {
     		
     		if (comment instanceof BeginComment) {
     			
     			if (workflowBuilder != null) {
-    				stack.push(workflowBuilder);
+    				parentWorkflowBuilders.push(workflowBuilder);
+    				parentBuilder = workflowBuilder;
     			}
 
     			workflowBuilder = new Workflow.Builder()
-    				.comment((BeginComment)comment);
+    				.begin((BeginComment)comment);
     		
+    		} else if (comment instanceof OutComment) {
+
+    			if (parentBuilder != null) {
+    				parentBuilder.out((OutComment)comment, workflowBuilder.getProgramName());
+    			}
+
+    		} else if (comment instanceof InComment) {
+
+    			if (parentBuilder != null) {
+    				parentBuilder.in((InComment)comment, workflowBuilder.getProgramName());
+    			}
+    			
     		} else if (comment instanceof EndComment) {
     			
     			Program program = workflowBuilder.build();
     			
-    			if (stack.isEmpty()) {
-    				this.model = program;
+    			if (parentWorkflowBuilders.isEmpty()) {
+    				this.program = program;
     				return;
     			}
     			
-    			workflowBuilder = stack.pop();
+    			workflowBuilder = parentWorkflowBuilders.pop();
     			workflowBuilder.program(program);
+    			
+    			if (!parentWorkflowBuilders.isEmpty()) {
+    				parentBuilder = parentWorkflowBuilders.peek();
+    			}
     		}
-    	}    
+    	}
     }
-        
+    
     private String extractTag(String commentLine) {
 
         int tagEndIndex = commentLine.indexOf(' ');
@@ -183,6 +201,4 @@ public class DefaultExtractor implements Extractor {
         
         return reader;
     }
-    
-    
 }

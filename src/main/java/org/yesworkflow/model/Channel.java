@@ -22,7 +22,7 @@ public class Channel {
 		public Program sinkProgram;
 		public Port sinkPort;
 		
-		Channel build() {			
+		Channel build() {
 			return new Channel(sourceProgram, sourcePort, sinkProgram, sinkPort);
 		}		
 	}

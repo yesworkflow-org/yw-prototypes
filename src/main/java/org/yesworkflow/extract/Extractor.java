@@ -12,5 +12,5 @@ public interface Extractor {
     void extract() throws Exception;
     List<String> getLines();
     List<Comment> getComments();
-	Program getModel();
+	Program getProgram();
 }
