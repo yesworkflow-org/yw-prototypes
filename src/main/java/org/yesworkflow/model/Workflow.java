@@ -52,8 +52,7 @@ public class Workflow extends Program {
 
 		public Builder in(InComment inComment, String programName) {
 			
-			String binding = inComment.label;
-			if (binding == null) binding = inComment.binding;
+		    String binding = inComment.binding();
 			
 			Port port = new Port(inComment);
 			this.inPorts.put(binding, port);
@@ -63,8 +62,7 @@ public class Workflow extends Program {
 
 		public Builder out(OutComment outComment, String programName) throws Exception {
 			
-			String binding = outComment.label;
-			if (binding == null) binding = outComment.binding;
+			String binding = outComment.binding();
 			
 			// ensure no other writers to this @out binding
 			if (outPorts.containsKey(binding)) {
@@ -98,15 +96,19 @@ public class Workflow extends Program {
 
 				// get information about corresponding @out port
 				Port outPort = outPorts.get(binding);
-//				if (outPort == null) {
-//					throw new Exception("No @out corresponding to @in " + binding);
-//				}
-				String outProgramName = programNameForPort.get(outPort);
-				Program outProgram = programForName.get(outProgramName);
-
-				// store the new channel
-				Channel channel = new Channel(outProgram, outPort, inProgram, inPort);
-				channels.add(channel);
+				if (outPort != null) {
+    			
+				    String outProgramName = programNameForPort.get(outPort);
+    				Program outProgram = programForName.get(outProgramName);
+    
+    				// store the new channel
+    				Channel channel = new Channel(outProgram, outPort, inProgram, inPort);
+    				channels.add(channel);
+	            
+				} else {
+	                
+				    //throw new Exception("No @out corresponding to @in " + binding);
+	            }
 			}
 			
 			return new Workflow(
