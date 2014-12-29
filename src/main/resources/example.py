@@ -7,9 +7,9 @@ from matplotlib.backends.backend_pdf import PdfPages
 import sys
 
 ## @begin main
-#  @in 	LandWaterMask_Global_CRUNCEP.nc
-#  @in 	NEE_first_year.nc
-#  @out	result_simple.pdf
+#  @in LandWaterMask_Global_CRUNCEP.nc
+#  @in NEE_first_year.nc
+#  @out result_simple.pdf
 
 def main(sys.argv):
 
