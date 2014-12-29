@@ -10,7 +10,7 @@ import sys
 # @name main
 # @input LandWaterMask_Global_CRUNCEP.nc NEE_first_year.nc
 # @output result_simple.pdf
-#
+
 
 def main(sys.argv):
 
