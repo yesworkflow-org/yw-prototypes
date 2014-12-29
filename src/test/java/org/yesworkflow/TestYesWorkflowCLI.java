@@ -23,6 +23,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         "-g, --graph <dot file>     path to graphviz dot file for storing"  + EOL +
         "                             rendered workflow graph            "  + EOL +
         "-h, --help                 display help                         "  + EOL +
+        "-l, --lines [lines file]   path to file for saving extracted    "  + EOL +
+        "                             comment lines                      "  + EOL +
         "-s, --source <script>      path to source file to analyze       "  + EOL;
     
     @Override
@@ -159,7 +161,38 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         assertEquals("script.py", extractor.sourcePath);
         assertEquals("wf.tdb", extractor.databasePath);
         assertTrue(extractor.extracted);
+    }
+    
+    public void testYesWorkflowCLI_Extract_ExamplePy_SaveLines() throws Exception {
+        String[] args = {"-c", "extract", "-s", "src/main/resources/example.py", "-l"};
+        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
+        cli.runForArgs(args);
+        assertEquals(
+            "@begin main"                                                   + EOL +
+            "@in LandWaterMask_Global_CRUNCEP.nc"                           + EOL +
+            "@in NEE_first_year.nc"                                         + EOL +
+            "@out result_simple.pdf"                                        + EOL +
+            "@begin fetch_mask"                                             + EOL +
+            "@in \"LandWaterMask_Global_CRUNCEP.nc\" @as input_mask_file"   + EOL +
+            "@out mask @as land_water_mask"                                 + EOL +
+            "@end fetch_mask"                                               + EOL +
+            "@begin load_data"                                              + EOL +
+            "@in \"CLM4_BG1_V1_Monthly_NEE.nc4\" @as input data file"       + EOL +
+            "@out data @as NEE_data"                                        + EOL +
+            "@end load_data"                                                + EOL +
+            "@begin standardize_with_mask"                                  + EOL +
+            "@in data @as NEE_data"                                         + EOL +
+            "@in mask @as land_water_mask"                                  + EOL +
+            "@out data @as standardized_NEE_data"                           + EOL +
+            "@end standardize_mask"                                         + EOL +
+            "@begin simple_diagnose"                                        + EOL +
+            "@in np @as standardized_NEE_data"                              + EOL +
+            "@out pp @as result_NEE_pdf"                                    + EOL +
+            "@end simple_diagnose"                                          + EOL +
+            "@end main"                                                     + EOL,
+            stdoutBuffer.toString());
     }    
+    
     
     private static class MockExtractor implements Extractor {
 

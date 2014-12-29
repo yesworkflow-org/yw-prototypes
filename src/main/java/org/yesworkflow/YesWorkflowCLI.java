@@ -6,7 +6,10 @@ package org.yesworkflow;
 
 import static java.util.Arrays.asList;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.io.Writer;
 
 import org.yesworkflow.exceptions.UsageException;
 import org.yesworkflow.extract.DefaultExtractor;
@@ -25,6 +28,8 @@ public class YesWorkflowCLI {
     public static int YW_CLI_SUCCESS = 0;
     public static int YW_CLI_USAGE_ERROR = -1;
     public static int YW_CLI_UNCAUGHT_EXCEPTION = -2;
+
+    public static final String EOL = System.getProperty("line.separator");
 
     public static void main(String[] args) throws Exception {
         
@@ -161,6 +166,7 @@ public class YesWorkflowCLI {
             dotFilePath = (String) options.valueOf("g");
         }
     }
+
     
     private OptionParser createOptionsParser() throws Exception {
 
@@ -188,6 +194,11 @@ public class YesWorkflowCLI {
                 .ofType(String.class)
                 .describedAs("dot file");
                             
+            acceptsAll(asList("l", "lines"), "path to file for saving extracted comment lines")
+                .withOptionalArg()
+                .ofType(String.class)
+                .describedAs("lines file");
+
             acceptsAll(asList("h", "help"), "display help");
 
         }};
@@ -205,8 +216,36 @@ public class YesWorkflowCLI {
                  .databasePath(databaseFilePath)
                  .commentCharacter('#')
                  .extract();
+        
+        if (options.has("l")) {
+            writeLinesFile();
+        }
     }
     
+    public void writeLinesFile() throws IOException {
+
+        String linesFilePath = null;
+        
+        if (options.hasArgument("l")) {
+            linesFilePath = (String) options.valueOf("l");
+        }
+        
+        PrintStream linesOutputStream = null;
+        if (linesFilePath == null || linesFilePath.equals("-")) {
+            linesOutputStream = outStream;
+        } else {
+            linesOutputStream = new PrintStream(linesFilePath);
+        }
+        
+        for (String line : extractor.getLines()) {
+            linesOutputStream.println(line);
+        }
+        
+        if (linesOutputStream != outStream) {
+            linesOutputStream.close();
+        }
+    }
+
     public void graph() throws Exception {
         
         Program program = extractor.getProgram();        
