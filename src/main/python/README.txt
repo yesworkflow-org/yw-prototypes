@@ -27,16 +27,3 @@
 
 * All-in-one pipeline:
   $ cat ../resources/example.py | ./script2csv | ./csv2gv | dot -Tpdf > example.pdf; open example.pdf
-
-
-
-
-
-
-| ./csv2gv | dot -Tpdf > example.pdf
-- cat ../resources/example.py | ./file2csv | ./csv2gv | dot -Tpdf > example.pdf
-- cat ../resources/example.py | ./file2csv | ./csv2gv | dot -Tpdf > example.pdf
-- cat ../resources/example.py | ./file2csv | ./csv2gv | dot -Tpdf > example.pdf
-- cat ../resources/example.py | ./file2csv | ./csv2gv | dot -Tpdf > example.pdf
-- cat ../resources/example.py | ./file2csv | ./csv2gv | dot -Tpdf > example.pdf
-
