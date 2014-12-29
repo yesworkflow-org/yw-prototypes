@@ -11,6 +11,10 @@ import java.io.PrintStream;
 import org.yesworkflow.exceptions.UsageException;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
+import org.yesworkflow.graph.DotGrapher;
+import org.yesworkflow.graph.GraphType;
+import org.yesworkflow.model.Program;
+import org.yesworkflow.model.Workflow;
 
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
@@ -43,6 +47,7 @@ public class YesWorkflowCLI {
     private String command = null;
     private String sourceFilePath = null;
     private String databaseFilePath = null;
+    private String dotFilePath = null;
     private Extractor extractor = null;
 
     public YesWorkflowCLI() throws Exception {
@@ -89,12 +94,20 @@ public class YesWorkflowCLI {
             // extract remaining arguments
             extractSourcePathFromOptions();
             extractDatabasePathFromOptions();
+            extractDotFilePathFromOptions();
 
             // run extractor and exit if extract command given
             if (command.equals("extract")) {
                 extract();
                 return YW_CLI_SUCCESS;
             }
+
+            if (command.equals("graph")) {
+                extract();
+                graph();
+                return YW_CLI_SUCCESS;
+            }
+            
             
         } catch (UsageException ue) {
             errStream.print("Usage error: ");
@@ -112,6 +125,7 @@ public class YesWorkflowCLI {
         command = null;
         sourceFilePath = null;
         databaseFilePath = null;
+        dotFilePath = null;
     }
     
     private void extractCommandFromOptions() {
@@ -139,6 +153,12 @@ public class YesWorkflowCLI {
             sourceFilePath = (String) options.valueOf("s");
         }
     }
+
+    private void extractDotFilePathFromOptions() {
+        if (options.hasArgument("g")) {
+            dotFilePath = (String) options.valueOf("g");
+        }
+    }
     
     private OptionParser createOptionsParser() throws Exception {
 
@@ -160,7 +180,12 @@ public class YesWorkflowCLI {
                 .withRequiredArg()
                 .ofType(String.class)
                 .describedAs("database");
-            
+
+            acceptsAll(asList("g", "graph"), "path to graphviz dot file for storing rendered workflow graph")
+                .withRequiredArg()
+                .ofType(String.class)
+                .describedAs("dot file");
+                            
             acceptsAll(asList("h", "help"), "display help");
 
         }};
@@ -176,6 +201,19 @@ public class YesWorkflowCLI {
         
         extractor.sourcePath(sourceFilePath)
                  .databasePath(databaseFilePath)
+                 .commentCharacter('#')
                  .extract();
+    }
+    
+    public void graph() throws Exception {
+        
+        Program program = extractor.getProgram();        
+        
+        DotGrapher grapher = new DotGrapher()
+            .workflow((Workflow)program)
+            .type(GraphType.DATA_FLOW_GRAPH)
+            .filePath(this.dotFilePath)
+            .graph()
+            .write();
     }
 }

@@ -4,6 +4,7 @@ package org.yesworkflow;
  * package as of 18Dec2014.
  */
 
+import java.io.Writer;
 import java.util.List;
 
 import org.yesworkflow.comments.Comment;
@@ -15,13 +16,15 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     private static String EXPECTED_HELP_OUTPUT =
         ""                                                              + EOL +
-        "Option                     Description                      "  + EOL +
-        "------                     -----------                      "  + EOL +
-        "-c, --command <command>    command to YesWorkflow           "  + EOL +
-        "-d, --database <database>  path to database file for storing"  + EOL +
-        "                             extracted workflow graph       "  + EOL +
-        "-h, --help                 display help                     "  + EOL +
-        "-s, --source <script>      path to source file to analyze   "  + EOL;
+        "Option                     Description                          "  + EOL +
+        "------                     -----------                          "  + EOL +
+        "-c, --command <command>    command to YesWorkflow               "  + EOL +
+        "-d, --database <database>  path to database file for storing    "  + EOL +
+        "                             extracted workflow graph           "  + EOL +
+        "-g, --graph <dot file>     path to graphviz dot file for storing"  + EOL +
+        "                             rendered workflow graph            "  + EOL +
+        "-h, --help                 display help                         "  + EOL +
+        "-s, --source <script>      path to source file to analyze       "  + EOL;
     
     @Override
     public void setUp() throws Exception {
@@ -123,6 +126,19 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         assertNull(extractor.databasePath);
         assertTrue(extractor.extracted);
     }
+    
+//    public void testYesWorkflowCLI_Graph() throws Exception {
+//        
+//        String[] args = {
+//                "-c", "graph", 
+//                "-s", "src/main/resources/example.py"
+//        };
+//        
+//        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
+//        
+//        int returnValue = cli.runForArgs(args);
+//
+//    }
     
     public void testYesWorkflowCLI_Extract_InjectedExtractor_SourceAndDatabase() throws Exception {
         
