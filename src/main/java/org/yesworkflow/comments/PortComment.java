@@ -5,15 +5,19 @@ import java.util.StringTokenizer;
 public abstract class PortComment extends Comment {
 
     public final String tag;
-    public final String binding;
+    public final String data;
     public final String label;
     public final String description;
     
-    public PortComment(String tag, String binding, String label, String description) {
+    public PortComment(String tag, String data, String label, String description) {
         this.tag = tag;
-        this.binding = binding;
-        this.label = label;
+        this.data = data;
+        this.label = label;        
         this.description = description;
+    }
+    
+    public String binding() {
+        return (label != null) ? label : data;
     }
     
     public PortComment(String commentLine, String expectedTag) throws Exception {
@@ -26,7 +30,7 @@ public abstract class PortComment extends Comment {
         }
     
         String token = commentTokens.nextToken();
-        this.binding = token;
+        this.data = token;
         
         if (commentTokens.hasMoreTokens()) {
             token = commentTokens.nextToken();

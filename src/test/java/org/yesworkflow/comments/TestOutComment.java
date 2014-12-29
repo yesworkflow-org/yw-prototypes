@@ -11,35 +11,35 @@ public class TestOutComment extends YesWorkflowTestCase {
 
     public void testOutComment_VariableOnly() throws Exception {
         OutComment comment = new OutComment("@out x");
-        assertEquals("x", comment.binding);
+        assertEquals("x", comment.data);
         assertNull(comment.label);
         assertNull(comment.description);
     }
     
     public void testOutComment_VariableAndDescription() throws Exception {
         OutComment comment = new OutComment("@out x The longitude");
-        assertEquals("x", comment.binding);
+        assertEquals("x", comment.data);
         assertEquals("The longitude", comment.description);
         assertNull(comment.label);
     }
     
     public void testOutComment_VariableAndLabel() throws Exception {
         OutComment comment = new OutComment("@out x @as longitude");
-        assertEquals("x", comment.binding);
+        assertEquals("x", comment.data);
         assertEquals("longitude", comment.label);
         assertNull(comment.description);
     }
 
     public void testOutComment_VariableAndLabel_ExtraSpaces() throws Exception {
         OutComment comment = new OutComment("@out x    @as  longitude");
-        assertEquals("x", comment.binding);
+        assertEquals("x", comment.data);
         assertEquals("longitude", comment.label);
         assertNull(comment.description);
     }
 
     public void testOutComment_VariableLabelDescription_ExtraSpaces() throws Exception {
         OutComment comment = new OutComment("@out x    @as  longitude  Half of the coordinates");
-        assertEquals("x", comment.binding);
+        assertEquals("x", comment.data);
         assertEquals("longitude", comment.label);
         assertEquals("Half of the coordinates", comment.description);
     }
