@@ -285,6 +285,9 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         assertFalse(program instanceof Workflow);
         assertEquals("script", program.beginComment.programName);
+        assertEquals("script", program.endComment.programName);
+        assertEquals(0, program.inPorts.length);
+        assertEquals(0, program.outPorts.length);
     }
 
     public void testExtract_GetModel_WorkflowWithOneProgram() throws Exception {
@@ -303,6 +306,9 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         Workflow workflow = (Workflow)extractor.getProgram();
         
         assertEquals("script", workflow.beginComment.programName);
+        assertEquals("script", workflow.endComment.programName);
+        assertEquals(0, workflow.inPorts.length);
+        assertEquals(0, workflow.outPorts.length);
         assertEquals(1, workflow.programs.length);
         assertEquals(0, workflow.channels.length);
         
@@ -329,16 +335,25 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         Workflow workflow = (Workflow)extractor.getProgram();
         
         assertEquals("script", workflow.beginComment.programName);
+        assertEquals("script", workflow.endComment.programName);
+        assertEquals(0, workflow.inPorts.length);
+        assertEquals(0, workflow.outPorts.length);
         assertEquals(2, workflow.programs.length);
         assertEquals(0, workflow.channels.length);
 
         Program program0 = workflow.programs[0];
         assertFalse(program0 instanceof Workflow);
         assertEquals("program0", program0.beginComment.programName);        
+        assertEquals("program0", program0.endComment.programName);
+        assertEquals(0, program0.inPorts.length);
+        assertEquals(0, program0.outPorts.length);
 
         Program program1 = workflow.programs[1];
         assertFalse(program1 instanceof Workflow);
         assertEquals("program1", program1.beginComment.programName);        
+        assertEquals("program1", program1.endComment.programName);
+        assertEquals(0, program1.inPorts.length);
+        assertEquals(0, program1.outPorts.length);
     }
 
     public void testExtract_GetModel_WorkflowWithSubworkflow() throws Exception {
@@ -358,17 +373,27 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                  .extract();
         
         Workflow workflow = (Workflow)extractor.getProgram();
+        assertEquals("workflow", workflow.beginComment.programName);
+        assertEquals("workflow", workflow.endComment.programName);
+        assertEquals(0, workflow.inPorts.length);
+        assertEquals(0, workflow.outPorts.length);        
         assertEquals(1, workflow.programs.length);
         assertEquals(0, workflow.channels.length);
         
         Workflow subworkflow = (Workflow)workflow.programs[0];
         assertEquals("subworkflow", subworkflow.beginComment.programName);
+        assertEquals("subworkflow", subworkflow.endComment.programName);
+        assertEquals(0, subworkflow.inPorts.length);
+        assertEquals(0, subworkflow.outPorts.length);        
         assertEquals(1, subworkflow.programs.length);
         assertEquals(0, subworkflow.channels.length);
         
         Program program = subworkflow.programs[0];
         assertFalse(program instanceof Workflow);
         assertEquals("program", program.beginComment.programName);
+        assertEquals("program", program.endComment.programName);
+        assertEquals(0, program.inPorts.length);
+        assertEquals(0, program.outPorts.length);     
     }
     
     public void testExtract_GetModel_OneProgramInAndOut() throws Exception {
@@ -391,6 +416,9 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         assertFalse(program instanceof Workflow);
         assertEquals("script", program.beginComment.programName);
+        assertEquals("script", program.endComment.programName);
+        assertEquals(2, program.inPorts.length);
+        assertEquals(1, program.outPorts.length);
     }
     
     public void testExtract_GetModel_TwoProgramsWithOneChannel() throws Exception {
@@ -413,16 +441,25 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         Workflow workflow = (Workflow)extractor.getProgram();
         
         assertEquals("script", workflow.beginComment.programName);
+        assertEquals("script", workflow.endComment.programName);
+        assertEquals(0, workflow.inPorts.length);
+        assertEquals(0, workflow.outPorts.length);
         assertEquals(2, workflow.programs.length);
         assertEquals(1, workflow.channels.length);
 
         Program program0 = workflow.programs[0];
         assertFalse(program0 instanceof Workflow);
         assertEquals("program0", program0.beginComment.programName);
+        assertEquals("program0", program0.endComment.programName);
+        assertEquals(0, program0.inPorts.length);
+        assertEquals(1, program0.outPorts.length);
 
         Program program1 = workflow.programs[1];
         assertFalse(program1 instanceof Workflow);
         assertEquals("program1", program1.beginComment.programName);
+        assertEquals("program1", program1.endComment.programName);
+        assertEquals(1, program1.inPorts.length);
+        assertEquals(0, program1.outPorts.length);
         
         Channel channel = workflow.channels[0];
         assertEquals("program0", channel.sourceProgram.beginComment.programName);
@@ -459,16 +496,32 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         Workflow workflow = (Workflow)extractor.getProgram();
         
         assertEquals("script", workflow.beginComment.programName);
+        assertEquals("script", workflow.endComment.programName);
+        assertEquals(0, workflow.inPorts.length);
+        assertEquals(0, workflow.outPorts.length);
         assertEquals(3, workflow.programs.length);
         assertEquals(2, workflow.channels.length);
 
         Program program0 = workflow.programs[0];
         assertFalse(program0 instanceof Workflow);
         assertEquals("program0", program0.beginComment.programName);
+        assertEquals("program0", program0.endComment.programName);
+        assertEquals(0, program0.inPorts.length);
+        assertEquals(2, program0.outPorts.length);
 
         Program program1 = workflow.programs[1];
         assertFalse(program1 instanceof Workflow);
         assertEquals("program1", program1.beginComment.programName);
+        assertEquals("program1", program1.endComment.programName);
+        assertEquals(1, program1.inPorts.length);
+        assertEquals(0, program1.outPorts.length);
+
+        Program program2 = workflow.programs[2];
+        assertFalse(program2 instanceof Workflow);
+        assertEquals("program2", program2.beginComment.programName);
+        assertEquals("program2", program2.endComment.programName);
+        assertEquals(1, program1.inPorts.length);
+        assertEquals(0, program1.outPorts.length);
         
         Channel channel0 = workflow.channels[0];
         assertEquals("program0", channel0.sourceProgram.beginComment.programName);

@@ -14,6 +14,7 @@ import org.yesworkflow.comments.EndComment;
 import org.yesworkflow.comments.InComment;
 import org.yesworkflow.comments.OutComment;
 import org.yesworkflow.exceptions.UsageException;
+import org.yesworkflow.model.Port;
 import org.yesworkflow.model.Program;
 import org.yesworkflow.model.Workflow;
 
@@ -22,11 +23,13 @@ public class DefaultExtractor implements Extractor {
     private char commentCharacter;
     private BufferedReader sourceReader = null;
     private String sourcePath = null;
-    private String databasePath = null;
     private List<String> commentLines;
     private List<Comment> comments;
     private Program program;
-    
+
+    @SuppressWarnings("unused")
+    private String databasePath = null;
+
     @Override
     public DefaultExtractor commentCharacter(char c) {
         this.commentCharacter = c;
@@ -134,19 +137,21 @@ public class DefaultExtractor implements Extractor {
     				.begin((BeginComment)comment);
     		
     		} else if (comment instanceof OutComment) {
-
+    		    Port outPort = workflowBuilder.outPort((OutComment)comment);
     			if (parentBuilder != null) {
-    				parentBuilder.out((OutComment)comment, workflowBuilder.getProgramName());
+    				parentBuilder.nestedOutPort(outPort, workflowBuilder.getProgramName());
     			}
 
     		} else if (comment instanceof InComment) {
-
-    			if (parentBuilder != null) {
-    				parentBuilder.in((InComment)comment, workflowBuilder.getProgramName());
+                Port inPort = workflowBuilder.inPort((InComment)comment);
+                if (parentBuilder != null) {
+    				parentBuilder.nestedInPort(inPort, workflowBuilder.getProgramName());
     			}
     			
     		} else if (comment instanceof EndComment) {
     			
+    		    workflowBuilder.end((EndComment)comment);
+    		    
     			Program program = workflowBuilder.build();
     			
     			if (parentWorkflowBuilders.isEmpty()) {
@@ -155,7 +160,7 @@ public class DefaultExtractor implements Extractor {
     			}
     			
     			workflowBuilder = parentWorkflowBuilders.pop();
-    			workflowBuilder.program(program);
+    			workflowBuilder.nestedProgram(program);
     			
     			if (!parentWorkflowBuilders.isEmpty()) {
     				parentBuilder = parentWorkflowBuilders.peek();
