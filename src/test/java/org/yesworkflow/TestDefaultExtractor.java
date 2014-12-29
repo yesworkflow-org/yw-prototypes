@@ -193,11 +193,11 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertNull(begin.description);
 
         InComment in = (InComment) comments.get(1);
-        assertEquals("x", in.binding);
+        assertEquals("x", in.data);
         assertNull(in.description);
 
         OutComment out = (OutComment) comments.get(2);
-        assertEquals("y", out.binding);
+        assertEquals("y", out.data);
         assertNull(out.description);
 
         EndComment end = (EndComment) comments.get(3);
@@ -220,15 +220,15 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertNull(begin0.description);
         
         InComment in1 = (InComment) comments.get(1);
-        assertEquals("LandWaterMask_Global_CRUNCEP.nc", in1.binding);
+        assertEquals("LandWaterMask_Global_CRUNCEP.nc", in1.data);
         assertNull(in1.description);
 
         InComment in2 = (InComment) comments.get(2);
-        assertEquals("NEE_first_year.nc", in2.binding);
+        assertEquals("NEE_first_year.nc", in2.data);
         assertNull(in2.description);
         
         OutComment out3 = (OutComment) comments.get(3);
-        assertEquals("result_simple.pdf", out3.binding);
+        assertEquals("result_simple.pdf", out3.data);
         assertNull(out3.description);
 
         BeginComment begin4 = (BeginComment) comments.get(4);
@@ -236,12 +236,12 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertNull(begin4.description);
         
         InComment in5 = (InComment) comments.get(5);
-        assertEquals("\"LandWaterMask_Global_CRUNCEP.nc\"", in5.binding);
+        assertEquals("\"LandWaterMask_Global_CRUNCEP.nc\"", in5.data);
         assertEquals("input_mask_file", in5.label);
         assertNull(in5.description);
 
         OutComment out6 = (OutComment) comments.get(6);
-        assertEquals("mask", out6.binding);
+        assertEquals("mask", out6.data);
         assertEquals("land_water_mask", out6.label);
         assertNull(out6.description);
         
@@ -254,12 +254,12 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertNull(begin8.description);
 
         InComment in9 = (InComment) comments.get(9);
-        assertEquals("\"CLM4_BG1_V1_Monthly_NEE.nc4\"", in9.binding);
+        assertEquals("\"CLM4_BG1_V1_Monthly_NEE.nc4\"", in9.data);
         assertEquals("input", in9.label);
         assertEquals("data file", in9.description);
 
         OutComment out10 = (OutComment) comments.get(10);
-        assertEquals("data", out10.binding);
+        assertEquals("data", out10.data);
         assertEquals("NEE_data", out10.label);
         assertNull(out10.description);
         
@@ -426,9 +426,9 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         Channel channel = workflow.channels[0];
         assertEquals("program0", channel.sourceProgram.beginComment.programName);
-        assertEquals("channel", channel.sourcePort.comment.binding);
+        assertEquals("channel", channel.sourcePort.comment.data);
         assertEquals("program1", channel.sinkProgram.beginComment.programName);
-        assertEquals("channel", channel.sinkPort.comment.binding);
+        assertEquals("channel", channel.sinkPort.comment.data);
     }
     
     public void testExtract_GetModel_ThreeProgramsMultipleChannels() throws Exception {
@@ -472,14 +472,14 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         Channel channel0 = workflow.channels[0];
         assertEquals("program0", channel0.sourceProgram.beginComment.programName);
-        assertEquals("channel0", channel0.sourcePort.comment.binding);
+        assertEquals("channel0", channel0.sourcePort.comment.data);
         assertEquals("program1", channel0.sinkProgram.beginComment.programName);
-        assertEquals("channel0", channel0.sinkPort.comment.binding);
+        assertEquals("channel0", channel0.sinkPort.comment.data);
 
         Channel channel1 = workflow.channels[1];
         assertEquals("program0", channel1.sourceProgram.beginComment.programName);
-        assertEquals("channel1", channel1.sourcePort.comment.binding);
+        assertEquals("channel1", channel1.sourcePort.comment.data);
         assertEquals("program2", channel1.sinkProgram.beginComment.programName);
-        assertEquals("channel1", channel1.sinkPort.comment.binding);
+        assertEquals("channel1", channel1.sinkPort.comment.data);
     }
 }
