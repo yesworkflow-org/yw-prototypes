@@ -40,7 +40,6 @@ public class YesWorkflowCLI {
         System.exit(returnValue);
     }
     
-    private PrintStream outStream;
     private PrintStream errStream;
     private OptionParser parser = null;
     private OptionSet options = null;
@@ -49,6 +48,9 @@ public class YesWorkflowCLI {
     private String databaseFilePath = null;
     private String dotFilePath = null;
     private Extractor extractor = null;
+
+    @SuppressWarnings("unused")
+    private PrintStream outStream;
 
     public YesWorkflowCLI() throws Exception {
         this(System.out, System.err);
@@ -209,7 +211,7 @@ public class YesWorkflowCLI {
         
         Program program = extractor.getProgram();        
         
-        DotGrapher grapher = new DotGrapher()
+        new DotGrapher()
             .workflow((Workflow)program)
             .type(GraphType.DATA_FLOW_GRAPH)
             .filePath(this.dotFilePath)

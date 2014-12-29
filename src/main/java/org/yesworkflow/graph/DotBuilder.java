@@ -29,9 +29,9 @@ public class DotBuilder {
 		String id = "node" + ++nodeCount;
 		nodeNameToIdMap.put(name, id);
 		
-		_buffer	.append(	id			)
+		_buffer	.append(	id			    )
 				.append(	" [label="		)
-				.append(	dq(name)			)
+				.append(	dq(name)	    )
 				.append(	",shape="		)
 				.append(	shape			)
 				.append(	",peripheries="	)

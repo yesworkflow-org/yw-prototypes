@@ -15,8 +15,10 @@ public class DotGrapher implements Grapher  {
     private GraphType graphType = null;
     private String graphText = null;
     private String filePath = null;
-    private GraphFormat graphFormat = null;
     private Writer writer = null;
+
+    @SuppressWarnings("unused")
+    private GraphFormat graphFormat = null;
     
     @Override
     public DotGrapher workflow(Workflow workflow) {

@@ -4,7 +4,6 @@ package org.yesworkflow;
  * package as of 18Dec2014.
  */
 
-import java.io.Writer;
 import java.util.List;
 
 import org.yesworkflow.comments.Comment;
