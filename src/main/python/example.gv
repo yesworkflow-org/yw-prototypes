@@ -1,0 +1,30 @@
+
+digraph{
+ rankdir=LR 
+ //ranksep=0.3
+
+ node[shape=box 
+      style="rounded,filled" 
+      fillcolor="#FFFFCC" 
+      fontname=helvetica fontsize=12]
+
+ edge[fontname=courier fontsize=10]
+
+"FETCH_MASK"[shape=box3d fontname=courier fillcolor="#CCFFCC"]
+  "input_mask_file" -> "FETCH_MASK" [style=dashed label=in]
+  "FETCH_MASK" -> "land_water_mask" [label=out]
+"LOAD_DATA"[shape=box3d fontname=courier fillcolor="#CCFFCC"]
+  "input" -> "LOAD_DATA" [style=dashed label=in]
+  "LOAD_DATA" -> "NEE_data" [label=out]
+"MAIN"[shape=box3d fontname=courier fillcolor="#CCFFCC"]
+  "LandWaterMask_Global_CRUNCEP.nc" -> "MAIN" [style=dashed label=in]
+  "NEE_first_year.nc" -> "MAIN" [style=dashed label=in]
+  "MAIN" -> "result_simple.pdf" [label=out]
+"STANDARDIZE_WITH_MASK"[shape=box3d fontname=courier fillcolor="#CCFFCC"]
+  "NEE_data" -> "STANDARDIZE_WITH_MASK" [style=dashed label=in]
+  "land_water_mask" -> "STANDARDIZE_WITH_MASK" [style=dashed label=in]
+  "STANDARDIZE_WITH_MASK" -> "standardized_NEE_data" [label=out]
+"SIMPLE_DIAGNOSE"[shape=box3d fontname=courier fillcolor="#CCFFCC"]
+  "standardized_NEE_data" -> "SIMPLE_DIAGNOSE" [style=dashed label=in]
+  "SIMPLE_DIAGNOSE" -> "result_NEE_pdf" [label=out]
+}

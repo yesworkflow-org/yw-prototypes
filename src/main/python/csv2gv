@@ -1,0 +1,45 @@
+#!/usr/bin/python
+
+import fileinput 
+import csv 
+import dots       # string-constants for graphviz/dot 
+
+
+# Records iterator for CSV input (works with any number of in-files or stdin)
+Rs = csv.reader(fileinput.input()) 
+
+D = {}
+block = 'top'
+last  = None # last (= most recent) tag seen
+
+for r in Rs:
+    tag, val = r[2:4]  # skip LINE, OFFSET, DESCR, keeping only TAG and VAL from CSV .. 
+    if tag == 'BEGIN':
+        last = tag
+        block = val
+        D[block] = {'BEGIN': [(val,val)]}
+    elif tag == 'END':
+        block = 'top'
+    elif tag == 'AS':
+        D[block][last][-1] = (D[block][last][-1][0], val)
+    else:   # @IN, @OUT,  ... 
+        last = tag
+        if tag in D[block]:
+            D[block][tag].append( (val,val))
+        else:
+            D[block][tag] = [(val,val)]
+
+print dots.HEADER
+
+for block in D:
+    block_alias = D[block]['BEGIN'][0][1].upper() 
+    print '"{}"[{}]'.format(block_alias,dots.BLOCK)
+    for var, in_alias in D[block]['IN']:
+        print '  "{}" -> "{}" [{}]'.format(in_alias,block_alias,dots.INEDGE)
+    for var, out_alias in D[block]['OUT']:
+        print '  "{}" -> "{}" [{}]'.format(block_alias,out_alias,dots.OUTEDGE)
+
+print dots.TRAILER        
+
+            
+

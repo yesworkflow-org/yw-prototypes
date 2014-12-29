@@ -1,0 +1,25 @@
+#!/usr/bin/python
+import fileinput
+
+lineNo = 0
+
+# We're producing this CSV schema: LINE, -OFFSET-, TAG, VALUE, DESCR
+
+for line in fileinput.input():
+    lineNo += 1
+    pos = line.find("#")     # TODO: only whitespace left of #!!!
+    line = line[pos:-1]      # only keep comment (without '\n') 
+    if line == '':
+        continue             # skip if not a comment
+    Ts = line.split("@")[1:] # generate tag/value list, ignoring Ts[0]
+    for t in Ts:             # .. and skip, if no "@" found
+        tag, val = t.split()[0:2]
+	dpos = t.find("-")   # optional descriptions start with "-"
+	if dpos != -1:
+	    desc = t[dpos+1:]
+	else:
+	    desc = ''
+	print '{},{},{},{},"{}"'.format(lineNo,pos,tag.upper(),val,desc)
+    
+    
+
