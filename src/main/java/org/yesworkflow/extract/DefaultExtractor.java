@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -36,8 +37,9 @@ public class DefaultExtractor implements Extractor {
         return this;
     }
     
-    public DefaultExtractor sourceReader(BufferedReader reader) {
-        this.sourceReader = reader;
+    @Override
+    public DefaultExtractor sourceReader(Reader reader) {
+        this.sourceReader = new BufferedReader(reader);
         return this;
     }    
     
