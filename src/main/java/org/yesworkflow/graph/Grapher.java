@@ -13,5 +13,4 @@ public interface Grapher {
     Grapher filePath(String dotFilePath);
     Grapher write() throws Exception;
     Grapher writer(Writer writer);
-    String getGraph() throws Exception;
 }
