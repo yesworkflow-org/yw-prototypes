@@ -1,13 +1,11 @@
 package org.yesworkflow.model;
 
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import org.apache.commons.collections4.map.MultiValueMap;
 import org.yesworkflow.comments.BeginComment;
 import org.yesworkflow.comments.EndComment;
 import org.yesworkflow.comments.InComment;
@@ -42,8 +40,8 @@ public class Workflow extends Program {
 
 		private List<Program> nestedPrograms = new LinkedList<Program>();
         private List<Channel> nestedChannels = new LinkedList<Channel>();
-		private MultiValueMap<String,Port> nestedInPorts = new MultiValueMap<String,Port>();
-		private Map<String,Port> nestedOutPorts = new HashMap<String,Port>();
+		private Map<String,List<Port>> nestedInPorts = new LinkedHashMap<String,List<Port>>();
+		private Map<String,Port> nestedOutPorts = new  LinkedHashMap<String,Port>();
 
         private Map<Port,String> programNameForPort = new HashMap<Port,String>();
         private Map<String,Program> programForName = new HashMap<String,Program>();
@@ -81,9 +79,18 @@ public class Workflow extends Program {
         
 		public Builder nestedInPort(Port inPort, String programName) {
 		    String binding = inPort.comment.binding();
-			this.nestedInPorts.put(binding, inPort);
+			addNestedInport(binding, inPort);
 			this.programNameForPort.put(inPort, programName);
 			return this;
+		}
+
+		private void addNestedInport(String binding, Port inPort) {
+			List<Port> ports = this.nestedInPorts.get(binding);
+			if (ports == null) {
+				ports = new LinkedList<Port>();
+				this.nestedInPorts.put(binding, ports);
+			}
+			ports.add(inPort);
 		}
 		
 		public Builder nestedOutPort(Port outPort, String programName) throws Exception {
@@ -110,30 +117,33 @@ public class Workflow extends Program {
 			}
 			
 			// otherwise we're building a workflow and must build its channels
-			for (Iterator<Entry<String, Port>> inPortIterator = nestedInPorts.iterator(); inPortIterator.hasNext(); ) {
-				
-				// get information about this @in port
-				Map.Entry<String,Port> entry = inPortIterator.next();
-				String binding = entry.getKey();
-				Port inPort = entry.getValue();
-				String inProgramName = programNameForPort.get(inPort);
-				Program inProgram = programForName.get(inProgramName);
+			for (Map.Entry<String, List<Port>> entry : nestedInPorts.entrySet()) {
 
-				// get information about corresponding @out port
-				Port outPort = nestedOutPorts.get(binding);
-				if (outPort != null) {
-    			
-				    String outProgramName = programNameForPort.get(outPort);
-    				Program outProgram = programForName.get(outProgramName);
-    
-    				// store the new channel
-    				Channel channel = new Channel(outProgram, outPort, inProgram, inPort);
-    				nestedChannels.add(channel);
-	            
-				} else {
-	                
+				String binding = entry.getKey();
+				List<Port> boundInPorts = entry.getValue();
+
+				// get information about the @out port that writes to this binding
+				Port boundOutPort = nestedOutPorts.get(binding);
+
+				if (boundOutPort == null) {
 				    //throw new Exception("No @out corresponding to @in " + binding);
-	            }
+					continue;
+				}
+				
+			    String outProgramName = programNameForPort.get(boundOutPort);
+				Program outProgram = programForName.get(outProgramName);
+				
+				// iterate over @in ports that bind to the current @out port
+				for (Port inPort : boundInPorts) {
+				
+					// get information about this @in port
+					String inProgramName = programNameForPort.get(inPort);
+					Program inProgram = programForName.get(inProgramName);
+	
+					// store the new channel
+					Channel channel = new Channel(outProgram, boundOutPort, inProgram, inPort);
+					nestedChannels.add(channel);
+				}		            
 			}
 			
 			return new Workflow(

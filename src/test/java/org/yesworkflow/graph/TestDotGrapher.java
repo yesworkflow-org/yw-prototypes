@@ -123,10 +123,9 @@ public class TestDotGrapher extends YesWorkflowTestCase {
              "node2 [label=\"load_data\",shape=box,peripheries=1];"                 + EOL +
              "node3 [label=\"standardize_with_mask\",shape=box,peripheries=1];"     + EOL +
              "node4 [label=\"simple_diagnose\",shape=box,peripheries=1];"           + EOL +
-             "node1 -> node3 [label=\"land_water_mask\"];"                          + EOL +
-             "node3 -> node4 [label=\"standardized_NEE_data\"];"                    + EOL +
-             "node2 -> node3 [label=\"NEE_data\"];"                                 + EOL +
-             "}"                                                                    + EOL,
+             "node2 -> node3 [label=\"NEE_data\"];"        							+ EOL +
+             "node1 -> node3 [label=\"land_water_mask\"];"        					+ EOL +
+             "node3 -> node4 [label=\"standardized_NEE_data\"];"                 	+ EOL +             "}"                                                                    + EOL,
              dotString);
      }
 }
