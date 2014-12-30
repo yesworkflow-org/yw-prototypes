@@ -190,12 +190,14 @@ public class YesWorkflowCLI {
                 .describedAs("database");
 
             acceptsAll(asList("g", "graph"), "path to graphviz dot file for storing rendered workflow graph")
-                .withRequiredArg()
+                .withOptionalArg()
+                .defaultsTo("-")
                 .ofType(String.class)
                 .describedAs("dot file");
                             
             acceptsAll(asList("l", "lines"), "path to file for saving extracted comment lines")
                 .withOptionalArg()
+                .defaultsTo("-")
                 .ofType(String.class)
                 .describedAs("lines file");
 
@@ -218,29 +220,21 @@ public class YesWorkflowCLI {
                  .extract();
         
         if (options.has("l")) {
-            writeLinesFile();
+            
+            StringBuffer linesBuffer = new StringBuffer();
+            for (String line : extractor.getLines()) {
+                linesBuffer.append(line);
+                linesBuffer.append(EOL);
+            }
+            
+            writeTextToOptionNamedFile("l", linesBuffer.toString());
         }
     }
     
-    public void writeLinesFile() throws IOException {
-
-        String linesFilePath = null;
-        
-        if (options.hasArgument("l")) {
-            linesFilePath = (String) options.valueOf("l");
-        }
-        
-        PrintStream linesOutputStream = null;
-        if (linesFilePath == null || linesFilePath.equals("-")) {
-            linesOutputStream = outStream;
-        } else {
-            linesOutputStream = new PrintStream(linesFilePath);
-        }
-        
-        for (String line : extractor.getLines()) {
-            linesOutputStream.println(line);
-        }
-        
+    public void writeTextToOptionNamedFile(String option, String text) throws IOException {
+        String path = (String) options.valueOf(option);
+        PrintStream linesOutputStream = (path.equals("-")) ? outStream : new PrintStream(path);
+        linesOutputStream.print(text);
         if (linesOutputStream != outStream) {
             linesOutputStream.close();
         }
@@ -248,13 +242,17 @@ public class YesWorkflowCLI {
 
     public void graph() throws Exception {
         
-        Program program = extractor.getProgram();        
+        Program program = extractor.getProgram();
         
-        new DotGrapher()
+        String graph = new DotGrapher()
             .workflow((Workflow)program)
             .type(GraphType.DATA_FLOW_GRAPH)
             .filePath(this.dotFilePath)
             .graph()
-            .write();
+            .toString();
+        
+        if (options.has("g")) {
+            writeTextToOptionNamedFile("g", graph);
+        }
     }
 }

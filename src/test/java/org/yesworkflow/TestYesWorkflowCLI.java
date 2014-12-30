@@ -14,18 +14,18 @@ import org.yesworkflow.util.YesWorkflowTestCase;
 public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     private static String EXPECTED_HELP_OUTPUT =
-        ""                                                              + EOL +
-        "Option                     Description                          "  + EOL +
-        "------                     -----------                          "  + EOL +
-        "-c, --command <command>    command to YesWorkflow               "  + EOL +
-        "-d, --database <database>  path to database file for storing    "  + EOL +
-        "                             extracted workflow graph           "  + EOL +
-        "-g, --graph <dot file>     path to graphviz dot file for storing"  + EOL +
-        "                             rendered workflow graph            "  + EOL +
-        "-h, --help                 display help                         "  + EOL +
-        "-l, --lines [lines file]   path to file for saving extracted    "  + EOL +
-        "                             comment lines                      "  + EOL +
-        "-s, --source <script>      path to source file to analyze       "  + EOL;
+        ""                                                                   + EOL +
+        "Option                     Description                           "  + EOL +
+        "------                     -----------                           "  + EOL +
+        "-c, --command <command>    command to YesWorkflow                "  + EOL +
+        "-d, --database <database>  path to database file for storing     "  + EOL +
+        "                             extracted workflow graph            "  + EOL +
+        "-g, --graph [dot file]     path to graphviz dot file for storing "  + EOL +
+        "                             rendered workflow graph (default: -)"  + EOL +
+        "-h, --help                 display help                          "  + EOL +
+        "-l, --lines [lines file]   path to file for saving extracted     "  + EOL +
+        "                             comment lines (default: -)          "  + EOL +
+        "-s, --source <script>      path to source file to analyze        "  + EOL;
     
     @Override
     public void setUp() throws Exception {
@@ -163,10 +163,12 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         assertTrue(extractor.extracted);
     }
     
-    public void testYesWorkflowCLI_Extract_ExamplePy_SaveLines() throws Exception {
+    public void testYesWorkflowCLI_Extract_ExamplePy_OutputLines() throws Exception {
+
         String[] args = {"-c", "extract", "-s", "src/main/resources/example.py", "-l"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args);
+        
         assertEquals(
             "@begin main"                                                   + EOL +
             "@in LandWaterMask_Global_CRUNCEP.nc"                           + EOL +
@@ -193,6 +195,25 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             stdoutBuffer.toString());
     }    
     
+    public void testYesWorkflowCLI_Graph_ExamplePy_OutputGraph() throws Exception {
+
+        String[] args = {"-c", "graph", "-s", "src/main/resources/example.py", "-g"};
+        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
+        cli.runForArgs(args);
+        
+        assertEquals(
+            "digraph Workflow {"                                                + EOL +
+            "rankdir=LR"                                                        + EOL +
+            "node1 [label=\"fetch_mask\",shape=box,peripheries=1];"             + EOL +
+            "node2 [label=\"load_data\",shape=box,peripheries=1];"              + EOL +
+            "node3 [label=\"standardize_with_mask\",shape=box,peripheries=1];"  + EOL +
+            "node4 [label=\"simple_diagnose\",shape=box,peripheries=1];"        + EOL +
+            "node1 -> node3 [label=\"land_water_mask\"];"                       + EOL +
+            "node3 -> node4 [label=\"standardized_NEE_data\"];"                 + EOL +
+            "node2 -> node3 [label=\"NEE_data\"];"                              + EOL +
+            "}"                                                                 + EOL,
+            stdoutBuffer.toString());
+    }  
     
     private static class MockExtractor implements Extractor {
 
