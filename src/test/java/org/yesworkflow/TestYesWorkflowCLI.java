@@ -4,6 +4,7 @@ package org.yesworkflow;
  * package as of 18Dec2014.
  */
 
+import java.io.Reader;
 import java.util.List;
 
 import org.yesworkflow.comments.Comment;
@@ -25,7 +26,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         "-h, --help                 display help                          "  + EOL +
         "-l, --lines [lines file]   path to file for saving extracted     "  + EOL +
         "                             comment lines (default: -)          "  + EOL +
-        "-s, --source <script>      path to source file to analyze        "  + EOL;
+        "-s, --source [script]      path to source file to analyze        "  + EOL +
+        "                             (default: -)                        "  + EOL;
     
     @Override
     public void setUp() throws Exception {
@@ -79,18 +81,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         assertEquals(YesWorkflowCLI.YW_CLI_USAGE_ERROR, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
-            "Usage error: Option s/source requires an argument"      + EOL +
-            EXPECTED_HELP_OUTPUT,
-            stderrBuffer.toString());
-    }
-
-    public void testYesWorkflowCLI_Extract_DefaultExtractor_NoSourceOption() throws Exception {
-        String[] args = {"-c", "extract"};
-        int returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
-        assertEquals(YesWorkflowCLI.YW_CLI_USAGE_ERROR, returnValue);
-        assertEquals("", stdoutBuffer.toString());
-        assertEquals(
-            "Usage error: No source path provided to extractor"      + EOL +
+            "Usage error: No command provided to YesWorkflow"      + EOL +
             EXPECTED_HELP_OUTPUT,
             stderrBuffer.toString());
     }
@@ -222,6 +213,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         public boolean extracted = false;
         
         public Extractor commentCharacter(char c) { return this; }
+		public Extractor sourceReader(Reader reader) { return null; }
         public Extractor sourcePath(String path) { this.sourcePath = path; return this; }
         public Extractor databasePath(String path) { this.databasePath = path; return this; }
         public void extract() throws Exception { this.extracted = true; }

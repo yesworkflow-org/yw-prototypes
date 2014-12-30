@@ -6,10 +6,9 @@ package org.yesworkflow;
 
 import static java.util.Arrays.asList;
 
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.io.Writer;
 
 import org.yesworkflow.exceptions.UsageException;
 import org.yesworkflow.extract.DefaultExtractor;
@@ -53,8 +52,6 @@ public class YesWorkflowCLI {
     private String databaseFilePath = null;
     private String dotFilePath = null;
     private Extractor extractor = null;
-
-    @SuppressWarnings("unused")
     private PrintStream outStream;
 
     public YesWorkflowCLI() throws Exception {
@@ -156,9 +153,7 @@ public class YesWorkflowCLI {
     }
 
     private void extractSourcePathFromOptions() {
-        if (options.hasArgument("s")) {
-            sourceFilePath = (String) options.valueOf("s");
-        }
+    	sourceFilePath = (String) options.valueOf("s");
     }
 
     private void extractDotFilePathFromOptions() {
@@ -180,7 +175,8 @@ public class YesWorkflowCLI {
                 .describedAs("command");
 
             acceptsAll(asList("s", "source"), "path to source file to analyze")
-                .withRequiredArg()
+                .withOptionalArg()
+                .defaultsTo("-")
                 .ofType(String.class)
                 .describedAs("script");
 
@@ -214,8 +210,13 @@ public class YesWorkflowCLI {
            extractor = new DefaultExtractor();
         }
         
-        extractor.sourcePath(sourceFilePath)
-                 .databasePath(databaseFilePath)
+        if (sourceFilePath.equals("-")) {
+        	extractor.sourceReader(new InputStreamReader(System.in));
+        } else {
+        	extractor.sourcePath(sourceFilePath);
+        }
+        
+        extractor.databasePath(databaseFilePath)
                  .commentCharacter('#')
                  .extract();
         
@@ -251,8 +252,6 @@ public class YesWorkflowCLI {
             .graph()
             .toString();
         
-        if (options.has("g")) {
-            writeTextToOptionNamedFile("g", graph);
-        }
+        writeTextToOptionNamedFile("g", graph);
     }
 }
