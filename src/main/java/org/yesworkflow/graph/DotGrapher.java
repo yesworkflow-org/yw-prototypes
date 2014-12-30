@@ -50,8 +50,7 @@ public class DotGrapher implements Grapher  {
         return this;
     }
     
-    @Override
-	public String getGraph() throws Exception {
+	public String toString() {
         return graphText;
     }
     
