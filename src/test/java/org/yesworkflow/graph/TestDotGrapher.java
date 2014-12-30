@@ -45,7 +45,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
                .type(GraphType.DATA_FLOW_GRAPH)
                .graph();
         
-        String dotString = grapher.getGraph();
+        String dotString = grapher.toString();
 
         assertEquals(
             "digraph Workflow {"                                        + EOL +
@@ -88,7 +88,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
             .type(GraphType.DATA_FLOW_GRAPH)
             .graph();
      
-     String dotString = grapher.getGraph();
+     String dotString = grapher.toString();
 
      assertEquals(
          "digraph Workflow {"                                       + EOL +
@@ -114,7 +114,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
                 .type(GraphType.DATA_FLOW_GRAPH)
                 .graph();
          
-         String dotString = grapher.getGraph();
+         String dotString = grapher.toString();
     
          assertEquals(
              "digraph Workflow {"                                                   + EOL +
