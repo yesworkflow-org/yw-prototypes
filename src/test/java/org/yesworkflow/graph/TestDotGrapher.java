@@ -50,8 +50,8 @@ public class TestDotGrapher extends YesWorkflowTestCase {
         assertEquals(
             "digraph Workflow {"                                        + EOL +
             "rankdir=LR"                                                + EOL +
-            "node1 [label=\"program0\",shape=box,peripheries=1];"       + EOL +
-            "node2 [label=\"program1\",shape=box,peripheries=1];"       + EOL +
+            "node1 [label=\"program0\" shape=box3d style=\"rounded,filled\" fillcolor=\"#CCFFCC\" peripheries=1];"        + EOL +
+            "node2 [label=\"program1\" shape=box3d style=\"rounded,filled\" fillcolor=\"#CCFFCC\" peripheries=1];"       + EOL +
             "node1 -> node2 [label=\"channel\"];"                       + EOL +
             "}"                                                         + EOL,
             dotString);
@@ -93,9 +93,9 @@ public class TestDotGrapher extends YesWorkflowTestCase {
      assertEquals(
          "digraph Workflow {"                                       + EOL +
          "rankdir=LR"                                               + EOL +
-         "node1 [label=\"program0\",shape=box,peripheries=1];"      + EOL +
-         "node2 [label=\"program1\",shape=box,peripheries=1];"      + EOL +
-         "node3 [label=\"program2\",shape=box,peripheries=1];"      + EOL +
+         "node1 [label=\"program0\" shape=box3d style=\"rounded,filled\" fillcolor=\"#CCFFCC\" peripheries=1];"      + EOL +
+         "node2 [label=\"program1\" shape=box3d style=\"rounded,filled\" fillcolor=\"#CCFFCC\" peripheries=1];"      + EOL +
+         "node3 [label=\"program2\" shape=box3d style=\"rounded,filled\" fillcolor=\"#CCFFCC\" peripheries=1];"      + EOL +
          "node1 -> node2 [label=\"channel0\"];"                     + EOL +
          "node1 -> node3 [label=\"channel1\"];"                     + EOL +
          "}"                                                        + EOL,
@@ -117,15 +117,16 @@ public class TestDotGrapher extends YesWorkflowTestCase {
          String dotString = grapher.toString();
     
          assertEquals(
-             "digraph Workflow {"                                                   + EOL +
-             "rankdir=LR"                                                           + EOL +
-             "node1 [label=\"fetch_mask\",shape=box,peripheries=1];"                + EOL +
-             "node2 [label=\"load_data\",shape=box,peripheries=1];"                 + EOL +
-             "node3 [label=\"standardize_with_mask\",shape=box,peripheries=1];"     + EOL +
-             "node4 [label=\"simple_diagnose\",shape=box,peripheries=1];"           + EOL +
-             "node2 -> node3 [label=\"NEE_data\"];"        							+ EOL +
-             "node1 -> node3 [label=\"land_water_mask\"];"        					+ EOL +
-             "node3 -> node4 [label=\"standardized_NEE_data\"];"                 	+ EOL +             "}"                                                                    + EOL,
+                 "digraph Workflow {"                                                                                                + EOL +
+                 "rankdir=LR"                                                                                                        + EOL +
+                 "node1 [label=\"fetch_mask\" shape=box3d style=\"rounded,filled\" fillcolor=\"#CCFFCC\" peripheries=1];"            + EOL +
+                 "node2 [label=\"load_data\" shape=box3d style=\"rounded,filled\" fillcolor=\"#CCFFCC\" peripheries=1];"             + EOL +
+                 "node3 [label=\"standardize_with_mask\" shape=box3d style=\"rounded,filled\" fillcolor=\"#CCFFCC\" peripheries=1];" + EOL +
+                 "node4 [label=\"simple_diagnose\" shape=box3d style=\"rounded,filled\" fillcolor=\"#CCFFCC\" peripheries=1];"       + EOL +
+                 "node2 -> node3 [label=\"NEE_data\"];"                                                                              + EOL +
+                 "node1 -> node3 [label=\"land_water_mask\"];"                                                                       + EOL +
+                 "node3 -> node4 [label=\"standardized_NEE_data\"];"                                                                 + EOL +
+                 "}"                                                                    + EOL,
              dotString);
      }
 }

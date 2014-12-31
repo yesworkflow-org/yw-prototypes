@@ -60,7 +60,7 @@ public class DotGrapher implements Grapher  {
         switch(graphType) {
         
             case DATA_FLOW_GRAPH:
-                this.graphText = createDataflowGraph();
+                this.graphText = renderWorkflowGraph();
                 break;
             
             case DATA_DEPENDENCY_GRAPH:
@@ -73,15 +73,18 @@ public class DotGrapher implements Grapher  {
         return this;
     }
     
-    private String createDataflowGraph() {
+    private String renderWorkflowGraph() {
 
 	    DotBuilder dot = new DotBuilder();
 		
 		dot.begin();
 
-		// draw an ellipse for each program
+		// draw a 3D box for each program
+		dot.shape("box3d")
+		   .fillcolor("#CCFFCC");
+		
 		for (Program p : workflow.programs) {
-			dot.node(p.beginComment.programName, "box", 1);
+			dot.node(p.beginComment.programName);
 		}
 
 		// create an edge between each program pair with connected out port and in port

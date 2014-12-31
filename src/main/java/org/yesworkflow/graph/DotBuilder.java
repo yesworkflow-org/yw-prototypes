@@ -14,17 +14,35 @@ public class DotBuilder {
     private StringBuilder _buffer = new StringBuilder();
 	private int nodeCount = 0;
 	private Map<String,String> nodeNameToIdMap = new HashMap<String,String>();
+    private String fillcolor = "#FFFFFF";
+    private String shape = "box";
+    private int peripheries = 1;
+    private String style = "rounded,filled";
 
-	public  void begin() {
+	public DotBuilder begin() {
+	    
 		_buffer.append(	"digraph Workflow {" + EOL )
 		       .append( "rankdir=LR"         + EOL );
-	}
-	
-	public void node(String name, String shape) {
-		node(name, shape, 1);
+
+		return this;
 	}
 
-	public void node(String name, String shape, int peripheries) {
+   public DotBuilder shape(String shape) {
+        this.shape = shape;
+        return this;
+    }
+
+   public DotBuilder style(String style) {
+       this.style = style;
+       return this;
+   }
+   
+	public DotBuilder fillcolor(String fillcolor) {
+	    this.fillcolor = fillcolor;
+        return this;
+	}
+
+	public DotBuilder node(String name) {
 		
 		String id = "node" + ++nodeCount;
 		nodeNameToIdMap.put(name, id);
@@ -32,15 +50,20 @@ public class DotBuilder {
 		_buffer	.append(	id			    )
 				.append(	" [label="		)
 				.append(	dq(name)	    )
-				.append(	",shape="		)
+				.append(	" shape="		)
 				.append(	shape			)
-				.append(	",peripheries="	)
+				.append(    " style="       )
+				.append(    dq(style)       )
+				.append(   " fillcolor="    )
+				.append(    dq(fillcolor)   )
+				.append(	" peripheries="	)
 				.append(	peripheries		)
 				.append(	"];" + EOL		);
+		
+		return this;
 	}
-
 	
-	public void edge(String fromNode, String toNode, String edgeLabel) {
+	public DotBuilder edge(String fromNode, String toNode, String edgeLabel) {
 		
 		String fromId 	= nodeNameToIdMap.get(fromNode);
 		String toId 	= nodeNameToIdMap.get(toNode);
@@ -51,10 +74,13 @@ public class DotBuilder {
 				.append(	" [label="		)
 				.append(	dq(edgeLabel)	)
 				.append(	"];" + EOL		);
+		
+		return this;
 	}
 	
-	public void end() {
+	public DotBuilder end() {
 		_buffer	.append(	"}" + EOL		);
+        return this;
 	}
 
 	private String dq(String text) {
