@@ -18,6 +18,7 @@ public class DotBuilder {
     private String shape = "box";
     private int peripheries = 1;
     private String style = "rounded,filled";
+    private boolean newNodeStyle = true;
 
 	public DotBuilder begin() {
 	    
@@ -27,37 +28,43 @@ public class DotBuilder {
 		return this;
 	}
 
-   public DotBuilder shape(String shape) {
-        this.shape = shape;
+   public DotBuilder shape(String s) {
+        this.shape = s;
+        newNodeStyle = true;
         return this;
     }
 
-   public DotBuilder style(String style) {
-       this.style = style;
+   public DotBuilder style(String s) {
+       this.style = s;
+       newNodeStyle = true;
        return this;
    }
    
-	public DotBuilder fillcolor(String fillcolor) {
-	    this.fillcolor = fillcolor;
+	public DotBuilder fillcolor(String fc) {
+	    this.fillcolor = fc;
+        newNodeStyle = true;
         return this;
 	}
 
+    public DotBuilder peripheries(int p) {
+        this.peripheries = p;
+        newNodeStyle = true;
+        return this;
+    }
+	
 	public DotBuilder node(String name) {
 		
+	    if (newNodeStyle) {
+	        renderNodeStyle();
+	        newNodeStyle = false;
+	    }
+	    
 		String id = "node" + ++nodeCount;
 		nodeNameToIdMap.put(name, id);
 		
 		_buffer	.append(	id			    )
 				.append(	" [label="		)
 				.append(	dq(name)	    )
-				.append(	" shape="		)
-				.append(	shape			)
-				.append(    " style="       )
-				.append(    dq(style)       )
-				.append(   " fillcolor="    )
-				.append(    dq(fillcolor)   )
-				.append(	" peripheries="	)
-				.append(	peripheries		)
 				.append(	"];" + EOL		);
 		
 		return this;
@@ -78,6 +85,19 @@ public class DotBuilder {
 		return this;
 	}
 	
+	private void renderNodeStyle() {
+        _buffer.append(    "node["         )
+               .append(    "shape="      )
+               .append(    shape           )
+               .append(    " style="       )
+               .append(    dq(style)       )
+               .append(   " fillcolor="    )
+               .append(    dq(fillcolor)   )
+               .append(    " peripheries=" )
+               .append(    peripheries     )
+               .append(    "]" + EOL       );
+	}
+	
 	public DotBuilder end() {
 		_buffer	.append(	"}" + EOL		);
         return this;
@@ -90,4 +110,5 @@ public class DotBuilder {
 	public String toString() {
 		return _buffer.toString();
 	}
+
 }
