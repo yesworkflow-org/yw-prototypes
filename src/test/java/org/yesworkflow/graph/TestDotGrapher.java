@@ -48,13 +48,13 @@ public class TestDotGrapher extends YesWorkflowTestCase {
         String dotString = grapher.toString();
 
         assertEquals(
-            "digraph Workflow {"                                                                + EOL +
-            "rankdir=LR"                                                                        + EOL +
-            "node[shape=box3d style=\"rounded,filled\" fillcolor=\"#CCFFCC\" peripheries=1]"    + EOL +
-            "node1 [label=\"program0\"];"                                                       + EOL +
-            "node2 [label=\"program1\"];"                                                       + EOL +
-            "node1 -> node2 [label=\"channel\"];"                                               + EOL +
-            "}"                                                                                 + EOL,
+            "digraph Workflow {"                                                    + EOL +
+            "rankdir=LR"                                                            + EOL +
+            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"  + EOL +
+            "node1 [label=\"program0\"];"                                           + EOL +
+            "node2 [label=\"program1\"];"                                           + EOL +
+            "node1 -> node2 [label=\"channel\"];"                                   + EOL +
+            "}"                                                                     + EOL,
             dotString);
     }
  
@@ -94,7 +94,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
      assertEquals(
          "digraph Workflow {"                                                               + EOL +
          "rankdir=LR"                                                                       + EOL +
-         "node[shape=box3d style=\"rounded,filled\" fillcolor=\"#CCFFCC\" peripheries=1]"   + EOL +
+         "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"             + EOL +
          "node1 [label=\"program0\"];"                                                      + EOL +
          "node2 [label=\"program1\"];"                                                      + EOL +
          "node3 [label=\"program2\"];"                                                      + EOL +
@@ -121,7 +121,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
          assertEquals(
                  "digraph Workflow {"                                                               + EOL +
                  "rankdir=LR"                                                                       + EOL +
-                 "node[shape=box3d style=\"rounded,filled\" fillcolor=\"#CCFFCC\" peripheries=1]"   + EOL +
+                 "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"             + EOL +
                  "node1 [label=\"fetch_mask\"];"                                                    + EOL +
                  "node2 [label=\"load_data\"];"                                                     + EOL +
                  "node3 [label=\"standardize_with_mask\"];"                                         + EOL +

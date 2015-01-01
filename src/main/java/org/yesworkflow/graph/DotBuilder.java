@@ -17,8 +17,9 @@ public class DotBuilder {
     private String fillcolor = "#FFFFFF";
     private String shape = "box";
     private int peripheries = 1;
-    private String style = "rounded,filled";
+    private String style = "filled";
     private boolean newNodeStyle = true;
+    private Double width = null;
 
 	public DotBuilder begin() {
 	    
@@ -51,8 +52,22 @@ public class DotBuilder {
         newNodeStyle = true;
         return this;
     }
-	
-	public DotBuilder node(String name) {
+
+    public DotBuilder width(double w) {
+        return width(new Double(w));
+    }
+    
+    public DotBuilder width(Double w) {
+        this.width = w;
+        newNodeStyle = true;
+        return this;
+    }
+
+    public DotBuilder node(String name) {
+        return node(name, true);
+    }
+        
+    public DotBuilder node(String name, boolean showLabel) {
 		
 	    if (newNodeStyle) {
 	        renderNodeStyle();
@@ -62,10 +77,19 @@ public class DotBuilder {
 		String id = "node" + ++nodeCount;
 		nodeNameToIdMap.put(name, id);
 		
-		_buffer	.append(	id			    )
-				.append(	" [label="		)
-				.append(	dq(name)	    )
-				.append(	"];" + EOL		);
+		_buffer	.append(	id			    );
+		
+		if (showLabel) {
+				_buffer.append(	" [label="	)
+				.append(	    dq(name)	)				
+				.append(	    "];"        );
+		} else {
+          _buffer.append( " [label="  )
+          .append(        dq("")    )               
+          .append(        "];"        );
+      }
+		
+		_buffer.append(   EOL		       );
 		
 		return this;
 	}
@@ -86,16 +110,23 @@ public class DotBuilder {
 	}
 	
 	private void renderNodeStyle() {
-        _buffer.append(    "node["         )
-               .append(    "shape="      )
-               .append(    shape           )
-               .append(    " style="       )
-               .append(    dq(style)       )
-               .append(   " fillcolor="    )
-               .append(    dq(fillcolor)   )
-               .append(    " peripheries=" )
-               .append(    peripheries     )
-               .append(    "]" + EOL       );
+        _buffer.append(    "node["          )
+               .append(    "shape="         )
+               .append(    shape            )
+               .append(    " style="        )
+               .append(    dq(style)        )
+               .append(   " fillcolor="     )
+               .append(    dq(fillcolor)    )
+               .append(    " peripheries="  )
+               .append(    peripheries      );
+        
+        if (width != null) {
+            _buffer.append(   " width="      )
+                   .append(   width         );
+            
+        }
+        
+        _buffer.append(    "]" + EOL       );
 	}
 	
 	public DotBuilder end() {

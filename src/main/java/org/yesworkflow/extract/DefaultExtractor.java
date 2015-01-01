@@ -41,7 +41,7 @@ public class DefaultExtractor implements Extractor {
     public DefaultExtractor sourceReader(Reader reader) {
         this.sourceReader = new BufferedReader(reader);
         return this;
-    }    
+    }
     
     @Override
     public DefaultExtractor sourcePath(String path) {

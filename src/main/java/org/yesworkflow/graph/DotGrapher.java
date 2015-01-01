@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.Writer;
 
 import org.yesworkflow.model.Channel;
+import org.yesworkflow.model.Port;
 import org.yesworkflow.model.Program;
 import org.yesworkflow.model.Workflow;
 
@@ -79,22 +80,41 @@ public class DotGrapher implements Grapher  {
 		
 		dot.begin();
 
-		// draw a 3D box for each program
-		dot.shape("box3d")
-		   .fillcolor("#CCFFCC");
+		// draw a 3D box for each program in the workflow
+		dot.shape("box").fillcolor("#CCFFCC");		
+		for (Program p : workflow.programs) dot.node(p.beginComment.programName);
+	
+		// draw a tiny circle for each outward facing @in and @out port
+		dot.shape("circle").width(0.1).fillcolor("#FFFFFF");
+		for (Port p : workflow.inPorts) dot.node(p.comment.binding(), false);
+        for (Port p : workflow.outPorts) dot.node(p.comment.binding(), false);
 		
-		for (Program p : workflow.programs) {
-			dot.node(p.beginComment.programName);
-		}
-
 		// create an edge between each program pair with connected out port and in port
 		for (Channel c : workflow.channels) {
 		    
-			dot.edge(c.sourceProgram.beginComment.programName,
-			         c.sinkProgram.beginComment.programName,
-			         c.sourcePort.comment.binding());
+		    Program sourceProgram = c.sourceProgram;
+		    Program sinkProgram = c.sinkProgram;
+		    
+		    if (sourceProgram == null) {
+		        
+                dot.edge(c.sinkPort.comment.binding(),
+                         c.sinkProgram.beginComment.programName,
+                         c.sinkPort.comment.binding());
+		        
+		    } else if (sinkProgram == null) {
+		        
+                dot.edge(c.sourceProgram.beginComment.programName,
+                         c.sourcePort.comment.binding(),
+                         c.sourcePort.comment.binding());
+		        
+		    } else {
+		    
+    			dot.edge(c.sourceProgram.beginComment.programName,
+    			         c.sinkProgram.beginComment.programName,
+    			         c.sourcePort.comment.binding());
+		    }
 		}
-		
+				
 		dot.end();
 		
 		return dot.toString();
