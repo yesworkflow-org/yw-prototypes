@@ -15,8 +15,6 @@ public class DotGrapher implements Grapher  {
     private Workflow workflow = null;
     private GraphType graphType = null;
     private String graphText = null;
-    private String filePath = null;
-    private Writer writer = null;
 
     @SuppressWarnings("unused")
     private GraphFormat graphFormat = null;
@@ -34,21 +32,9 @@ public class DotGrapher implements Grapher  {
     }
     
     @Override
-    public DotGrapher filePath(String dotFilePath) {
-        this.filePath = dotFilePath;
-        return this;
-    }
-
-    @Override
     public Grapher format(GraphFormat format) {
        this.graphFormat = format;
        return this;
-    }
-    
-    @Override
-    public Grapher writer(Writer writer) {
-        this.writer = writer;
-        return this;
     }
     
 	public String toString() {
@@ -80,33 +66,35 @@ public class DotGrapher implements Grapher  {
 		
 		dot.begin();
 
-		// draw a 3D box for each program in the workflow
+		// draw a box for each program in the workflow
 		dot.shape("box").fillcolor("#CCFFCC");		
 		for (Program p : workflow.programs) dot.node(p.beginComment.programName);
 	
-		// draw a tiny circle for each outward facing @in and @out port
+		// draw a small circle for each outward facing in and out port
 		dot.shape("circle").width(0.1).fillcolor("#FFFFFF");
-		for (Port p : workflow.inPorts) dot.node(p.comment.binding(), false);
-        for (Port p : workflow.outPorts) dot.node(p.comment.binding(), false);
+		for (Port p : workflow.inPorts) dot.node(p.comment.binding(), "");
+        for (Port p : workflow.outPorts) dot.node(p.comment.binding(), "");
 		
-		// create an edge between each program pair with connected out port and in port
 		for (Channel c : workflow.channels) {
 		    
 		    Program sourceProgram = c.sourceProgram;
 		    Program sinkProgram = c.sinkProgram;
 		    
+		    // draw edges for channels between workflow in ports and programs in workflow
 		    if (sourceProgram == null) {
 		        
                 dot.edge(c.sinkPort.comment.binding(),
                          c.sinkProgram.beginComment.programName,
                          c.sinkPort.comment.binding());
 		        
+            // draw edges for channels between programs in workflow and workflow out ports
 		    } else if (sinkProgram == null) {
 		        
                 dot.edge(c.sourceProgram.beginComment.programName,
                          c.sourcePort.comment.binding(),
                          c.sourcePort.comment.binding());
 		        
+            // draw edges for channels between programs within workflow
 		    } else {
 		    
     			dot.edge(c.sourceProgram.beginComment.programName,
@@ -119,28 +107,5 @@ public class DotGrapher implements Grapher  {
 		
 		return dot.toString();
 	}
-
-
-    @Override
-    public DotGrapher write() throws Exception {
-        
-        if (writer != null) {
-
-            writer.write(graphText);
-            
-        } else {
-            
-            if (filePath == null) {
-                throw new Exception("No path for dot file provided.");
-            }
-        
-            writer = new FileWriter(filePath, false);
-            writer.write(graphText);
-            writer.close();
-            writer = null;
-        } 
-
-        return this;
-    }
 }
 

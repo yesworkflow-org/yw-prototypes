@@ -248,7 +248,6 @@ public class YesWorkflowCLI {
         String graph = new DotGrapher()
             .workflow((Workflow)program)
             .type(GraphType.DATA_FLOW_GRAPH)
-            .filePath(this.dotFilePath)
             .graph()
             .toString();
         

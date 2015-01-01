@@ -64,10 +64,10 @@ public class DotBuilder {
     }
 
     public DotBuilder node(String name) {
-        return node(name, true);
+        return node(name, name);
     }
         
-    public DotBuilder node(String name, boolean showLabel) {
+    public DotBuilder node(String name, String label) {
 		
 	    if (newNodeStyle) {
 	        renderNodeStyle();
@@ -77,19 +77,11 @@ public class DotBuilder {
 		String id = "node" + ++nodeCount;
 		nodeNameToIdMap.put(name, id);
 		
-		_buffer	.append(	id			    );
-		
-		if (showLabel) {
-				_buffer.append(	" [label="	)
-				.append(	    dq(name)	)				
-				.append(	    "];"        );
-		} else {
-          _buffer.append( " [label="  )
-          .append(        dq("")    )               
-          .append(        "];"        );
-      }
-		
-		_buffer.append(   EOL		       );
+		_buffer	.append(	id			    )
+				.append(	" [label="	    )
+				.append(	dq(label)	    )				
+				.append(	"];"            )
+				.append(   EOL		        );
 		
 		return this;
 	}
@@ -121,12 +113,11 @@ public class DotBuilder {
                .append(    peripheries      );
         
         if (width != null) {
-            _buffer.append(   " width="      )
+            _buffer.append(   " width="     )
                    .append(   width         );
-            
         }
         
-        _buffer.append(    "]" + EOL       );
+        _buffer.append(    "]" + EOL        );
 	}
 	
 	public DotBuilder end() {

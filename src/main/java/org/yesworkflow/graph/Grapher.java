@@ -10,7 +10,4 @@ public interface Grapher {
     Grapher graph() throws Exception;
     Grapher type(GraphType type);
     Grapher format(GraphFormat format);
-    Grapher filePath(String dotFilePath);
-    Grapher write() throws Exception;
-    Grapher writer(Writer writer);
 }
