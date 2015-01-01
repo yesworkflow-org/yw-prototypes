@@ -79,9 +79,17 @@ public class Workflow extends Program {
         }
         
         public Port outPort(OutComment outComment) {
-            Port port = new Port(outComment);
-            outPorts.add(port);
-            return port;
+
+            // model the outward facing out port
+            Port outPort = new Port(outComment);
+            outPorts.add(outPort);
+            
+            // model a corresponding, inward-facing in port
+            Port inPort = new Port(outComment);
+            nestedInPort(inPort, this.beginComment.programName);
+            
+            // return the outward facing port
+            return outPort;
         }
         
 		public Builder nestedInPort(Port inPort, String programName) {
@@ -150,7 +158,7 @@ public class Workflow extends Program {
 					// store the new channel
 					Channel channel = new Channel(outProgram, boundOutPort, inProgram, inPort);
 					nestedChannels.add(channel);
-				}
+				}	
 			}
 			
 			return new Workflow(

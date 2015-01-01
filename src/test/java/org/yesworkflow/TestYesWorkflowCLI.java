@@ -15,19 +15,19 @@ import org.yesworkflow.util.YesWorkflowTestCase;
 public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     private static String EXPECTED_HELP_OUTPUT =
-        ""                                                                   + EOL +
-        "Option                     Description                           "  + EOL +
-        "------                     -----------                           "  + EOL +
-        "-c, --command <command>    command to YesWorkflow                "  + EOL +
-        "-d, --database <database>  path to database file for storing     "  + EOL +
-        "                             extracted workflow graph            "  + EOL +
-        "-g, --graph [dot file]     path to graphviz dot file for storing "  + EOL +
-        "                             rendered workflow graph (default: -)"  + EOL +
-        "-h, --help                 display help                          "  + EOL +
-        "-l, --lines [lines file]   path to file for saving extracted     "  + EOL +
-        "                             comment lines (default: -)          "  + EOL +
-        "-s, --source [script]      path to source file to analyze        "  + EOL +
-        "                             (default: -)                        "  + EOL;
+        ""                                                                      + EOL +
+        "Option                     Description                           "     + EOL +
+        "------                     -----------                           "     + EOL +
+        "-c, --command <command>    command to YesWorkflow                "     + EOL +
+        "-d, --database <database>  path to database file for storing     "     + EOL +
+        "                             extracted workflow graph            "     + EOL +
+        "-g, --graph [dot file]     path to graphviz dot file for storing "     + EOL +
+        "                             rendered workflow graph (default: -)"     + EOL +
+        "-h, --help                 display help                          "     + EOL +
+        "-l, --lines [lines file]   path to file for saving extracted     "     + EOL +
+        "                             comment lines (default: -)          "     + EOL +
+        "-s, --source [script]      path to source file to analyze        "     + EOL +
+        "                             (default: -)                        "     + EOL;
     
     @Override
     public void setUp() throws Exception {
@@ -164,7 +164,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             "@begin main"                                                   + EOL +
             "@in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file"       + EOL +
             "@in NEE_first_year.nc @as input_data_file"                     + EOL +
-            "@out result_simple.pdf"                                        + EOL +
+            "@out result_simple.pdf @as result_NEE_pdf"                     + EOL +
             "@begin fetch_mask"                                             + EOL +
             "@in \"LandWaterMask_Global_CRUNCEP.nc\" @as input_mask_file"   + EOL +
             "@out mask @as land_water_mask"                                 + EOL +
@@ -193,17 +193,24 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         cli.runForArgs(args);
         
         assertEquals(
-            "digraph Workflow {"                                                            + EOL +
-            "rankdir=LR"                                                                    + EOL +
-            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"    + EOL +
-            "node1 [label=\"fetch_mask\"];"       + EOL +
-            "node2 [label=\"load_data\"];"       + EOL +
-            "node3 [label=\"standardize_with_mask\"];"       + EOL +
-            "node4 [label=\"simple_diagnose\"];"       + EOL +
-            "node2 -> node3 [label=\"NEE_data\"];"        						                                                + EOL +
-            "node1 -> node3 [label=\"land_water_mask\"];"        				                                                + EOL +
-            "node3 -> node4 [label=\"standardized_NEE_data\"];"                                                                 + EOL +
-            "}"                                                                                                                 + EOL,
+            "digraph Workflow {"                                                                + EOL +
+            "rankdir=LR"                                                                        + EOL +
+            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"              + EOL +
+            "node1 [label=\"fetch_mask\"];"                                                     + EOL +
+            "node2 [label=\"load_data\"];"                                                      + EOL +
+            "node3 [label=\"standardize_with_mask\"];"                                          + EOL +
+            "node4 [label=\"simple_diagnose\"];"                                                + EOL +
+            "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 width=0.1]" + EOL +
+            "node5 [label=\"\"];"                                                               + EOL +
+            "node6 [label=\"\"];"                                                               + EOL +
+            "node7 [label=\"\"];"                                                               + EOL +
+            "node4 -> node7 [label=\"result_NEE_pdf\"];"                                        + EOL +
+            "node5 -> node1 [label=\"input_mask_file\"];"                                       + EOL +
+            "node6 -> node2 [label=\"input_data_file\"];"                                       + EOL +
+            "node2 -> node3 [label=\"NEE_data\"];"        						                + EOL +
+            "node1 -> node3 [label=\"land_water_mask\"];"        				                + EOL +
+            "node3 -> node4 [label=\"standardized_NEE_data\"];"                                 + EOL +
+            "}"                                                                                 + EOL,
             stdoutBuffer.toString());
     }  
     
