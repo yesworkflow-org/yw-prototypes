@@ -24,7 +24,6 @@ public class Workflow extends Program {
         List<Program> programs,
         List<Channel> channels
     ) {
-
 	    super(beginComment, endComment, inPorts, outPorts);
 		
     	this.programs = programs.toArray(new Program[programs.size()]);
@@ -65,10 +64,18 @@ public class Workflow extends Program {
 			return this;
 		}
 
-        public Port inPort(InComment inComment) {
-            Port port = new Port(inComment);
-            inPorts.add(port);
-            return port;
+        public Port inPort(InComment inComment) throws Exception {
+            
+            // model the outward facing in port
+            Port inPort = new Port(inComment);
+            inPorts.add(inPort);
+            
+            // model a corresponding, inward-facing out port
+            Port outPort = new Port(inComment);
+            nestedOutPort(outPort, this.beginComment.programName);
+
+            // return the outward facing port
+            return inPort;
         }
         
         public Port outPort(OutComment outComment) {
@@ -143,7 +150,7 @@ public class Workflow extends Program {
 					// store the new channel
 					Channel channel = new Channel(outProgram, boundOutPort, inProgram, inPort);
 					nestedChannels.add(channel);
-				}		            
+				}
 			}
 			
 			return new Workflow(
