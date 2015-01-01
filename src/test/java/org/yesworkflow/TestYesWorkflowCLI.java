@@ -162,8 +162,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         
         assertEquals(
             "@begin main"                                                   + EOL +
-            "@in LandWaterMask_Global_CRUNCEP.nc"                           + EOL +
-            "@in NEE_first_year.nc"                                         + EOL +
+            "@in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file"       + EOL +
+            "@in NEE_first_year.nc @as input_data_file"                     + EOL +
             "@out result_simple.pdf"                                        + EOL +
             "@begin fetch_mask"                                             + EOL +
             "@in \"LandWaterMask_Global_CRUNCEP.nc\" @as input_mask_file"   + EOL +
