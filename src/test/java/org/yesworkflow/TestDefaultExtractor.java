@@ -255,8 +255,8 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
 
         InComment in9 = (InComment) comments.get(9);
         assertEquals("\"CLM4_BG1_V1_Monthly_NEE.nc4\"", in9.data);
-        assertEquals("input", in9.label);
-        assertEquals("data file", in9.description);
+        assertEquals("input_data_file", in9.label);
+        assertEquals(null, in9.description);
 
         OutComment out10 = (OutComment) comments.get(10);
         assertEquals("data", out10.data);

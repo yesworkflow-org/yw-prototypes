@@ -44,7 +44,7 @@ def main(sys.argv):
 
 
     ## @begin load_data
-    #  @in "CLM4_BG1_V1_Monthly_NEE.nc4" @as input data file
+    #  @in "CLM4_BG1_V1_Monthly_NEE.nc4" @as input_data_file
     #  @out data @as NEE_data
 
     f = netCDF4.Dataset(db_pth+'NEE_first_year.nc', 'r')

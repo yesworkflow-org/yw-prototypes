@@ -170,7 +170,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             "@out mask @as land_water_mask"                                 + EOL +
             "@end fetch_mask"                                               + EOL +
             "@begin load_data"                                              + EOL +
-            "@in \"CLM4_BG1_V1_Monthly_NEE.nc4\" @as input data file"       + EOL +
+            "@in \"CLM4_BG1_V1_Monthly_NEE.nc4\" @as input_data_file"       + EOL +
             "@out data @as NEE_data"                                        + EOL +
             "@end load_data"                                                + EOL +
             "@begin standardize_with_mask"                                  + EOL +
