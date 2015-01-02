@@ -6,21 +6,55 @@ Th yw-prototypes repository contains early implementations of YesWorkflow, an ap
 Overview
 --------
 
- YesWorkflow aims to provide a number of the benefits of using a scientific workflow management system without having to rewrite scripts and other scientific sofware.  Rather than reimplementing code so that it can be executed and managed by a workflow engine, a YesWorkflow user simply adds special comments to existing scripts.  These comments declare how data is used and results produced, step by step, by the script.  The YesWorkflow tools interpret these comments and produce graphical output that reveals the stages of computation and the flow of data in the script.
+YesWorkflow aims to provide a number of the benefits of using a scientific workflow management system without having to rewrite scripts and other scientific sofware.  Rather than reimplementing code so that it can be executed and managed by a workflow engine, a YesWorkflow user simply adds special YesWorkflow (YW) comments to existing scripts.  These comments declare how data is used and results produced, step by step, by the script.  The YesWorkflow tools interpret the YW comments and produce graphical output that reveals the stages of computation and the flow of data in the script.
 
-The image below was produced by YesWorkflow using the comments added to a conventional (non-dataflow oriented) python script:
+##### Example YesWorkflow output
+
+The image below was produced by YesWorkflow using the YW comments added to a conventional (non-dataflow oriented) python script ([example.py](https://github.com/yesworkflow-org/yw-prototypes/blob/master/src/main/resources/example.py "example.py")):
 
 ![example](https://cloud.githubusercontent.com/assets/3218259/5593909/93fc7f1c-91e3-11e4-8370-aebcf1341d36.png)
 
 The green blocks represent stages in the computation performed by the script. The labels on arrows name the input, intermediate, and final data products of the script.
 
-This README briefly summarizes for developers and users how to get started with YesWorkflow.
+##### Introduction to YesWorkflow comments
 
+The [example.py](https://github.com/yesworkflow-org/yw-prototypes/blob/master/src/main/resources/example.py "example.py") script includes YesWorkflow comments that precede the `main` function and declare the inputs and outputs to the script as a whole:
+
+    ## @begin main
+    #  @in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file
+    #  @in NEE_first_year.nc @as input_data_file
+    #  @out result_simple.pdf @as result_NEE_pdf
+
+Each YesWorkflow (YW) comment is identified by a keyword that begins with the '`@`' symbol.  A `@begin` comment declares the beginning of the script or of a block of computation within the script.  Each `@begin` tag is paired with a `@end` later in the script, and together these tags delimit the code annotated by other YW comments found in that block.  The script `example.py` ends with this YW comment:
+
+    ## @end main
+
+The script inputs (`input_data_file` and `input_mask_file`) and outputs (`result_NEE_pdf`) appear in the diagram produced by YesWorkflow because they are declared using `@in` and `@out` comments shown above.  The text following the `@as` keyword in each of these comments provides an alias for the actual value or variable (the term immediately following the `@in` or `@out` keyword) that represents that input or output in the script.  It is the alias that is displayed in YesWorkflow results and that is used to infer how data flows through the script.
+
+For example, `example.py` includes YW comments annotating a block of code performing the `fetch_mask` operation (represented as a green box in the diagram above):
+
+    ## @begin fetch_mask
+    #  @in "LandWaterMask_Global_CRUNCEP.nc" @as input_mask_file
+    #  @out mask @as land_water_mask
+
+    g = netCDF4.Dataset(db_pth+'land_water_mask/LandWaterMask_Global_CRUNCEP.nc', 'r')
+    mask=g.variables['land_water_mask']
+    mask = mask[:].swapaxes(0,1)
+
+    ## @end fetch_mask
+
+Note that in diagrame the arrow labeled `input_mask_file` is connected to the `fetch_mask` block because the alias for the `@in` comment for `fetch_mask` matches the alias for an `@in` comment on the encompassing `main` block.  The alias in both cases is `input_mask_file`.  Note also that the `@out` comment for `fetch_mask` declares the  name of the variable (`mask`) used to store the mask in the code, but also provides an alias ('`land_water_mask`') that is displayed in the graphical output of YesWorkflow. This aliasmatches the alias on an `@in` comment of the downstream `standardize_with_mask` block, and YesWorkflow draws an arrow in diagram accordingly.
+
+YesWorkflow comments of the kind discussed here can be added to any script to highlight how data is processed by that script.
+
+##### Getting started with YesWorkflow
+
+The remainder of this README provides instructions for getting started with YesWorkflow, either as a user or as a developer.  There currently are two YesWorkflow prototypes in this repository.  A python implementation can be found in `src/resources/main/python`.  A  README.txt in that directory provides further information and instructions.  The remainder of this file pertains to the Java implementation.
 
 Instructions for developers
 ---------------------------
 
-There currently are two YesWorkflow prototypes in this repository.  A python implementation can be found in `src/resources/main/python`.  A  README.txt in that directory provides further information and instructions.  The remainder of this file pertains to the Java implementation.
+
 
 #### JDK and Maven configuration
 
@@ -88,7 +122,7 @@ These instruction explain how to set up an environment for running the YesWorkfl
 
 #### 1. Check installed version of Java
 
-YesWorkflow requires Java version 1.7 or higher. To determine the version of java installed on your computer use the -version option to the java command. For example,
+YesWorkflow requires Java (JRE) version 1.7 or higher. To determine the version of java installed on your computer use the -version option to the java command. For example,
 
 
     $ java -version
