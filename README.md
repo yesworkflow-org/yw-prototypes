@@ -18,7 +18,7 @@ The green blocks represent stages in the computation performed by the script. Th
 
 ##### Introduction to YesWorkflow comments
 
-The [example.py](https://github.com/yesworkflow-org/yw-prototypes/blob/master/src/main/resources/example.py "example.py") script includes YesWorkflow comments that precede the `main` function and declare the inputs and outputs to the script as a whole:
+The [example.py](https://github.com/yesworkflow-org/yw-prototypes/blob/master/src/main/resources/example.py "example.py") script includes YesWorkflow comments that precede the `main` function and declare the inputs and outputs of the script as a whole:
 
     ## @begin main
     #  @in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file
@@ -29,7 +29,7 @@ Each YesWorkflow (YW) comment is identified by a keyword that begins with the '`
 
     ## @end main
 
-The script inputs (`input_data_file` and `input_mask_file`) and outputs (`result_NEE_pdf`) appear in the diagram produced by YesWorkflow because they are declared using `@in` and `@out` comments shown above.  The text following the `@as` keyword in each of these comments provides an alias for the actual value or variable (the term immediately following the `@in` or `@out` keyword) that represents that input or output in the script.  It is the alias that is displayed in YesWorkflow results and that is used to infer how data flows through the script.
+The script inputs (`input_data_file` and `input_mask_file`) and outputs (`result_NEE_pdf`) appear in the diagram produced by YesWorkflow because they are declared using the `@in` and `@out` comments shown above.  The text following the `@as` keyword in each of these comments provides an *alias* for the actual value or variable (the term immediately following the `@in` or `@out` keyword) that represents that input or output in the script.  It is the alias that is displayed in YesWorkflow results and that is used to infer how data flows through the script.
 
 For example, `example.py` includes YW comments annotating a block of code performing the `fetch_mask` operation (represented as a green box in the diagram above):
 
@@ -43,18 +43,16 @@ For example, `example.py` includes YW comments annotating a block of code perfor
 
     ## @end fetch_mask
 
-Note that in diagrame the arrow labeled `input_mask_file` is connected to the `fetch_mask` block because the alias for the `@in` comment for `fetch_mask` matches the alias for an `@in` comment on the encompassing `main` block.  The alias in both cases is `input_mask_file`.  Note also that the `@out` comment for `fetch_mask` declares the  name of the variable (`mask`) used to store the mask in the code, but also provides an alias ('`land_water_mask`') that is displayed in the graphical output of YesWorkflow. This aliasmatches the alias on an `@in` comment of the downstream `standardize_with_mask` block, and YesWorkflow draws an arrow in diagram accordingly.
+Note that in the diagram the arrow labeled `input_mask_file` is connected to the `fetch_mask` block because the alias for the `@in` comment for `fetch_mask` matches the alias for an `@in` comment on the encompassing `main` block.  The alias in both cases is `input_mask_file`.  Note also that the `@out` comment for `fetch_mask` declares the  name of the variable (`mask`) used to store the mask in the code, but also provides an alias ('`land_water_mask`') that is displayed in the graphical output of YesWorkflow. This alias matches the alias on an `@in` comment on the downstream `standardize_with_mask` block, and YesWorkflow draws an arrow in the diagram accordingly.
 
-YesWorkflow comments of the kind discussed here can be added to any script to highlight how data is processed by that script.
+YesWorkflow comments of the kind discussed here can be added to any script to highlight how data is processed by that script.  YesWorkflow tools discover these comments in the script and produce graphical representations of the script that highlight its workflow-like structure.
 
 ##### Getting started with YesWorkflow
 
-The remainder of this README provides instructions for getting started with YesWorkflow, either as a user or as a developer.  There currently are two YesWorkflow prototypes in this repository.  A python implementation can be found in `src/resources/main/python`.  A  README.txt in that directory provides further information and instructions.  The remainder of this file pertains to the Java implementation.
+The remainder of this README provides instructions for getting started with the YesWorkflow tools, either as a user or as a developer.  There currently are two YesWorkflow prototypes in this repository.  A python implementation can be found in `src/resources/main/python`.  A  README.txt in that directory provides further information and instructions.  The remainder of this file pertains to the Java implementation.
 
 Instructions for developers
 ---------------------------
-
-
 
 #### JDK and Maven configuration
 
