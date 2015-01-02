@@ -41,20 +41,20 @@ JDK 7 and Maven 3 downloads and installation instructions can be found at the fo
 - [maven.apache.org/download.cgi](http://maven.apache.org/download.cgi)
 
 
-### Repository directory layout  
+### Project directory layout  
 
 YesWorkflow adopts the default organization of source code, resources, and tests as defined by Maven.  See [maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html](http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) for more information.  The most important directories are listed below:
 
 Directory | Description
 ----------| -----------
-src/main/java | Source code built and packaged for distribution.
-src/main/resources | Resource files available to production code.
+src/main/java | Source code to be built and packaged for distribution.
+src/main/resources | Resource files to be packaged with production code.
 src/test/java | Source code for unit and functional tests. Not included in packaged distributions.
 src/test/resources | Resource files available to tests. Not included in packaged distributions.
 target | Destination directory for packaged distributions (jar files) built by maven.
-target/classes | Compiled java classes for source code under src/main/java.
-target/test-classes | Compiled java classes for test code under src/test/java.
-target/dependency | Resolved dependencies (automatically downloaded jars).
+target/classes | Compiled java classes for source code found under src/main/java.
+target/test-classes | Compiled java classes for test code found under src/test/java.
+target/dependency | Automatically resolved and downloaded dependencies (jars) that will be included in the standalone distribution.
 
 
 ### Building and testing with maven
@@ -63,14 +63,14 @@ YesWorkflow can be built and tested from the command line using the following co
 
 Maven command            | Description
 -------------------|------------
-mvn clean        | Delete the target directory including all compiled code and downloaded dependencies.
-mvn compile      | Download required dependencies and compile source code in src/main/java.  Only builds source files changes since the last compilation.
+mvn clean        | Delete the target directory including all compiled code.
+mvn compile      | Download required dependencies and compile source code in src/main/java.  Only those source files changes since the last compilation are built.
 mvn test         | Compile the classes in src/test/java and run all tests found therein. Peforms *mvn compile* first.
-mvn package      | Packages the compiled classes in target/classes and files found in src/main/resources in two jar files, **yesworkflow-0.1.jar** and **yesworkflow-0.1-executable.jar**.  The latter also contains all jar dependencies. Peforms *mvn compile* and *mvn test* first and will not perform packaging step if any tests fail. Use the *-DskipTests* option to bypass tests. 
+mvn package      | Packages the compiled classes in target/classes and files found in src/main/resources in two jar files, **yesworkflow-0.1.jar** and **yesworkflow-0.1-executable.jar**.  The latter also contains all jar dependencies. Peforms *mvn compile* and *mvn test* first, and will not perform packaging step if any tests fail. Use the *-DskipTests* option to bypass tests. 
 
 ### Continuous build and integration with Bamboo
 
-All code is built and tests run automatically and a build server at NCSA whenever changes are committed to directories used by maven.  
+All code is built and tests run automatically on a build server at NCSA whenever changes are committed to directories used by maven.  
 
 Site | Url
 -----| ---
