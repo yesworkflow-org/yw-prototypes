@@ -57,7 +57,7 @@ Instructions for users
 These instruction explain how to set up an environment for running the YesWorkflow prototype on a script that has been marked up with YW comments.
 
 
-#### 1. Check installed version of Java
+##### 1. Check installed version of Java
 
 YesWorkflow requires Java (JRE) version 1.7 or higher. To determine the version of java installed on your computer use the -version option to the java command. For example,
 
@@ -70,7 +70,7 @@ YesWorkflow requires Java (JRE) version 1.7 or higher. To determine the version 
 
  Instructions for installing Java may be found at [http://docs.oracle.com/javase/7/docs/webnotes/install/](http://docs.oracle.com/javase/7/docs/webnotes/install/).  If you plan to develop with YesWorkflow be sure that you install the JDK.
 
-#### 2. Download the YesWorkflow jar file
+##### 2. Download the YesWorkflow jar file
 
 The YesWorkflow prototype is distributed as a jar (Java archive) file that can be executed using the `java -jar` command.  
 
@@ -96,7 +96,7 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
                                  (default: -)
     $
 
-#### 3.  Create an alias for YesWorkflow
+##### 3.  Create an alias for YesWorkflow
 
 If you are running YesWorkflow on an Apple OSX or Linux system (or have installed Git Bash or Cygwin on Windows), you may define a bash alias to simplify running YesWorkflow at the command line.  For example, if you have saved  `yesworkflow-0.1-executable.jar` to the bin subdirectory of your home directory, the following bash command will create an alias for running YesWorkflow simply by typing `yw` at the command prompt.
 
@@ -111,7 +111,7 @@ If you do not define an alias you will need to type `java -jar yesworkflow-0.1-e
 Instructions for developers
 ---------------------------
 
-#### JDK and Maven configuration
+##### JDK and Maven configuration
 
 The Java prototype is built using Maven 3. Before building YesWorkflow confirm that the `mvn` command is in your path and that a JDK version 1.7 or higher is found by maven:
     
@@ -130,7 +130,7 @@ JDK 7 and Maven 3 downloads and installation instructions can be found at the fo
 - [http://maven.apache.org/download.cgi](http://maven.apache.org/download.cgi)
 
 
-#### Project directory layout  
+##### Project directory layout  
 
 YesWorkflow adopts the default organization of source code, resources, and tests as defined by Maven.  See [maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html](http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) for more information.  The most important directories are listed below:
 
@@ -146,7 +146,7 @@ target/test-classes | Compiled java classes for test code found under src/test/j
 target/dependency | Automatically resolved and downloaded dependencies (jars) that will be included in the standalone distribution.
 
 
-#### Building and testing with maven
+##### Building and testing with maven
 
 YesWorkflow can be built and tested from the command line using the following commands:
 
@@ -157,7 +157,7 @@ mvn compile      | Download required dependencies and compile source code in src
 mvn test         | Compile the classes in src/test/java and run all tests found therein. Peforms *mvn compile* first.
 mvn package      | Packages the compiled classes in target/classes and files found in src/main/resources in two jar files, **yesworkflow-0.1.jar** and **yesworkflow-0.1-executable.jar**.  The latter also contains all jar dependencies. Peforms *mvn compile* and *mvn test* first, and will not perform packaging step if any tests fail. Use the *-DskipTests* option to bypass tests. 
 
-#### Continuous build and integration with Bamboo
+##### Continuous build and integration with Bamboo
 
 All code is built and tests run automatically on a build server at NCSA whenever changes are committed to directories used by maven.  Please confirm that the automated build and tests succeed after committing changes to code or resource files (it may take up to two minutes for a commit-triggered build to start).  Functional tests depend on the scripts in src/main/resources and are likely to fail if not updated following changes to these scripts.
 
