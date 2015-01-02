@@ -1,7 +1,9 @@
 YesWorkflow Prototypes
 ======================
 
-Th yw-prototypes repository contains early implementations of YesWorkflow, an approach to modeling conventional scripts and programs as scientific workflows.  Instead of reimplementing a script as a workflow meant to be executed by a workflow engine, a YesWorkflow user simply adds special comments to the scripts they already have.  These comments declare how data is used  and results produced, step by step, by the script.  The YesWorkflow tools interpret these comments and produce graphical output that reveals the stages of computation and the flow of data in the script.
+Th yw-prototypes repository contains early implementations of YesWorkflow, an approach to modeling conventional scripts and programs as scientific workflows. 
+
+ YesWorkflow aims to provide a number of the benefits of using a scientific workflow management system without having to rewrite scripts and other scientific sofware.  Rather than reimplementing code so that it can be executed and managed by a workflow engine, a YesWorkflow user simply adds special comments to existing scripts.  These comments declare how data is used and results produced, step by step, by the script.  The YesWorkflow tools interpret these comments and produce graphical output that reveals the stages of computation and the flow of data in the script.
 
 The image below was produced by YesWorkflow using the comments added to a conventional (non-dataflow oriented) python script:
 
@@ -34,17 +36,17 @@ JDK 7 and Maven 3 downloads and installation instructions can be found at the fo
 - [maven.apache.org/download.cgi](http://maven.apache.org/download.cgi)
 
 
-__Directory layout__.  YesWorkflow adopts the default organization of source code, resources, and tests as defined by Maven.  See [maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html](http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) for more information.
+__Directory layout__.  YesWorkflow adopts the default organization of source code, resources, and tests as defined by Maven.  See [maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html](http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) for more information.  The most important directories are listed below:
 
 Directory | Description
 ----------| -----------
 src/main/java | Source code built and packaged for distribution.
-src/main/resources | Resource files available to packaged code.
+src/main/resources | Resource files available to production code.
 src/test/java | Source code for unit and functional tests. Not included in packaged distributions.
 src/test/resources | Resource files available to tests. Not included in packaged distributions.
-target | Destination directory for packaged distributions (jar files).
-target/classes | Compiled java classes for source code in src/main/java.
-target/test-classes | Compiled java classes for test code in src/test/java.
+target | Destination directory for packaged distributions (jar files) built by maven.
+target/classes | Compiled java classes for source code under src/main/java.
+target/test-classes | Compiled java classes for test code under src/test/java.
 target/dependency | Resolved dependencies (automatically downloaded jars).
 
 
@@ -55,10 +57,17 @@ Command       | Description
 `mvn clean`   | Delete the target directory including all compiled code and downloaded dependencies.
 `mvn compile` | Download required dependencies and compile source code in src/main/java.  Only builds source files changes since the last compilation.
 `mvn test`    | Compile the classes in src/test/java and run all tests found therein. Peforms *mvn compile* first.
-`mvn package` | Packages the compiled classes in target/classes and files found in src/main/resources in two jar files, yesworkflow-0.1.jar and yesworkflow-0.1-executable.jar.  The latter also contains all jar dependencies. Peforms *mvn compile* and *mvn test* first and will not perform packaging step if any tests fail. Use the *-DskipTests* option to bypass tests. 
+`mvn package` | Packages the compiled classes in target/classes and files found in src/main/resources in two jar files, `yesworkflow-0.1.jar` and `yesworkflow-0.1-executable.jar`.  The latter also contains all jar dependencies. Peforms *mvn compile* and *mvn test* first and will not perform packaging step if any tests fail. Use the *-DskipTests* option to bypass tests. 
 
-__Continuous build and integration with Bamboo__.  
+__Continuous build and integration with Bamboo__.  All code is built and tests run automatically and a build server at NCSA whenever changes are committed to directories used by maven.  
 
+Site | Url
+-----| ---
+Build history | https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW
+Last build | https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW/latest
+Last successful build | https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW/latestSuccessful
+
+The link to the latest successful build is useful for obtaining the most recently built jar file without building it yourself.  Follow the link to the [last successful build](https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW/latestSuccessful "last successful build"), click the Artifacts tab, then download the executable jar.
 
 Instructions for users
 ----------------------
