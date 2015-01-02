@@ -83,7 +83,7 @@ The link to the latest successful build is useful for obtaining the most recentl
 Instructions for users
 ----------------------
 
-These instruction explain how to set up an environment for running the YesWorkflow prototype on script that has been marked up with YW comments.
+These instruction explain how to set up an environment for running the YesWorkflow prototype on a script that has been marked up with YW comments.
 
 
 #### 1. Check installed version of Java
@@ -101,13 +101,13 @@ Instructions for installing Java may be found at [http://docs.oracle.com/javase/
 
 #### 2. Download the YesWorkflow jar file
 
-The YesWorkflow prototype is distributed as a jar (Java archive) file that can be executed using the java -jar command.  
+The YesWorkflow prototype is distributed as a jar (Java archive) file that can be executed using the `java -jar` command.  
 
-If you are building YesWorkflow yourself using Maven (see Instructions for Developers above) then you may simply use the file `target/yesworkflow-0.1-executable.jar` produced by the `mvn package` command.
+If you are building YesWorkflow yourself using Maven (see *Instructions for Developers* above) then you may simply use the file `target/yesworkflow-0.1-executable.jar` produced by the `mvn package` command.
 
-Otherwise download the latest automatically built jar from the build server.  Navigate to the results for the [last successful build](https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW/latestSuccessful "last successful build") of YesWorkflow, click the *Artifacts* tab, then download the executable jar.  The file will be named `yesworkflow-0.1-executable.jar`.
+Otherwise download the latest automatically built jar from the build server.  Navigate to the results for the [last successful build](https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW/latestSuccessful "last successful build") of YesWorkflow, click the *Artifacts* tab, then download the `executable jar`.  The file will be named `yesworkflow-0.1-executable.jar`.
 
-Once you have obtained the YesWorkflow jar, save the file in a convenient location.   YesWorkflow can now be run using the java -jar command.  Test that the jar works correctly using the `--help` option to display the command line options for YesWorkflow:
+Once you have obtained the YesWorkflow jar, save the file in a convenient location.   YesWorkflow can now be run using the `java -jar` command.  Test that the jar works correctly using the `--help` option to display the command line options for YesWorkflow:
 
     $ java -jar yesworkflow-0.1-executable.jar --help
 
@@ -127,10 +127,12 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
 
 #### 3.  Create an alias for YesWorkflow
 
-If you are running YesWorkflow on an Apple OSX or Linux system, or have installed Git Bash or Cygwin on Windows, you may define a bash alias to simplify the running YesWorkflow at the command line.  For example, if you have saved  `yesworkflow-0.1-executable.jar`  to the bin subdirectory of your home directory, the following bash command will create an alias for running YesWorkflow simply by typing `yw` at the command prompt.
+If you are running YesWorkflow on an Apple OSX or Linux system (or have installed Git Bash or Cygwin on Windows), you may define a bash alias to simplify running YesWorkflow at the command line.  For example, if you have saved  `yesworkflow-0.1-executable.jar` to the bin subdirectory of your home directory, the following bash command will create an alias for running YesWorkflow simply by typing `yw` at the command prompt.
 
     alias yw='java -jar ~/bin/yesworkflow-0.1-executable.jar' 
 
 The command to display YesWorkflow command line options is now simply:
 
     $ yw --help
+
+If you do not define an alias you will need to type `java -jar yesworkflow-0.1-executable.jar` instead of `yw` in the examples below (and prepend yesworkflow-0.1-executable.jar with the path to the jar file).  You may of course change the name of the jar file to `yw.jar` if you like.
