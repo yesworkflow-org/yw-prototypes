@@ -50,7 +50,6 @@ public class YesWorkflowCLI {
     private String command = null;
     private String sourceFilePath = null;
     private String databaseFilePath = null;
-    private String dotFilePath = null;
     private Extractor extractor = null;
     private PrintStream outStream;
 
@@ -98,7 +97,6 @@ public class YesWorkflowCLI {
             // extract remaining arguments
             extractSourcePathFromOptions();
             extractDatabasePathFromOptions();
-            extractDotFilePathFromOptions();
 
             // run extractor and exit if extract command given
             if (command.equals("extract")) {
@@ -129,7 +127,6 @@ public class YesWorkflowCLI {
         command = null;
         sourceFilePath = null;
         databaseFilePath = null;
-        dotFilePath = null;
     }
     
     private void extractCommandFromOptions() {
@@ -156,13 +153,6 @@ public class YesWorkflowCLI {
     	sourceFilePath = (String) options.valueOf("s");
     }
 
-    private void extractDotFilePathFromOptions() {
-        if (options.hasArgument("g")) {
-            dotFilePath = (String) options.valueOf("g");
-        }
-    }
-
-    
     private OptionParser createOptionsParser() throws Exception {
 
         OptionParser parser = null;
