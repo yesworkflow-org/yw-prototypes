@@ -1,2 +1,6 @@
 .settings
+.classpath
+.project
+.pydevproject
 target
+*.pyc
