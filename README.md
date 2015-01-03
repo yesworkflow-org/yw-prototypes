@@ -6,9 +6,9 @@ Th yw-prototypes repository contains early implementations of YesWorkflow, an ap
 Overview
 --------
 
-YesWorkflow aims to provide a number of the benefits of using a scientific workflow management system without having to rewrite scripts and other scientific sofware.  Rather than reimplementing code so that it can be executed and managed by a workflow engine, a YesWorkflow user simply adds special YesWorkflow (YW) comments to existing scripts.  These comments declare how data is used and results produced, step by step, by the script.  The YesWorkflow tools interpret the YW comments and produce graphical output that reveals the stages of computation and the flow of data in the script.
+YesWorkflow aims to provide a number of the benefits of using a scientific workflow management system without having to rewrite scripts and other scientific software.  Rather than reimplementing code so that it can be executed and managed by a workflow engine, a YesWorkflow user simply adds special YesWorkflow (YW) comments to existing scripts.  These comments declare how data is used and results produced, step by step, by the script.  The YesWorkflow tools interpret the YW comments and produce graphical output that reveals the stages of computation and the flow of data in the script.
 
-##### Example YesWorkflow output
+#### Example YesWorkflow output
 
 The image below was produced by YesWorkflow using the YW comments added to a conventional (non-dataflow oriented) python script ([example.py](https://github.com/yesworkflow-org/yw-prototypes/blob/master/src/main/resources/example.py "example.py")):
 
@@ -16,7 +16,7 @@ The image below was produced by YesWorkflow using the YW comments added to a con
 
 The green blocks represent stages in the computation performed by the script. The labels on arrows name the input, intermediate, and final data products of the script.
 
-##### Introduction to YesWorkflow comments
+#### Introduction to YesWorkflow comments
 
 The [example.py](https://github.com/yesworkflow-org/yw-prototypes/blob/master/src/main/resources/example.py "example.py") script includes YesWorkflow comments that precede the `main` function and declare the inputs and outputs of the script as a whole:
 
@@ -47,7 +47,7 @@ Note that in the diagram the arrow labeled `input_mask_file` is connected to the
 
 YesWorkflow comments of the kind discussed here can be added to any script to highlight how data is processed by that script.  YesWorkflow tools discover these comments in the script and produce graphical representations of the script that highlight its workflow-like structure.
 
-##### Getting started with YesWorkflow
+#### Getting started with YesWorkflow
 
 The remainder of this README provides instructions for getting started with the YesWorkflow tools, either as a user or as a developer.  There currently are two YesWorkflow prototypes in this repository.  A python implementation can be found in `src/resources/main/python`.  A  README.txt in that directory provides further information and instructions.  The remainder of this file pertains to the Java implementation.
 
@@ -57,7 +57,7 @@ Instructions for users
 These instruction explain how to set up an environment for running the YesWorkflow prototype on a script that has been marked up with YW comments.
 
 
-##### 1. Check installed version of Java
+#### 1. Check installed version of Java
 
 YesWorkflow requires Java (JRE) version 1.7 or higher. To determine the version of java installed on your computer use the -version option to the java command. For example,
 
@@ -70,7 +70,11 @@ YesWorkflow requires Java (JRE) version 1.7 or higher. To determine the version 
 
  Instructions for installing Java may be found at [http://docs.oracle.com/javase/7/docs/webnotes/install/](http://docs.oracle.com/javase/7/docs/webnotes/install/).  If you plan to develop with YesWorkflow be sure that you install the JDK.
 
-##### 2. Download the YesWorkflow jar file
+#### 2.  Install Graphviz visualization software
+
+YesWorkflow produces graphical representations that must be rendered using Graphviz or other software capable of processing DOT graph files.  You can find instructions for installing Graphviz at [http://graphviz.org/Download.php](http://graphviz.org/Download.php "http://graphviz.org/Download.php").  Make sure that the `dot` command is in your path following installation.
+
+#### 3. Download the YesWorkflow jar file
 
 The YesWorkflow prototype is distributed as a jar (Java archive) file that can be executed using the `java -jar` command.  
 
@@ -96,7 +100,7 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
                                  (default: -)
     $
 
-##### 3.  Create an alias for YesWorkflow
+#### 4.  Create an alias for YesWorkflow
 
 If you are running YesWorkflow on an Apple OSX or Linux system (or have installed Git Bash or Cygwin on Windows), you may define a bash alias to simplify running YesWorkflow at the command line.  For example, if you have saved  `yesworkflow-0.1-executable.jar` to the bin subdirectory of your home directory, the following bash command will create an alias for running YesWorkflow simply by typing `yw` at the command prompt.
 
@@ -108,10 +112,81 @@ The command to display YesWorkflow command line options is now simply:
 
 If you do not define an alias you will need to type `java -jar yesworkflow-0.1-executable.jar` instead of `yw` in the examples below (and prepend yesworkflow-0.1-executable.jar with the path to the jar file).  You may of course change the name of the jar file to `yw.jar` if you like.
 
+#### 5. Run YesWorkflow on the example python script
+
+The [example.py](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.py "example.py") script  is useful for demonstrating YesWorkflow capabilities. Download it to your computer to follow along below.
+
+###### Extracting YW comment lines
+
+First, use the `extract` command to YesWorkflow to list the YW commands found in the script:
+
+    $ yw extract -s example.py -l
+    @begin main
+    @in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file
+    @in NEE_first_year.nc @as input_data_file
+    @out result_simple.pdf @as result_NEE_pdf
+    @begin fetch_mask
+    @in "LandWaterMask_Global_CRUNCEP.nc" @as input_mask_file
+    @out mask @as land_water_mask
+    @end fetch_mask
+    @begin load_data
+    @in "CLM4_BG1_V1_Monthly_NEE.nc4" @as input_data_file
+    @out data @as NEE_data
+    @end load_data
+    @begin standardize_with_mask
+    @in data @as NEE_data
+    @in mask @as land_water_mask
+    @out data @as standardized_NEE_data
+    @end standardize_mask
+    @begin simple_diagnose
+    @in np @as standardized_NEE_data
+    @out pp @as result_NEE_pdf
+    @end simple_diagnose
+    @end main
+    $
+
+This command is useful for confirming that YesWorkflow is finding the comments that you have added to a script and is not confused by other comments and code in the script.
+
+###### Creating a workflow graph for a script
+
+Next, use the `graph` command to produce a graphical representations of the script based on the YW comments it contains.  YesWorkflow natively outputs GraphViz's DOT format (file extension `.gv`).  If you don't provide a file name for storing the DOT output it will be sent to the terminal:
+
+    $ yw graph -s example.py
+    digraph Workflow {
+    rankdir=LR
+    node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=1]
+    node1 [label="fetch_mask"];
+    node2 [label="load_data"];
+    node3 [label="standardize_with_mask"];
+    node4 [label="simple_diagnose"];
+    node[shape=circle style="filled" fillcolor="#FFFFFF" peripheries=1 width=0.1]
+    node5 [label=""];
+    node6 [label=""];
+    node7 [label=""];
+    node4 -> node7 [label="result_NEE_pdf"];
+    node5 -> node1 [label="input_mask_file"];
+    node6 -> node2 [label="input_data_file"];
+    node2 -> node3 [label="NEE_data"];
+    node1 -> node3 [label="land_water_mask"];
+    node3 -> node4 [label="standardized_NEE_data"];
+    }
+    $
+
+You can save the dot output to a file, render it as PDF file using Graphviz's `dot` command, then open the PDF file to view the diagram:
+
+    $ yw graph -s example.py > example.gv
+    $ dot -Tpdf example.gv -o example.pdf
+    $ open example.pdf
+
+Alternatively, you can pipe `yw` into `dot` and open the graphics file immediately (here using png rather than PDF):
+
+    $ yw graph -s example.py | dot -Tpng -o example.png; open example.png
+
+
 Instructions for developers
 ---------------------------
 
-##### JDK and Maven configuration
+#### JDK and Maven configuration
 
 The Java prototype is built using Maven 3. Before building YesWorkflow confirm that the `mvn` command is in your path and that a JDK version 1.7 or higher is found by maven:
     
@@ -130,7 +205,7 @@ JDK 7 and Maven 3 downloads and installation instructions can be found at the fo
 - [http://maven.apache.org/download.cgi](http://maven.apache.org/download.cgi)
 
 
-##### Project directory layout  
+#### Project directory layout  
 
 YesWorkflow adopts the default organization of source code, resources, and tests as defined by Maven.  See [maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html](http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) for more information.  The most important directories are listed below:
 
@@ -146,7 +221,7 @@ target/test-classes | Compiled java classes for test code found under src/test/j
 target/dependency | Automatically resolved and downloaded dependencies (jars) that will be included in the standalone distribution.
 
 
-##### Building and testing with maven
+#### Building and testing with maven
 
 YesWorkflow can be built and tested from the command line using the following commands:
 
@@ -157,7 +232,7 @@ mvn compile      | Download required dependencies and compile source code in src
 mvn test         | Compile the classes in src/test/java and run all tests found therein. Peforms *mvn compile* first.
 mvn package      | Packages the compiled classes in target/classes and files found in src/main/resources in two jar files, **yesworkflow-0.1.jar** and **yesworkflow-0.1-executable.jar**.  The latter also contains all jar dependencies. Peforms *mvn compile* and *mvn test* first, and will not perform packaging step if any tests fail. Use the *-DskipTests* option to bypass tests. 
 
-##### Continuous build and integration with Bamboo
+#### Continuous build and integration with Bamboo
 
 All code is built and tests run automatically on a build server at NCSA whenever changes are committed to directories used by maven.  Please confirm that the automated build and tests succeed after committing changes to code or resource files (it may take up to two minutes for a commit-triggered build to start).  Functional tests depend on the scripts in src/main/resources and are likely to fail if not updated following changes to these scripts.
 
