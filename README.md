@@ -114,7 +114,7 @@ If you do not define an alias you will need to type `java -jar yesworkflow-0.1-e
 
 #### 5. Run YesWorkflow on the example python script
 
-The [example.py](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.py "example.py") script  is useful for demonstrating YesWorkflow capabilities. Download it to your computer to follow along below.
+The [`example.py`](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.py "example.py") script  is useful for demonstrating YesWorkflow capabilities. You can download it to your computer [here](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.py "example.py"). (If you have cloned the `yw-prototypes` repository, the script is in the `src/main/resources` directory.)  In the examples below it is assumed that `example.py` is in your current working directory.
 
 ###### Extracting YW comment lines
 
@@ -209,37 +209,37 @@ JDK 7 and Maven 3 downloads and installation instructions can be found at the fo
 
 YesWorkflow adopts the default organization of source code, resources, and tests as defined by Maven.  See [maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html](http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) for more information.  The most important directories are listed below:
 
-Directory | Description
-----------| -----------
-src/main/java | Source code to be built and packaged for distribution.
-src/main/resources | Resource files to be packaged with production code.
-src/test/java | Source code for unit and functional tests. Not included in packaged distributions.
-src/test/resources | Resource files available to tests. Not included in packaged distributions.
-target | Destination directory for packaged distributions (jar files) built by maven.
-target/classes | Compiled java classes for source code found under src/main/java.
+Directory           | Description
+--------------------|-----------
+src/main/java       | Source code to be built and packaged for distribution.
+src/main/resources  | Resource files to be packaged with production code.
+src/test/java       | Source code for unit and functional tests. Not included in packaged distributions.
+src/test/resources  | Resource files available to tests. Not included in packaged distributions.
+target              | Destination directory for packaged distributions (jar files) built by maven.
+target/classes      | Compiled java classes for source code found under src/main/java.
 target/test-classes | Compiled java classes for test code found under src/test/java.
-target/dependency | Automatically resolved and downloaded dependencies (jars) that will be included in the standalone distribution.
+target/dependency   | Automatically resolved and downloaded dependencies (jars) that will be included in the standalone distribution.
 
 
 #### Building and testing with maven
 
 YesWorkflow can be built and tested from the command line using the following commands:
 
-Maven command            | Description
--------------------|------------
-mvn clean        | Delete the target directory including all compiled code.
-mvn compile      | Download required dependencies and compile source code in src/main/java.  Only those source files changes since the last compilation are built.
-mvn test         | Compile the classes in src/test/java and run all tests found therein. Peforms *mvn compile* first.
-mvn package      | Packages the compiled classes in target/classes and files found in src/main/resources in two jar files, **yesworkflow-0.1.jar** and **yesworkflow-0.1-executable.jar**.  The latter also contains all jar dependencies. Peforms *mvn compile* and *mvn test* first, and will not perform packaging step if any tests fail. Use the *-DskipTests* option to bypass tests. 
+Maven command | Description
+--------------|------------
+mvn clean     | Delete the target directory including all compiled code.
+mvn compile   | Download required dependencies and compile source code in src/main/java.  Only those source files changes since the last compilation are built.
+mvn test      | Compile the classes in src/test/java and run all tests found therein. Peforms *mvn compile* first.
+mvn package   | Packages the compiled classes in target/classes and files found in src/main/resources in two jar files, **yesworkflow-0.1.jar** and **yesworkflow-0.1-executable.jar**.  The latter also contains all jar dependencies. Peforms *mvn compile* and *mvn test* first, and will not perform packaging step if any tests fail. Use the *-DskipTests* option to bypass tests.
 
 #### Continuous build and integration with Bamboo
 
 All code is built and tests run automatically on a build server at NCSA whenever changes are committed to directories used by maven.  Please confirm that the automated build and tests succeed after committing changes to code or resource files (it may take up to two minutes for a commit-triggered build to start).  Functional tests depend on the scripts in src/main/resources and are likely to fail if not updated following changes to these scripts.
 
-Site | Url
------| ---
-Build history | https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW
-Last build | https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW/latest
+Site                  | Url
+----------------------| ---
+Build history         | https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW
+Last build            | https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW/latest
 Last successful build | https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW/latestSuccessful
 
 The link to the latest successful build is useful for obtaining the most recently built jar file without building it yourself.  Follow the link to the [last successful build](https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW/latestSuccessful "last successful build"), click the Artifacts tab, then download the executable jar.
