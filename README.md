@@ -100,17 +100,23 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
                                  (default: -)
     $
 
-#### 4.  Create an alias for YesWorkflow
+#### 4.  Define a short command for running YesWorkflow at the prompt
 
-If you are running YesWorkflow on an Apple OSX or Linux system (or have installed Git Bash or Cygwin on Windows), you may define a bash alias to simplify running YesWorkflow at the command line.  For example, if you have saved  `yesworkflow-0.1-executable.jar` to the bin subdirectory of your home directory, the following bash command will create an alias for running YesWorkflow simply by typing `yw` at the command prompt.
+If you are running YesWorkflow on an Apple OSX or Linux system (or use Git Bash or Cygwin on Windows), you may define a bash alias to simplify running YesWorkflow at the command line.  On Windows platforms you similarly may define a macro for running YesWorkflow at the prompt.  
+
+For example, if you have saved  `yesworkflow-0.1-executable.jar` to the bin subdirectory of your home directory, the following command will create a bash alias for running YesWorkflow simply by typing `yw`:
 
     alias yw='java -jar ~/bin/yesworkflow-0.1-executable.jar' 
+
+On Windows the command to create the `yw` macro is:
+
+    doskey yw=java -jar %HOME%\bin\yesworkflow-0.1-executable.jar $*
 
 The command to display YesWorkflow command line options is now simply:
 
     $ yw --help
 
-If you do not define an alias you will need to type `java -jar yesworkflow-0.1-executable.jar` instead of `yw` in the examples below (and prepend yesworkflow-0.1-executable.jar with the path to the jar file).  You may of course change the name of the jar file to `yw.jar` if you like.
+If you do not define an alias or macro you will need to type `java -jar yesworkflow-0.1-executable.jar` instead of `yw` in the examples below (and prepend yesworkflow-0.1-executable.jar with the path to the jar file).
 
 #### 5. Run YesWorkflow on the example python script
 
