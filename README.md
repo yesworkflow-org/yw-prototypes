@@ -25,7 +25,7 @@ The [example.py](https://github.com/yesworkflow-org/yw-prototypes/blob/master/sr
     #  @in NEE_first_year.nc @as input_data_file
     #  @out result_simple.pdf @as result_NEE_pdf
 
-Each YesWorkflow (YW) comment is identified by a keyword that begins with the '`@`' symbol.  A `@begin` comment declares the beginning of the script or of a block of computation within the script.  Each `@begin` tag is paired with a `@end` later in the script, and together these tags delimit the code annotated by other YW comments found in that block.  The script `example.py` ends with this YW comment:
+Each YesWorkflow (YW) comment is identified by a keyword that begins with the '`@`' symbol.  A `@begin` comment declares the beginning of the script or of a block of computation within the script.  Each `@begin` tag is paired with an `@end` later in the script, and together these tags delimit the code annotated by other YW comments found in that block.  The script `example.py` ends with this YW comment:
 
     ## @end main
 
@@ -43,7 +43,9 @@ For example, `example.py` includes YW comments annotating a block of code perfor
 
     ## @end fetch_mask
 
-Note that in the diagram the arrow labeled `input_mask_file` is connected to the `fetch_mask` block because the alias for the `@in` comment for `fetch_mask` matches the alias for an `@in` comment on the encompassing `main` block.  The alias in both cases is `input_mask_file`.  Note also that the `@out` comment for `fetch_mask` declares the  name of the variable (`mask`) used to store the mask in the code, but also provides an alias ('`land_water_mask`') that is displayed in the graphical output of YesWorkflow. This alias matches the alias on an `@in` comment on the downstream `standardize_with_mask` block, and YesWorkflow draws an arrow in the diagram accordingly.
+Note that in the diagram the arrow labeled `input_mask_file` is connected to the `fetch_mask` block because the alias for the `@in` comment for `fetch_mask` matches the alias for an `@in` comment on the encompassing `main` block.  The alias in both cases is `input_mask_file`.  
+
+Note as well that the `@out` comment for `fetch_mask` declares the  name of the variable (`mask`) used to store the mask in the code.  It also provides an alias ('`land_water_mask`') that is displayed in the graphical output of YesWorkflow. This alias matches the alias on an `@in` comment on the downstream `standardize_with_mask` block, and YesWorkflow draws an arrow in the diagram accordingly.
 
 YesWorkflow comments of the kind discussed here can be added to any script to highlight how data is processed by that script.  YesWorkflow tools discover these comments in the script and produce graphical representations of the script that highlight its workflow-like structure.
 
@@ -72,7 +74,7 @@ YesWorkflow requires Java (JRE) version 1.7 or higher. To determine the version 
 
 #### 2.  Install Graphviz visualization software
 
-YesWorkflow produces graphical representations that must be rendered using Graphviz or other software capable of processing DOT graph files.  You can find instructions for installing Graphviz at [http://graphviz.org/Download.php](http://graphviz.org/Download.php "http://graphviz.org/Download.php").  Make sure that the `dot` command is in your path following installation.
+YesWorkflow produces graphical representations that is rendered using Graphviz or other software capable of processing DOT graph files.  You can find instructions for installing Graphviz at [http://graphviz.org/Download.php](http://graphviz.org/Download.php "http://graphviz.org/Download.php").  Make sure that the `dot` command is in your path following installation.
 
 #### 3. Download the YesWorkflow jar file
 
@@ -124,7 +126,7 @@ The [`example.py`](https://raw.githubusercontent.com/yesworkflow-org/yw-prototyp
 
 ###### Extracting YW comment lines
 
-First, use the `extract` command to YesWorkflow to list the YW commands found in the script:
+First, use the YesWorkflow `extract` command and `-l` option to list the YW commands found in the script:
 
     $ yw extract -s example.py -l
     @begin main
@@ -236,9 +238,9 @@ Maven command | Description
 mvn clean     | Delete the target directory including all compiled code.
 mvn compile   | Download required dependencies and compile source code in src/main/java.  Only those source files changes since the last compilation are built.
 mvn test      | Compile the classes in src/test/java and run all tests found therein. Peforms *mvn compile* first.
-mvn package   | Packages the compiled classes in target/classes and files found in src/main/resources in two jar files, **yesworkflow-0.1.jar** and **yesworkflow-0.1-executable.jar**.  The latter also contains all jar dependencies. Peforms *mvn compile* and *mvn test* first, and will not perform packaging step if any tests fail. Use the *-DskipTests* option to bypass tests.
+mvn package   | Package the compiled classes in target/classes and files found in src/main/resources in two jar files, **yesworkflow-0.1.jar** and **yesworkflow-0.1-executable.jar**.  The latter also contains all jar dependencies. Performs *mvn compile* and *mvn test* first, and will not perform packaging step if any tests fail. Use the `-DskipTests` option to bypass tests.
 
-#### Continuous build and integration with Bamboo
+#### Continuous integration with Bamboo
 
 All code is built and tests run automatically on a build server at NCSA whenever changes are committed to directories used by maven.  Please confirm that the automated build and tests succeed after committing changes to code or resource files (it may take up to two minutes for a commit-triggered build to start).  Functional tests depend on the scripts in src/main/resources and are likely to fail if not updated following changes to these scripts.
 
