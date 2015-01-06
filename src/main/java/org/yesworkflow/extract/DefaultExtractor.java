@@ -208,4 +208,31 @@ public class DefaultExtractor implements Extractor {
         
         return reader;
     }
+    /**
+     * This method gets the comment character based on file extension
+     * @param path
+     * @return file extension
+     */
+	@Override
+	public char getCommentCharacter(){
+        String fileName = new File(sourcePath).getName();
+        int i = fileName.lastIndexOf(".");
+        String ext = null; // get file extension
+
+        if (i != -1) {
+        	ext = fileName.substring(i+1);
+        }
+
+		char c = 0;
+		if(ext.equals("py")){
+    		c = '#';
+    	} else if(ext.equals("R")){
+    		c = '#';
+    	} else if(ext.equals("java")) {
+    		c = '/';
+    	} else {
+    		// nothing happens here.
+    	}
+		return c;
+	}
 }

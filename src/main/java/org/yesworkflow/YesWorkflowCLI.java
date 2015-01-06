@@ -195,6 +195,7 @@ public class YesWorkflowCLI {
     }
     
     public void extract() throws Exception {
+        char c = 0;
         
         if (extractor == null) {
            extractor = new DefaultExtractor();
@@ -204,11 +205,12 @@ public class YesWorkflowCLI {
         	extractor.sourceReader(new InputStreamReader(System.in));
         } else {
         	extractor.sourcePath(sourceFilePath);
+        	c = extractor.getCommentCharacter(); // get comment character based on file extension 
         }
         
         extractor.databasePath(databaseFilePath)
-                 .commentCharacter('#')
-                 .extract();
+        		 .commentCharacter(c) 
+        		 .extract();
         
         if (options.has("l")) {
             
