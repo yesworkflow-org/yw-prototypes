@@ -321,6 +321,25 @@ Similarly, the circle on the far right corresponds to the script `@out` comment,
 
 The remaining arrows are drawn between blocks and represent flow of data between computational blocks. They result from matching aliases from `@out` comments on upstream blocks with aliases for `@in` comments on downstream blocks.
 
+##### Override the comment character used in your script
+
+YesWorkflow infers the character used to indicate the beginning of a full-line comment in an analyzed script by inspecting the script file extension.  Currently the following extensions are recognized:
+
+Extension | Language | Default comment character
+----------|----------|--------------------------
+.py       | python   | #
+.R        | R        | #
+.m        | MATLAB   | %
+.java     | Java     | /
+
+A comment character of '#' is assumed if the extension is not one of the above, if the file name has no extension, or if the script code is piped to YesWorkflow via the standard input stream. To override the comment character use the -x option and provide the comment character in double quotes.  For example, to pipe a MATLAB program to YesWorkflow and use the correct comment character you may use the following command on Unix platforms:
+
+    cat myprogram.m | yw graph -x "%" > myprogram.gv
+
+And on Windows:
+
+    yw graph -x "%" < myprogram.m > myprogram.gv
+
 Instructions for developers
 ---------------------------
 
