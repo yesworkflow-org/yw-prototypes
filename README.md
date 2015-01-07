@@ -198,6 +198,117 @@ And on Windows platforms:
 
     $ yw graph -s example.py | dot -Tpng -o example.png && start example.png
 
+#### 6. Mark up and analyze your own script
+
+You should now be able to add YW comments to your own data processing script and analyze your script using the YesWorkflow prototype.  Note that the prototype has limitations that will be addressed in future releases (see **7** below).
+
+###### Delimit your script with `@begin` and `@end` comments
+
+The YesWorkflow prototype assumes that the code for the entire script to be analyzed is bracketed by a pair of `@begin` and `@end` comments.  The YW comments should begin with whatever character(s) indicate a full-line comment in the scripting language you are using.   For example, a script written in a language that uses the # character to start comments might look like the following
+
+    # @begin MyScript    
+    script statement
+    script statement  
+    script statement
+    # a non-YW comment
+    script statement
+    script statement  
+    script statement
+    # @end MyScript
+    
+Note that comments that do not contain YW keywords are ignored by YesWorkflow.
+
+`@begin` and `@end` keywords both should be followed by the name of the block of code they bracket (in this case, the script as a whole), and these names should match for each `@begin` and `@end` pair.  This convention makes it easier to identify incorrectly paired `@begin` and `@end` keywords in the script.
+
+###### Use `@in` and `@out` comments to declare the data consumed and produced by the script
+
+The next step in marking up a script with YW comments is to declare the inputs and outputs of the script.  These do not need to be actual command-line options to your script or files read from or output to disk by the script.  The comments you add simply declare that the script accepts these inputs in some way, and produces the indicated outputs somehow.  
+
+This is done by adding `@in` and `@out` comments following the `@begin` comment for your script. For example:
+
+    # @begin MyScript
+    # @in x
+    # @in y
+    # @out d 
+    script statement
+    script statement  
+    script statement
+    # a non-YW comment
+    script statement
+    script statement  
+    script statement
+    # @end MyScript
+
+The `@in` and `@out` comments above indicate that the script takes two inputs, `x` and `y`, and produces output `d`.  The names of these inputs and outputs (multiple inputs and outputs are allowed) are expected to correspond to the names of variables that store these input and output values at some point in the script (although this is not enforced by the prototype).  Declaring the names of the relevant variables is meant to make it easier for others to find the actual input and output operations in your script.
+
+Because variable names are often kept relatively short in scripts, YesWorkflow allows you to associate a more verbose alias for each input and output using the `@as` keyword.  For example:
+
+    # @begin MyScript
+    # @in x @as XCoordinate
+    # @in y @as YCoordinate
+    # @out d @as DistanceFromOrigin
+    script statement
+    script statement  
+    script statement
+    # a non-YW comment
+    script statement
+    script statement  
+    script statement
+    # @end MyScript
+
+Analysis performed by YesWorkflow and the outputs it produces use these aliases if present, and the unaliased names otherwise.
+
+###### Declare computational code blocks within your script
+
+The YesWorkflow prototype assumes that a script has a single, top-level block of code delimited by the `@begin` and `@end` statements described above, and additionally one or more marked up computational blocks nested within this top-level block.  You can use these nested blocks to describe the computational steps in your script in dataflow terms.  For example, we can declare two computational code blocks within MyScript:
+
+    # @begin MyScript
+    # @in  x @as XCoordinate
+    # @in  y @as YCoordinate
+    # @out d @as DistanceFromOrigin
+
+      # get input x somehow
+      # get input y somehow
+
+      # @begin SquareCoordinates
+      # @in  x  @as XCoordinate
+      # @in  y  @as YCoordinate
+      # @out xx @as XSquared
+      # @out yy @as YSquared
+      script statement
+      script statement  
+      script statement
+      # @end SquareCoordinates
+
+      # @begin TakeSquareRoot
+      # @in  xx @as XSquared
+      # @in  yy @as YSquared
+      # @out d  @as DistanceFromOrigin
+      script statement
+      script statement  
+      script statement
+      # @end TakeSquareRoot
+
+      # output d somehow
+
+    # @end MyScript
+
+The `@begin`, `@end`, `@in`, `@out`, and `@as` keywords have the same meaning for computational blocks within the script as for the script as a whole.
+
+###### Analyze your script with YesWorkflow tool.
+
+At this point you may analyze your script and render it graphically, just as we did above for `example.py`.  If your script is called `MyScript.py` then the command (for Unix platforms):
+
+    $ yw graph -s MyScript.py | dot -Tpng -o MyScript.png && open MyScript.png
+
+or (for Windows platforms):
+
+    $ yw graph -s MyScript.py  | dot -Tpng -o MyScript.png && start MyScript.png
+
+will render your script as a dataflow program and illustrate how data flows from script inputs, into successive computational blocks, and finally to script outputs.  For the example above, YesWorkflow produces this:
+
+![](http://i.imgur.com/D1Iq6Pr.png)
+
 
 Instructions for developers
 ---------------------------
