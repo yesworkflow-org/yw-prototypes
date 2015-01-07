@@ -124,7 +124,7 @@ If you do not define an alias or macro you will need to type `java -jar yesworkf
 
 The [`example.py`](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.py "example.py") script  is useful for demonstrating YesWorkflow capabilities. You can download it to your computer [here](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.py "example.py"). (If you have cloned the `yw-prototypes` repository, the script is in the `src/main/resources` directory.)  In the examples below it is assumed that `example.py` is in your current working directory.
 
-###### Extracting YW comment lines
+##### Extracting YW comment lines
 
 First, use the YesWorkflow `extract` command and `-l` option to list the YW commands found in the script:
 
@@ -155,7 +155,7 @@ First, use the YesWorkflow `extract` command and `-l` option to list the YW comm
 
 This command is useful for confirming that YesWorkflow is finding the comments that you have added to a script and is not confused by other comments and code in the script.
 
-###### Creating a workflow graph for a script
+##### Creating a workflow graph for a script
 
 Next, use the `graph` command to produce a graphical representations of the script based on the YW comments it contains.  YesWorkflow natively outputs GraphViz's DOT format (file extension `.gv`).  If you don't provide a file name for storing the DOT output it will be sent to the terminal:
 
@@ -202,7 +202,7 @@ And on Windows platforms:
 
 You should now be able to add YW comments to your own data processing script and analyze your script using the YesWorkflow prototype.  Note that the prototype has limitations that will be addressed in future releases (see **7** below).
 
-###### Delimit your script with `@begin` and `@end` comments
+##### Delimit your script with `@begin` and `@end` comments
 
 The YesWorkflow prototype assumes that the code for the entire script to be analyzed is bracketed by a pair of `@begin` and `@end` comments.  The YW comments should begin with whatever character(s) indicate a full-line comment in the scripting language you are using.   For example, a script written in a language that uses the # character to start comments might look like the following
 
@@ -220,7 +220,7 @@ Note that comments that do not contain YW keywords are ignored by YesWorkflow.
 
 `@begin` and `@end` keywords both should be followed by the name of the block of code they bracket (in this case, the script as a whole), and these names should match for each `@begin` and `@end` pair.  This convention makes it easier to identify incorrectly paired `@begin` and `@end` keywords in the script.
 
-###### Use `@in` and `@out` comments to declare the data consumed and produced by the script
+##### Use `@in` and `@out` comments to declare the data consumed and produced by the script
 
 The next step in marking up a script with YW comments is to declare the inputs and outputs of the script.  These do not need to be actual command-line options to your script or files read from or output to disk by the script.  The comments you add simply declare that the script accepts these inputs in some way, and produces the indicated outputs somehow.  
 
@@ -258,7 +258,7 @@ Because variable names are often kept relatively short in scripts, YesWorkflow a
 
 Analysis performed by YesWorkflow and the outputs it produces use these aliases if present, and the unaliased names otherwise.
 
-###### Declare computational code blocks within your script
+##### Declare computational code blocks within your script
 
 The YesWorkflow prototype assumes that a script has a single, top-level block of code delimited by the `@begin` and `@end` statements described above, and additionally one or more marked up computational blocks nested within this top-level block.  You can use these nested blocks to describe the computational steps in your script in dataflow terms.  For example, we can declare two computational code blocks within MyScript:
 
@@ -300,7 +300,7 @@ The YesWorkflow prototype assumes that a script has a single, top-level block of
 
 The `@begin`, `@end`, `@in`, `@out`, and `@as` keywords have the same meaning for computational blocks within the script as for the script as a whole.
 
-###### Analyze your script with YesWorkflow tool.
+##### Analyze your script with YesWorkflow tool
 
 At this point you may analyze your script and render it graphically, just as we did above for `example.py`.  If your script is called `MyScript.py` then the command (for Unix platforms):
 
@@ -314,6 +314,12 @@ will render your script as a dataflow program and illustrate how data flows from
 
 ![](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/MyScript.png)
 
+
+Notice that the `@in` and `@out` comments for MyScript (the script as a whole) correspond to the small, empty circles at the left and right sides of the figure, respectively.  The circles on the left are connected by arrows  to the SquareCoordinates block.  These arrows indicate dataflow into the script and are labeled with the aliases for the script `@in` comments, which in turn match the `@in` aliases for the SquareCoordinates block.  
+
+Similarly, the circle on the far right corresponds to the script `@out` comment, and is connected by an incoming arrow from the TakeSquareRoot block because the MyScript `@out` comment and TakeSquareRoot `@out` comment have matching aliases. This right-most arrow represents flow of data out of the script. 
+
+The remaining arrows are drawn between blocks and represent flow of data between computational blocks. They result from matching aliases from `@out` comments on upstream blocks with aliases for `@in` comments on downstream blocks.
 
 Instructions for developers
 ---------------------------
