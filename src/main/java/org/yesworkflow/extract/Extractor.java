@@ -15,5 +15,6 @@ public interface Extractor {
     List<String> getLines();
     List<Comment> getComments();
 	Program getProgram();
-	char getCommentCharacter();	
+	char getCommentCharacter();
 }
+
