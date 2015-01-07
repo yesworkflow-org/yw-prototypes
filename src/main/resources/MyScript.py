@@ -14,14 +14,19 @@
       # @out yy @as YSquared
       script statement
       script statement  
-      script statement
       # @end SquareCoordinates
 
-      # @begin TakeSquareRoot
+      # @begin SumSquares
       # @in  xx @as XSquared
       # @in  yy @as YSquared
-      # @out d  @as DistanceFromOrigin
+      # @out s  @as SumOfSquares
       script statement
+      script statement  
+      # @end SumSquares
+
+      # @begin TakeSquareRoot
+      # @in  s @as SumOfSquares
+      # @out d @as DistanceFromOrigin
       script statement  
       script statement
       # @end TakeSquareRoot
