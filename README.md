@@ -186,9 +186,17 @@ You can save the dot output to a file, render it as PDF file using Graphviz's `d
     $ dot -Tpdf example.gv -o example.pdf
     $ open example.pdf
 
-Alternatively, you can pipe `yw` into `dot` and open the graphics file immediately (here using png rather than PDF):
+On Windows platforms the last line above should be replaced with:
 
-    $ yw graph -s example.py | dot -Tpng -o example.png; open example.png
+    $ start example.pdf
+
+Alternatively, you can pipe `yw` into `dot` and open the graphics file immediately (here using png rather than PDF).  In the case of bash running on Unix platforms:
+
+    $ yw graph -s example.py | dot -Tpng -o example.png && open example.png
+
+And on Windows platforms:
+
+    $ yw graph -s example.py | dot -Tpng -o example.png && start example.png
 
 
 Instructions for developers
