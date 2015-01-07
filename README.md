@@ -312,7 +312,7 @@ or (for Windows platforms):
 
 will render your script as a dataflow program and illustrate how data flows from script inputs, into successive computational blocks, and finally to script outputs.  For the example above, YesWorkflow produces this:
 
-![](http://i.imgur.com/D1Iq6Pr.png)
+![](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/MyScript.png)
 
 
 Instructions for developers
