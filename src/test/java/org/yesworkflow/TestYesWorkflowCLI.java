@@ -27,13 +27,14 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         "-l, --lines [lines file]   path to file for saving extracted     "     + EOL +
         "                             comment lines (default: -)          "     + EOL +
         "-s, --source [script]      path to source file to analyze        "     + EOL +
-        "                             (default: -)                        "     + EOL;
-    
+        "                             (default: -)                        "     + EOL +
+        "-x, --commchar [comment]   comment character                     "     + EOL;
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
     }
-    
+
     public void testYesWorkflowCLI_NoArgs() throws Exception {
         String[] args = {};
         new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
@@ -87,79 +88,118 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     }
 
     public void testYesWorkflowCLI_Extract_DefaultExtractor_MissingSourceFile() throws Exception {
-        
+
         String[] args = {"-c", "extract", "-s", "no_such_script.py"};
         new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
                 "Usage error: Input source file not found: no_such_script.py"      + EOL +
                 EXPECTED_HELP_OUTPUT,
-                stderrBuffer.toString());    
+                stderrBuffer.toString());
     }
 
     public void testYesWorkflowCLI_Extract_InjectedExtractor_SourceOnly() throws Exception {
-        
+
         String[] args = {"-c", "extract", "-s", "script.py"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         MockExtractor extractor = new MockExtractor();
-        cli.extractor(extractor);      
+        cli.extractor(extractor);
 
         assertNull(extractor.sourcePath);
         assertNull(extractor.databasePath);
         assertFalse(extractor.extracted);
-        
+
         int returnValue = cli.runForArgs(args);
-        
+
         assertEquals(YesWorkflowCLI.YW_CLI_SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals("", stderrBuffer.toString());
-        
+
         assertEquals("script.py", extractor.sourcePath);
         assertNull(extractor.databasePath);
         assertTrue(extractor.extracted);
     }
-    
+
+    public void testYesWorkflow_CommentCharacters() throws Exception{
+
+    	String[] args1 = {"-c", "extract", "-x", "#", "-s", "src/main/resources/example.py"};
+        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
+        cli.runForArgs(args1);
+        assertEquals('#', cli.getExtractor().getCommentCharacter());
+
+        String[] args2 = {"-c", "extract", "-s", "src/main/resources/example.py"};
+        cli.runForArgs(args2);
+        assertEquals('#', cli.getExtractor().getCommentCharacter());
+
+        String[] args3 = {"-c", "extract", "-s", "src/main/resources/example.PY"};
+        cli.runForArgs(args3);
+        assertEquals('#', cli.getExtractor().getCommentCharacter());
+
+        String[] args4 = {"-c", "extract", "-s", "incoming/drain_dem.R"};
+        cli.runForArgs(args4);
+        assertEquals('#', cli.getExtractor().getCommentCharacter());
+
+        String[] args5 = {"-c", "extract", "-s", "incoming/tesetJavaScript.java"};
+        cli.runForArgs(args5);
+        assertEquals('/', cli.getExtractor().getCommentCharacter());
+
+        String[] args6 = {"-c", "extract", "-s", "incoming/tesetMatlab.m"};
+        cli.runForArgs(args6);
+        assertEquals('%', cli.getExtractor().getCommentCharacter());
+
+        String[] args7 = {"-c", "extract", "-s", "incoming/tesetMatlab.M"};
+        cli.runForArgs(args7);
+        assertEquals('%', cli.getExtractor().getCommentCharacter());
+
+        String[] args8 = {"-c", "extract", "-x", "%", "-s", "incoming/tesetMatlab.m"};
+        cli.runForArgs(args8);
+        assertEquals('%', cli.getExtractor().getCommentCharacter());
+
+        String[] args9 = {"-c", "extract", "-s", "incoming/tesetfileNoExtension"}; // default '#' when file extension is not available
+        cli.runForArgs(args9);
+        assertEquals('#', cli.getExtractor().getCommentCharacter());
+    }
 //    public void testYesWorkflowCLI_Graph() throws Exception {
-//        
+//
 //        String[] args = {
-//                "-c", "graph", 
+//                "-c", "graph",
 //                "-s", "src/main/resources/example.py"
 //        };
-//        
+//
 //        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
-//        
+//
 //        int returnValue = cli.runForArgs(args);
 //
 //    }
-    
+
     public void testYesWorkflowCLI_Extract_InjectedExtractor_SourceAndDatabase() throws Exception {
-        
+
         String[] args = {"-c", "extract", "-s", "script.py", "-d", "wf.tdb"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         MockExtractor extractor = new MockExtractor();
-        cli.extractor(extractor);      
+        cli.extractor(extractor);
 
         assertNull(extractor.sourcePath);
         assertNull(extractor.databasePath);
         assertFalse(extractor.extracted);
-        
+
         int returnValue = cli.runForArgs(args);
-        
+
         assertEquals(YesWorkflowCLI.YW_CLI_SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals("", stderrBuffer.toString());
-        
+
         assertEquals("script.py", extractor.sourcePath);
         assertEquals("wf.tdb", extractor.databasePath);
         assertTrue(extractor.extracted);
     }
-    
+
     public void testYesWorkflowCLI_Extract_ExamplePy_OutputLines() throws Exception {
 
         String[] args = {"-c", "extract", "-s", "src/main/resources/example.py", "-l"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args);
-        
+
         assertEquals(
             "@begin main"                                                   + EOL +
             "@in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file"       + EOL +
@@ -184,14 +224,45 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             "@end simple_diagnose"                                          + EOL +
             "@end main"                                                     + EOL,
             stdoutBuffer.toString());
-    }    
-    
+    }
+
+    public void testYesWorkflowCLI_ExamplePy_OutputLines_WithCommentChar() throws Exception{
+    	String[] args = {"-c", "extract", "-x", "#", "-s", "src/main/resources/example.py", "-l"};
+        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
+        cli.runForArgs(args);
+
+        assertEquals(
+            "@begin main"                                                   + EOL +
+            "@in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file"       + EOL +
+            "@in NEE_first_year.nc @as input_data_file"                     + EOL +
+            "@out result_simple.pdf @as result_NEE_pdf"                     + EOL +
+            "@begin fetch_mask"                                             + EOL +
+            "@in \"LandWaterMask_Global_CRUNCEP.nc\" @as input_mask_file"   + EOL +
+            "@out mask @as land_water_mask"                                 + EOL +
+            "@end fetch_mask"                                               + EOL +
+            "@begin load_data"                                              + EOL +
+            "@in \"CLM4_BG1_V1_Monthly_NEE.nc4\" @as input_data_file"       + EOL +
+            "@out data @as NEE_data"                                        + EOL +
+            "@end load_data"                                                + EOL +
+            "@begin standardize_with_mask"                                  + EOL +
+            "@in data @as NEE_data"                                         + EOL +
+            "@in mask @as land_water_mask"                                  + EOL +
+            "@out data @as standardized_NEE_data"                           + EOL +
+            "@end standardize_mask"                                         + EOL +
+            "@begin simple_diagnose"                                        + EOL +
+            "@in np @as standardized_NEE_data"                              + EOL +
+            "@out pp @as result_NEE_pdf"                                    + EOL +
+            "@end simple_diagnose"                                          + EOL +
+            "@end main"                                                     + EOL,
+            stdoutBuffer.toString());
+    }
+
     public void testYesWorkflowCLI_Graph_ExamplePy_OutputGraph() throws Exception {
 
         String[] args = {"-c", "graph", "-s", "src/main/resources/example.py", "-g"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args);
-        
+
         assertEquals(
             "digraph Workflow {"                                                                + EOL +
             "rankdir=LR"                                                                        + EOL +
@@ -212,22 +283,31 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             "node3 -> node4 [label=\"standardized_NEE_data\"];"                                 + EOL +
             "}"                                                                                 + EOL,
             stdoutBuffer.toString());
-    }  
-    
+    }
+
     private static class MockExtractor implements Extractor {
 
         public String sourcePath = null;
         public String databasePath = null;
         public boolean extracted = false;
-        
-        public Extractor commentCharacter(char c) { return this; }
+
+        @Override
+		public Extractor commentCharacter(char c) { return this; }
+		@Override
 		public Extractor sourceReader(Reader reader) { return null; }
-        public Extractor sourcePath(String path) { this.sourcePath = path; return this; }
-        public Extractor databasePath(String path) { this.databasePath = path; return this; }
-        public void extract() throws Exception { this.extracted = true; }
-        public List<String> getLines() { return null; }
-        public List<Comment> getComments() { return null; }
+        @Override
+		public Extractor sourcePath(String path) { this.sourcePath = path; return this; }
+        @Override
+		public Extractor databasePath(String path) { this.databasePath = path; return this; }
+        @Override
+		public void extract() throws Exception { this.extracted = true; }
+        @Override
+		public List<String> getLines() { return null; }
+        @Override
+		public List<Comment> getComments() { return null; }
+		@Override
 		public Program getProgram() { return null; }
-		public char getCommentCharacter() { return 0;} 
+		@Override
+		public char getCommentCharacter() { return 0; }
     }
 }
