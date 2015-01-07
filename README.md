@@ -112,7 +112,7 @@ For example, if you have saved  `yesworkflow-0.1-executable.jar` to the bin subd
 
 On Windows the command to create the `yw` macro is:
 
-    doskey yw=java -jar %HOME%\bin\yesworkflow-0.1-executable.jar $*
+    doskey yw=java -jar %USERPROFILE%\bin\yesworkflow-0.1-executable.jar $*
 
 The command to display YesWorkflow command line options is now simply:
 
@@ -180,7 +180,7 @@ Next, use the `graph` command to produce a graphical representations of the scri
     }
     $
 
-You can save the dot output to a file, render it as PDF file using Graphviz's `dot` command, then open the PDF file to view the diagram:
+You can save the DOT output to a file, render it as PDF file using Graphviz's `dot` command, then open the PDF file to view the diagram:
 
     $ yw graph -s example.py > example.gv
     $ dot -Tpdf example.gv -o example.pdf
