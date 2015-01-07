@@ -37,13 +37,13 @@ public class DefaultExtractor implements Extractor {
         this.commentCharacter = c;
         return this;
     }
-    
+
     @Override
     public DefaultExtractor sourceReader(Reader reader) {
         this.sourceReader = new BufferedReader(reader);
         return this;
     }
-    
+
     @Override
     public DefaultExtractor sourcePath(String path) {
         this.sourcePath = path;
@@ -55,10 +55,10 @@ public class DefaultExtractor implements Extractor {
         this.databasePath = path;
         return this;
     }
-    
+
     @Override
     public void extract() throws Exception {
-        
+
         if (sourceReader == null) {
             sourceReader = getFileReaderForPath(sourcePath);
         }
@@ -68,7 +68,7 @@ public class DefaultExtractor implements Extractor {
         extractWorkflow();
     }
 
-    @Override    
+    @Override
     public List<String> getLines() {
         return commentLines;
     }
@@ -77,14 +77,14 @@ public class DefaultExtractor implements Extractor {
     public List<Comment> getComments() {
         return comments;
     }
-    
+
     @Override
 	public Program getProgram() {
     	return program;
     }
-    
+
     private void extractLines() throws IOException {
-        
+
         commentLines = new LinkedList<String>();
 
         String line = null;
@@ -95,13 +95,13 @@ public class DefaultExtractor implements Extractor {
             }
         }
     }
-    
+
     private void extractComments() throws Exception {
-        
+
         comments = new LinkedList<Comment>();
-        
+
         for (String commentLine : commentLines) {
-            
+
             String tag = extractTag(commentLine);
 
             Comment comment;
@@ -116,21 +116,21 @@ public class DefaultExtractor implements Extractor {
             } else {
                 throw new Exception("Comment tag " + tag + " is not supported");
             }
-            
+
             comments.add(comment);
         }
     }
 
     public void extractWorkflow() throws Exception {
-    	
+
     	Workflow.Builder workflowBuilder = null;
     	Workflow.Builder parentBuilder = null;
     	Stack<Workflow.Builder> parentWorkflowBuilders = new Stack<Workflow.Builder>();
-    	
+
     	for (Comment comment: comments) {
-    		
+
     		if (comment instanceof BeginComment) {
-    			
+
     			if (workflowBuilder != null) {
     				parentWorkflowBuilders.push(workflowBuilder);
     				parentBuilder = workflowBuilder;
@@ -138,7 +138,7 @@ public class DefaultExtractor implements Extractor {
 
     			workflowBuilder = new Workflow.Builder()
     				.begin((BeginComment)comment);
-    		
+
     		} else if (comment instanceof OutComment) {
     		    Port outPort = workflowBuilder.outPort((OutComment)comment);
     			if (parentBuilder != null) {
@@ -150,33 +150,33 @@ public class DefaultExtractor implements Extractor {
                 if (parentBuilder != null) {
     				parentBuilder.nestedInPort(inPort, workflowBuilder.getProgramName());
     			}
-    			
+
     		} else if (comment instanceof EndComment) {
-    			
+
     		    workflowBuilder.end((EndComment)comment);
-    		    
+
     			Program program = workflowBuilder.build();
-    			
+
     			if (parentWorkflowBuilders.isEmpty()) {
     				this.program = program;
     				return;
     			}
-    			
+
     			workflowBuilder = parentWorkflowBuilders.pop();
     			workflowBuilder.nestedProgram(program);
-    			
+
     			if (!parentWorkflowBuilders.isEmpty()) {
     				parentBuilder = parentWorkflowBuilders.peek();
     			}
     		}
     	}
     }
-    
+
     private String extractTag(String commentLine) {
 
         int tagEndIndex = commentLine.indexOf(' ');
         if (tagEndIndex == -1) tagEndIndex = commentLine.indexOf('\t');
-        
+
         if (tagEndIndex == -1) {
             return commentLine;
         } else {
@@ -185,14 +185,14 @@ public class DefaultExtractor implements Extractor {
     }
 
     private String extractCommentLine(String line) {
-        
+
         String trimmedLine = line.trim();
-        
+
         if (trimmedLine.length() == 0 || trimmedLine.charAt(0) != commentCharacter) return null;
-        
+
         int ywCommentTagBegin = trimmedLine.indexOf('@');
         if (ywCommentTagBegin == -1) return null;
-        
+
         return trimmedLine.substring(ywCommentTagBegin);
     }
 
@@ -201,39 +201,17 @@ public class DefaultExtractor implements Extractor {
         if (sourcePath == null) throw new UsageException("No source path provided to extractor");
 
         BufferedReader reader = null;
-        try {        
+        try {
             reader = new BufferedReader(new FileReader(path));
         } catch (FileNotFoundException e) {
             throw new UsageException("Input source file not found: " + path);
         }
-        
+
         return reader;
     }
-    /**
-     * This method gets the comment character based on file extension
-     * @param path
-     * @return file extension
-     */
+
 	@Override
-	public char getCommentCharacter(){
-        String fileName = new File(sourcePath).getName();
-        int i = fileName.lastIndexOf(".");
-        String ext = null; // get file extension
-
-        if (i != -1) {
-        	ext = fileName.substring(i+1);
-        }
-
-		char c = 0;
-		if(ext.equals("py")){
-    		c = '#';
-    	} else if(ext.equals("R")){
-    		c = '#';
-    	} else if(ext.equals("java")) {
-    		c = '/';
-    	} else {
-    		// nothing happens here.
-    	}
-		return c;
+	public char getCommentCharacter() {
+		return commentCharacter;
 	}
 }
