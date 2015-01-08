@@ -15,7 +15,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        extractor = new DefaultExtractor();
+        extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
         grapher = new DotGrapher();
     }
 
@@ -57,7 +57,139 @@ public class TestDotGrapher extends YesWorkflowTestCase {
             "}"                                                                     + EOL,
             dotString);
     }
- 
+    
+    
+  public void testDotGrapher_TwoChannels_OneProgram_OneInOneOut() throws Exception {
+        
+        String source = 
+            "# @begin script"       + EOL +
+            "# @in x"               + EOL +
+            "# @out d"              + EOL +
+            "#"                     + EOL +
+            "#   @begin program"    + EOL +
+            "#   @in x"             + EOL +
+            "#   @out d"            + EOL +
+            "#   @end program"      + EOL +                
+            "#"                     + EOL +
+            "# @end script"         + EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.sourceReader(reader)
+                 .commentCharacter('#')
+                 .extract();
+        Workflow workflow = (Workflow)extractor.getProgram();
+
+        grapher.workflow(workflow)
+               .type(GraphType.DATA_FLOW_GRAPH)
+               .graph();
+        
+        String dotString = grapher.toString();
+
+        assertEquals(
+            "digraph Workflow {"                                                                + EOL +
+            "rankdir=LR"                                                                        + EOL +
+            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"              + EOL +
+            "node1 [label=\"program\"];"                                                        + EOL +
+            "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 width=0.1]" + EOL +
+            "node2 [label=\"\"];"                                                               + EOL +
+            "node3 [label=\"\"];"                                                               + EOL +
+            "node1 -> node3 [label=\"d\"];"                                                     + EOL +
+            "node2 -> node1 [label=\"x\"];"                                                     + EOL +
+            "}"                                                                                 + EOL,
+            dotString);
+    }
+
+  public void testDotGrapher_TwoChannels_OneProgram_TwoInOneOut() throws Exception {
+      
+      String source = 
+          "# @begin script"       + EOL +
+          "# @in x"               + EOL +
+          "# @in y"               + EOL +
+          "# @out d"              + EOL +
+          "#"                     + EOL +
+          "#   @begin program"    + EOL +
+          "#   @in x"             + EOL +
+          "#   @in y"             + EOL +
+          "#   @out d"            + EOL +
+          "#   @end program"      + EOL +                
+          "#"                     + EOL +
+          "# @end script"         + EOL;
+
+      BufferedReader reader = new BufferedReader(new StringReader(source));
+      
+      extractor.sourceReader(reader)
+               .commentCharacter('#')
+               .extract();
+      Workflow workflow = (Workflow)extractor.getProgram();
+
+      grapher.workflow(workflow)
+             .type(GraphType.DATA_FLOW_GRAPH)
+             .graph();
+      
+      String dotString = grapher.toString();
+
+      assertEquals(
+          "digraph Workflow {"                                                                  + EOL +
+          "rankdir=LR"                                                                          + EOL +
+          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"                + EOL +
+          "node1 [label=\"program\"];"                                                          + EOL +
+          "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 width=0.1]"   + EOL +
+          "node2 [label=\"\"];"                                                                 + EOL +
+          "node3 [label=\"\"];"                                                                 + EOL +
+          "node4 [label=\"\"];"                                                                 + EOL +
+          "node1 -> node4 [label=\"d\"];"                                                       + EOL +
+          "node2 -> node1 [label=\"x\"];"                                                       + EOL +
+          "node3 -> node1 [label=\"y\"];"                                                       + EOL +
+          "}"                                                                                   + EOL,
+          dotString);
+  }
+  
+  public void testDotGrapher_TwoChannels_OneProgram_TwoInOneOut_ExtraIn() throws Exception {
+      
+      String source = 
+          "# @begin script"       + EOL +
+          "# @in x"               + EOL +
+          "# @in y"               + EOL +
+          "# @out d"              + EOL +
+          "#"                     + EOL +
+          "#   @begin program"    + EOL +
+          "#   @in x"             + EOL +
+          "#   @out d"            + EOL +
+          "#   @end program"      + EOL +                
+          "#"                     + EOL +
+          "# @end script"         + EOL;
+
+      BufferedReader reader = new BufferedReader(new StringReader(source));
+      
+      extractor.sourceReader(reader)
+               .commentCharacter('#')
+               .extract();
+      
+      Workflow workflow = (Workflow)extractor.getProgram();
+
+      grapher.workflow(workflow)
+             .type(GraphType.DATA_FLOW_GRAPH)
+             .graph();
+      
+      String dotString = grapher.toString();
+
+      assertEquals(
+          "digraph Workflow {"                                                                  + EOL +
+          "rankdir=LR"                                                                          + EOL +
+          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"                + EOL +
+          "node1 [label=\"program\"];"                                                          + EOL +
+          "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 width=0.1]"   + EOL +
+          "node2 [label=\"\"];"                                                                 + EOL +
+          "node3 [label=\"\"];"                                                                 + EOL +
+          "node1 -> node3 [label=\"d\"];"                                                       + EOL +
+          "node2 -> node1 [label=\"x\"];"                                                       + EOL +
+          "}"                                                                                   + EOL,
+          dotString);
+      
+      assertEquals("WARNING: No nested @in corresponding to workflow @in 'y' on 'script'" + EOL, super.stderrBuffer.toString());
+  }
+  
  public void testDotGrapher_ThreeProgramsTwoChannel() throws Exception {
      
      String source = 
