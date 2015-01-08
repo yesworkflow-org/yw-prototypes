@@ -1,7 +1,5 @@
 package org.yesworkflow.graph;
 
-import java.io.Writer;
-
 import org.yesworkflow.model.Workflow;
 
 public interface Grapher {

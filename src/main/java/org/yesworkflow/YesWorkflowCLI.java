@@ -244,7 +244,6 @@ public class YesWorkflowCLI {
     }
 
     public void extract() throws Exception {
-        char c = 0;
 
         if (extractor == null) {
            extractor = new DefaultExtractor();
