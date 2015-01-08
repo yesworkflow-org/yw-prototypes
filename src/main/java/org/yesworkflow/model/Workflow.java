@@ -155,6 +155,22 @@ public class Workflow extends Program {
                     inPorts.remove(port);
 			    }
 			}
+
+            // remove from model any workflow in ports with no corresponding nested in ports
+            for (Port port : outPorts) {
+                if (nestedOutPorts.get(port.comment.binding()) == null) {
+                    
+                    stderrStream.println(
+                            "WARNING: No nested @out corresponding to workflow @out '" +
+                            port.comment.binding()                                   +
+                            "' on '"                                                 +
+                            beginComment.programName                                 +
+                            "'"
+                    );
+
+                    outPorts.remove(port);
+                }
+            }			
 			
 			// build the channels between in and out ports
 			for (Map.Entry<String, List<Port>> entry : nestedInPorts.entrySet()) {

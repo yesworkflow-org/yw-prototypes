@@ -190,6 +190,50 @@ public class TestDotGrapher extends YesWorkflowTestCase {
       assertEquals("WARNING: No nested @in corresponding to workflow @in 'y' on 'script'" + EOL, super.stderrBuffer.toString());
   }
   
+  public void testDotGrapher_TwoChannels_OneProgram_TwoInOneOut_ExtraOut() throws Exception {
+      
+      String source = 
+          "# @begin script"       + EOL +
+          "# @in x"               + EOL +
+          "# @out c"              + EOL +
+          "# @out d"              + EOL +
+          "#"                     + EOL +
+          "#   @begin program"    + EOL +
+          "#   @in x"             + EOL +
+          "#   @out d"            + EOL +
+          "#   @end program"      + EOL +                
+          "#"                     + EOL +
+          "# @end script"         + EOL;
+
+      BufferedReader reader = new BufferedReader(new StringReader(source));
+      
+      extractor.sourceReader(reader)
+               .commentCharacter('#')
+               .extract();
+      
+      Workflow workflow = (Workflow)extractor.getProgram();
+
+      grapher.workflow(workflow)
+             .type(GraphType.DATA_FLOW_GRAPH)
+             .graph();
+      
+      String dotString = grapher.toString();
+
+      assertEquals(
+          "digraph Workflow {"                                                                  + EOL +
+          "rankdir=LR"                                                                          + EOL +
+          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"                + EOL +
+          "node1 [label=\"program\"];"                                                          + EOL +
+          "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 width=0.1]"   + EOL +
+          "node2 [label=\"\"];"                                                                 + EOL +
+          "node3 [label=\"\"];"                                                                 + EOL +
+          "node1 -> node3 [label=\"d\"];"                                                       + EOL +
+          "node2 -> node1 [label=\"x\"];"                                                       + EOL +
+          "}"                                                                                   + EOL,
+          dotString);
+      
+      assertEquals("WARNING: No nested @out corresponding to workflow @out 'c' on 'script'" + EOL, super.stderrBuffer.toString());
+  }  
  public void testDotGrapher_ThreeProgramsTwoChannel() throws Exception {
      
      String source = 
