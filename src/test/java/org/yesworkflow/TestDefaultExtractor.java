@@ -22,7 +22,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        extractor = new DefaultExtractor();
+        extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
     }
 
     public void testExtract_BlankLine() throws Exception {

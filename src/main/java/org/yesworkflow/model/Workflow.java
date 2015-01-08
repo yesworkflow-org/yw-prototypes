@@ -1,5 +1,6 @@
 package org.yesworkflow.model;
 
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -44,7 +45,15 @@ public class Workflow extends Program {
 
         private Map<Port,String> programNameForPort = new HashMap<Port,String>();
         private Map<String,Program> programForName = new HashMap<String,Program>();
+        
+        private PrintStream stdoutStream = null;
+        private PrintStream stderrStream = null;
 
+        public Builder(PrintStream stdoutStream, PrintStream stderrStream) {
+            this.stdoutStream = stdoutStream;
+            this.stderrStream = stderrStream;
+        }
+                
 		public Builder begin(BeginComment comment) {
 			this.beginComment = comment;
 			return this;
@@ -131,7 +140,23 @@ public class Workflow extends Program {
 				return new Program(beginComment, endComment, inPorts, outPorts);
 			}
 			
-			// otherwise we're building a workflow and must build its channels
+			// remove from model any workflow in ports with no corresponding nested in ports
+			for (Port port : inPorts) {
+			    if (nestedInPorts.get(port.comment.binding()) == null) {
+                    
+			        stderrStream.println(
+                            "WARNING: No nested @in corresponding to workflow @in '" +
+                            port.comment.binding()                                   +
+                            "' on '"                                                 +
+                            beginComment.programName                                 +
+                            "'"
+                    );
+
+                    inPorts.remove(port);
+			    }
+			}
+			
+			// build the channels between in and out ports
 			for (Map.Entry<String, List<Port>> entry : nestedInPorts.entrySet()) {
 
 				String binding = entry.getKey();

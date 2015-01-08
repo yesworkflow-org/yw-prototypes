@@ -246,7 +246,7 @@ public class YesWorkflowCLI {
     public void extract() throws Exception {
 
         if (extractor == null) {
-           extractor = new DefaultExtractor();
+           extractor = new DefaultExtractor(this.outStream, this.errStream);
         }
 
         if (sourceFilePath.equals("-")) {

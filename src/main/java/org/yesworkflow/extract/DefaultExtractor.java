@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,10 +28,17 @@ public class DefaultExtractor implements Extractor {
     private List<String> commentLines;
     private List<Comment> comments;
     private Program program;
+    private PrintStream stdoutStream = null;
+    private PrintStream stderrStream = null;
 
     @SuppressWarnings("unused")
     private String databasePath = null;
 
+    public DefaultExtractor(PrintStream stdoutStream, PrintStream stderrStream) {
+        this.stdoutStream = stdoutStream;
+        this.stderrStream = stderrStream;
+    }
+    
     @Override
     public DefaultExtractor commentCharacter(char c) {
         this.commentCharacter = c;
@@ -135,7 +143,7 @@ public class DefaultExtractor implements Extractor {
     				parentBuilder = workflowBuilder;
     			}
 
-    			workflowBuilder = new Workflow.Builder()
+    			workflowBuilder = new Workflow.Builder(this.stdoutStream, this.stderrStream)
     				.begin((BeginComment)comment);
 
     		} else if (comment instanceof OutComment) {
