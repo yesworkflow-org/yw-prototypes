@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
-import org.yesworkflow.exceptions.UsageException;
+import org.yesworkflow.exceptions.YWMarkupException;
+import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.graph.DotGrapher;
@@ -25,9 +26,10 @@ import joptsimple.OptionSet;
 
 public class YesWorkflowCLI {
 
-    public static int YW_CLI_SUCCESS = 0;
-    public static int YW_CLI_USAGE_ERROR = -1;
-    public static int YW_CLI_UNCAUGHT_EXCEPTION = -2;
+    public static int YW_CLI_SUCCESS            =  0;
+    public static int YW_UNCAUGHT_EXCEPTION     = -1;
+    public static int YW_CLI_USAGE_EXCEPTION    = -2;
+    public static int YW_MARKUP_EXCEPTION       = -3;
 
     public static final String EOL = System.getProperty("line.separator");
 
@@ -39,7 +41,7 @@ public class YesWorkflowCLI {
             returnValue = new YesWorkflowCLI().runForArgs(args);
         } catch (Exception e) {
             e.printStackTrace();
-            returnValue = YW_CLI_UNCAUGHT_EXCEPTION;
+            returnValue = YW_UNCAUGHT_EXCEPTION;
         }
 
         System.exit(returnValue);
@@ -80,20 +82,19 @@ public class YesWorkflowCLI {
             try {
                 options = parser.parse(args);
             } catch (OptionException exception) {
-                throw new UsageException(exception.getMessage());
+                throw new YWToolUsageException("ERROR: " + exception.getMessage());
             }
 
             // print help and exit if requested
             if (options.has("h")) {
-                errStream.println();
-                parser.printHelpOn(errStream);
+                printCLIHelp();
                 return YW_CLI_SUCCESS;
             }
 
             // extract YesWorkflow command from arguments
             extractCommandFromOptions();
             if (command == null) {
-                throw new UsageException("No command provided to YesWorkflow");
+                throw new YWToolUsageException("ERROR: No command provided to YesWorkflow");
             }
 
             // extract remaining arguments
@@ -114,18 +115,43 @@ public class YesWorkflowCLI {
                 return YW_CLI_SUCCESS;
             }
 
-
-        } catch (UsageException ue) {
-            errStream.print("Usage error: ");
-            errStream.println(ue.getMessage());
-            errStream.println();
-            parser.printHelpOn(errStream);
-            return YW_CLI_USAGE_ERROR;
-        }
+        } catch (YWToolUsageException e) {
+            printToolUsageErrors(e.getMessage());
+            printCLIHelp();
+            return YW_CLI_USAGE_EXCEPTION;
+        } catch (YWMarkupException e) {
+            printMarkupErrors(e.getMessage());
+            return YW_MARKUP_EXCEPTION;
+        } 
 
         return YW_CLI_SUCCESS;
     }
+    
+    private void printMarkupErrors(String message) {
+        errStream.println();
+        errStream.println("******************* YESWORKFLOW MARKUP ERRORS **************************");
+        errStream.println();
+        errStream.print(message);
+        errStream.println();
+        errStream.println("------------------------------------------------------------------------");
+    }
 
+    private void printToolUsageErrors(String message) {
+        errStream.println();
+        errStream.println("****************** YESWORKFLOW TOOL USAGE ERRORS ***********************");
+        errStream.println();
+        errStream.println(message);
+    }
+    
+    private void printCLIHelp() throws IOException {
+        errStream.println();
+        errStream.println("---------------------- YesWorkflow usage summary -----------------------");
+        errStream.println();
+        parser.printHelpOn(errStream);
+        errStream.println();
+        errStream.println("------------------------------------------------------------------------");
+    }
+    
     private void initialize() {
         options = null;
         command = null;

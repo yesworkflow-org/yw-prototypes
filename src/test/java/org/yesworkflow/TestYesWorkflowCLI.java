@@ -15,20 +15,24 @@ import org.yesworkflow.util.YesWorkflowTestCase;
 public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     private static String EXPECTED_HELP_OUTPUT =
-        ""                                                                      + EOL +
-        "Option                     Description                           "     + EOL +
-        "------                     -----------                           "     + EOL +
-        "-c, --command <command>    command to YesWorkflow                "     + EOL +
-        "-d, --database <database>  path to database file for storing     "     + EOL +
-        "                             extracted workflow graph            "     + EOL +
-        "-g, --graph [dot file]     path to graphviz dot file for storing "     + EOL +
-        "                             rendered workflow graph (default: -)"     + EOL +
-        "-h, --help                 display help                          "     + EOL +
-        "-l, --lines [lines file]   path to file for saving extracted     "     + EOL +
-        "                             comment lines (default: -)          "     + EOL +
-        "-s, --source [script]      path to source file to analyze        "     + EOL +
-        "                             (default: -)                        "     + EOL +
-        "-x, --commchar [comment]   comment character                     "     + EOL;
+        ""                                                                          + EOL +
+        "---------------------- YesWorkflow usage summary -----------------------"  + EOL +
+        ""                                                                          + EOL +
+        "Option                     Description                           "         + EOL +
+        "------                     -----------                           "         + EOL +
+        "-c, --command <command>    command to YesWorkflow                "         + EOL +
+        "-d, --database <database>  path to database file for storing     "         + EOL +
+        "                             extracted workflow graph            "         + EOL +
+        "-g, --graph [dot file]     path to graphviz dot file for storing "         + EOL +
+        "                             rendered workflow graph (default: -)"         + EOL +
+        "-h, --help                 display help                          "         + EOL +
+        "-l, --lines [lines file]   path to file for saving extracted     "         + EOL +
+        "                             comment lines (default: -)          "         + EOL +
+        "-s, --source [script]      path to source file to analyze        "         + EOL +
+        "                             (default: -)                        "         + EOL +
+        "-x, --commchar [comment]   comment character                     "         + EOL +
+        ""                                                                          + EOL +
+        "------------------------------------------------------------------------"  + EOL;
 
     @Override
     public void setUp() throws Exception {
@@ -40,7 +44,10 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
-            "Usage error: No command provided to YesWorkflow"   + EOL +
+            ""                                                                          + EOL +
+            "****************** YESWORKFLOW TOOL USAGE ERRORS ***********************"  + EOL +
+            ""                                                                          + EOL +
+            "ERROR: No command provided to YesWorkflow"   + EOL +
             EXPECTED_HELP_OUTPUT,
             stderrBuffer.toString());
     }
@@ -68,10 +75,13 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     public void testYesWorkflowCLI_CommandOption_NoArgument() throws Exception {
         String[] args = {"-c"};
         int returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
-        assertEquals(YesWorkflowCLI.YW_CLI_USAGE_ERROR, returnValue);
+        assertEquals(YesWorkflowCLI.YW_CLI_USAGE_EXCEPTION, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
-            "Usage error: Option c/command requires an argument"     + EOL +
+            ""                                                                          + EOL +
+            "****************** YESWORKFLOW TOOL USAGE ERRORS ***********************"  + EOL +
+            ""                                                                          + EOL +
+            "ERROR: Option c/command requires an argument"                              + EOL +
             EXPECTED_HELP_OUTPUT,
             stderrBuffer.toString());
     }
@@ -79,10 +89,13 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     public void testYesWorkflowCLI_SourceOption_NoArgument() throws Exception {
         String[] args = {"-s"};
         int returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
-        assertEquals(YesWorkflowCLI.YW_CLI_USAGE_ERROR, returnValue);
+        assertEquals(YesWorkflowCLI.YW_CLI_USAGE_EXCEPTION, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
-            "Usage error: No command provided to YesWorkflow"      + EOL +
+            ""                                                                          + EOL +
+            "****************** YESWORKFLOW TOOL USAGE ERRORS ***********************"  + EOL +
+            ""                                                                          + EOL +
+            "ERROR: No command provided to YesWorkflow"                                 + EOL +
             EXPECTED_HELP_OUTPUT,
             stderrBuffer.toString());
     }
@@ -93,7 +106,10 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
-                "Usage error: Input source file not found: no_such_script.py"      + EOL +
+                ""                                                                          + EOL +
+                "****************** YESWORKFLOW TOOL USAGE ERRORS ***********************"  + EOL +
+                ""                                                                          + EOL +
+                "ERROR: Input source file not found: no_such_script.py"      + EOL +
                 EXPECTED_HELP_OUTPUT,
                 stderrBuffer.toString());
     }
