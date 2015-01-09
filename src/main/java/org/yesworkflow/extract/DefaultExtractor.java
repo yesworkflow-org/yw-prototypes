@@ -15,13 +15,16 @@ import org.yesworkflow.comments.Comment;
 import org.yesworkflow.comments.EndComment;
 import org.yesworkflow.comments.InComment;
 import org.yesworkflow.comments.OutComment;
-import org.yesworkflow.exceptions.UsageException;
+import org.yesworkflow.exceptions.YWMarkupException;
+import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.model.Port;
 import org.yesworkflow.model.Program;
 import org.yesworkflow.model.Workflow;
 
 public class DefaultExtractor implements Extractor {
 
+    public static final String EOL = System.getProperty("line.separator");
+    
     private char commentCharacter;
     private BufferedReader sourceReader = null;
     private String sourcePath = null;
@@ -72,6 +75,12 @@ public class DefaultExtractor implements Extractor {
 
         extractLines();
         extractComments();
+        
+        if (comments.isEmpty()) {
+            stderrStream.println("WARNING: No YW comments found in source code.");
+            return;
+        }
+        
         extractWorkflow();
     }
 
@@ -121,7 +130,7 @@ public class DefaultExtractor implements Extractor {
             } else if (tag.equalsIgnoreCase("@out")) {
                 comment = new OutComment(commentLine);
             } else {
-                throw new Exception("Comment tag " + tag + " is not supported");
+                throw new YWMarkupException("ERROR: Comment tag " + tag + " is not supported");
             }
 
             comments.add(comment);
@@ -177,6 +186,17 @@ public class DefaultExtractor implements Extractor {
     			}
     		}
     	}
+    	
+    	// throw exception if missing any paired end comments
+	    StringBuilder messageBuilder = new StringBuilder();
+        do {
+	        messageBuilder.append("ERROR: No @end comment paired with '@begin ");
+	        messageBuilder.append(workflowBuilder.getProgramName());
+            messageBuilder.append("'");
+	        messageBuilder.append(EOL);
+	        workflowBuilder = parentWorkflowBuilders.isEmpty() ? null : parentWorkflowBuilders.pop();
+	    } while (workflowBuilder != null);        
+	    throw new YWMarkupException(messageBuilder.toString());
     }
 
     private String extractTag(String commentLine) {
@@ -203,15 +223,15 @@ public class DefaultExtractor implements Extractor {
         return trimmedLine.substring(ywCommentTagBegin);
     }
 
-    private BufferedReader getFileReaderForPath(String path) throws UsageException {
+    private BufferedReader getFileReaderForPath(String path) throws YWToolUsageException {
 
-        if (sourcePath == null) throw new UsageException("No source path provided to extractor");
+        if (sourcePath == null) throw new YWToolUsageException("No source path provided to extractor");
 
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(path));
         } catch (FileNotFoundException e) {
-            throw new UsageException("Input source file not found: " + path);
+            throw new YWToolUsageException("ERROR: Input source file not found: " + path);
         }
 
         return reader;

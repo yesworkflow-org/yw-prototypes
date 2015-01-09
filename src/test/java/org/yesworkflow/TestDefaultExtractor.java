@@ -9,6 +9,7 @@ import org.yesworkflow.comments.Comment;
 import org.yesworkflow.comments.EndComment;
 import org.yesworkflow.comments.InComment;
 import org.yesworkflow.comments.OutComment;
+import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.model.Channel;
 import org.yesworkflow.model.Program;
@@ -37,6 +38,8 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         List<String> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
+        assertEquals("", super.stdoutBuffer.toString());
+        assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
     }
 
     public void testExtract_BlankComment() throws Exception {
@@ -51,11 +54,13 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         List<String> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
+        assertEquals("", super.stdoutBuffer.toString());
+        assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
     }
     
     public void testExtract_NonComment() throws Exception {
         
-        String source = "# a comment " + EOL;
+        String source = "not a comment " + EOL;
         
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
@@ -65,7 +70,9 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         List<String> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
-    }
+        assertEquals("", super.stdoutBuffer.toString());
+        assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
+   }
     
 
     public void testExtract_NonYWComment() throws Exception {
@@ -80,6 +87,8 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         List<String> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
+        assertEquals("", super.stdoutBuffer.toString());
+        assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
     }
     
     public void testExtract_GetCommentLines_OneComment_Hash() throws Exception {
@@ -88,26 +97,37 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        extractor.sourceReader(reader)
-                 .commentCharacter('#')
-                 .extract();
+        Exception caughtException = null;
+        try {
+            extractor.sourceReader(reader)
+                     .commentCharacter('#')
+                     .extract();
+        } catch (YWMarkupException e) {
+            caughtException = e;
+        }
+        
+        assertNotNull(caughtException);
+        assertEquals("ERROR: No @end comment paired with '@begin main'" + EOL, caughtException.getMessage());
         
         List<String> commentLines = extractor.getLines();
         assertEquals(1,commentLines.size());
         assertEquals("@begin main", commentLines.get(0));
+        assertEquals("", super.stdoutBuffer.toString());
+        assertEquals("", super.stderrBuffer.toString());
     }
 
     public void testExtract_GetCommentLines_MultipleComments_Hash() throws Exception {
         
         String source = 
-                "## @begin step   "  + EOL +
+                "## @begin step   " + EOL +
                 "  some code "      + EOL +
                 "   # @in x  "      + EOL +
                 "     more code"    + EOL +
                 "     more code"    + EOL +
                 " #    @out y"      + EOL +
                 "     more code"    + EOL +
-                "     more code"    + EOL;
+                "     more code"    + EOL +
+                " ##    @end step"  + EOL;
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
@@ -116,10 +136,11 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                  .extract();
         
         List<String> commentLines = extractor.getLines();
-        assertEquals(3,commentLines.size());
+        assertEquals(4,commentLines.size());
         assertEquals("@begin step", commentLines.get(0));
         assertEquals("@in x", commentLines.get(1));
         assertEquals("@out y", commentLines.get(2));
+        assertEquals("@end step", commentLines.get(3));
     }
 
     public void testExtract_GetCommentLines_MultipleComments_Slash() throws Exception {
@@ -132,7 +153,8 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                 "     more code"    + EOL +
                 " //    @out y"     + EOL +
                 "     more code"    + EOL +
-                "     more code"    + EOL;
+                "     more code"    + EOL +
+                " //    @end step"  + EOL;
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
@@ -141,24 +163,32 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                  .extract();
         
         List<String> commentLines = extractor.getLines();
-        assertEquals(3, commentLines.size());
+        assertEquals(4, commentLines.size());
         assertEquals("@begin step", commentLines.get(0));
         assertEquals("@in x", commentLines.get(1));
         assertEquals("@out y", commentLines.get(2));
+        assertEquals("@end step", commentLines.get(3));
     }
     
-    public void testExtract_GetComments_OneComment() throws Exception {
+    public void testExtract_GetComments_OneBeginComment() throws Exception {
         
         String source = "# @begin main" + EOL;
         
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        extractor.sourceReader(reader)
-                 .commentCharacter('#')
-                 .extract();
+        Exception caughtException = null;
+        try {
+            extractor.sourceReader(reader)
+                     .commentCharacter('#')
+                     .extract();
+        } catch (YWMarkupException e) {
+            caughtException = e;
+        }
+        
+        assertNotNull(caughtException);
+        assertEquals("ERROR: No @end comment paired with '@begin main'" + EOL, caughtException.getMessage());
         
         List<Comment> comments = extractor.getComments();
-        
         assertEquals(1, comments.size());
         BeginComment comment = (BeginComment) comments.get(0);
         assertEquals("main", comment.programName);
@@ -317,6 +347,55 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertEquals("program", program.beginComment.programName);
     }
 
+    
+   public void testExtract_GetModel_WorkflowWithOneProgram_MissingFinalEnd() throws Exception {
+        
+        String source = 
+                "# @begin script"       + EOL +
+                "#   @begin program"    + EOL +
+                "#   @end program"      + EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        Exception caughtException = null;
+        try {
+            extractor.sourceReader(reader)
+                     .commentCharacter('#')
+                     .extract();
+        } catch (YWMarkupException e) {
+            caughtException = e;
+        }
+
+        assertNotNull(caughtException);
+        assertEquals("ERROR: No @end comment paired with '@begin script'" + EOL, caughtException.getMessage());
+    }
+   
+   public void testExtract_GetModel_WorkflowWithOneProgram_MissingBothEnds() throws Exception {
+       
+       String source = 
+               "# @begin script"       + EOL +
+               "#   @begin program"    + EOL;
+
+       BufferedReader reader = new BufferedReader(new StringReader(source));
+       
+       Exception caughtException = null;
+       try {
+           extractor.sourceReader(reader)
+                    .commentCharacter('#')
+                    .extract();
+       } catch (YWMarkupException e) {
+           caughtException = e;
+       }
+
+       assertNotNull(caughtException);
+       assertEquals(
+               "ERROR: No @end comment paired with '@begin program'"  + EOL +
+               "ERROR: No @end comment paired with '@begin script'"   + EOL, 
+               caughtException.getMessage()
+       );
+   }   
+   
+    
     public void testExtract_GetModel_WorkflowWithTwoPrograms() throws Exception {
         
         String source = 
