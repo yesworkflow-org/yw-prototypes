@@ -1,10 +1,9 @@
 package org.yesworkflow.exceptions;
 
 @SuppressWarnings("serial")
-public class UsageException extends Exception {
-
-    public UsageException(String message) {
+public class YWException extends Exception {
+    
+    public YWException(String message) {
         super(message);
     }
-
 }
