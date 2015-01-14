@@ -88,13 +88,11 @@ public class TestDotGrapher extends YesWorkflowTestCase {
         String dotString = grapher.toString();
 
         assertEquals(
-            "digraph Workflow {"                                                    + EOL +
-            "rankdir=LR"                                                            + EOL +
-//            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"  + EOL +
-//            "node1 [label=\"program0\"];"                                           + EOL +
-//            "node2 [label=\"program1\"];"                                           + EOL +
-//            "node1 -> node2 [label=\"channel\"];"                                   + EOL +
-            "}"                                                                     + EOL,
+            "digraph Workflow {"                                                            + EOL +
+            "rankdir=LR"                                                                    + EOL +
+            "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"  + EOL +
+            "node1 [label=\"channel\"];"                                                    + EOL +
+            "}"                                                                             + EOL,
             dotString);
     }
         
@@ -178,6 +176,45 @@ public class TestDotGrapher extends YesWorkflowTestCase {
             dotString);
     }
 
+  public void testDotGrapher_DataView_TwoChannels_OneProgram_OneInOneOut() throws Exception {
+      
+      String source = 
+          "# @begin script"       + EOL +
+          "# @in x"               + EOL +
+          "# @out d"              + EOL +
+          "#"                     + EOL +
+          "#   @begin program"    + EOL +
+          "#   @in x"             + EOL +
+          "#   @out d"            + EOL +
+          "#   @end program"      + EOL +                
+          "#"                     + EOL +
+          "# @end script"         + EOL;
+
+      BufferedReader reader = new BufferedReader(new StringReader(source));
+      
+      extractor.sourceReader(reader)
+               .commentCharacter('#')
+               .extract();
+      Workflow workflow = (Workflow)extractor.getProgram();
+
+      grapher.workflow(workflow)
+             .view(GraphView.DATA_CENTRIC_VIEW)
+             .graph();
+      
+      String dotString = grapher.toString();
+
+      assertEquals(
+          "digraph Workflow {"                                                              + EOL +
+          "rankdir=LR"                                                                      + EOL +
+          "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"    + EOL +
+          "node1 [label=\"d\"];"                                                            + EOL +
+          "node2 [label=\"x\"];"                                                            + EOL +
+          "node2 -> node1 [label=\"program\"];"                                             + EOL +
+          "}"                                                                               + EOL,
+          dotString);
+  }
+  
+  
   public void testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut() throws Exception {
       
       String source = 

@@ -330,8 +330,8 @@ public class YesWorkflowCLI {
 
         GraphView view = extractGraphView();
         
-        if (view != GraphView.PROCESS_CENTRIC_VIEW) {
-            throw new YWToolUsageException("YW currently supports only the PROCESS graph view");
+        if (view == GraphView.COMBINED_VIEW) {
+            throw new YWToolUsageException("YW currently does not support the COMBINED graph view");
         }
         
         String graph = new DotGrapher()
