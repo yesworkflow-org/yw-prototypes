@@ -6,6 +6,6 @@ public interface Grapher {
     
     Grapher workflow(Workflow workflow);
     Grapher graph() throws Exception;
-    Grapher type(GraphType type);
+    Grapher view(GraphView type);
     Grapher format(GraphFormat format);
 }

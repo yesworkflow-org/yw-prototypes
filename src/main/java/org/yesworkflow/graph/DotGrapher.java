@@ -10,7 +10,7 @@ public class DotGrapher implements Grapher  {
 	final static String EOL = System.getProperty("line.separator");
 	
     private Workflow workflow = null;
-    private GraphType graphType = null;
+    private GraphView graphView = null;
     private String graphText = null;
 
     @SuppressWarnings("unused")
@@ -23,8 +23,8 @@ public class DotGrapher implements Grapher  {
     }
 
     @Override
-    public DotGrapher type(GraphType graphType) {
-        this.graphType = graphType;
+    public DotGrapher view(GraphView graphView) {
+        this.graphView = graphView;
         return this;
     }
     
@@ -41,23 +41,25 @@ public class DotGrapher implements Grapher  {
     @Override
     public DotGrapher graph() {
         
-        switch(graphType) {
+        switch(graphView) {
         
-            case DATA_FLOW_GRAPH:
-                this.graphText = renderWorkflowGraph();
+            case PROCESS_CENTRIC_VIEW:
+                this.graphText = renderProcessCentricView();
                 break;
             
-            case DATA_DEPENDENCY_GRAPH:
+            case DATA_CENTRIC_VIEW:
+                this.graphText = renderDataCentricView();
                 break;
             
-            case ABSTRACT_PROVENANCE_GRAPH:
+            case COMBINED_VIEW:
+                this.graphText = renderCombinedView();
                 break;
         }
         
         return this;
     }
     
-    private String renderWorkflowGraph() {
+    private String renderProcessCentricView() {
 
 	    DotBuilder dot = new DotBuilder();
 		
@@ -104,5 +106,101 @@ public class DotGrapher implements Grapher  {
 		
 		return dot.toString();
 	}
+    
+    private String renderDataCentricView() {
+
+        DotBuilder dot = new DotBuilder();
+        
+        dot.begin();
+
+//        // draw a box for each program in the workflow
+//        dot.shape("box").fillcolor("#CCFFCC");      
+//        for (Program p : workflow.programs) dot.node(p.beginComment.programName);
+//    
+//        // draw a small circle for each outward facing in and out port
+//        dot.shape("circle").width(0.1).fillcolor("#FFFFFF");
+//        for (Port p : workflow.inPorts) dot.node(p.comment.binding(), "");
+//        for (Port p : workflow.outPorts) dot.node(p.comment.binding(), "");
+//        
+//        for (Channel c : workflow.channels) {
+//            
+//            Program sourceProgram = c.sourceProgram;
+//            Program sinkProgram = c.sinkProgram;
+//            
+//            // draw edges for channels between workflow in ports and programs in workflow
+//            if (sourceProgram == null) {
+//                
+//                dot.edge(c.sinkPort.comment.binding(),
+//                         c.sinkProgram.beginComment.programName,
+//                         c.sinkPort.comment.binding());
+//                
+//            // draw edges for channels between programs in workflow and workflow out ports
+//            } else if (sinkProgram == null) {
+//                
+//                dot.edge(c.sourceProgram.beginComment.programName,
+//                         c.sourcePort.comment.binding(),
+//                         c.sourcePort.comment.binding());
+//                
+//            // draw edges for channels between programs within workflow
+//            } else {
+//            
+//                dot.edge(c.sourceProgram.beginComment.programName,
+//                         c.sinkProgram.beginComment.programName,
+//                         c.sourcePort.comment.binding());
+//            }
+//        }
+                
+        dot.end();
+        
+        return dot.toString();
+    }
+    
+    private String renderCombinedView() {
+
+        DotBuilder dot = new DotBuilder();
+        
+        dot.begin();
+
+//        // draw a box for each program in the workflow
+//        dot.shape("box").fillcolor("#CCFFCC");      
+//        for (Program p : workflow.programs) dot.node(p.beginComment.programName);
+//    
+//        // draw a small circle for each outward facing in and out port
+//        dot.shape("circle").width(0.1).fillcolor("#FFFFFF");
+//        for (Port p : workflow.inPorts) dot.node(p.comment.binding(), "");
+//        for (Port p : workflow.outPorts) dot.node(p.comment.binding(), "");
+//        
+//        for (Channel c : workflow.channels) {
+//            
+//            Program sourceProgram = c.sourceProgram;
+//            Program sinkProgram = c.sinkProgram;
+//            
+//            // draw edges for channels between workflow in ports and programs in workflow
+//            if (sourceProgram == null) {
+//                
+//                dot.edge(c.sinkPort.comment.binding(),
+//                         c.sinkProgram.beginComment.programName,
+//                         c.sinkPort.comment.binding());
+//                
+//            // draw edges for channels between programs in workflow and workflow out ports
+//            } else if (sinkProgram == null) {
+//                
+//                dot.edge(c.sourceProgram.beginComment.programName,
+//                         c.sourcePort.comment.binding(),
+//                         c.sourcePort.comment.binding());
+//                
+//            // draw edges for channels between programs within workflow
+//            } else {
+//            
+//                dot.edge(c.sourceProgram.beginComment.programName,
+//                         c.sinkProgram.beginComment.programName,
+//                         c.sourcePort.comment.binding());
+//            }
+//        }
+                
+        dot.end();
+        
+        return dot.toString();
+    }
 }
 
