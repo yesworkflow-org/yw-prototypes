@@ -1,0 +1,55 @@
+digraph Workflow {
+rankdir=LR
+node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=1]
+node1 [label="GetModernClimate"];
+node2 [label="SubsetAllData"];
+node3 [label="CAR_Analysis_unique"];
+node4 [label="CAR_Analysis_union"];
+node5 [label="CAR_Reconstruction_union"];
+node6 [label="CAR_Reconstruction_union_output"];
+node[shape=circle style="filled" fillcolor="#FFFFFF" peripheries=1 width=0.1]
+node7 [label=""];
+node8 [label=""];
+node9 [label=""];
+node10 [label=""];
+node11 [label=""];
+node12 [label=""];
+node13 [label=""];
+node14 [label=""];
+node15 [label=""];
+node16 [label=""];
+node17 [label=""];
+node18 [label=""];
+node19 [label=""];
+node20 [label=""];
+node21 [label=""];
+node22 [label=""];
+node1 -> node12 [label="PRISM_monthly_net_precipitation"];
+node1 -> node13 [label="PRISM_annual_growing_season_precipitation"];
+node1 -> node2 [label="PRISM_annual_growing_season_precipitation"];
+node1 -> node3 [label="PRISM_annual_growing_season_precipitation"];
+node1 -> node4 [label="PRISM_annual_growing_season_precipitation"];
+node1 -> node5 [label="PRISM_annual_growing_season_precipitation"];
+node2 -> node14 [label="dendro_series_for_calibration"];
+node2 -> node3 [label="dendro_series_for_calibration"];
+node2 -> node4 [label="dendro_series_for_calibration"];
+node2 -> node5 [label="dendro_series_for_calibration"];
+node2 -> node15 [label="dendro_series_for_reconstruction"];
+node2 -> node5 [label="dendro_series_for_reconstruction"];
+node2 -> node16 [label="list_of_predictor_series_through_time"];
+node3 -> node17 [label="cellwise_unique_selected_linear_models"];
+node3 -> node4 [label="cellwise_unique_selected_linear_models"];
+node4 -> node18 [label="cellwise_union_selected_linear_models"];
+node4 -> node5 [label="cellwise_union_selected_linear_models"];
+node5 -> node19 [label="raster_brick_spatial_reconstruction"];
+node5 -> node6 [label="raster_brick_spatial_reconstruction"];
+node5 -> node20 [label="raster_brick_spatial_reconstruction_errors"];
+node5 -> node6 [label="raster_brick_spatial_reconstruction_errors"];
+node6 -> node21 [label="ZuniCibola_PRISM_grow_prcp_ols_loocv_union_recons.tif"];
+node6 -> node22 [label="ZuniCibola_PRISM_grow_prcp_ols_loocv_union_errors.tif"];
+node7 -> node1 [label="master_data_directory"];
+node8 -> node1 [label="prism_directory"];
+node11 -> node2 [label="tree_ring_data"];
+node9 -> node2 [label="calibration_years"];
+node10 -> node2 [label="retrodiction_years"];
+}
