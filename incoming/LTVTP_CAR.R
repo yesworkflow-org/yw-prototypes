@@ -4,15 +4,6 @@
 # @in calibration.years @as calibration_years
 # @in retrodiction.years @as retrodiction_years
 # @in ITRDB.data @as tree_ring_data
-# @out ZuniCibola.PRISM.monthly.prcp @as PRISM_monthly_net_precipitation
-# @out ZuniCibola.PRISM.grow.prcp @as PRISM_annual_growing_season_precipitation
-# @out training.series @as dendro_series_for_calibration
-# @out recon.series @as dendro_series_for_reconstruction
-# @out predlist @as list_of_predictor_series_through_time
-# @out ZuniCibola.PRISM.grow.prcp.models.unique @as cellwise_unique_selected_linear_models
-# @out ZuniCibola.PRISM.grow.prcp.models.union @as cellwise_union_selected_linear_models
-# @out ZuniCibola.PRISM.grow.prcp.recons.union @as raster_brick_spatial_reconstruction
-# @out ZuniCibola.PRISM.grow.prcp.errors.union @as raster_brick_spatial_reconstruction_errors
 # @out ZuniCibola_PRISM_grow_prcp_ols_loocv_union_recons.tif @as ZuniCibola_PRISM_grow_prcp_ols_loocv_union_recons.tif
 # @out ZuniCibola_PRISM_grow_prcp_ols_loocv_union_errors.tif @as ZuniCibola_PRISM_grow_prcp_ols_loocv_union_errors.tif
 
