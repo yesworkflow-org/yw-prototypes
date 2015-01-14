@@ -327,13 +327,8 @@ public class YesWorkflowCLI {
     public void graph() throws Exception {
 
         Program program = extractor.getProgram();
-
         GraphView view = extractGraphView();
-        
-        if (view == GraphView.COMBINED_VIEW) {
-            throw new YWToolUsageException("YW currently does not support the COMBINED graph view");
-        }
-        
+         
         String graph = new DotGrapher()
             .workflow((Workflow)program)
             .view(view)

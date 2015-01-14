@@ -68,7 +68,10 @@ public class DotBuilder {
     }
         
     public DotBuilder node(String name, String label) {
-		
+
+        // TODO Investigate why this is needed
+        if (nodeNameToIdMap.get(name) != null) return this;
+        
 	    if (newNodeStyle) {
 	        renderNodeStyle();
 	        newNodeStyle = false;

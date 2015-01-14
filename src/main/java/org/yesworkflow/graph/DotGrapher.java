@@ -141,42 +141,34 @@ public class DotGrapher implements Grapher  {
         
         dot.begin();
 
-//        // draw a box for each program in the workflow
-//        dot.shape("box").fillcolor("#CCFFCC");      
-//        for (Program p : workflow.programs) dot.node(p.beginComment.programName);
-//    
-//        // draw a small circle for each outward facing in and out port
-//        dot.shape("circle").width(0.1).fillcolor("#FFFFFF");
-//        for (Port p : workflow.inPorts) dot.node(p.comment.binding(), "");
-//        for (Port p : workflow.outPorts) dot.node(p.comment.binding(), "");
-//        
-//        for (Channel c : workflow.channels) {
-//            
-//            Program sourceProgram = c.sourceProgram;
-//            Program sinkProgram = c.sinkProgram;
-//            
-//            // draw edges for channels between workflow in ports and programs in workflow
-//            if (sourceProgram == null) {
-//                
-//                dot.edge(c.sinkPort.comment.binding(),
-//                         c.sinkProgram.beginComment.programName,
-//                         c.sinkPort.comment.binding());
-//                
-//            // draw edges for channels between programs in workflow and workflow out ports
-//            } else if (sinkProgram == null) {
-//                
-//                dot.edge(c.sourceProgram.beginComment.programName,
-//                         c.sourcePort.comment.binding(),
-//                         c.sourcePort.comment.binding());
-//                
-//            // draw edges for channels between programs within workflow
-//            } else {
-//            
-//                dot.edge(c.sourceProgram.beginComment.programName,
-//                         c.sinkProgram.beginComment.programName,
-//                         c.sourcePort.comment.binding());
-//            }
-//        }
+        // draw a box for each program in the workflow
+        dot.shape("box").fillcolor("#CCFFCC");
+        for (Program p : workflow.programs) dot.node(p.beginComment.programName);
+
+        // draw a box for each channel in the workflow
+        dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
+        for (Channel c : workflow.channels) dot.node(c.sourcePort.comment.binding());
+
+        // draw an edge for each pairing of out port and in port for each program
+        for (Program p : workflow.programs) {
+
+            for (Port out : p.outPorts) {
+                dot.edge(
+                    p.beginComment.programName,
+                    out.comment.binding(),
+                    "out"
+                );
+            }
+
+            for (Port in : p.inPorts) {
+                dot.edge(
+                    in.comment.binding(),
+                    p.beginComment.programName,
+                    "in"
+                );
+            }
+            
+        }
                 
         dot.end();
         
