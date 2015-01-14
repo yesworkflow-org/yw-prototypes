@@ -16,7 +16,7 @@ import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.graph.DotGrapher;
-import org.yesworkflow.graph.GraphType;
+import org.yesworkflow.graph.GraphView;
 import org.yesworkflow.model.Program;
 import org.yesworkflow.model.Workflow;
 
@@ -222,6 +222,17 @@ public class YesWorkflowCLI {
     private void extractSourcePathFromOptions() {
     	sourceFilePath = (String) options.valueOf("s");
     }
+    
+    private GraphView extractGraphView() throws YWToolUsageException {
+        
+        String viewString = (String) options.valueOf("v");
+        
+        if (viewString.equalsIgnoreCase("process"))     return GraphView.PROCESS_CENTRIC_VIEW;
+        if (viewString.equalsIgnoreCase("data"))        return GraphView.DATA_CENTRIC_VIEW;
+        if (viewString.equalsIgnoreCase("combined"))    return GraphView.COMBINED_VIEW;
+        
+        throw new YWToolUsageException("Unsupported graph view: " + viewString);
+    }
 
     private OptionParser createOptionsParser() throws Exception {
 
@@ -255,6 +266,12 @@ public class YesWorkflowCLI {
                 .defaultsTo("-")
                 .ofType(String.class)
                 .describedAs("dot file");
+
+            acceptsAll(asList("v", "view"), "view of model to render as a graph")
+                .withRequiredArg()
+                .ofType(String.class)
+                .defaultsTo("process")
+                .describedAs("process|data|combined");
 
             acceptsAll(asList("l", "lines"), "path to file for saving extracted comment lines")
                 .withOptionalArg()
@@ -311,9 +328,15 @@ public class YesWorkflowCLI {
 
         Program program = extractor.getProgram();
 
+        GraphView view = extractGraphView();
+        
+        if (view != GraphView.PROCESS_CENTRIC_VIEW) {
+            throw new YWToolUsageException("YW currently supports only the PROCESS graph view");
+        }
+        
         String graph = new DotGrapher()
             .workflow((Workflow)program)
-            .type(GraphType.DATA_FLOW_GRAPH)
+            .view(view)
             .graph()
             .toString();
 

@@ -15,24 +15,26 @@ import org.yesworkflow.util.YesWorkflowTestCase;
 public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     private static String EXPECTED_HELP_OUTPUT =
-        ""                                                                          + EOL +
-        "---------------------- YesWorkflow usage summary -----------------------"  + EOL +
-        ""                                                                          + EOL +
-        "Option                     Description                           "         + EOL +
-        "------                     -----------                           "         + EOL +
-        "-c, --command <command>    command to YesWorkflow                "         + EOL +
-        "-d, --database <database>  path to database file for storing     "         + EOL +
-        "                             extracted workflow graph            "         + EOL +
-        "-g, --graph [dot file]     path to graphviz dot file for storing "         + EOL +
-        "                             rendered workflow graph (default: -)"         + EOL +
-        "-h, --help                 display help                          "         + EOL +
-        "-l, --lines [lines file]   path to file for saving extracted     "         + EOL +
-        "                             comment lines (default: -)          "         + EOL +
-        "-s, --source [script]      path to source file to analyze        "         + EOL +
-        "                             (default: -)                        "         + EOL +
-        "-x, --commchar [comment]   comment character                     "         + EOL +
-        ""                                                                          + EOL +
-        "------------------------------------------------------------------------"  + EOL;
+        ""                                                                              + EOL +
+        "---------------------- YesWorkflow usage summary -----------------------"      + EOL +
+        ""                                                                              + EOL +
+        "Option                              Description                           "    + EOL +
+        "------                              -----------                           "    + EOL +
+        "-c, --command <command>             command to YesWorkflow                "    + EOL +
+        "-d, --database <database>           path to database file for storing     "    + EOL +
+        "                                      extracted workflow graph            "    + EOL +
+        "-g, --graph [dot file]              path to graphviz dot file for storing "    + EOL +
+        "                                      rendered workflow graph (default: -)"    + EOL +
+        "-h, --help                          display help                          "    + EOL +
+        "-l, --lines [lines file]            path to file for saving extracted     "    + EOL +
+        "                                      comment lines (default: -)          "    + EOL +
+        "-s, --source [script]               path to source file to analyze        "    + EOL +
+        "                                      (default: -)                        "    + EOL +
+        "-v, --view <process|data|combined>  view of model to render as a graph    "    + EOL +
+        "                                      (default: process)                  "    + EOL +
+        "-x, --commchar [comment]            comment character                     "    + EOL +
+        ""                                                                              + EOL +
+        "------------------------------------------------------------------------"      + EOL;
 
     @Override
     public void setUp() throws Exception {

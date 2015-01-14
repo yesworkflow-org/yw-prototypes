@@ -19,7 +19,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
         grapher = new DotGrapher();
     }
 
-    public void testDotGrapher_TwoProgramsOneChannel() throws Exception {
+    public void testDotGrapher_ProcessView_TwoProgramsOneChannel() throws Exception {
         
         String source = 
             "# @begin script"       + EOL +
@@ -42,7 +42,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
         Workflow workflow = (Workflow)extractor.getProgram();
 
         grapher.workflow(workflow)
-               .type(GraphType.DATA_FLOW_GRAPH)
+               .view(GraphView.PROCESS_CENTRIC_VIEW)
                .graph();
         
         String dotString = grapher.toString();
@@ -59,7 +59,85 @@ public class TestDotGrapher extends YesWorkflowTestCase {
     }
     
     
-  public void testDotGrapher_TwoChannels_OneProgram_OneInOneOut() throws Exception {
+    public void testDotGrapher_DataView_TwoProgramsOneChannel() throws Exception {
+        
+        String source = 
+            "# @begin script"       + EOL +
+            "#"                     + EOL +
+            "#   @begin program0"   + EOL +
+            "#   @out channel"      + EOL +
+            "#   @end program0"     + EOL +                
+            "#"                     + EOL +
+            "#   @begin program1"   + EOL +
+            "#   @in channel"       + EOL +
+            "#   @end program1"     + EOL +
+            "#"                     + EOL +
+            "# @end script"         + EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.sourceReader(reader)
+                 .commentCharacter('#')
+                 .extract();
+        Workflow workflow = (Workflow)extractor.getProgram();
+
+        grapher.workflow(workflow)
+               .view(GraphView.DATA_CENTRIC_VIEW)
+               .graph();
+        
+        String dotString = grapher.toString();
+
+        assertEquals(
+            "digraph Workflow {"                                                    + EOL +
+            "rankdir=LR"                                                            + EOL +
+//            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"  + EOL +
+//            "node1 [label=\"program0\"];"                                           + EOL +
+//            "node2 [label=\"program1\"];"                                           + EOL +
+//            "node1 -> node2 [label=\"channel\"];"                                   + EOL +
+            "}"                                                                     + EOL,
+            dotString);
+    }
+        
+    public void testDotGrapher_CombinedView_TwoProgramsOneChannel() throws Exception {
+        
+        String source = 
+            "# @begin script"       + EOL +
+            "#"                     + EOL +
+            "#   @begin program0"   + EOL +
+            "#   @out channel"      + EOL +
+            "#   @end program0"     + EOL +                
+            "#"                     + EOL +
+            "#   @begin program1"   + EOL +
+            "#   @in channel"       + EOL +
+            "#   @end program1"     + EOL +
+            "#"                     + EOL +
+            "# @end script"         + EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.sourceReader(reader)
+                 .commentCharacter('#')
+                 .extract();
+        Workflow workflow = (Workflow)extractor.getProgram();
+
+        grapher.workflow(workflow)
+               .view(GraphView.COMBINED_VIEW)
+               .graph();
+        
+        String dotString = grapher.toString();
+
+        assertEquals(
+            "digraph Workflow {"                                                    + EOL +
+            "rankdir=LR"                                                            + EOL +
+//            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"  + EOL +
+//            "node1 [label=\"program0\"];"                                           + EOL +
+//            "node2 [label=\"program1\"];"                                           + EOL +
+//            "node1 -> node2 [label=\"channel\"];"                                   + EOL +
+            "}"                                                                     + EOL,
+            dotString);
+    }    
+    
+  public void testDotGrapher_ProcessView_TwoChannels_OneProgram_OneInOneOut() throws Exception {
         
         String source = 
             "# @begin script"       + EOL +
@@ -81,7 +159,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
         Workflow workflow = (Workflow)extractor.getProgram();
 
         grapher.workflow(workflow)
-               .type(GraphType.DATA_FLOW_GRAPH)
+               .view(GraphView.PROCESS_CENTRIC_VIEW)
                .graph();
         
         String dotString = grapher.toString();
@@ -100,7 +178,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
             dotString);
     }
 
-  public void testDotGrapher_TwoChannels_OneProgram_TwoInOneOut() throws Exception {
+  public void testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut() throws Exception {
       
       String source = 
           "# @begin script"       + EOL +
@@ -124,7 +202,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
       Workflow workflow = (Workflow)extractor.getProgram();
 
       grapher.workflow(workflow)
-             .type(GraphType.DATA_FLOW_GRAPH)
+             .view(GraphView.PROCESS_CENTRIC_VIEW)
              .graph();
       
       String dotString = grapher.toString();
@@ -145,7 +223,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
           dotString);
   }
   
-  public void testDotGrapher_TwoChannels_OneProgram_TwoInOneOut_ExtraIn() throws Exception {
+  public void testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut_ExtraIn() throws Exception {
       
       String source = 
           "# @begin script"       + EOL +
@@ -169,7 +247,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
       Workflow workflow = (Workflow)extractor.getProgram();
 
       grapher.workflow(workflow)
-             .type(GraphType.DATA_FLOW_GRAPH)
+             .view(GraphView.PROCESS_CENTRIC_VIEW)
              .graph();
       
       String dotString = grapher.toString();
@@ -190,7 +268,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
       assertEquals("WARNING: No nested @in corresponding to workflow @in 'y' on 'script'" + EOL, super.stderrBuffer.toString());
   }
   
-  public void testDotGrapher_TwoChannels_OneProgram_TwoInOneOut_ExtraOut() throws Exception {
+  public void testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut_ExtraOut() throws Exception {
       
       String source = 
           "# @begin script"       + EOL +
@@ -214,7 +292,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
       Workflow workflow = (Workflow)extractor.getProgram();
 
       grapher.workflow(workflow)
-             .type(GraphType.DATA_FLOW_GRAPH)
+             .view(GraphView.PROCESS_CENTRIC_VIEW)
              .graph();
       
       String dotString = grapher.toString();
@@ -234,7 +312,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
       
       assertEquals("WARNING: No nested @out corresponding to workflow @out 'c' on 'script'" + EOL, super.stderrBuffer.toString());
   }  
- public void testDotGrapher_ThreeProgramsTwoChannel() throws Exception {
+ public void testDotGrapher_ProcessView_ThreeProgramsTwoChannel() throws Exception {
      
      String source = 
              "# @begin script"       + EOL +
@@ -262,7 +340,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
      Workflow workflow = (Workflow)extractor.getProgram();
 
      grapher.workflow(workflow)
-            .type(GraphType.DATA_FLOW_GRAPH)
+            .view(GraphView.PROCESS_CENTRIC_VIEW)
             .graph();
      
      String dotString = grapher.toString();
@@ -280,7 +358,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
          dotString);
      }
  
-     public void testDotGrapher_SamplePyScript() throws Exception {
+     public void testDotGrapher_ProcessView_SamplePyScript() throws Exception {
          
          extractor.sourcePath("src/main/resources/example.py")
              .commentCharacter('#')
@@ -289,7 +367,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
          Workflow workflow = (Workflow)extractor.getProgram();
     
          grapher.workflow(workflow)
-                .type(GraphType.DATA_FLOW_GRAPH)
+                .view(GraphView.PROCESS_CENTRIC_VIEW)
                 .graph();
          
          String dotString = grapher.toString();
