@@ -155,23 +155,23 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         cli.runForArgs(args4);
         assertEquals('#', cli.getExtractor().getCommentCharacter());
 
-        String[] args5 = {"-c", "extract", "-s", "incoming/tesetJavaScript.java"};
+        String[] args5 = {"-c", "extract", "-s", "src/test/resources/testJavaScript.java"};
         cli.runForArgs(args5);
         assertEquals('/', cli.getExtractor().getCommentCharacter());
 
-        String[] args6 = {"-c", "extract", "-s", "incoming/tesetMatlab.m"};
+        String[] args6 = {"-c", "extract", "-s", "src/test/resources/testMatlab.m"};
         cli.runForArgs(args6);
         assertEquals('%', cli.getExtractor().getCommentCharacter());
 
-        String[] args7 = {"-c", "extract", "-s", "incoming/tesetMatlab.M"};
+        String[] args7 = {"-c", "extract", "-s", "src/test/resources/testMatlab.M"};
         cli.runForArgs(args7);
         assertEquals('%', cli.getExtractor().getCommentCharacter());
 
-        String[] args8 = {"-c", "extract", "-x", "%", "-s", "incoming/tesetMatlab.m"};
+        String[] args8 = {"-c", "extract", "-x", "%", "-s", "src/test/resources/testMatlab.m"};
         cli.runForArgs(args8);
         assertEquals('%', cli.getExtractor().getCommentCharacter());
 
-        String[] args9 = {"-c", "extract", "-s", "incoming/tesetfileNoExtension"}; // default '#' when file extension is not available
+        String[] args9 = {"-c", "extract", "-s", "src/test/resources/testfileNoExtension"}; // default '#' when file extension is not available
         cli.runForArgs(args9);
         assertEquals('#', cli.getExtractor().getCommentCharacter());
     }
