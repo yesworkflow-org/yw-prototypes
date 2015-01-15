@@ -14,10 +14,10 @@
 
 *** EXAMPLES *** 
 * From script to CSV:
-  $ cat ../resources/example.py | ./file2csv > example.csv
+  $ cat ../resources/example.py | ./script2csv > example.csv
 
 * .. alternatively: 
-  $ ./filecsv ../resources/example.py > example.csv
+  $ ./script2csv ../resources/example.py > example.csv
 
 * From CSV to .gv (graphviz / dot file):
   $ ./script2gv example.csv > example.gv
