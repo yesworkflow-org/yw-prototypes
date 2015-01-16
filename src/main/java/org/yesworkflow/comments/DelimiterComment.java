@@ -31,5 +31,24 @@ public abstract class DelimiterComment extends Comment {
             this.description = null;
         }
     }
+    
+    @Override
+    public String toString() {
+        
+        StringBuffer sb = new StringBuffer();
+        
+        sb.append(this.tag)
+          .append("{name=")
+          .append(this.programName);
+
+        if (this.description != null) {
+          sb.append(",description=")
+            .append(this.description);
+        }
+        
+        sb.append("}");
+        
+        return sb.toString();
+    }
 }
 

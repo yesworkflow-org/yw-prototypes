@@ -5,19 +5,19 @@ import java.util.StringTokenizer;
 public abstract class PortComment extends Comment {
 
     public final String tag;
-    public final String data;
-    public final String label;
+    public final String name;
+    public final String alias;
     public final String description;
     
-    public PortComment(String tag, String data, String label, String description) {
+    public PortComment(String tag, String name, String alias, String description) {
         this.tag = tag;
-        this.data = data;
-        this.label = label;        
+        this.name = name;
+        this.alias = alias;
         this.description = description;
     }
     
     public String binding() {
-        return (label != null) ? label : data;
+        return (alias != null) ? alias : name;
     }
     
     public PortComment(String commentLine, String expectedTag) throws Exception {
@@ -30,23 +30,49 @@ public abstract class PortComment extends Comment {
         }
     
         String token = commentTokens.nextToken();
-        this.data = token;
+        this.name = token;
         
         if (commentTokens.hasMoreTokens()) {
             token = commentTokens.nextToken();
         } else {
-            this.label = null;
+            this.alias = null;
             this.description = null;
             return;
         }
         
         if (token.equalsIgnoreCase("@as")) {
-            this.label = commentTokens.nextToken();
+            this.alias = commentTokens.nextToken();
             this.description = buildDescriptionFromTokens(null, commentTokens);
             return;
         } else {
-            this.label = null;
+            this.alias = null;
             this.description = buildDescriptionFromTokens(token, commentTokens);
         }
+    }
+    
+//        return String.format("%s{name=%s,alias=%s,description=%s}", this.tag, this.name, this.alias, this.description);
+    
+    @Override
+    public String toString() {
+        
+        StringBuffer sb = new StringBuffer();
+        
+        sb.append(this.tag)
+          .append("{name=")
+          .append(this.name);
+
+        if (this.alias != null) {
+            sb.append(",alias=")
+              .append(this.alias);
+        }
+        
+        if (this.description != null) {
+          sb.append(",description=")
+            .append(this.description);
+        }
+        
+        sb.append("}");
+        
+        return sb.toString();
     }
 }
