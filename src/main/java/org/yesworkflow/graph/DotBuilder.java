@@ -83,23 +83,36 @@ public class DotBuilder {
 		_buffer	.append(	id			    )
 				.append(	" [label="	    )
 				.append(	dq(label)	    )				
-				.append(	"];"            )
+				.append(	"]"             )
 				.append(   EOL		        );
 		
 		return this;
 	}
-	
+
+    public DotBuilder edge(String fromNode, String toNode) {
+        return edge(fromNode, toNode, null);
+    }
+
+    
 	public DotBuilder edge(String fromNode, String toNode, String edgeLabel) {
+	    
+		String fromId = nodeNameToIdMap.get(fromNode);
+		if (fromId == null) System.err.println("WARNING: No graph edge from-node with name '" + fromNode + "'");
 		
-		String fromId 	= nodeNameToIdMap.get(fromNode);
-		String toId 	= nodeNameToIdMap.get(toNode);
+		String toId = nodeNameToIdMap.get(toNode);
+        if (toId == null) System.err.println("WARNING: No graph edge to-node with name '" + toNode + "'");
 		
 		_buffer .append(	fromId			)
 				.append(	" -> "			)
-				.append(	toId			)
-				.append(	" [label="		)
+				.append(	toId			);
+		
+		if (edgeLabel != null) {
+		 _buffer.append(	" [label="		)
 				.append(	dq(edgeLabel)	)
-				.append(	"];" + EOL		);
+				.append(	"]"             );
+		}
+		
+		_buffer.append(        EOL		);
 		
 		return this;
 	}
