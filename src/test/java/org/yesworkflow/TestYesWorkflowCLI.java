@@ -285,20 +285,20 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             "digraph Workflow {"                                                                + EOL +
             "rankdir=LR"                                                                        + EOL +
             "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"              + EOL +
-            "node1 [label=\"fetch_mask\"];"                                                     + EOL +
-            "node2 [label=\"load_data\"];"                                                      + EOL +
-            "node3 [label=\"standardize_with_mask\"];"                                          + EOL +
-            "node4 [label=\"simple_diagnose\"];"                                                + EOL +
+            "node1 [label=\"fetch_mask\"]"                                                      + EOL +
+            "node2 [label=\"load_data\"]"                                                       + EOL +
+            "node3 [label=\"standardize_with_mask\"]"                                           + EOL +
+            "node4 [label=\"simple_diagnose\"]"                                                 + EOL +
             "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 width=0.1]" + EOL +
-            "node5 [label=\"\"];"                                                               + EOL +
-            "node6 [label=\"\"];"                                                               + EOL +
-            "node7 [label=\"\"];"                                                               + EOL +
-            "node4 -> node7 [label=\"result_NEE_pdf\"];"                                        + EOL +
-            "node5 -> node1 [label=\"input_mask_file\"];"                                       + EOL +
-            "node6 -> node2 [label=\"input_data_file\"];"                                       + EOL +
-            "node2 -> node3 [label=\"NEE_data\"];"        						                + EOL +
-            "node1 -> node3 [label=\"land_water_mask\"];"        				                + EOL +
-            "node3 -> node4 [label=\"standardized_NEE_data\"];"                                 + EOL +
+            "node5 [label=\"\"]"                                                                + EOL +
+            "node6 [label=\"\"]"                                                                + EOL +
+            "node7 [label=\"\"]"                                                                + EOL +
+            "node4 -> node7 [label=\"result_NEE_pdf\"]"                                         + EOL +
+            "node5 -> node1 [label=\"input_mask_file\"]"                                        + EOL +
+            "node6 -> node2 [label=\"input_data_file\"]"                                        + EOL +
+            "node2 -> node3 [label=\"NEE_data\"]"        						                + EOL +
+            "node1 -> node3 [label=\"land_water_mask\"]"        				                + EOL +
+            "node3 -> node4 [label=\"standardized_NEE_data\"]"                                  + EOL +
             "}"                                                                                 + EOL,
             stdoutBuffer.toString());
     }

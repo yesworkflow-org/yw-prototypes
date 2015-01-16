@@ -223,11 +223,11 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertNull(begin.description);
 
         InComment in = (InComment) comments.get(1);
-        assertEquals("x", in.data);
+        assertEquals("x", in.name);
         assertNull(in.description);
 
         OutComment out = (OutComment) comments.get(2);
-        assertEquals("y", out.data);
+        assertEquals("y", out.name);
         assertNull(out.description);
 
         EndComment end = (EndComment) comments.get(3);
@@ -250,15 +250,15 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertNull(begin0.description);
         
         InComment in1 = (InComment) comments.get(1);
-        assertEquals("LandWaterMask_Global_CRUNCEP.nc", in1.data);
+        assertEquals("LandWaterMask_Global_CRUNCEP.nc", in1.name);
         assertNull(in1.description);
 
         InComment in2 = (InComment) comments.get(2);
-        assertEquals("NEE_first_year.nc", in2.data);
+        assertEquals("NEE_first_year.nc", in2.name);
         assertNull(in2.description);
         
         OutComment out3 = (OutComment) comments.get(3);
-        assertEquals("result_simple.pdf", out3.data);
+        assertEquals("result_simple.pdf", out3.name);
         assertNull(out3.description);
 
         BeginComment begin4 = (BeginComment) comments.get(4);
@@ -266,13 +266,13 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertNull(begin4.description);
         
         InComment in5 = (InComment) comments.get(5);
-        assertEquals("\"LandWaterMask_Global_CRUNCEP.nc\"", in5.data);
-        assertEquals("input_mask_file", in5.label);
+        assertEquals("\"LandWaterMask_Global_CRUNCEP.nc\"", in5.name);
+        assertEquals("input_mask_file", in5.alias);
         assertNull(in5.description);
 
         OutComment out6 = (OutComment) comments.get(6);
-        assertEquals("mask", out6.data);
-        assertEquals("land_water_mask", out6.label);
+        assertEquals("mask", out6.name);
+        assertEquals("land_water_mask", out6.alias);
         assertNull(out6.description);
         
         EndComment end7 = (EndComment) comments.get(7);
@@ -284,13 +284,13 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertNull(begin8.description);
 
         InComment in9 = (InComment) comments.get(9);
-        assertEquals("\"CLM4_BG1_V1_Monthly_NEE.nc4\"", in9.data);
-        assertEquals("input_data_file", in9.label);
+        assertEquals("\"CLM4_BG1_V1_Monthly_NEE.nc4\"", in9.name);
+        assertEquals("input_data_file", in9.alias);
         assertEquals(null, in9.description);
 
         OutComment out10 = (OutComment) comments.get(10);
-        assertEquals("data", out10.data);
-        assertEquals("NEE_data", out10.label);
+        assertEquals("data", out10.name);
+        assertEquals("NEE_data", out10.alias);
         assertNull(out10.description);
         
         EndComment end11 = (EndComment) comments.get(11);
@@ -542,9 +542,9 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         Channel channel = workflow.channels[0];
         assertEquals("program0", channel.sourceProgram.beginComment.programName);
-        assertEquals("channel", channel.sourcePort.comment.data);
+        assertEquals("channel", channel.sourcePort.portComment.name);
         assertEquals("program1", channel.sinkProgram.beginComment.programName);
-        assertEquals("channel", channel.sinkPort.comment.data);
+        assertEquals("channel", channel.sinkPort.portComment.name);
     }
     
     public void testExtract_GetModel_ThreeProgramsMultipleChannels() throws Exception {
@@ -604,14 +604,14 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         Channel channel0 = workflow.channels[0];
         assertEquals("program0", channel0.sourceProgram.beginComment.programName);
-        assertEquals("channel0", channel0.sourcePort.comment.data);
+        assertEquals("channel0", channel0.sourcePort.portComment.name);
         assertEquals("program1", channel0.sinkProgram.beginComment.programName);
-        assertEquals("channel0", channel0.sinkPort.comment.data);
+        assertEquals("channel0", channel0.sinkPort.portComment.name);
 
         Channel channel1 = workflow.channels[1];
         assertEquals("program0", channel1.sourceProgram.beginComment.programName);
-        assertEquals("channel1", channel1.sourcePort.comment.data);
+        assertEquals("channel1", channel1.sourcePort.portComment.name);
         assertEquals("program2", channel1.sinkProgram.beginComment.programName);
-        assertEquals("channel1", channel1.sinkPort.comment.data);
+        assertEquals("channel1", channel1.sinkPort.portComment.name);
     }
 }

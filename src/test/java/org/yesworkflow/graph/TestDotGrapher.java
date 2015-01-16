@@ -51,9 +51,9 @@ public class TestDotGrapher extends YesWorkflowTestCase {
             "digraph Workflow {"                                                    + EOL +
             "rankdir=LR"                                                            + EOL +
             "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"  + EOL +
-            "node1 [label=\"program0\"];"                                           + EOL +
-            "node2 [label=\"program1\"];"                                           + EOL +
-            "node1 -> node2 [label=\"channel\"];"                                   + EOL +
+            "node1 [label=\"program0\"]"                                            + EOL +
+            "node2 [label=\"program1\"]"                                            + EOL +
+            "node1 -> node2 [label=\"channel\"]"                                    + EOL +
             "}"                                                                     + EOL,
             dotString);
     }
@@ -91,7 +91,7 @@ public class TestDotGrapher extends YesWorkflowTestCase {
             "digraph Workflow {"                                                            + EOL +
             "rankdir=LR"                                                                    + EOL +
             "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"  + EOL +
-            "node1 [label=\"channel\"];"                                                    + EOL +
+            "node1 [label=\"channel\"]"                                                     + EOL +
             "}"                                                                             + EOL,
             dotString);
     }
@@ -128,12 +128,12 @@ public class TestDotGrapher extends YesWorkflowTestCase {
             "digraph Workflow {"                                                            + EOL +
             "rankdir=LR"                                                                    + EOL +
             "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"          + EOL +
-            "node1 [label=\"program0\"];"                                                   + EOL +
-            "node2 [label=\"program1\"];"                                                   + EOL +
+            "node1 [label=\"program0\"]"                                                    + EOL +
+            "node2 [label=\"program1\"]"                                                    + EOL +
             "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"  + EOL +
-            "node3 [label=\"channel\"];"                                                    + EOL +
-            "node1 -> node3 [label=\"out\"];"                                               + EOL +
-            "node3 -> node2 [label=\"in\"];"                                                + EOL +
+            "node3 [label=\"channel\"]"                                                     + EOL +
+            "node1 -> node3"                                                                + EOL +
+            "node3 -> node2"                                                                + EOL +
             "}"                                                                             + EOL,
             dotString);
     }    
@@ -169,12 +169,12 @@ public class TestDotGrapher extends YesWorkflowTestCase {
             "digraph Workflow {"                                                                + EOL +
             "rankdir=LR"                                                                        + EOL +
             "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"              + EOL +
-            "node1 [label=\"program\"];"                                                        + EOL +
+            "node1 [label=\"program\"]"                                                         + EOL +
             "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 width=0.1]" + EOL +
-            "node2 [label=\"\"];"                                                               + EOL +
-            "node3 [label=\"\"];"                                                               + EOL +
-            "node1 -> node3 [label=\"d\"];"                                                     + EOL +
-            "node2 -> node1 [label=\"x\"];"                                                     + EOL +
+            "node2 [label=\"\"]"                                                                + EOL +
+            "node3 [label=\"\"]"                                                                + EOL +
+            "node1 -> node3 [label=\"d\"]"                                                      + EOL +
+            "node2 -> node1 [label=\"x\"]"                                                      + EOL +
             "}"                                                                                 + EOL,
             dotString);
     }
@@ -210,9 +210,9 @@ public class TestDotGrapher extends YesWorkflowTestCase {
           "digraph Workflow {"                                                              + EOL +
           "rankdir=LR"                                                                      + EOL +
           "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"    + EOL +
-          "node1 [label=\"d\"];"                                                            + EOL +
-          "node2 [label=\"x\"];"                                                            + EOL +
-          "node2 -> node1 [label=\"program\"];"                                             + EOL +
+          "node1 [label=\"d\"]"                                                             + EOL +
+          "node2 [label=\"x\"]"                                                             + EOL +
+          "node2 -> node1 [label=\"program\"]"                                              + EOL +
           "}"                                                                               + EOL,
           dotString);
   }
@@ -248,12 +248,12 @@ public class TestDotGrapher extends YesWorkflowTestCase {
           "digraph Workflow {"                                                              + EOL +
           "rankdir=LR"                                                                      + EOL +
           "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"            + EOL +
-          "node1 [label=\"program\"];"                                                      + EOL +
+          "node1 [label=\"program\"]"                                                       + EOL +
           "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"    + EOL +
-          "node2 [label=\"d\"];"                                                            + EOL +
-          "node3 [label=\"x\"];"                                                            + EOL +
-          "node1 -> node2 [label=\"out\"];"                                                 + EOL +
-          "node3 -> node1 [label=\"in\"];"                                                  + EOL +
+          "node2 [label=\"d\"]"                                                             + EOL +
+          "node3 [label=\"x\"]"                                                             + EOL +
+          "node1 -> node2"                                                                  + EOL +
+          "node3 -> node1"                                                                  + EOL +
           "}"                                                                               + EOL,
           dotString);
   }
@@ -292,14 +292,14 @@ public class TestDotGrapher extends YesWorkflowTestCase {
           "digraph Workflow {"                                                                  + EOL +
           "rankdir=LR"                                                                          + EOL +
           "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"                + EOL +
-          "node1 [label=\"program\"];"                                                          + EOL +
+          "node1 [label=\"program\"]"                                                           + EOL +
           "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 width=0.1]"   + EOL +
-          "node2 [label=\"\"];"                                                                 + EOL +
-          "node3 [label=\"\"];"                                                                 + EOL +
-          "node4 [label=\"\"];"                                                                 + EOL +
-          "node1 -> node4 [label=\"d\"];"                                                       + EOL +
-          "node2 -> node1 [label=\"x\"];"                                                       + EOL +
-          "node3 -> node1 [label=\"y\"];"                                                       + EOL +
+          "node2 [label=\"\"]"                                                                  + EOL +
+          "node3 [label=\"\"]"                                                                  + EOL +
+          "node4 [label=\"\"]"                                                                  + EOL +
+          "node1 -> node4 [label=\"d\"]"                                                        + EOL +
+          "node2 -> node1 [label=\"x\"]"                                                        + EOL +
+          "node3 -> node1 [label=\"y\"]"                                                        + EOL +
           "}"                                                                                   + EOL,
           dotString);
   }
@@ -337,11 +337,11 @@ public class TestDotGrapher extends YesWorkflowTestCase {
           "digraph Workflow {"                                                                  + EOL +
           "rankdir=LR"                                                                          + EOL +
           "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"        + EOL +
-          "node1 [label=\"d\"];"                                                                + EOL +
-          "node2 [label=\"x\"];"                                                                + EOL +
-          "node3 [label=\"y\"];"                                                                + EOL +
-          "node2 -> node1 [label=\"program\"];"                                                 + EOL +
-          "node3 -> node1 [label=\"program\"];"                                                 + EOL +
+          "node1 [label=\"d\"]"                                                                 + EOL +
+          "node2 [label=\"x\"]"                                                                 + EOL +
+          "node3 [label=\"y\"]"                                                                 + EOL +
+          "node2 -> node1 [label=\"program\"]"                                                  + EOL +
+          "node3 -> node1 [label=\"program\"]"                                                  + EOL +
           "}"                                                                                   + EOL,
           dotString);
   }
@@ -379,14 +379,14 @@ public class TestDotGrapher extends YesWorkflowTestCase {
           "digraph Workflow {"                                                              + EOL +
           "rankdir=LR"                                                                      + EOL +
           "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"            + EOL +
-          "node1 [label=\"program\"];"                                                      + EOL +
+          "node1 [label=\"program\"]"                                                       + EOL +
           "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"    + EOL +
-          "node2 [label=\"d\"];"                                                            + EOL +
-          "node3 [label=\"x\"];"                                                            + EOL +
-          "node4 [label=\"y\"];"                                                            + EOL +
-          "node1 -> node2 [label=\"out\"];"                                                 + EOL +
-          "node3 -> node1 [label=\"in\"];"                                                  + EOL +
-          "node4 -> node1 [label=\"in\"];"                                                  + EOL +
+          "node2 [label=\"d\"]"                                                             + EOL +
+          "node3 [label=\"x\"]"                                                             + EOL +
+          "node4 [label=\"y\"]"                                                             + EOL +
+          "node1 -> node2"                                                                  + EOL +
+          "node3 -> node1"                                                                  + EOL +
+          "node4 -> node1"                                                                  + EOL +
           "}"                                                                               + EOL,
           dotString);
   }
@@ -424,16 +424,16 @@ public class TestDotGrapher extends YesWorkflowTestCase {
           "digraph Workflow {"                                                                  + EOL +
           "rankdir=LR"                                                                          + EOL +
           "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"                + EOL +
-          "node1 [label=\"program\"];"                                                          + EOL +
+          "node1 [label=\"program\"]"                                                           + EOL +
           "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 width=0.1]"   + EOL +
-          "node2 [label=\"\"];"                                                                 + EOL +
-          "node3 [label=\"\"];"                                                                 + EOL +
-          "node1 -> node3 [label=\"d\"];"                                                       + EOL +
-          "node2 -> node1 [label=\"x\"];"                                                       + EOL +
+          "node2 [label=\"\"]"                                                                  + EOL +
+          "node3 [label=\"\"]"                                                                  + EOL +
+          "node1 -> node3 [label=\"d\"]"                                                        + EOL +
+          "node2 -> node1 [label=\"x\"]"                                                        + EOL +
           "}"                                                                                   + EOL,
           dotString);
-      
-      assertEquals("WARNING: No nested @in corresponding to workflow @in 'y' on 'script'" + EOL, super.stderrBuffer.toString());
+
+      assertEquals("WARNING: No nested @in port and no workflow @out port for nested @out 'y' in workflow 'script'" + EOL, super.stderrBuffer.toString());
   }
   
   public void testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut_ExtraOut() throws Exception {
@@ -469,17 +469,18 @@ public class TestDotGrapher extends YesWorkflowTestCase {
           "digraph Workflow {"                                                                  + EOL +
           "rankdir=LR"                                                                          + EOL +
           "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"                + EOL +
-          "node1 [label=\"program\"];"                                                          + EOL +
+          "node1 [label=\"program\"]"                                                           + EOL +
           "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 width=0.1]"   + EOL +
-          "node2 [label=\"\"];"                                                                 + EOL +
-          "node3 [label=\"\"];"                                                                 + EOL +
-          "node1 -> node3 [label=\"d\"];"                                                       + EOL +
-          "node2 -> node1 [label=\"x\"];"                                                       + EOL +
+          "node2 [label=\"\"]"                                                                  + EOL +
+          "node3 [label=\"\"]"                                                                  + EOL +
+          "node1 -> node3 [label=\"d\"]"                                                        + EOL +
+          "node2 -> node1 [label=\"x\"]"                                                        + EOL +
           "}"                                                                                   + EOL,
           dotString);
       
-      assertEquals("WARNING: No nested @out corresponding to workflow @out 'c' on 'script'" + EOL, super.stderrBuffer.toString());
-  }  
+      assertEquals("WARNING: No nested @out port and no workflow @in port for nested @in 'c' on 'script'" + EOL, super.stderrBuffer.toString());
+  }
+  
  public void testDotGrapher_ProcessView_ThreeProgramsTwoChannel() throws Exception {
      
      String source = 
@@ -517,11 +518,11 @@ public class TestDotGrapher extends YesWorkflowTestCase {
          "digraph Workflow {"                                                               + EOL +
          "rankdir=LR"                                                                       + EOL +
          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"             + EOL +
-         "node1 [label=\"program0\"];"                                                      + EOL +
-         "node2 [label=\"program1\"];"                                                      + EOL +
-         "node3 [label=\"program2\"];"                                                      + EOL +
-         "node1 -> node2 [label=\"channel0\"];"                                             + EOL +
-         "node1 -> node3 [label=\"channel1\"];"                                             + EOL +
+         "node1 [label=\"program0\"]"                                                       + EOL +
+         "node2 [label=\"program1\"]"                                                       + EOL +
+         "node3 [label=\"program2\"]"                                                       + EOL +
+         "node1 -> node2 [label=\"channel0\"]"                                              + EOL +
+         "node1 -> node3 [label=\"channel1\"]"                                              + EOL +
          "}"                                                                                + EOL,
          dotString);
      }
@@ -544,20 +545,20 @@ public class TestDotGrapher extends YesWorkflowTestCase {
                  "digraph Workflow {"                                                                   + EOL +
                  "rankdir=LR"                                                                           + EOL +
                  "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"                 + EOL +
-                 "node1 [label=\"fetch_mask\"];"                                                        + EOL +
-                 "node2 [label=\"load_data\"];"                                                         + EOL +
-                 "node3 [label=\"standardize_with_mask\"];"                                             + EOL +
-                 "node4 [label=\"simple_diagnose\"];"                                                   + EOL +
+                 "node1 [label=\"fetch_mask\"]"                                                         + EOL +
+                 "node2 [label=\"load_data\"]"                                                          + EOL +
+                 "node3 [label=\"standardize_with_mask\"]"                                              + EOL +
+                 "node4 [label=\"simple_diagnose\"]"                                                    + EOL +
                  "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 width=0.1]"    + EOL +
-                 "node5 [label=\"\"];"                                                                  + EOL +
-                 "node6 [label=\"\"];"                                                                  + EOL +
-                 "node7 [label=\"\"];"                                                                  + EOL +
-                 "node4 -> node7 [label=\"result_NEE_pdf\"];"                                           + EOL +
-                 "node5 -> node1 [label=\"input_mask_file\"];"                                          + EOL +
-                 "node6 -> node2 [label=\"input_data_file\"];"                                          + EOL +
-                 "node2 -> node3 [label=\"NEE_data\"];"                                                 + EOL +
-                 "node1 -> node3 [label=\"land_water_mask\"];"                                          + EOL +
-                 "node3 -> node4 [label=\"standardized_NEE_data\"];"                                    + EOL +
+                 "node5 [label=\"\"]"                                                                   + EOL +
+                 "node6 [label=\"\"]"                                                                   + EOL +
+                 "node7 [label=\"\"]"                                                                   + EOL +
+                 "node4 -> node7 [label=\"result_NEE_pdf\"]"                                            + EOL +
+                 "node5 -> node1 [label=\"input_mask_file\"]"                                           + EOL +
+                 "node6 -> node2 [label=\"input_data_file\"]"                                           + EOL +
+                 "node2 -> node3 [label=\"NEE_data\"]"                                                  + EOL +
+                 "node1 -> node3 [label=\"land_water_mask\"]"                                           + EOL +
+                 "node3 -> node4 [label=\"standardized_NEE_data\"]"                                     + EOL +
                  "}"                                                                                    + EOL,
              dotString);
      }
@@ -580,17 +581,17 @@ public class TestDotGrapher extends YesWorkflowTestCase {
                  "digraph Workflow {"                                                                   + EOL +
                  "rankdir=LR"                                                                           + EOL +
                  "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"         + EOL +
-                 "node1 [label=\"result_NEE_pdf\"];"                                                    + EOL +
-                 "node2 [label=\"input_mask_file\"];"                                                   + EOL +
-                 "node3 [label=\"input_data_file\"];"                                                   + EOL +
-                 "node4 [label=\"NEE_data\"];"                                                          + EOL +
-                 "node5 [label=\"land_water_mask\"];"                                                   + EOL +
-                 "node6 [label=\"standardized_NEE_data\"];"                                             + EOL +
-                 "node2 -> node5 [label=\"fetch_mask\"];"                                               + EOL +
-                 "node3 -> node4 [label=\"load_data\"];"                                                + EOL +
-                 "node4 -> node6 [label=\"standardize_with_mask\"];"                                    + EOL +
-                 "node5 -> node6 [label=\"standardize_with_mask\"];"                                    + EOL +
-                 "node6 -> node1 [label=\"simple_diagnose\"];"                                          + EOL +
+                 "node1 [label=\"result_NEE_pdf\"]"                                                     + EOL +
+                 "node2 [label=\"input_mask_file\"]"                                                    + EOL +
+                 "node3 [label=\"input_data_file\"]"                                                    + EOL +
+                 "node4 [label=\"NEE_data\"]"                                                           + EOL +
+                 "node5 [label=\"land_water_mask\"]"                                                    + EOL +
+                 "node6 [label=\"standardized_NEE_data\"]"                                              + EOL +
+                 "node2 -> node5 [label=\"fetch_mask\"]"                                                + EOL +
+                 "node3 -> node4 [label=\"load_data\"]"                                                 + EOL +
+                 "node4 -> node6 [label=\"standardize_with_mask\"]"                                     + EOL +
+                 "node5 -> node6 [label=\"standardize_with_mask\"]"                                     + EOL +
+                 "node6 -> node1 [label=\"simple_diagnose\"]"                                           + EOL +
                  "}"                                                                                    + EOL,
              dotString);
      }
@@ -613,26 +614,26 @@ public class TestDotGrapher extends YesWorkflowTestCase {
                  "digraph Workflow {"                                                                   + EOL +
                  "rankdir=LR"                                                                           + EOL +
                  "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"                 + EOL +
-                 "node1 [label=\"fetch_mask\"];"                                                        + EOL +
-                 "node2 [label=\"load_data\"];"                                                         + EOL +
-                 "node3 [label=\"standardize_with_mask\"];"                                             + EOL +
-                 "node4 [label=\"simple_diagnose\"];"                                                   + EOL +
+                 "node1 [label=\"fetch_mask\"]"                                                         + EOL +
+                 "node2 [label=\"load_data\"]"                                                          + EOL +
+                 "node3 [label=\"standardize_with_mask\"]"                                              + EOL +
+                 "node4 [label=\"simple_diagnose\"]"                                                    + EOL +
                  "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"         + EOL +
-                 "node5 [label=\"result_NEE_pdf\"];"                                                    + EOL +
-                 "node6 [label=\"input_mask_file\"];"                                                   + EOL +
-                 "node7 [label=\"input_data_file\"];"                                                   + EOL +
-                 "node8 [label=\"NEE_data\"];"                                                          + EOL +
-                 "node9 [label=\"land_water_mask\"];"                                                   + EOL +
-                 "node10 [label=\"standardized_NEE_data\"];"                                            + EOL +
-                 "node1 -> node9 [label=\"out\"];"                                                      + EOL +
-                 "node6 -> node1 [label=\"in\"];"                                                       + EOL +
-                 "node2 -> node8 [label=\"out\"];"                                                      + EOL +
-                 "node7 -> node2 [label=\"in\"];"                                                       + EOL +
-                 "node3 -> node10 [label=\"out\"];"                                                     + EOL +
-                 "node8 -> node3 [label=\"in\"];"                                                       + EOL +
-                 "node9 -> node3 [label=\"in\"];"                                                       + EOL +
-                 "node4 -> node5 [label=\"out\"];"                                                      + EOL +
-                 "node10 -> node4 [label=\"in\"];"                                                      + EOL +
+                 "node5 [label=\"result_NEE_pdf\"]"                                                     + EOL +
+                 "node6 [label=\"input_mask_file\"]"                                                    + EOL +
+                 "node7 [label=\"input_data_file\"]"                                                    + EOL +
+                 "node8 [label=\"NEE_data\"]"                                                           + EOL +
+                 "node9 [label=\"land_water_mask\"]"                                                    + EOL +
+                 "node10 [label=\"standardized_NEE_data\"]"                                             + EOL +
+                 "node1 -> node9"                                                                       + EOL +
+                 "node6 -> node1"                                                                       + EOL +
+                 "node2 -> node8"                                                                       + EOL +
+                 "node7 -> node2"                                                                       + EOL +
+                 "node3 -> node10"                                                                      + EOL +
+                 "node8 -> node3"                                                                       + EOL +
+                 "node9 -> node3"                                                                       + EOL +
+                 "node4 -> node5"                                                                       + EOL +
+                 "node10 -> node4"                                                                      + EOL +
                  "}"                                                                                    + EOL,
              dotString);
      }
