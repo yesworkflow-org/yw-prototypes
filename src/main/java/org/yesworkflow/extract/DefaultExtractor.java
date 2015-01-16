@@ -158,13 +158,13 @@ public class DefaultExtractor implements Extractor {
     		} else if (comment instanceof OutComment) {
     		    Port outPort = workflowBuilder.outPort((OutComment)comment);
     			if (parentBuilder != null) {
-    				parentBuilder.nestedOutPort(outPort, workflowBuilder.getProgramName());
+    				parentBuilder.nestedOutPort(outPort);
     			}
 
     		} else if (comment instanceof InComment) {
                 Port inPort = workflowBuilder.inPort((InComment)comment);
                 if (parentBuilder != null) {
-    				parentBuilder.nestedInPort(inPort, workflowBuilder.getProgramName());
+    				parentBuilder.nestedInPort(inPort);
     			}
 
     		} else if (comment instanceof EndComment) {
