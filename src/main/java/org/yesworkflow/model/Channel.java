@@ -15,15 +15,15 @@ public class Channel {
 		this.sinkPort = sinkPort;
 	}
 	
-	public class Builder {
-		
-		public Program sourceProgram;
-		public Port sourcePort;
-		public Program sinkProgram;
-		public Port sinkPort;
-		
-		Channel build() {
-			return new Channel(sourceProgram, sourcePort, sinkProgram, sinkPort);
-		}		
-	}
+   @Override
+   public String toString() {
+       StringBuffer sb = new StringBuffer();
+       sb.append(this.sourcePort.portComment.binding());
+       sb.append("[");
+       if (this.sourceProgram != null) sb.append(this.sourceProgram);
+       sb.append("->");
+       if (this.sinkProgram != null) sb.append(this.sinkProgram);
+       sb.append("]");
+       return sb.toString();
+   }
 }

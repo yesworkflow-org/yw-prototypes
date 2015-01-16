@@ -18,4 +18,9 @@ public class Program {
 	    this.inPorts = inPorts.toArray(new Port[inPorts.size()]);
 	    this.outPorts = outPorts.toArray(new Port[outPorts.size()]);
 	}
+	
+	@Override
+	public String toString() {
+	    return this.beginComment.programName;
+	}
 }
