@@ -299,6 +299,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             "subgraph cluster0 {"                                                                           + EOL +
             " label=\"main\""                                                                               + EOL +
             " penwidth=2"                                                                                   + EOL +
+            " fontsize=18"                                                                                  + EOL +
             ""                                                                                              + EOL +
             "/* Set node style for programs in workflow */"                                                 + EOL +
             "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"     + EOL +

@@ -61,6 +61,8 @@ public class DotBuilder {
                .append(     dq(label)           )
                .append(     EOL                 )
                .append(     " penwidth=2"       )
+               .append(     EOL                 )
+               .append(     " fontsize=18"      )
                .append(     EOL                 );
 
         return this;
