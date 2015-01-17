@@ -53,14 +53,17 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
             "rankdir=LR"                                                                                    + EOL +
             "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 label=\"\" width=0.1]"  + EOL +
             "subgraph cluster0 {"                                                                           + EOL +
-            " label=\"script\""                                                                             + EOL +
-            " penwidth=2"                                                                                   + EOL +
-            " fontsize=18"                                                                                  + EOL +
+            "label=\"script\""                                                                              + EOL +
+            "penwidth=2"                                                                                    + EOL +
+            "fontsize=18"                                                                                   + EOL +
+            "subgraph cluster1 {"                                                                           + EOL +
+            "label=\"\""                                                                                    + EOL +
+            "color=\"white\""                                                                               + EOL +
             "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"     + EOL +
             "node1 [label=\"program0\"]"                                                                    + EOL +
             "node2 [label=\"program1\"]"                                                                    + EOL +
             "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"     + EOL +
-            "}"                                                                                             + EOL +
+            "}}"                                                                                            + EOL +
             "node1 -> node2 [label=\"channel\"]"                                                            + EOL +
             "}"                                                                                             + EOL,
             dotString);
@@ -101,13 +104,16 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
             "node1"                                                                                         + EOL +
             "node2"                                                                                         + EOL +
             "subgraph cluster0 {"                                                                           + EOL +
-            " label=\"script\""                                                                             + EOL +
-            " penwidth=2"                                                                                   + EOL +
-            " fontsize=18"                                                                                  + EOL +
+            "label=\"script\""                                                                              + EOL +
+            "penwidth=2"                                                                                    + EOL +
+            "fontsize=18"                                                                                   + EOL +
+            "subgraph cluster1 {"                                                                           + EOL +
+            "label=\"\""                                                                                    + EOL +
+            "color=\"white\""                                                                               + EOL +
             "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"     + EOL +
             "node3 [label=\"program\"]"                                                                     + EOL +
             "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"     + EOL +
-            "}"                                                                                             + EOL +
+            "}}"                                                                                            + EOL +
             "node3 -> node2 [label=\"d\"]"                                                                  + EOL +
             "node1 -> node3 [label=\"x\"]"                                                                  + EOL +
             "}"                                                                                             + EOL,
@@ -152,13 +158,16 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
           "node2"                                                                                           + EOL +
           "node3"                                                                                           + EOL +
           "subgraph cluster0 {"                                                                             + EOL +
-          " label=\"script\""                                                                               + EOL +
-          " penwidth=2"                                                                                     + EOL +
-          " fontsize=18"                                                                                    + EOL +
+          "label=\"script\""                                                                                + EOL +
+          "penwidth=2"                                                                                      + EOL +
+          "fontsize=18"                                                                                     + EOL +
+          "subgraph cluster1 {"                                                                             + EOL +
+          "label=\"\""                                                                                      + EOL +
+          "color=\"white\""                                                                                 + EOL +
           "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"       + EOL +
           "node4 [label=\"program\"]"                                                                       + EOL +
           "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"       + EOL +
-          "}"                                                                                               + EOL +
+          "}}"                                                                                              + EOL +
           "node4 -> node3 [label=\"d\"]"                                                                    + EOL +
           "node1 -> node4 [label=\"x\"]"                                                                    + EOL +
           "node2 -> node4 [label=\"y\"]"                                                                    + EOL +
@@ -203,13 +212,16 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
           "node1"                                                                                       + EOL +
           "node2"                                                                                       + EOL +
           "subgraph cluster0 {"                                                                         + EOL +
-          " label=\"script\""                                                                           + EOL +
-          " penwidth=2"                                                                                 + EOL +
-          " fontsize=18"                                                                                + EOL +
+          "label=\"script\""                                                                            + EOL +
+          "penwidth=2"                                                                                  + EOL +
+          "fontsize=18"                                                                                 + EOL +
+          "subgraph cluster1 {"                                                                         + EOL +
+          "label=\"\""                                                                                  + EOL +
+          "color=\"white\""                                                                             + EOL +
           "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"   + EOL +
           "node3 [label=\"program\"]"                                                                   + EOL +
           "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"   + EOL +
-          "}"                                                                                           + EOL +
+          "}}"                                                                                          + EOL +
           "node3 -> node2 [label=\"d\"]"                                                                + EOL +
           "node1 -> node3 [label=\"x\"]"                                                                + EOL +
           "}"                                                                                           + EOL,
@@ -255,13 +267,16 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
           "node1"                                                                                           + EOL +
           "node2"                                                                                           + EOL +
           "subgraph cluster0 {"                                                                             + EOL +
-          " label=\"script\""                                                                               + EOL +
-          " penwidth=2"                                                                                     + EOL +
-          " fontsize=18"                                                                                    + EOL +          
+          "label=\"script\""                                                                                + EOL +
+          "penwidth=2"                                                                                      + EOL +
+          "fontsize=18"                                                                                     + EOL +
+          "subgraph cluster1 {"                                                                             + EOL +
+          "label=\"\""                                                                                      + EOL +
+          "color=\"white\""                                                                                 + EOL +
           "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"       + EOL +
           "node3 [label=\"program\"]"                                                                       + EOL +
           "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"       + EOL +
-          "}"                                                                                               + EOL +
+          "}}"                                                                                              + EOL +
           "node3 -> node2 [label=\"d\"]"                                                                    + EOL +
           "node1 -> node3 [label=\"x\"]"                                                                    + EOL +
           "}"                                                                                               + EOL,
@@ -309,15 +324,18 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
          "rankdir=LR"                                                                                   + EOL +
          "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 label=\"\" width=0.1]" + EOL +
          "subgraph cluster0 {"                                                                          + EOL +
-         " label=\"script\""                                                                            + EOL +
-         " penwidth=2"                                                                                  + EOL +
-         " fontsize=18"                                                                                 + EOL +
+         "label=\"script\""                                                                             + EOL +
+         "penwidth=2"                                                                                   + EOL +
+         "fontsize=18"                                                                                  + EOL +
+         "subgraph cluster1 {"                                                                          + EOL +
+         "label=\"\""                                                                                   + EOL +
+         "color=\"white\""                                                                              + EOL +
          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"    + EOL +
          "node1 [label=\"program0\"]"                                                                   + EOL +
          "node2 [label=\"program1\"]"                                                                   + EOL +
          "node3 [label=\"program2\"]"                                                                   + EOL +
          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"    + EOL +
-         "}"                                                                                            + EOL +
+         "}}"                                                                                           + EOL +
          "node1 -> node2 [label=\"channel0\"]"                                                          + EOL +
          "node1 -> node3 [label=\"channel1\"]"                                                          + EOL +
          "}"                                                                                            + EOL,
@@ -380,16 +398,19 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
          "node1"                                                                                        + EOL +
          "node2"                                                                                        + EOL +
          "subgraph cluster0 {"                                                                          + EOL +
-         " label=\"workflow\""                                                                          + EOL +
-         " penwidth=2"                                                                                  + EOL +
-         " fontsize=18"                                                                                  + EOL +
+         "label=\"workflow\""                                                                           + EOL +
+         "penwidth=2"                                                                                   + EOL +
+         "fontsize=18"                                                                                  + EOL +
+         "subgraph cluster1 {"                                                                          + EOL +
+         "label=\"\""                                                                                   + EOL +
+         "color=\"white\""                                                                              + EOL +
          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"    + EOL +
          "node3 [label=\"program0\"]"                                                                   + EOL +
          "node4 [label=\"program4\"]"                                                                   + EOL +
          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"    + EOL +
          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"    + EOL +
          "node5 [label=\"subWorkflow\"]"                                                                + EOL +
-         "}"                                                                                            + EOL +
+         "}}"                                                                                           + EOL +
          "node4 -> node2 [label=\"workflowOutput\"]"                                                    + EOL +
          "node1 -> node3 [label=\"workflowInput\"]"                                                     + EOL +
          "node3 -> node5 [label=\"channel0\"]"                                                          + EOL +
@@ -397,15 +418,18 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
          "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 label=\"\" width=0.1]" + EOL +
          "node6"                                                                                        + EOL +
          "node7"                                                                                        + EOL +
-         "subgraph cluster1 {"                                                                          + EOL +
-         " label=\"subWorkflow\""                                                                       + EOL +
-         " penwidth=2"                                                                                  + EOL +
-         " fontsize=18"                                                                                  + EOL +
+         "subgraph cluster2 {"                                                                          + EOL +
+         "label=\"subWorkflow\""                                                                        + EOL +
+         "penwidth=2"                                                                                   + EOL +
+         "fontsize=18"                                                                                  + EOL +
+         "subgraph cluster3 {"                                                                          + EOL +
+         "label=\"\""                                                                                   + EOL +
+         "color=\"white\""                                                                              + EOL +
          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"    + EOL +
          "node8 [label=\"program2\"]"                                                                   + EOL +
          "node9 [label=\"program3\"]"                                                                   + EOL +
          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"    + EOL +
-         "}"                                                                                            + EOL +
+         "}}"                                                                                           + EOL +
          "node9 -> node7 [label=\"channel3\"]"                                                          + EOL +
          "node6 -> node8 [label=\"channel0\"]"                                                          + EOL +
          "node8 -> node9 [label=\"channel2\"]"                                                          + EOL +
@@ -436,16 +460,19 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
                  "node2"                                                                                        + EOL +
                  "node3"                                                                                        + EOL +
                  "subgraph cluster0 {"                                                                          + EOL +
-                 " label=\"main\""                                                                              + EOL +
-                 " penwidth=2"                                                                                  + EOL +
-                 " fontsize=18"                                                                                 + EOL +
+                 "label=\"main\""                                                                               + EOL +
+                 "penwidth=2"                                                                                   + EOL +
+                 "fontsize=18"                                                                                  + EOL +
+                 "subgraph cluster1 {"                                                                          + EOL +
+                 "label=\"\""                                                                                   + EOL +
+                 "color=\"white\""                                                                              + EOL +
                  "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"    + EOL +
                  "node4 [label=\"fetch_mask\"]"                                                                 + EOL +
                  "node5 [label=\"load_data\"]"                                                                  + EOL +
                  "node6 [label=\"standardize_with_mask\"]"                                                      + EOL +
                  "node7 [label=\"simple_diagnose\"]"                                                            + EOL +
                  "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"    + EOL +
-                 "}"                                                                                            + EOL +
+                 "}}"                                                                                           + EOL +
                  "node7 -> node3 [label=\"result_NEE_pdf\"]"                                                    + EOL +
                  "node1 -> node4 [label=\"input_mask_file\"]"                                                   + EOL +
                  "node2 -> node5 [label=\"input_data_file\"]"                                                   + EOL +

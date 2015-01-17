@@ -57,12 +57,25 @@ public class DotBuilder {
                .append(     name                )
                .append(     " {"                )
                .append(     EOL                 )
-               .append(     " label="           )
+               .append(     "label="            )
                .append(     dq(label)           )
                .append(     EOL                 )
-               .append(     " penwidth=2"       )
+               .append(     "penwidth=2"        )
                .append(     EOL                 )
-               .append(     " fontsize=18"      )
+               .append(     "fontsize=18"       )
+               .append(     EOL                 );
+        
+        name = "cluster" + subgraphCount++;
+        
+        _buffer.append(     "subgraph "         )
+               .append(     name                )
+               .append(     " {"                )
+               .append(     EOL                 )
+               .append(     "label="            )
+               .append(     dq("")              )
+               .append(     EOL                 )
+               .append(     "color="            )
+               .append(     dq("white")         )
                .append(     EOL                 );
 
         return this;
@@ -185,7 +198,7 @@ public class DotBuilder {
 
 	
    public DotBuilder endSubraph() {
-        _buffer .append(    "}" + EOL       );
+        _buffer .append(    "}}" + EOL       );
         return this;
     }
 

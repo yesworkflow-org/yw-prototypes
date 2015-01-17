@@ -297,9 +297,12 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             ""                                                                                              + EOL +
             "/* Start of cluster for drawing box around programs in workflow */"                            + EOL +
             "subgraph cluster0 {"                                                                           + EOL +
-            " label=\"main\""                                                                               + EOL +
-            " penwidth=2"                                                                                   + EOL +
-            " fontsize=18"                                                                                  + EOL +
+            "label=\"main\""                                                                                + EOL +
+            "penwidth=2"                                                                                    + EOL +
+            "fontsize=18"                                                                                   + EOL +
+            "subgraph cluster1 {"                                                                           + EOL +
+                "label=\"\""                                                                                + EOL +
+            "color=\"white\""                                                                               + EOL +
             ""                                                                                              + EOL +
             "/* Set node style for programs in workflow */"                                                 + EOL +
             "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"     + EOL +
@@ -316,7 +319,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             "/* Nodes representing subworkflows in workflow */"                                             + EOL +
             ""                                                                                              + EOL +
             "/* End of cluster for drawing box around programs in workflow */"                              + EOL +
-            "}"                                                                                             + EOL +
+            "}}"                                                                                           + EOL +
             ""                                                                                              + EOL +
             "/* Directed edges for each channel in workflow */"                                             + EOL +
             "node7 -> node3 [label=\"result_NEE_pdf\"]"                                                     + EOL +
