@@ -280,6 +280,72 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
          dotString);
      }
  
+ public void testDotGrapher_ProcessView_NestedSubworkflow() throws Exception {
+     
+     String source = 
+             "# @begin workflow"            + EOL +
+             "# @in workflowInput"          + EOL +
+             "# @out workflowOutput"        + EOL +
+             "#"                            + EOL +
+             "#   @begin program0"          + EOL +
+             "#   @in workflowInput"        + EOL +
+             "#   @out channel0"            + EOL +
+             "#   @end program0"            + EOL +                
+             "#"                            + EOL +
+             "#   @begin subWorkflow"       + EOL +
+             "#   @in channel0"             + EOL +
+             "#   @out channel3"            + EOL +
+             "#"                            + EOL +
+             "#     @begin program2"        + EOL +
+             "#     @in channel1"           + EOL +
+             "#     @out channel2"          + EOL +
+             "#     @end program2"          + EOL +
+             "#"                            + EOL +
+             "#     @begin program3"        + EOL +
+             "#     @in channel2"           + EOL +
+             "#     @out channel3"          + EOL +
+             "#     @end program3"          + EOL +                
+             "#"                            + EOL +
+             "#   @end subWorkflow"         + EOL +
+             "#"                            + EOL +
+             "#   @begin program4"          + EOL +
+             "#   @in channel3"             + EOL +
+             "#   @out workflowOutput"      + EOL +
+             "#   @end program4"            + EOL +
+             "#"                            + EOL +
+             "# @end workflow"              + EOL;
+
+     BufferedReader reader = new BufferedReader(new StringReader(source));
+     
+     extractor.sourceReader(reader)
+              .commentCharacter('#')
+              .extract();
+     Workflow workflow = (Workflow)extractor.getProgram();
+
+     grapher.workflow(workflow)
+            .view(GraphView.PROCESS_CENTRIC_VIEW)
+            .graph();
+     
+     String dotString = grapher.toString();
+
+     assertEquals(
+         "digraph Workflow {"                                                                   + EOL +
+         "rankdir=LR"                                                                           + EOL +
+         "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"                 + EOL +
+         "node1 [label=\"program0\"]"                                                           + EOL +
+         "node2 [label=\"subWorkflow\"]"                                                        + EOL +
+         "node3 [label=\"program4\"]"                                                           + EOL +
+         "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 width=0.1]"    + EOL +
+         "node4 [label=\"\"]"                                                                   + EOL +
+         "node5 [label=\"\"]"                                                                   + EOL +
+         "node3 -> node5 [label=\"workflowOutput\"]"                                            + EOL +
+         "node4 -> node1 [label=\"workflowInput\"]"                                             + EOL +
+         "node1 -> node2 [label=\"channel0\"]"                                                  + EOL +
+         "node2 -> node3 [label=\"channel3\"]"                                                  + EOL +
+         "}"                                                                                    + EOL,
+         dotString);
+     }
+ 
      public void testDotGrapher_ProcessView_SamplePyScript() throws Exception {
          
          extractor.sourcePath("src/main/resources/example.py")
