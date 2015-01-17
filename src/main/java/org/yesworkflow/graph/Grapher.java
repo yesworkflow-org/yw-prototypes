@@ -8,4 +8,5 @@ public interface Grapher {
     Grapher graph() throws Exception;
     Grapher view(GraphView type);
     Grapher format(GraphFormat format);
+    DotGrapher enableComments(boolean state);
 }
