@@ -48,11 +48,11 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         String dotString = grapher.toString();
 
         assertEquals(
-            "digraph Workflow {"                                                            + EOL +
-            "rankdir=LR"                                                                    + EOL +
-            "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"  + EOL +
-            "node1 [label=\"channel\"]"                                                     + EOL +
-            "}"                                                                             + EOL,
+            "digraph Workflow {"                                                                        + EOL +
+            "rankdir=LR"                                                                                + EOL +
+            "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]"   + EOL +
+            "node1 [label=\"channel\"]"                                                                 + EOL +
+            "}"                                                                                         + EOL,
             dotString);
     }
         
@@ -84,13 +84,13 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
       String dotString = grapher.toString();
 
       assertEquals(
-          "digraph Workflow {"                                                              + EOL +
-          "rankdir=LR"                                                                      + EOL +
-          "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"    + EOL +
-          "node1 [label=\"d\"]"                                                             + EOL +
-          "node2 [label=\"x\"]"                                                             + EOL +
-          "node2 -> node1 [label=\"program\"]"                                              + EOL +
-          "}"                                                                               + EOL,
+          "digraph Workflow {"                                                                      + EOL +
+          "rankdir=LR"                                                                              + EOL +
+          "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
+          "node1 [label=\"d\"]"                                                                     + EOL +
+          "node2 [label=\"x\"]"                                                                     + EOL +
+          "node2 -> node1 [label=\"program\"]"                                                      + EOL +
+          "}"                                                                                       + EOL,
           dotString);
   }
   
@@ -125,15 +125,15 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
       String dotString = grapher.toString();
 
       assertEquals(
-          "digraph Workflow {"                                                                  + EOL +
-          "rankdir=LR"                                                                          + EOL +
-          "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"        + EOL +
-          "node1 [label=\"d\"]"                                                                 + EOL +
-          "node2 [label=\"x\"]"                                                                 + EOL +
-          "node3 [label=\"y\"]"                                                                 + EOL +
-          "node2 -> node1 [label=\"program\"]"                                                  + EOL +
-          "node3 -> node1 [label=\"program\"]"                                                  + EOL +
-          "}"                                                                                   + EOL,
+          "digraph Workflow {"                                                                      + EOL +
+          "rankdir=LR"                                                                              + EOL +
+          "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
+          "node1 [label=\"d\"]"                                                                     + EOL +
+          "node2 [label=\"x\"]"                                                                     + EOL +
+          "node3 [label=\"y\"]"                                                                     + EOL +
+          "node2 -> node1 [label=\"program\"]"                                                      + EOL +
+          "node3 -> node1 [label=\"program\"]"                                                      + EOL +
+          "}"                                                                                       + EOL,
           dotString);
   }
   
@@ -153,21 +153,21 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
          String dotString = grapher.toString();
     
          assertEquals(
-                 "digraph Workflow {"                                                                   + EOL +
-                 "rankdir=LR"                                                                           + EOL +
-                 "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1]"         + EOL +
-                 "node1 [label=\"result_NEE_pdf\"]"                                                     + EOL +
-                 "node2 [label=\"input_mask_file\"]"                                                    + EOL +
-                 "node3 [label=\"input_data_file\"]"                                                    + EOL +
-                 "node4 [label=\"NEE_data\"]"                                                           + EOL +
-                 "node5 [label=\"land_water_mask\"]"                                                    + EOL +
-                 "node6 [label=\"standardized_NEE_data\"]"                                              + EOL +
-                 "node2 -> node5 [label=\"fetch_mask\"]"                                                + EOL +
-                 "node3 -> node4 [label=\"load_data\"]"                                                 + EOL +
-                 "node4 -> node6 [label=\"standardize_with_mask\"]"                                     + EOL +
-                 "node5 -> node6 [label=\"standardize_with_mask\"]"                                     + EOL +
-                 "node6 -> node1 [label=\"simple_diagnose\"]"                                           + EOL +
-                 "}"                                                                                    + EOL,
+                 "digraph Workflow {"                                                                       + EOL +
+                 "rankdir=LR"                                                                               + EOL +
+                 "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]"  + EOL +
+                 "node1 [label=\"result_NEE_pdf\"]"                                                         + EOL +
+                 "node2 [label=\"input_mask_file\"]"                                                        + EOL +
+                 "node3 [label=\"input_data_file\"]"                                                        + EOL +
+                 "node4 [label=\"NEE_data\"]"                                                               + EOL +
+                 "node5 [label=\"land_water_mask\"]"                                                        + EOL +
+                 "node6 [label=\"standardized_NEE_data\"]"                                                  + EOL +
+                 "node2 -> node5 [label=\"fetch_mask\"]"                                                    + EOL +
+                 "node3 -> node4 [label=\"load_data\"]"                                                     + EOL +
+                 "node4 -> node6 [label=\"standardize_with_mask\"]"                                         + EOL +
+                 "node5 -> node6 [label=\"standardize_with_mask\"]"                                         + EOL +
+                 "node6 -> node1 [label=\"simple_diagnose\"]"                                               + EOL +
+                 "}"                                                                                        + EOL,
              dotString);
      }
 }

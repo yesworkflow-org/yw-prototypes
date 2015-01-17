@@ -282,24 +282,49 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         cli.runForArgs(args);
 
         assertEquals(
-            "digraph Workflow {"                                                                + EOL +
-            "rankdir=LR"                                                                        + EOL +
-            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1]"              + EOL +
-            "node1 [label=\"fetch_mask\"]"                                                      + EOL +
-            "node2 [label=\"load_data\"]"                                                       + EOL +
-            "node3 [label=\"standardize_with_mask\"]"                                           + EOL +
-            "node4 [label=\"simple_diagnose\"]"                                                 + EOL +
-            "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 width=0.1]" + EOL +
-            "node5 [label=\"\"]"                                                                + EOL +
-            "node6 [label=\"\"]"                                                                + EOL +
-            "node7 [label=\"\"]"                                                                + EOL +
-            "node4 -> node7 [label=\"result_NEE_pdf\"]"                                         + EOL +
-            "node5 -> node1 [label=\"input_mask_file\"]"                                        + EOL +
-            "node6 -> node2 [label=\"input_data_file\"]"                                        + EOL +
-            "node2 -> node3 [label=\"NEE_data\"]"        						                + EOL +
-            "node1 -> node3 [label=\"land_water_mask\"]"        				                + EOL +
-            "node3 -> node4 [label=\"standardized_NEE_data\"]"                                  + EOL +
-            "}"                                                                                 + EOL,
+            "digraph Workflow {"                                                                            + EOL +
+            "rankdir=LR"                                                                                    + EOL +
+            ""                                                                                              + EOL +
+            "/* Set node style for input and output ports */"                                               + EOL +
+            "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 label=\"\" width=0.1]"  + EOL +
+            ""                                                                                              + EOL +
+            "/* Nodes representing workflow input ports */"                                                 + EOL +
+            "node1"                                                                                         + EOL +
+            "node2"                                                                                         + EOL +
+            ""                                                                                              + EOL +
+            "/* Nodes representing workflow output ports */"                                                + EOL +
+            "node3"                                                                                         + EOL +
+            ""                                                                                              + EOL +
+            "/* Start of cluster for drawing box around programs in workflow */"                            + EOL +
+            "subgraph cluster0 {"                                                                           + EOL +
+            " label=\"main\""                                                                               + EOL +
+            " penwidth=2"                                                                                   + EOL +
+            ""                                                                                              + EOL +
+            "/* Set node style for programs in workflow */"                                                 + EOL +
+            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"     + EOL +
+            ""                                                                                              + EOL +
+            "/* Nodes representing programs in workflow */"                                                 + EOL +
+            "node4 [label=\"fetch_mask\"]"                                                                  + EOL +
+            "node5 [label=\"load_data\"]"                                                                   + EOL +
+            "node6 [label=\"standardize_with_mask\"]"                                                       + EOL +
+            "node7 [label=\"simple_diagnose\"]"                                                             + EOL +
+            ""                                                                                              + EOL +
+            "/* Set node style for subworkflows in workflow */"                                             + EOL +
+            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"     + EOL +
+            ""                                                                                              + EOL +
+            "/* Nodes representing subworkflows in workflow */"                                             + EOL +
+            ""                                                                                              + EOL +
+            "/* End of cluster for drawing box around programs in workflow */"                              + EOL +
+            "}"                                                                                             + EOL +
+            ""                                                                                              + EOL +
+            "/* Directed edges for each channel in workflow */"                                             + EOL +
+            "node7 -> node3 [label=\"result_NEE_pdf\"]"                                                     + EOL +
+            "node1 -> node4 [label=\"input_mask_file\"]"                                                    + EOL +
+            "node2 -> node5 [label=\"input_data_file\"]"                                                    + EOL +
+            "node5 -> node6 [label=\"NEE_data\"]"                                                           + EOL +
+            "node4 -> node6 [label=\"land_water_mask\"]"                                                    + EOL +
+            "node6 -> node7 [label=\"standardized_NEE_data\"]"                                              + EOL +
+            "}"                                                                                             + EOL,
             stdoutBuffer.toString());
     }
 
