@@ -13,6 +13,7 @@ public class DotBuilder {
 
     private StringBuilder _buffer = new StringBuilder();
 	private int nodeCount = 0;
+    private int subgraphCount = 0;
 	private Map<String,String> nodeNameToIdMap = new HashMap<String,String>();
     private String fillcolor = "#FFFFFF";
     private String shape = "box";
@@ -20,15 +21,51 @@ public class DotBuilder {
     private String style = "filled";
     private boolean newNodeStyle = true;
     private Double width = null;
+    private boolean commentsEnabled = true;
 
-	public DotBuilder begin() {
+	public DotBuilder beginGraph() {
 	    
 		_buffer.append(	"digraph Workflow {" + EOL )
 		       .append( "rankdir=LR"         + EOL );
 
 		return this;
 	}
+	
+    public DotBuilder enableComments(boolean state) {
+        commentsEnabled = state;
+        return this;
+    }
+	
+    public DotBuilder comment(String c) {
+        
+        if (commentsEnabled) {
+            _buffer.append(     EOL     )
+                   .append(     "/* "   )
+                   .append(     c       )
+                   .append(     " */"   )
+                   .append(     EOL     );
+        }
+        
+        return this;
+    }
 
+    public DotBuilder beginSubgraph(String label) {
+        
+        String name = "cluster" + subgraphCount++;
+        
+        _buffer.append(     "subgraph "         )
+               .append(     name                )
+               .append(     " {"                )
+               .append(     EOL                 )
+               .append(     " label="           )
+               .append(     dq(label)           )
+               .append(     EOL                 )
+               .append(     " penwidth=2"       )
+               .append(     EOL                 );
+
+        return this;
+    }
+		
    public DotBuilder shape(String s) {
         this.shape = s;
         newNodeStyle = true;
@@ -52,7 +89,7 @@ public class DotBuilder {
         newNodeStyle = true;
         return this;
     }
-
+    
     public DotBuilder width(double w) {
         return width(new Double(w));
     }
@@ -73,18 +110,21 @@ public class DotBuilder {
         if (nodeNameToIdMap.get(name) != null) return this;
         
 	    if (newNodeStyle) {
-	        renderNodeStyle();
-	        newNodeStyle = false;
+	        flushNodeStyle();
 	    }
 	    
 		String id = "node" + ++nodeCount;
 		nodeNameToIdMap.put(name, id);
 		
-		_buffer	.append(	id			    )
-				.append(	" [label="	    )
-				.append(	dq(label)	    )				
-				.append(	"]"             )
-				.append(   EOL		        );
+		_buffer	.append(      id			   );
+		
+		if (label != null) {
+		    _buffer.append(	  " [label="	   )
+				   .append(	   dq(label)	   )				
+				   .append(	   "]"             );
+		}
+		
+		_buffer.append(       EOL		       );
 		
 		return this;
 	}
@@ -117,7 +157,8 @@ public class DotBuilder {
 		return this;
 	}
 	
-	private void renderNodeStyle() {
+	public void flushNodeStyle() {
+	    
         _buffer.append(    "node["          )
                .append(    "shape="         )
                .append(    shape            )
@@ -126,7 +167,9 @@ public class DotBuilder {
                .append(   " fillcolor="     )
                .append(    dq(fillcolor)    )
                .append(    " peripheries="  )
-               .append(    peripheries      );
+               .append(    peripheries      )
+               .append(    " label="        )
+               .append(    dq("")           );
         
         if (width != null) {
             _buffer.append(   " width="     )
@@ -134,9 +177,17 @@ public class DotBuilder {
         }
         
         _buffer.append(    "]" + EOL        );
+        
+        newNodeStyle = false;
 	}
+
 	
-	public DotBuilder end() {
+   public DotBuilder endSubraph() {
+        _buffer .append(    "}" + EOL       );
+        return this;
+    }
+
+	public DotBuilder endGraph() {
 		_buffer	.append(	"}" + EOL		);
         return this;
 	}
