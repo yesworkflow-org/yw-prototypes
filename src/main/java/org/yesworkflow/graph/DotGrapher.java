@@ -15,9 +15,17 @@ public class DotGrapher implements Grapher  {
     private Workflow workflow = null;
     private GraphView graphView = null;
     private String graphText = null;
+    private boolean commentsEnabled = true;
 
     @SuppressWarnings("unused")
     private GraphFormat graphFormat = null;
+    
+    
+    @Override
+    public DotGrapher enableComments(boolean state) {
+        commentsEnabled = state;
+        return this;
+    }
     
     @Override
     public DotGrapher workflow(Workflow workflow) {
@@ -66,61 +74,108 @@ public class DotGrapher implements Grapher  {
 
 	    DotBuilder dot = new DotBuilder();
 		
-		dot.begin();
-
-		// draw a box for each program in the workflow
-		dot.shape("box").fillcolor("#CCFFCC");		
-		for (Program p : workflow.programs) dot.node(p.beginComment.programName);
-	
-		// draw a small circle for each outward facing in and out port
-		dot.shape("circle").width(0.1).fillcolor("#FFFFFF");
+		dot.beginGraph()
+		   .enableComments(commentsEnabled);
 		
-		for (Port p : workflow.inPorts) {
-		    String binding = p.portComment.binding(); 
-		    if (workflowHasChannelForBinding(binding)) {
-		        dot.node(binding, "");
-		    }
-		}
+		renderProgramAsProcess(this.workflow, dot, 1);
 		
-        for (Port p : workflow.outPorts) {
-            String binding = p.portComment.binding(); 
-            if (workflowHasChannelForBinding(binding)) {
-                dot.node(binding, "");
-            }
-        }
-		
-		for (Channel c : workflow.channels) {
-		    
-		    Program sourceProgram = c.sourceProgram;
-		    Program sinkProgram = c.sinkProgram;
-		    
-		    // draw edges for channels between workflow in ports and programs in workflow
-		    if (sourceProgram == null) {
-		        
-                dot.edge(c.sinkPort.portComment.binding(),
-                         c.sinkProgram.beginComment.programName,
-                         c.sinkPort.portComment.binding());
-		        
-            // draw edges for channels between programs in workflow and workflow out ports
-		    } else if (sinkProgram == null) {
-		        
-                dot.edge(c.sourceProgram.beginComment.programName,
-                         c.sourcePort.portComment.binding(),
-                         c.sourcePort.portComment.binding());
-		        
-            // draw edges for channels between programs within workflow
-		    } else {
-		    
-    			dot.edge(c.sourceProgram.beginComment.programName,
-    			         c.sinkProgram.beginComment.programName,
-    			         c.sourcePort.portComment.binding());
-		    }
-		}
-
-		dot.end();
+		dot.endGraph();
 		
 		return dot.toString();
 	}
+    
+    private void renderProgramAsProcess(Workflow workflow, DotBuilder dot, int depth) {
+
+        // draw a small circle for each outward facing in and out port
+        dot.comment("Set node style for input and output ports");
+        dot.shape("circle").peripheries(1).width(0.1).fillcolor("#FFFFFF");
+        dot.flushNodeStyle();       
+        
+        dot.comment("Nodes representing workflow input ports");
+        for (Port p : workflow.inPorts) {
+            String binding = p.portComment.binding(); 
+            if (workflowHasChannelForBinding(binding)) {
+                dot.node(binding, null);
+            }
+        }
+        
+        dot.comment("Nodes representing workflow output ports");
+        for (Port p : workflow.outPorts) {
+            String binding = p.portComment.binding(); 
+            if (workflowHasChannelForBinding(binding)) {
+                dot.node(binding, null);
+            }
+        }
+        
+        dot.comment("Start of cluster for drawing box around programs in workflow");
+        dot.beginSubgraph(workflow.toString());
+    
+        dot.comment("Set node style for programs in workflow");
+        dot.shape("box").peripheries(1).fillcolor("#CCFFCC");      
+        dot.flushNodeStyle();
+        
+        dot.comment("Nodes representing programs in workflow");
+        for (Program p : workflow.programs) {
+            if (! (p instanceof Workflow)) {
+                dot.node(p.beginComment.programName);
+            }
+        }
+
+        dot.comment("Set node style for subworkflows in workflow");
+        dot.shape("box").peripheries(2).fillcolor("#CCFFCC");      
+        dot.flushNodeStyle();
+
+        dot.comment("Nodes representing subworkflows in workflow");
+        dot.shape("box").peripheries(depth+1).fillcolor("#CCFFCC");   
+        for (Program p : workflow.programs) {
+            if (p instanceof Workflow) {
+                dot.node(p.beginComment.programName);
+            }
+        }
+
+        dot.comment("End of cluster for drawing box around programs in workflow");
+        dot.endSubraph();
+
+        
+        dot.comment("Directed edges for each channel in workflow");
+        for (Channel c : workflow.channels) {
+            
+            Program sourceProgram = c.sourceProgram;
+            Program sinkProgram = c.sinkProgram;
+            
+            // draw edges for channels between workflow in ports and programs in workflow
+            if (sourceProgram == null) {
+                
+                dot.edge(c.sinkPort.portComment.binding(),
+                         c.sinkProgram.beginComment.programName,
+                         c.sinkPort.portComment.binding());
+                
+            // draw edges for channels between programs in workflow and workflow out ports
+            } else if (sinkProgram == null) {
+                
+                dot.edge(c.sourceProgram.beginComment.programName,
+                         c.sourcePort.portComment.binding(),
+                         c.sourcePort.portComment.binding());
+                
+            // draw edges for channels between programs within workflow
+            } else {
+            
+                dot.edge(c.sourceProgram.beginComment.programName,
+                         c.sinkProgram.beginComment.programName,
+                         c.sourcePort.portComment.binding());
+            }
+        }
+        
+
+        // render subworkflows
+        for (Program p : workflow.programs) {
+            if (p instanceof Workflow) {
+                renderProgramAsProcess((Workflow)p, dot, depth + 1);
+            }
+        }
+    }
+    
+    
     
     private boolean workflowHasChannelForBinding(String binding) {
         for (Channel c : workflow.channels) {
@@ -135,7 +190,7 @@ public class DotGrapher implements Grapher  {
 
         DotBuilder dot = new DotBuilder();
         
-        dot.begin();
+        dot.beginGraph();
 
         // draw a box for each channel in the workflow
         dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
@@ -164,7 +219,7 @@ public class DotGrapher implements Grapher  {
             }
         }
 
-        dot.end();
+        dot.endGraph();
 
         return dot.toString();
     }
@@ -173,7 +228,7 @@ public class DotGrapher implements Grapher  {
 
         DotBuilder dot = new DotBuilder();
         
-        dot.begin();
+        dot.beginGraph();
 
         // draw a box for each program in the workflow
         dot.shape("box").fillcolor("#CCFFCC");
@@ -215,7 +270,7 @@ public class DotGrapher implements Grapher  {
             }
         }
 
-        dot.end();
+        dot.endGraph();
         
         return dot.toString();
     }
