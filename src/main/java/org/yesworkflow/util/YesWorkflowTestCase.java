@@ -4,6 +4,10 @@ package org.yesworkflow.util;
  * package as of 18Dec2014.
  */
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
@@ -30,5 +34,25 @@ public class YesWorkflowTestCase extends TestCase {
     
         stderrBuffer = new ByteArrayOutputStream();
         stderrStream = new PrintStream(stderrBuffer);
+    }
+    
+    // reads a file from the classpath, replacing stored EOL with local EOL sequence
+    public static String readTextFileOnClasspath(String path) throws IOException {
+        InputStream stream = YesWorkflowTestCase.class.getClassLoader().getResourceAsStream(path);
+        InputStreamReader reader = new InputStreamReader(stream);
+        String contents = readTextFromReader(reader);
+        return contents;
+    } 
+    
+    // reads a file from input stream line by line, replacing stored EOL with local EOL sequence
+    public static String readTextFromReader(InputStreamReader fileReader) throws IOException {
+        BufferedReader reader = new BufferedReader(fileReader);
+        String line = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        while ((line = reader.readLine()) != null) {
+            stringBuilder.append(line);
+            stringBuilder.append(EOL);
+        }
+        return stringBuilder.toString();
     }
 }

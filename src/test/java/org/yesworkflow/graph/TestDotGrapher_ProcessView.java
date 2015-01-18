@@ -12,6 +12,8 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
     DefaultExtractor extractor = null;
     DotGrapher grapher = null;
     
+    static final String TEST_RESOURCE_DIR = "org/yesworkflow/graph/";
+    
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -46,27 +48,10 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
                .enableComments(false)
                .graph();
         
-        String dotString = grapher.toString();
-
         assertEquals(
-            "digraph Workflow {"                                                                            + EOL +
-            "rankdir=LR"                                                                                    + EOL +
-            "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 label=\"\" width=0.1]"  + EOL +
-            "subgraph cluster0 {"                                                                           + EOL +
-            "label=\"script\""                                                                              + EOL +
-            "penwidth=2"                                                                                    + EOL +
-            "fontsize=18"                                                                                   + EOL +
-            "subgraph cluster1 {"                                                                           + EOL +
-            "label=\"\""                                                                                    + EOL +
-            "color=\"white\""                                                                               + EOL +
-            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"     + EOL +
-            "node1 [label=\"program0\"]"                                                                    + EOL +
-            "node2 [label=\"program1\"]"                                                                    + EOL +
-            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"     + EOL +
-            "}}"                                                                                            + EOL +
-            "node1 -> node2 [label=\"channel\"]"                                                            + EOL +
-            "}"                                                                                             + EOL,
-            dotString);
+            readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoProgramsOneChannel.gv"),
+            grapher.toString()
+        );
     }    
     
     public void testDotGrapher_ProcessView_TwoChannels_OneProgram_OneInOneOut() throws Exception {
@@ -95,85 +80,45 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
                .enableComments(false)
                .graph();
         
-        String dotString = grapher.toString();
-
         assertEquals(
-            "digraph Workflow {"                                                                            + EOL +
-            "rankdir=LR"                                                                                    + EOL +
-            "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 label=\"\" width=0.1]"  + EOL +
-            "node1"                                                                                         + EOL +
-            "node2"                                                                                         + EOL +
-            "subgraph cluster0 {"                                                                           + EOL +
-            "label=\"script\""                                                                              + EOL +
-            "penwidth=2"                                                                                    + EOL +
-            "fontsize=18"                                                                                   + EOL +
-            "subgraph cluster1 {"                                                                           + EOL +
-            "label=\"\""                                                                                    + EOL +
-            "color=\"white\""                                                                               + EOL +
-            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"     + EOL +
-            "node3 [label=\"program\"]"                                                                     + EOL +
-            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"     + EOL +
-            "}}"                                                                                            + EOL +
-            "node3 -> node2 [label=\"d\"]"                                                                  + EOL +
-            "node1 -> node3 [label=\"x\"]"                                                                  + EOL +
-            "}"                                                                                             + EOL,
-            dotString);
+            readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoChannels_OneProgram_OneInOneOut.gv"),
+            grapher.toString()
+        );
     }  
   
-  public void testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut() throws Exception {
+    public void testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut() throws Exception {
       
-      String source = 
-          "# @begin script"       + EOL +
-          "# @in x"               + EOL +
-          "# @in y"               + EOL +
-          "# @out d"              + EOL +
-          "#"                     + EOL +
-          "#   @begin program"    + EOL +
-          "#   @in x"             + EOL +
-          "#   @in y"             + EOL +
-          "#   @out d"            + EOL +
-          "#   @end program"      + EOL +                
-          "#"                     + EOL +
-          "# @end script"         + EOL;
+        String source = 
+            "# @begin script"       + EOL +
+            "# @in x"               + EOL +
+            "# @in y"               + EOL +
+            "# @out d"              + EOL +
+            "#"                     + EOL +
+            "#   @begin program"    + EOL +
+            "#   @in x"             + EOL +
+            "#   @in y"             + EOL +
+            "#   @out d"            + EOL +
+            "#   @end program"      + EOL +                
+            "#"                     + EOL +
+            "# @end script"         + EOL;
 
-      BufferedReader reader = new BufferedReader(new StringReader(source));
-      
-      extractor.sourceReader(reader)
-               .commentCharacter('#')
-               .extract();
-      Workflow workflow = (Workflow)extractor.getProgram();
-
-      grapher.workflow(workflow)
-             .view(GraphView.PROCESS_CENTRIC_VIEW)
-             .enableComments(false)
-             .graph();
-      
-      String dotString = grapher.toString();
-
-      assertEquals(
-          "digraph Workflow {"                                                                              + EOL +
-          "rankdir=LR"                                                                                      + EOL +
-          "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 label=\"\" width=0.1]"    + EOL +
-          "node1"                                                                                           + EOL +
-          "node2"                                                                                           + EOL +
-          "node3"                                                                                           + EOL +
-          "subgraph cluster0 {"                                                                             + EOL +
-          "label=\"script\""                                                                                + EOL +
-          "penwidth=2"                                                                                      + EOL +
-          "fontsize=18"                                                                                     + EOL +
-          "subgraph cluster1 {"                                                                             + EOL +
-          "label=\"\""                                                                                      + EOL +
-          "color=\"white\""                                                                                 + EOL +
-          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"       + EOL +
-          "node4 [label=\"program\"]"                                                                       + EOL +
-          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"       + EOL +
-          "}}"                                                                                              + EOL +
-          "node4 -> node3 [label=\"d\"]"                                                                    + EOL +
-          "node1 -> node4 [label=\"x\"]"                                                                    + EOL +
-          "node2 -> node4 [label=\"y\"]"                                                                    + EOL +
-          "}"                                                                                               + EOL,
-          dotString);
-  }
+          BufferedReader reader = new BufferedReader(new StringReader(source));
+          
+          extractor.sourceReader(reader)
+                   .commentCharacter('#')
+                   .extract();
+          Workflow workflow = (Workflow)extractor.getProgram();
+        
+          grapher.workflow(workflow)
+                 .view(GraphView.PROCESS_CENTRIC_VIEW)
+                 .enableComments(false)
+                 .graph();
+          
+          assertEquals(
+              readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut.gv"),
+              grapher.toString()
+          );
+    }
     
   public void testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut_ExtraIn() throws Exception {
       
@@ -203,29 +148,10 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
              .enableComments(false)
              .graph();
       
-      String dotString = grapher.toString();
-
       assertEquals(
-          "digraph Workflow {"                                                                          + EOL +
-          "rankdir=LR"                                                                                  + EOL +
-          "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 label=\"\" width=0.1]"+ EOL +
-          "node1"                                                                                       + EOL +
-          "node2"                                                                                       + EOL +
-          "subgraph cluster0 {"                                                                         + EOL +
-          "label=\"script\""                                                                            + EOL +
-          "penwidth=2"                                                                                  + EOL +
-          "fontsize=18"                                                                                 + EOL +
-          "subgraph cluster1 {"                                                                         + EOL +
-          "label=\"\""                                                                                  + EOL +
-          "color=\"white\""                                                                             + EOL +
-          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"   + EOL +
-          "node3 [label=\"program\"]"                                                                   + EOL +
-          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"   + EOL +
-          "}}"                                                                                          + EOL +
-          "node3 -> node2 [label=\"d\"]"                                                                + EOL +
-          "node1 -> node3 [label=\"x\"]"                                                                + EOL +
-          "}"                                                                                           + EOL,
-          dotString);
+          readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut_ExtraIn.gv"),
+          grapher.toString()
+      );
 
       assertEquals("WARNING: No nested @in port and no workflow @out port for nested @out 'y' in workflow 'script'" + EOL, super.stderrBuffer.toString());
   }
@@ -258,29 +184,10 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
              .enableComments(false)
              .graph();
       
-      String dotString = grapher.toString();
-
       assertEquals(
-          "digraph Workflow {"                                                                              + EOL +
-          "rankdir=LR"                                                                                      + EOL +
-          "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 label=\"\" width=0.1]"    + EOL +
-          "node1"                                                                                           + EOL +
-          "node2"                                                                                           + EOL +
-          "subgraph cluster0 {"                                                                             + EOL +
-          "label=\"script\""                                                                                + EOL +
-          "penwidth=2"                                                                                      + EOL +
-          "fontsize=18"                                                                                     + EOL +
-          "subgraph cluster1 {"                                                                             + EOL +
-          "label=\"\""                                                                                      + EOL +
-          "color=\"white\""                                                                                 + EOL +
-          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"       + EOL +
-          "node3 [label=\"program\"]"                                                                       + EOL +
-          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"       + EOL +
-          "}}"                                                                                              + EOL +
-          "node3 -> node2 [label=\"d\"]"                                                                    + EOL +
-          "node1 -> node3 [label=\"x\"]"                                                                    + EOL +
-          "}"                                                                                               + EOL,
-          dotString);
+          readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut_ExtraOut.gv"),
+          grapher.toString()
+      );
       
       assertEquals("WARNING: No nested @out port and no workflow @in port for nested @in 'c' on 'script'" + EOL, super.stderrBuffer.toString());
   }
@@ -317,30 +224,11 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
             .enableComments(false)
             .graph();
      
-     String dotString = grapher.toString();
-
      assertEquals(
-         "digraph Workflow {"                                                                           + EOL +
-         "rankdir=LR"                                                                                   + EOL +
-         "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 label=\"\" width=0.1]" + EOL +
-         "subgraph cluster0 {"                                                                          + EOL +
-         "label=\"script\""                                                                             + EOL +
-         "penwidth=2"                                                                                   + EOL +
-         "fontsize=18"                                                                                  + EOL +
-         "subgraph cluster1 {"                                                                          + EOL +
-         "label=\"\""                                                                                   + EOL +
-         "color=\"white\""                                                                              + EOL +
-         "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"    + EOL +
-         "node1 [label=\"program0\"]"                                                                   + EOL +
-         "node2 [label=\"program1\"]"                                                                   + EOL +
-         "node3 [label=\"program2\"]"                                                                   + EOL +
-         "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"    + EOL +
-         "}}"                                                                                           + EOL +
-         "node1 -> node2 [label=\"channel0\"]"                                                          + EOL +
-         "node1 -> node3 [label=\"channel1\"]"                                                          + EOL +
-         "}"                                                                                            + EOL,
-         dotString);
-     }
+         readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_ThreeProgramsTwoChannel.gv"),
+         grapher.toString()
+     );
+ }
  
  public void testDotGrapher_ProcessView_NestedSubworkflow() throws Exception {
      
@@ -377,71 +265,29 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
              "#"                            + EOL +
              "# @end workflow"              + EOL;
 
-     BufferedReader reader = new BufferedReader(new StringReader(source));
+         BufferedReader reader = new BufferedReader(new StringReader(source));
      
-     extractor.sourceReader(reader)
-              .commentCharacter('#')
-              .extract();
-     Workflow workflow = (Workflow)extractor.getProgram();
+             extractor.sourceReader(reader)
+                      .commentCharacter('#')
+                      .extract();
+             Workflow workflow = (Workflow)extractor.getProgram();
 
-     grapher.workflow(workflow)
-            .view(GraphView.PROCESS_CENTRIC_VIEW)
-            .enableComments(false)
-            .graph();
+             grapher.workflow(workflow)
+                    .view(GraphView.PROCESS_CENTRIC_VIEW)
+                    .enableComments(false)
+                    .graph();
      
-     String dotString = grapher.toString();
-
-     assertEquals(
-         "digraph Workflow {"                                                                           + EOL +
-         "rankdir=LR"                                                                                   + EOL +
-         "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 label=\"\" width=0.1]" + EOL +
-         "node1"                                                                                        + EOL +
-         "node2"                                                                                        + EOL +
-         "subgraph cluster0 {"                                                                          + EOL +
-         "label=\"workflow\""                                                                           + EOL +
-         "penwidth=2"                                                                                   + EOL +
-         "fontsize=18"                                                                                  + EOL +
-         "subgraph cluster1 {"                                                                          + EOL +
-         "label=\"\""                                                                                   + EOL +
-         "color=\"white\""                                                                              + EOL +
-         "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"    + EOL +
-         "node3 [label=\"program0\"]"                                                                   + EOL +
-         "node4 [label=\"program4\"]"                                                                   + EOL +
-         "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"    + EOL +
-         "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"    + EOL +
-         "node5 [label=\"subWorkflow\"]"                                                                + EOL +
-         "}}"                                                                                           + EOL +
-         "node4 -> node2 [label=\"workflowOutput\"]"                                                    + EOL +
-         "node1 -> node3 [label=\"workflowInput\"]"                                                     + EOL +
-         "node3 -> node5 [label=\"channel0\"]"                                                          + EOL +
-         "node5 -> node4 [label=\"channel3\"]"                                                          + EOL +
-         "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 label=\"\" width=0.1]" + EOL +
-         "node6"                                                                                        + EOL +
-         "node7"                                                                                        + EOL +
-         "subgraph cluster2 {"                                                                          + EOL +
-         "label=\"subWorkflow\""                                                                        + EOL +
-         "penwidth=2"                                                                                   + EOL +
-         "fontsize=18"                                                                                  + EOL +
-         "subgraph cluster3 {"                                                                          + EOL +
-         "label=\"\""                                                                                   + EOL +
-         "color=\"white\""                                                                              + EOL +
-         "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"    + EOL +
-         "node8 [label=\"program2\"]"                                                                   + EOL +
-         "node9 [label=\"program3\"]"                                                                   + EOL +
-         "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"    + EOL +
-         "}}"                                                                                           + EOL +
-         "node9 -> node7 [label=\"channel3\"]"                                                          + EOL +
-         "node6 -> node8 [label=\"channel0\"]"                                                          + EOL +
-         "node8 -> node9 [label=\"channel2\"]"                                                          + EOL +
-         "}"                                                                                            + EOL,
-         dotString);
-     }
+             assertEquals(
+                 readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_NestedSubworkflow.gv"),
+                 grapher.toString()
+             );
+     }      
  
      public void testDotGrapher_ProcessView_SamplePyScript() throws Exception {
          
          extractor.sourcePath("src/main/resources/example.py")
-             .commentCharacter('#')
-             .extract();
+                  .commentCharacter('#')
+                  .extract();
 
          Workflow workflow = (Workflow)extractor.getProgram();
     
@@ -450,36 +296,9 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
                 .enableComments(false)
                 .graph();
          
-         String dotString = grapher.toString();
-    
          assertEquals(
-                 "digraph Workflow {"                                                                           + EOL +
-                 "rankdir=LR"                                                                                   + EOL +
-                 "node[shape=circle style=\"filled\" fillcolor=\"#FFFFFF\" peripheries=1 label=\"\" width=0.1]" + EOL +
-                 "node1"                                                                                        + EOL +
-                 "node2"                                                                                        + EOL +
-                 "node3"                                                                                        + EOL +
-                 "subgraph cluster0 {"                                                                          + EOL +
-                 "label=\"main\""                                                                               + EOL +
-                 "penwidth=2"                                                                                   + EOL +
-                 "fontsize=18"                                                                                  + EOL +
-                 "subgraph cluster1 {"                                                                          + EOL +
-                 "label=\"\""                                                                                   + EOL +
-                 "color=\"white\""                                                                              + EOL +
-                 "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\" width=0.1]"    + EOL +
-                 "node4 [label=\"fetch_mask\"]"                                                                 + EOL +
-                 "node5 [label=\"load_data\"]"                                                                  + EOL +
-                 "node6 [label=\"standardize_with_mask\"]"                                                      + EOL +
-                 "node7 [label=\"simple_diagnose\"]"                                                            + EOL +
-                 "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=2 label=\"\" width=0.1]"    + EOL +
-                 "}}"                                                                                           + EOL +
-                 "node7 -> node3 [label=\"result_NEE_pdf\"]"                                                    + EOL +
-                 "node1 -> node4 [label=\"input_mask_file\"]"                                                   + EOL +
-                 "node2 -> node5 [label=\"input_data_file\"]"                                                   + EOL +
-                 "node5 -> node6 [label=\"NEE_data\"]"                                                          + EOL +
-                 "node4 -> node6 [label=\"land_water_mask\"]"                                                   + EOL +
-                 "node6 -> node7 [label=\"standardized_NEE_data\"]"                                             + EOL +
-                 "}"                                                                                            + EOL,
-             dotString);
+             readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_SamplePyScript.gv"),
+             grapher.toString()
+         );
      }
 }
