@@ -195,8 +195,14 @@ public class DotGrapher implements Grapher  {
 
         DotBuilder dot = new DotBuilder();
         
-        dot.beginGraph();
+        dot.beginGraph()
+           .enableComments(commentsEnabled);
 
+        dot.comment("Use serif font for process labels and sans serif font for data labels");
+        dot.graphFont("Courier")
+           .edgeFont("Courier")
+           .nodeFont("Helvetica");
+        
         // draw a box for each channel in the workflow
         dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
 
@@ -233,7 +239,8 @@ public class DotGrapher implements Grapher  {
 
         DotBuilder dot = new DotBuilder();
         
-        dot.beginGraph();
+        dot.beginGraph()
+           .enableComments(commentsEnabled);
 
         // draw a box for each program in the workflow
         dot.shape("box").fillcolor("#CCFFCC");

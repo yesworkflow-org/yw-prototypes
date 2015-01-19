@@ -43,6 +43,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
 
         grapher.workflow(workflow)
                .view(GraphView.DATA_CENTRIC_VIEW)
+               .enableComments(false)
                .graph();
         
         String dotString = grapher.toString();
@@ -50,6 +51,9 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         assertEquals(
             "digraph Workflow {"                                                                        + EOL +
             "rankdir=LR"                                                                                + EOL +
+            "graph[fontname=Courier]"                                                                   + EOL +
+            "edge[fontname=Courier]"                                                                    + EOL +
+            "node[fontname=Helvetica]"                                                                  + EOL +
             "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]"   + EOL +
             "node1 [label=\"channel\"]"                                                                 + EOL +
             "}"                                                                                         + EOL,
@@ -75,17 +79,23 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
       extractor.sourceReader(reader)
                .commentCharacter('#')
                .extract();
+      
       Workflow workflow = (Workflow)extractor.getProgram();
 
       grapher.workflow(workflow)
              .view(GraphView.DATA_CENTRIC_VIEW)
+             .enableComments(false)
              .graph();
+
       
       String dotString = grapher.toString();
 
       assertEquals(
           "digraph Workflow {"                                                                      + EOL +
           "rankdir=LR"                                                                              + EOL +
+          "graph[fontname=Courier]"                                                                 + EOL +
+          "edge[fontname=Courier]"                                                                  + EOL +
+          "node[fontname=Helvetica]"                                                                + EOL +
           "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
           "node1 [label=\"d\"]"                                                                     + EOL +
           "node2 [label=\"x\"]"                                                                     + EOL +
@@ -120,6 +130,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
 
       grapher.workflow(workflow)
              .view(GraphView.DATA_CENTRIC_VIEW)
+             .enableComments(false)
              .graph();
       
       String dotString = grapher.toString();
@@ -127,6 +138,9 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
       assertEquals(
           "digraph Workflow {"                                                                      + EOL +
           "rankdir=LR"                                                                              + EOL +
+          "graph[fontname=Courier]"                                                                 + EOL +
+          "edge[fontname=Courier]"                                                                  + EOL +
+          "node[fontname=Helvetica]"                                                                + EOL +
           "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
           "node1 [label=\"d\"]"                                                                     + EOL +
           "node2 [label=\"x\"]"                                                                     + EOL +
@@ -148,6 +162,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
     
          grapher.workflow(workflow)
                 .view(GraphView.DATA_CENTRIC_VIEW)
+                .enableComments(false)
                 .graph();
          
          String dotString = grapher.toString();
@@ -155,6 +170,9 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
          assertEquals(
                  "digraph Workflow {"                                                                       + EOL +
                  "rankdir=LR"                                                                               + EOL +
+                 "graph[fontname=Courier]"                                                                  + EOL +
+                 "edge[fontname=Courier]"                                                                   + EOL +
+                 "node[fontname=Helvetica]"                                                                 + EOL +
                  "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]"  + EOL +
                  "node1 [label=\"result_NEE_pdf\"]"                                                         + EOL +
                  "node2 [label=\"input_mask_file\"]"                                                        + EOL +
