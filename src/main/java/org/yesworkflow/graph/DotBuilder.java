@@ -195,9 +195,9 @@ public class DotBuilder {
     public DotBuilder edgeFont(String font) {
        
         _buffer.append(    "edge[fontname="    )
-              .append(    font                )
-              .append(    "]"                 )
-              .append(    EOL                 );
+               .append(    font                )
+               .append(    "]"                 )
+               .append(    EOL                 );
        
         return this;
     }

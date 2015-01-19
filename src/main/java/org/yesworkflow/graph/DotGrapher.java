@@ -242,6 +242,10 @@ public class DotGrapher implements Grapher  {
         dot.beginGraph()
            .enableComments(commentsEnabled);
 
+        dot.comment("Use serif font for process labels");
+        dot.graphFont("Courier")
+           .nodeFont("Courier");
+        
         // draw a box for each program in the workflow
         dot.shape("box").fillcolor("#CCFFCC");
         for (Program p : workflow.programs) dot.node(p.beginComment.programName);
@@ -249,6 +253,9 @@ public class DotGrapher implements Grapher  {
         
         List<String> channelBindings = new LinkedList<String>();
         
+        dot.comment("Use sans serif font for data labels");
+        dot.nodeFont("Helvetica");
+
         // draw a box for each channel in the workflow
         dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
         for (Channel c : workflow.channels) {

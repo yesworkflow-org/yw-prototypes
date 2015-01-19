@@ -43,6 +43,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
 
         grapher.workflow(workflow)
                .view(GraphView.COMBINED_VIEW)
+               .enableComments(false)
                .graph();
         
         String dotString = grapher.toString();
@@ -50,9 +51,12 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
         assertEquals(
             "digraph Workflow {"                                                                        + EOL +
             "rankdir=LR"                                                                                + EOL +
+            "graph[fontname=Courier]"                                                                   + EOL +
+            "node[fontname=Courier]"                                                                    + EOL +
             "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\"]"           + EOL +
             "node1 [label=\"program0\"]"                                                                + EOL +
             "node2 [label=\"program1\"]"                                                                + EOL +
+            "node[fontname=Helvetica]"                                                                  + EOL +
             "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]"   + EOL +
             "node3 [label=\"channel\"]"                                                                 + EOL +
             "node1 -> node3"                                                                            + EOL +
@@ -84,6 +88,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
 
       grapher.workflow(workflow)
              .view(GraphView.COMBINED_VIEW)
+             .enableComments(false)
              .graph();
       
       String dotString = grapher.toString();
@@ -91,8 +96,11 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
       assertEquals(
           "digraph Workflow {"                                                                      + EOL +
           "rankdir=LR"                                                                              + EOL +
+          "graph[fontname=Courier]"                                                                 + EOL +
+          "node[fontname=Courier]"                                                                  + EOL +
           "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\"]"         + EOL +
           "node1 [label=\"program\"]"                                                               + EOL +
+          "node[fontname=Helvetica]"                                                                + EOL +
           "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
           "node2 [label=\"d\"]"                                                                     + EOL +
           "node3 [label=\"x\"]"                                                                     + EOL +
@@ -129,6 +137,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
 
       grapher.workflow(workflow)
              .view(GraphView.COMBINED_VIEW)
+             .enableComments(false)
              .graph();
       
       String dotString = grapher.toString();
@@ -136,8 +145,11 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
       assertEquals(
           "digraph Workflow {"                                                                      + EOL +
           "rankdir=LR"                                                                              + EOL +
+          "graph[fontname=Courier]"                                                                 + EOL +
+          "node[fontname=Courier]"                                                                  + EOL +
           "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\"]"         + EOL +
           "node1 [label=\"program\"]"                                                               + EOL +
+          "node[fontname=Helvetica]"                                                                + EOL +
           "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
           "node2 [label=\"d\"]"                                                                     + EOL +
           "node3 [label=\"x\"]"                                                                     + EOL +
@@ -145,7 +157,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
           "node1 -> node2"                                                                          + EOL +
           "node3 -> node1"                                                                          + EOL +
           "node4 -> node1"                                                                          + EOL +
-          "}"                                                                                        + EOL,
+          "}"                                                                                       + EOL,
           dotString);
       }
          
@@ -159,6 +171,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
     
          grapher.workflow(workflow)
                 .view(GraphView.COMBINED_VIEW)
+                .enableComments(false)
                 .graph();
          
          String dotString = grapher.toString();
@@ -166,11 +179,14 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
          assertEquals(
                  "digraph Workflow {"                                                                       + EOL +
                  "rankdir=LR"                                                                               + EOL +
-                 "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\"]"          + EOL +
+                 "graph[fontname=Courier]"                                                                  + EOL +
+                 "node[fontname=Courier]"                                                                   + EOL +
+                "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\"]"           + EOL +
                  "node1 [label=\"fetch_mask\"]"                                                             + EOL +
                  "node2 [label=\"load_data\"]"                                                              + EOL +
                  "node3 [label=\"standardize_with_mask\"]"                                                  + EOL +
                  "node4 [label=\"simple_diagnose\"]"                                                        + EOL +
+                 "node[fontname=Helvetica]"                                                                 + EOL +
                  "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]"  + EOL +
                  "node5 [label=\"result_NEE_pdf\"]"                                                         + EOL +
                  "node6 [label=\"input_mask_file\"]"                                                        + EOL +
