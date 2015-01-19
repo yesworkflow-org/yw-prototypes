@@ -247,7 +247,7 @@ public class DotGrapher implements Grapher  {
            .nodeFont("Courier");
         
         // draw a box for each program in the workflow
-        dot.shape("box").fillcolor("#CCFFCC");
+        dot.shape("box3d").fillcolor("#CCFFCC");
         for (Program p : workflow.programs) dot.node(p.beginComment.programName);
 
         

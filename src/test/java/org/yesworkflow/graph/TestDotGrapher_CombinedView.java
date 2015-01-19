@@ -53,7 +53,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
             "rankdir=LR"                                                                                + EOL +
             "graph[fontname=Courier]"                                                                   + EOL +
             "node[fontname=Courier]"                                                                    + EOL +
-            "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\"]"           + EOL +
+            "node[shape=box3d style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\"]"         + EOL +
             "node1 [label=\"program0\"]"                                                                + EOL +
             "node2 [label=\"program1\"]"                                                                + EOL +
             "node[fontname=Helvetica]"                                                                  + EOL +
@@ -98,7 +98,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
           "rankdir=LR"                                                                              + EOL +
           "graph[fontname=Courier]"                                                                 + EOL +
           "node[fontname=Courier]"                                                                  + EOL +
-          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\"]"         + EOL +
+          "node[shape=box3d style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\"]"       + EOL +
           "node1 [label=\"program\"]"                                                               + EOL +
           "node[fontname=Helvetica]"                                                                + EOL +
           "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
@@ -147,7 +147,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
           "rankdir=LR"                                                                              + EOL +
           "graph[fontname=Courier]"                                                                 + EOL +
           "node[fontname=Courier]"                                                                  + EOL +
-          "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\"]"         + EOL +
+          "node[shape=box3d style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\"]"       + EOL +
           "node1 [label=\"program\"]"                                                               + EOL +
           "node[fontname=Helvetica]"                                                                + EOL +
           "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
@@ -181,7 +181,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
                  "rankdir=LR"                                                                               + EOL +
                  "graph[fontname=Courier]"                                                                  + EOL +
                  "node[fontname=Courier]"                                                                   + EOL +
-                "node[shape=box style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\"]"           + EOL +
+                "node[shape=box3d style=\"filled\" fillcolor=\"#CCFFCC\" peripheries=1 label=\"\"]"         + EOL +
                  "node1 [label=\"fetch_mask\"]"                                                             + EOL +
                  "node2 [label=\"load_data\"]"                                                              + EOL +
                  "node3 [label=\"standardize_with_mask\"]"                                                  + EOL +
