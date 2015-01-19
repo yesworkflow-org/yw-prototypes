@@ -172,6 +172,36 @@ public class DotBuilder {
 		return this;
 	}
 	
+	public DotBuilder graphFont(String font) {
+	    
+	    _buffer.append(    "graph[fontname="   )
+	           .append(    font                )
+	           .append(    "]"                 )
+	           .append(    EOL                 );
+
+	    return this;
+	}
+
+    public DotBuilder nodeFont(String font) {
+        
+        _buffer.append(    "node[fontname="    )
+               .append(    font                )
+               .append(    "]"                 )
+               .append(    EOL                 );
+        
+        return this;
+    }
+
+    public DotBuilder edgeFont(String font) {
+       
+        _buffer.append(    "edge[fontname="    )
+              .append(    font                )
+              .append(    "]"                 )
+              .append(    EOL                 );
+       
+        return this;
+    }
+   
 	public void flushNodeStyle() {
 	    
         _buffer.append(    "node["          )

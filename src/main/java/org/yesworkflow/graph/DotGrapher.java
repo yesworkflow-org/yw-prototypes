@@ -77,6 +77,11 @@ public class DotGrapher implements Grapher  {
 		dot.beginGraph()
 		   .enableComments(commentsEnabled);
 		
+        dot.comment("Use serif font for process labels and sans serif font for data labels");
+		dot.graphFont("Courier")
+           .edgeFont("Helvetica")
+           .nodeFont("Courier");
+		
 		renderProgramAsProcess(this.workflow, dot, 1);
 		
 		dot.endGraph();
@@ -111,7 +116,7 @@ public class DotGrapher implements Grapher  {
         dot.beginSubgraph(workflow.toString());
     
         dot.comment("Set node style for programs in workflow");
-        dot.shape("box").peripheries(1).fillcolor("#CCFFCC");      
+        dot.shape("box3d").peripheries(1).fillcolor("#CCFFCC");      
         dot.flushNodeStyle();
         
         dot.comment("Nodes representing programs in workflow");
