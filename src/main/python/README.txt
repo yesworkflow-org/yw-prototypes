@@ -1,4 +1,3 @@
-
 *** script2csv *** (Script-to-CSV file)
 - Input (filename(s) or stdin) with YW comments
 - Output (stdout): CSV file with the format 
