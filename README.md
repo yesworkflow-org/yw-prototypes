@@ -366,16 +366,17 @@ JDK 7 and Maven 3 downloads and installation instructions can be found at the fo
 
 YesWorkflow adopts the default organization of source code, resources, and tests as defined by Maven.  See [maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html](http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) for more information.  The most important directories are listed below:
 
-Directory           | Description
---------------------|-----------
-src/main/java       | Source code to be built and packaged for distribution.
-src/main/resources  | Resource files to be packaged with production code.
-src/test/java       | Source code for unit and functional tests. Not included in packaged distributions.
-src/test/resources  | Resource files available to tests. Not included in packaged distributions.
-target              | Destination directory for packaged distributions (jar files) built by maven.
-target/classes      | Compiled java classes for source code found under src/main/java.
-target/test-classes | Compiled java classes for test code found under src/test/java.
-target/dependency   | Automatically resolved and downloaded dependencies (jars) that will be included in the standalone distribution.
+Directory            | Description
+---------------------|-----------
+src/main/java        | Source code to be built and packaged for distribution.
+src/main/resources   | Resource files to be packaged with production code.
+src/test/java        | Source code for unit and functional tests. Not included in packaged distributions.
+src/test/resources   | Resource files available to tests. Not included in packaged distributions.
+target               | Destination directory for packaged distributions (jar files) built by maven.
+target/classes       | Compiled java classes for source code found under src/main/java.
+target/test-classes  | Compiled java classes for test code found under src/test/java.
+target/dependency    | Automatically resolved and downloaded dependencies (jars) that will be included in the standalone distribution.
+target/site/apidocs/ | Local build of Javadoc documentation.
 
 
 #### Building and testing with maven
@@ -388,6 +389,7 @@ mvn clean     | Delete the target directory including all compiled code.
 mvn compile   | Download required dependencies and compile source code in src/main/java.  Only those source files changes since the last compilation are built.
 mvn test      | Compile the classes in src/test/java and run all tests found therein. Peforms *mvn compile* first.
 mvn package   | Package the compiled classes in target/classes and files found in src/main/resources in two jar files, **yesworkflow-0.1.jar** and **yesworkflow-0.1-executable.jar**.  The latter also contains all jar dependencies. Performs *mvn compile* and *mvn test* first, and will not perform packaging step if any tests fail. Use the `-DskipTests` option to bypass tests.
+mvn javadoc:javadoc | Build Javadoc documentation.
 
 #### Continuous integration with Bamboo
 
