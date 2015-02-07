@@ -1,5 +1,6 @@
 package org.yesworkflow.graph;
 
+import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,8 +11,6 @@ import org.yesworkflow.model.Workflow;
 
 public class DotGrapher implements Grapher  {
 
-	final static String EOL = System.getProperty("line.separator");
-	
     private Workflow workflow = null;
     private GraphView graphView = null;
     private String graphText = null;
@@ -20,6 +19,16 @@ public class DotGrapher implements Grapher  {
     @SuppressWarnings("unused")
     private GraphFormat graphFormat = null;
     
+    @SuppressWarnings("unused")
+    private PrintStream stdoutStream = null;
+    
+    @SuppressWarnings("unused")
+    private PrintStream stderrStream = null;
+    
+    public DotGrapher(PrintStream stdoutStream, PrintStream stderrStream) {
+        this.stdoutStream = stdoutStream;
+        this.stderrStream = stderrStream;
+    }
     
     @Override
     public DotGrapher enableComments(boolean state) {

@@ -8,7 +8,6 @@ import java.io.PrintStream;
 import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 
 import org.yesworkflow.comments.BeginComment;
 import org.yesworkflow.comments.Comment;
@@ -17,20 +16,16 @@ import org.yesworkflow.comments.InComment;
 import org.yesworkflow.comments.OutComment;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.exceptions.YWToolUsageException;
-import org.yesworkflow.model.Port;
-import org.yesworkflow.model.Program;
-import org.yesworkflow.model.Workflow;
 
 public class DefaultExtractor implements Extractor {
 
-    public static final String EOL = System.getProperty("line.separator");
-    
     private char commentCharacter;
     private BufferedReader sourceReader = null;
     private String sourcePath = null;
     private List<String> commentLines;
     private List<Comment> comments;
-    private Program program;
+    
+    @SuppressWarnings("unused")
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
 
@@ -67,7 +62,7 @@ public class DefaultExtractor implements Extractor {
     }
 
     @Override
-    public void extract() throws Exception {
+    public DefaultExtractor extract() throws Exception {
 
         if (sourceReader == null) {
             sourceReader = getFileReaderForPath(sourcePath);
@@ -78,10 +73,9 @@ public class DefaultExtractor implements Extractor {
         
         if (comments.isEmpty()) {
             stderrStream.println("WARNING: No YW comments found in source code.");
-            return;
         }
         
-        extractWorkflow();
+        return this;
     }
 
     @Override
@@ -92,11 +86,6 @@ public class DefaultExtractor implements Extractor {
     @Override
     public List<Comment> getComments() {
         return comments;
-    }
-
-    @Override
-	public Program getProgram() {
-    	return program;
     }
 
     private void extractLines() throws IOException {
@@ -137,68 +126,7 @@ public class DefaultExtractor implements Extractor {
         }
     }
 
-    public void extractWorkflow() throws Exception {
-
-    	Workflow.Builder workflowBuilder = null;
-    	Workflow.Builder parentBuilder = null;
-    	Stack<Workflow.Builder> parentWorkflowBuilders = new Stack<Workflow.Builder>();
-
-    	for (Comment comment: comments) {
-
-    		if (comment instanceof BeginComment) {
-
-    			if (workflowBuilder != null) {
-    				parentWorkflowBuilders.push(workflowBuilder);
-    				parentBuilder = workflowBuilder;
-    			}
-
-    			workflowBuilder = new Workflow.Builder(this.stdoutStream, this.stderrStream)
-    				.begin((BeginComment)comment);
-
-    		} else if (comment instanceof OutComment) {
-    		    Port outPort = workflowBuilder.outPort((OutComment)comment);
-    			if (parentBuilder != null) {
-    				parentBuilder.nestedOutPort(outPort);
-    			}
-
-    		} else if (comment instanceof InComment) {
-                Port inPort = workflowBuilder.inPort((InComment)comment);
-                if (parentBuilder != null) {
-    				parentBuilder.nestedInPort(inPort);
-    			}
-
-    		} else if (comment instanceof EndComment) {
-
-    		    workflowBuilder.end((EndComment)comment);
-
-    			Program program = workflowBuilder.build();
-
-    			if (parentWorkflowBuilders.isEmpty()) {
-    				this.program = program;
-    				return;
-    			}
-
-    			workflowBuilder = parentWorkflowBuilders.pop();
-    			workflowBuilder.nestedProgram(program);
-
-    			if (!parentWorkflowBuilders.isEmpty()) {
-    				parentBuilder = parentWorkflowBuilders.peek();
-    			}
-    		}
-    	}
-    	
-    	// throw exception if missing any paired end comments
-	    StringBuilder messageBuilder = new StringBuilder();
-        do {
-	        messageBuilder.append("ERROR: No @end comment paired with '@begin ");
-	        messageBuilder.append(workflowBuilder.getProgramName());
-            messageBuilder.append("'");
-	        messageBuilder.append(EOL);
-	        workflowBuilder = parentWorkflowBuilders.isEmpty() ? null : parentWorkflowBuilders.pop();
-	    } while (workflowBuilder != null);        
-	    throw new YWMarkupException(messageBuilder.toString());
-    }
-
+ 
     private String extractTag(String commentLine) {
 
         int tagEndIndex = commentLine.indexOf(' ');

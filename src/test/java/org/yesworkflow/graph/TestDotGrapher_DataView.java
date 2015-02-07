@@ -2,22 +2,32 @@ package org.yesworkflow.graph;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.List;
 
+import org.yesworkflow.comments.Comment;
 import org.yesworkflow.extract.DefaultExtractor;
+import org.yesworkflow.extract.Extractor;
+import org.yesworkflow.model.DefaultModeler;
+import org.yesworkflow.model.Modeler;
 import org.yesworkflow.model.Workflow;
 import org.yesworkflow.util.YesWorkflowTestCase;
 
 public class TestDotGrapher_DataView extends YesWorkflowTestCase {
 
-    DefaultExtractor extractor = null;
-    DotGrapher grapher = null;
+    Extractor extractor = null;
+    Modeler modeler = null;
+    Grapher grapher = null;
+    
+    static final String TEST_RESOURCE_DIR = "org/yesworkflow/graph/";
     
     @Override
     public void setUp() throws Exception {
         super.setUp();
         extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
-        grapher = new DotGrapher();
+        modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
+        grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
     }
+    
 
     public void testDotGrapher_DataView_TwoProgramsOneChannel() throws Exception {
         
@@ -36,10 +46,14 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        extractor.sourceReader(reader)
-                 .commentCharacter('#')
-                 .extract();
-        Workflow workflow = (Workflow)extractor.getProgram();
+        List<Comment> comments = extractor.sourceReader(reader)
+                .commentCharacter('#')
+                .extract()
+                .getComments();
+
+        Workflow workflow = (Workflow)modeler.comments(comments)
+                                             .model()
+                                             .getModel();
 
         grapher.workflow(workflow)
                .view(GraphView.DATA_CENTRIC_VIEW)
@@ -76,11 +90,14 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
 
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
-      extractor.sourceReader(reader)
-               .commentCharacter('#')
-               .extract();
-      
-      Workflow workflow = (Workflow)extractor.getProgram();
+      List<Comment> comments = extractor.sourceReader(reader)
+              .commentCharacter('#')
+              .extract()
+              .getComments();
+
+      Workflow workflow = (Workflow)modeler.comments(comments)
+                                           .model()
+                                           .getModel();
 
       grapher.workflow(workflow)
              .view(GraphView.DATA_CENTRIC_VIEW)
@@ -123,10 +140,14 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
 
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
-      extractor.sourceReader(reader)
-               .commentCharacter('#')
-               .extract();
-      Workflow workflow = (Workflow)extractor.getProgram();
+      List<Comment> comments = extractor.sourceReader(reader)
+              .commentCharacter('#')
+              .extract()
+              .getComments();
+
+      Workflow workflow = (Workflow)modeler.comments(comments)
+                                           .model()
+                                           .getModel();
 
       grapher.workflow(workflow)
              .view(GraphView.DATA_CENTRIC_VIEW)
@@ -154,11 +175,14 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
 
      public void testDotGrapher_DataView_SamplePyScript() throws Exception {
          
-         extractor.sourcePath("src/main/resources/example.py")
-             .commentCharacter('#')
-             .extract();
+         List<Comment> comments = extractor.sourcePath("src/main/resources/example.py")
+                 .commentCharacter('#')
+                 .extract()
+                 .getComments();
 
-         Workflow workflow = (Workflow)extractor.getProgram();
+         Workflow workflow = (Workflow)modeler.comments(comments)
+                                              .model()
+                                              .getModel();
     
          grapher.workflow(workflow)
                 .view(GraphView.DATA_CENTRIC_VIEW)

@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.yesworkflow.comments.Comment;
 import org.yesworkflow.extract.Extractor;
-import org.yesworkflow.model.Program;
 import org.yesworkflow.util.YesWorkflowTestCase;
 
 public class TestYesWorkflowCLI extends YesWorkflowTestCase {
@@ -304,14 +303,12 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         @Override
 		public Extractor databasePath(String path) { this.databasePath = path; return this; }
         @Override
-		public void extract() throws Exception { this.extracted = true; }
-        @Override
 		public List<String> getLines() { return null; }
         @Override
 		public List<Comment> getComments() { return null; }
 		@Override
-		public Program getProgram() { return null; }
-		@Override
 		public char getCommentCharacter() { return 0; }
+        @Override
+        public Extractor extract() throws Exception { this.extracted = true; return null; }
     }
 }

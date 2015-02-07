@@ -10,13 +10,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.List;
 
+import org.yesworkflow.comments.Comment;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.graph.DotGrapher;
 import org.yesworkflow.graph.GraphView;
+import org.yesworkflow.graph.Grapher;
+import org.yesworkflow.model.DefaultModeler;
+import org.yesworkflow.model.Modeler;
 import org.yesworkflow.model.Program;
 import org.yesworkflow.model.Workflow;
 
@@ -48,14 +53,22 @@ public class YesWorkflowCLI {
     }
 
     private PrintStream errStream;
+    private PrintStream outStream;
+    
     private OptionParser parser = null;
     private OptionSet options = null;
+    
     private String command = null;
     private String sourceFilePath = null;
     private String databaseFilePath = null;
-    private Extractor extractor = null;
-    private PrintStream outStream;
     private char comment_char = 0;
+    
+    private Extractor extractor = null;
+    private Modeler modeler = null;
+    private Grapher grapher = null;
+    
+    private List<Comment> comments;
+    private Program model = null;
 
     public YesWorkflowCLI() throws Exception {
         this(System.out, System.err);
@@ -69,6 +82,16 @@ public class YesWorkflowCLI {
 
     public YesWorkflowCLI extractor(Extractor extractor) {
         this.extractor = extractor;
+        return this;
+    }
+
+    public YesWorkflowCLI modeler(Modeler modeler) {
+        this.modeler = modeler;
+        return this;
+    }
+
+    public YesWorkflowCLI grapher(Grapher grapher) {
+        this.grapher = grapher;
         return this;
     }
 
@@ -111,6 +134,7 @@ public class YesWorkflowCLI {
 
             if (command.equals("graph")) {
                 extract();
+                model();
                 graph();
                 return YW_CLI_SUCCESS;
             }
@@ -313,6 +337,35 @@ public class YesWorkflowCLI {
 
             writeTextToOptionNamedFile("l", linesBuffer.toString());
         }
+        
+        comments = extractor.getComments();
+    }
+
+    public void model() throws Exception {
+        
+        if (modeler == null) {
+            modeler = new DefaultModeler(this.outStream, this.errStream);
+         }
+
+        model = (Program) modeler.comments(comments)
+                                 .model()
+                                 .getModel();
+    }
+
+    public void graph() throws Exception {
+
+        GraphView view = extractGraphView();
+
+        if (grapher == null) {
+            grapher = new DotGrapher(this.outStream, this.errStream);
+         }
+        
+        String graph = grapher.workflow((Workflow)model)
+                              .view(view)
+                              .graph()
+                              .toString();
+
+        writeTextToOptionNamedFile("g", graph);
     }
 
     public void writeTextToOptionNamedFile(String option, String text) throws IOException {
@@ -323,21 +376,7 @@ public class YesWorkflowCLI {
             linesOutputStream.close();
         }
     }
-
-    public void graph() throws Exception {
-
-        Program program = extractor.getProgram();
-        GraphView view = extractGraphView();
-         
-        String graph = new DotGrapher()
-            .workflow((Workflow)program)
-            .view(view)
-            .graph()
-            .toString();
-
-        writeTextToOptionNamedFile("g", graph);
-    }
-
+    
     public Extractor getExtractor() {
     	return extractor;
     }

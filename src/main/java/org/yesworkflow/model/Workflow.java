@@ -45,7 +45,9 @@ public class Workflow extends Program {
 		private Map<String,Port> nestedProgramOutPorts = new  LinkedHashMap<String,Port>();
         private Map<String,Program> programForName = new HashMap<String,Program>();
         
+        @SuppressWarnings("unused")
         private PrintStream stdoutStream = null;
+        
         private PrintStream stderrStream = null;
 
         public Builder(PrintStream stdoutStream, PrintStream stderrStream) {
