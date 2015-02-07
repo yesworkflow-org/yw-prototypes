@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.util.List;
 
 import org.yesworkflow.comments.Comment;
+import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.util.YesWorkflowTestCase;
 
@@ -140,43 +141,47 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     }
 
     public void testYesWorkflow_CommentCharacters() throws Exception{
+        
+        Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
+
+        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
+        cli.extractor(extractor);
 
     	String[] args1 = {"-c", "extract", "-x", "#", "-s", "src/main/resources/example.py"};
-        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args1);
-        assertEquals('#', cli.getExtractor().getCommentCharacter());
+        assertEquals('#', extractor.getCommentCharacter());
 
         String[] args2 = {"-c", "extract", "-s", "src/main/resources/example.py"};
         cli.runForArgs(args2);
-        assertEquals('#', cli.getExtractor().getCommentCharacter());
+        assertEquals('#', extractor.getCommentCharacter());
 
         String[] args3 = {"-c", "extract", "-s", "src/main/resources/example.PY"};
         cli.runForArgs(args3);
-        assertEquals('#', cli.getExtractor().getCommentCharacter());
+        assertEquals('#', extractor.getCommentCharacter());
 
         String[] args4 = {"-c", "extract", "-s", "incoming/drain_dem.R"};
         cli.runForArgs(args4);
-        assertEquals('#', cli.getExtractor().getCommentCharacter());
+        assertEquals('#', extractor.getCommentCharacter());
 
         String[] args5 = {"-c", "extract", "-s", "src/test/resources/testJavaScript.java"};
         cli.runForArgs(args5);
-        assertEquals('/', cli.getExtractor().getCommentCharacter());
+        assertEquals('/', extractor.getCommentCharacter());
 
         String[] args6 = {"-c", "extract", "-s", "src/test/resources/testMatlab.m"};
         cli.runForArgs(args6);
-        assertEquals('%', cli.getExtractor().getCommentCharacter());
+        assertEquals('%', extractor.getCommentCharacter());
 
         String[] args7 = {"-c", "extract", "-s", "src/test/resources/testMatlab.M"};
         cli.runForArgs(args7);
-        assertEquals('%', cli.getExtractor().getCommentCharacter());
+        assertEquals('%', extractor.getCommentCharacter());
 
         String[] args8 = {"-c", "extract", "-x", "%", "-s", "src/test/resources/testMatlab.m"};
         cli.runForArgs(args8);
-        assertEquals('%', cli.getExtractor().getCommentCharacter());
+        assertEquals('%', extractor.getCommentCharacter());
 
         String[] args9 = {"-c", "extract", "-s", "src/test/resources/testfileNoExtension"}; // default '#' when file extension is not available
         cli.runForArgs(args9);
-        assertEquals('#', cli.getExtractor().getCommentCharacter());
+        assertEquals('#', extractor.getCommentCharacter());
     }
 //    public void testYesWorkflowCLI_Graph() throws Exception {
 //
@@ -294,21 +299,13 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         public String databasePath = null;
         public boolean extracted = false;
 
-        @Override
 		public Extractor commentCharacter(char c) { return this; }
-		@Override
 		public Extractor sourceReader(Reader reader) { return null; }
-        @Override
 		public Extractor sourcePath(String path) { this.sourcePath = path; return this; }
-        @Override
 		public Extractor databasePath(String path) { this.databasePath = path; return this; }
-        @Override
 		public List<String> getLines() { return null; }
-        @Override
 		public List<Comment> getComments() { return null; }
-		@Override
 		public char getCommentCharacter() { return 0; }
-        @Override
         public Extractor extract() throws Exception { this.extracted = true; return null; }
     }
 }

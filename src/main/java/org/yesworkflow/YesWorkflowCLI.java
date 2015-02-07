@@ -376,8 +376,4 @@ public class YesWorkflowCLI {
             linesOutputStream.close();
         }
     }
-    
-    public Extractor getExtractor() {
-    	return extractor;
-    }
 }
