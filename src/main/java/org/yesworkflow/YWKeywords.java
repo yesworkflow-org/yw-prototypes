@@ -27,19 +27,19 @@ public class YWKeywords {
     }
     
     /** Definition of the standard keyword for the AS tag. */
-    public static final String STANDARD_AS_KEYWORD =    "@as";
+    public static final String STANDARD_AS_KEYWORD              = "@as";
 
     /** Definition of the standard keyword for the BEGIN tag. */
-    public static final String STANDARD_BEGIN_KEYWORD = "@begin";
+    public static final String STANDARD_BEGIN_KEYWORD           = "@begin";
     
     /** Definition of the standard keyword for the END tag. */
-    public static final String STANDARD_END_KEYWORD =   "@end";
+    public static final String STANDARD_END_KEYWORD             = "@end";
     
     /** Definition of the standard keyword for the IN tag. */
-    public static final String STANDARD_IN_KEYWORD      = "@in";
+    public static final String STANDARD_IN_KEYWORD              = "@in";
     
     /** Definition of the standard keyword for the OUT tag. */
-    public static final String STANDARD_OUT_KEYWORD     = "@out";
+    public static final String STANDARD_OUT_KEYWORD             = "@out";
     
     /** Backing for one-to-one mapping from tag to standard keyword */
     private Map<Tag,String> standardkeywordForTag = new HashMap<Tag,String>();
