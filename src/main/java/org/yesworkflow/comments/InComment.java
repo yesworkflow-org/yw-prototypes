@@ -1,5 +1,7 @@
 package org.yesworkflow.comments;
 
+import org.yesworkflow.YWKeywords;
+
 public class InComment extends PortComment {
 
     public InComment(String tag, String name, String alias, String description) throws Exception { 
@@ -7,6 +9,6 @@ public class InComment extends PortComment {
     }
     
     public InComment(String commentLine) throws Exception {        
-        super(commentLine, "@in");
+        super(commentLine, YWKeywords.STANDARD_IN_KEYWORD);
     }    
 }
