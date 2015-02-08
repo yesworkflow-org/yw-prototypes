@@ -9,6 +9,8 @@ import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.yesworkflow.LanguageModel;
+import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.YWKeywords;
 import org.yesworkflow.YWKeywords.Tag;
 import org.yesworkflow.comments.BeginComment;
@@ -27,6 +29,7 @@ public class DefaultExtractor implements Extractor {
     private List<String> commentLines;
     private List<Comment> comments;
     private YWKeywords keywordMapping;
+    private LanguageModel languageModel;
     
     @SuppressWarnings("unused")
     private PrintStream stdoutStream = null;
@@ -39,6 +42,12 @@ public class DefaultExtractor implements Extractor {
         this.stdoutStream = stdoutStream;
         this.stderrStream = stderrStream;
         this.keywordMapping = new YWKeywords();
+    }
+    
+    @Override
+    public DefaultExtractor languageModel(LanguageModel languageModel) {
+        this.languageModel = languageModel;
+        return this;
     }
     
     @Override
@@ -189,4 +198,19 @@ public class DefaultExtractor implements Extractor {
 	public char getCommentCharacter() {
 		return commentCharacter;
 	}
+	
+//	enum CodeParserState {
+//	    IN_CODE,
+//	    IN_SINGLE_LINE_COMMENT_START,
+//	    IN_SINGLE_LINE_COMMENT,
+//	    IN_DELIMITED_COMMENT_START,
+//	    IN_DELIMITED_COMMENT,
+//	    IN_DELIMITED_COMMENT_END
+//	}
+
+    @Override
+    public Language getLanguage() {
+        return languageModel == null ? null : languageModel.getLanguage();
+    }
+	
 }
