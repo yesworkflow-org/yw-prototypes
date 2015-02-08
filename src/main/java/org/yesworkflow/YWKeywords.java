@@ -63,7 +63,7 @@ public class YWKeywords {
     public YWKeywords(Map<String,Tag> alternateKeywords) {
         this();
         for (Map.Entry<String,Tag> e : alternateKeywords.entrySet()) {
-            tagForKeyword.put(e.getKey(), e.getValue());
+            tagForKeyword.put(e.getKey().toLowerCase(), e.getValue());
         }
     }
 
@@ -75,7 +75,7 @@ public class YWKeywords {
     public YWKeywords(Map<String,Tag> alternateKeywords, List<String> disabledKeywords) {
         this(alternateKeywords);
         for (String keyword : disabledKeywords) {
-            tagForKeyword.remove(keyword);
+            tagForKeyword.remove(keyword.toLowerCase());
         }
     }
     
@@ -92,7 +92,7 @@ public class YWKeywords {
      *  @return The tag corresponding to k, or null if k is not a keyword.
      */
     public Tag getTag(String k) {
-        return tagForKeyword.get(k);
+        return tagForKeyword.get(k.toLowerCase());
     }
         
     /** Determines if the given string has been defined as a YW keyword.
@@ -100,12 +100,13 @@ public class YWKeywords {
      *  @return true if k is a keyword.
      */
     public boolean isKeyword(String k) {
-        return tagForKeyword.keySet().contains(k);
+        return tagForKeyword.keySet().contains(k.toLowerCase());
     }
     
     /** Assigns the standard keyword for the given tag. */
     private void setStandardKeyword(String keyword, Tag tag) {
-        standardkeywordForTag.put(tag, keyword);
-        tagForKeyword.put(keyword, tag);
+        String lowercaseKeyword = keyword.toLowerCase();
+        standardkeywordForTag.put(tag, lowercaseKeyword);
+        tagForKeyword.put(lowercaseKeyword, tag);
     }    
 }
