@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.List;
 
+import org.yesworkflow.LanguageModel.DelimiterPair;
 import org.yesworkflow.comments.Comment;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.exceptions.YWToolUsageException;
@@ -61,7 +62,8 @@ public class YesWorkflowCLI {
     private String command = null;
     private String sourceFilePath = null;
     private String databaseFilePath = null;
-    private char comment_char = 0;
+    private char commentChar = 0;
+    private LanguageModel languageModel;
     
     private Extractor extractor = null;
     private Modeler modeler = null;
@@ -123,8 +125,7 @@ public class YesWorkflowCLI {
             // extract remaining arguments
             extractSourcePathFromOptions();
             extractDatabasePathFromOptions();
-            // extract comment character
-            extractCommentCharacter(sourceFilePath);
+            extractCommentCharacter();
 
             // run extractor and exit if extract command given
             if (command.equals("extract")) {
@@ -197,44 +198,39 @@ public class YesWorkflowCLI {
         }
     }
 
+    private void extractCommentCharacter() {        
+    	if(options.hasArgument("x")) {// check the comment character from -x option
+       		commentChar = ((String)options.valueOf("x")).charAt(0);
+    	} else {
+    		commentChar = inferCommentCharFromFileExtension(); // get comment character based on file extension
+    	}
+    }
+    
     /**
      * This method gets the comment character based on file extension
      * @param path
      * @return file extension
      */
-	public char findCommentCharacter(String sourcePath){
+    private char inferCommentCharFromFileExtension() {
 
-        String fileName = new File(sourcePath).getName();
-        int i = fileName.lastIndexOf(".");
-        String ext = null; // get file extension
-        char c = 0;
+        // use filename to create a language model
+        String fileName = new File(sourceFilePath).getName();
+        languageModel = new LanguageModel(fileName);
 
-        if (i == -1) {
-        	c = '#';
-        	return c;
+        // use first character of single-line comment limiter if defined
+        List<String> delimiters = languageModel.getSingleLineCommentDelimiters();
+        if (delimiters.size() > 0) {
+            return delimiters.get(0).charAt(0);
         }
-
-        ext = fileName.substring(i+1);
-		if(ext.equalsIgnoreCase("py")){
-    		c = '#';
-    	} else if(ext.equalsIgnoreCase("R")){
-    		c = '#';
-    	} else if(ext.equalsIgnoreCase("java")) {
-    		c = '/';
-    	} else if(ext.equalsIgnoreCase("m")) {
-    		c = '%';
-    	} else {
-    		// nothing happen here
-    	}
-		return c;
-	}
-
-    private void extractCommentCharacter(String path) {
-    	if(options.hasArgument("x")) {// check the comment character from -x option
-       		comment_char = ((String)options.valueOf("x")).charAt(0);
-    	} else {
-    		comment_char = findCommentCharacter(path); // get comment character based on file extension
-    	}
+        
+        // otherwise use the first character of the first delimited comment sequence
+        List<DelimiterPair> delimiterPairs = languageModel.getDelimitedCommentDelimiters();
+        if (delimiterPairs.size() > 0) {
+            return delimiterPairs.get(0).start.charAt(0);
+        }
+        
+        // return default comment character for unrecognized script file extensions
+        return '#';
     }
 
     private void extractDatabasePathFromOptions() {
@@ -324,8 +320,13 @@ public class YesWorkflowCLI {
         }
 
         extractor.databasePath(databaseFilePath)
-        		 .commentCharacter(comment_char)
-        		 .extract();
+                 .languageModel(languageModel);
+        
+        if (commentChar != 0) {
+            extractor.commentCharacter(commentChar);
+        }
+        
+        extractor.extract();
 
         if (options.has("l")) {
 
