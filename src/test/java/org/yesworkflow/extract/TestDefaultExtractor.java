@@ -86,6 +86,22 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
     }
+    
+    public void testExtract_NonYWComment_WithAtSymbol() throws Exception {
+        
+        String source = "# a comment with an @ symbol in it " + EOL;
+        
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.sourceReader(reader)
+                 .commentCharacter('#')
+                 .extract();
+        
+        List<String> commentLines = extractor.getLines();
+        assertEquals(0,commentLines.size());
+        assertEquals("", super.stdoutBuffer.toString());
+        assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
+    }
 
     public void testExtract_GetCommentLines_MultipleComments_Hash() throws Exception {
         

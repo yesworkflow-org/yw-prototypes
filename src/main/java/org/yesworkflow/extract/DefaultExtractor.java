@@ -9,6 +9,8 @@ import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.yesworkflow.YWKeywords;
+import org.yesworkflow.YWKeywords.Tag;
 import org.yesworkflow.comments.BeginComment;
 import org.yesworkflow.comments.Comment;
 import org.yesworkflow.comments.EndComment;
@@ -24,6 +26,7 @@ public class DefaultExtractor implements Extractor {
     private String sourcePath = null;
     private List<String> commentLines;
     private List<Comment> comments;
+    private YWKeywords keywordMapping;
     
     @SuppressWarnings("unused")
     private PrintStream stdoutStream = null;
@@ -35,6 +38,7 @@ public class DefaultExtractor implements Extractor {
     public DefaultExtractor(PrintStream stdoutStream, PrintStream stderrStream) {
         this.stdoutStream = stdoutStream;
         this.stderrStream = stderrStream;
+        this.keywordMapping = new YWKeywords();
     }
     
     @Override
@@ -107,19 +111,20 @@ public class DefaultExtractor implements Extractor {
 
         for (String commentLine : commentLines) {
 
-            String tag = extractTag(commentLine);
-
-            Comment comment;
-            if (tag.equalsIgnoreCase("@begin")) {
-                comment = new BeginComment(commentLine);
-            } else if (tag.equalsIgnoreCase("@end")) {
-                comment = new EndComment(commentLine);
-            } else if (tag.equalsIgnoreCase("@in")) {
-                comment = new InComment(commentLine);
-            } else if (tag.equalsIgnoreCase("@out")) {
-                comment = new OutComment(commentLine);
-            } else {
-                throw new YWMarkupException("ERROR: Comment tag " + tag + " is not supported");
+            String keyword = extractKeyword(commentLine);
+            Tag tag = keywordMapping.getTag(keyword);
+            
+            if (tag == null) {
+                throw new YWMarkupException("ERROR: Comment keyword " + keyword + " is not supported");                
+            }
+            
+            Comment comment = null;
+            switch(tag) {
+                case BEGIN: comment = new BeginComment(commentLine);    break;
+                case END:   comment = new EndComment(commentLine);      break;
+                case IN:    comment = new InComment(commentLine);       break;
+                case OUT:   comment = new OutComment(commentLine);      break;
+                case AS:    break;
             }
 
             comments.add(comment);
@@ -127,7 +132,7 @@ public class DefaultExtractor implements Extractor {
     }
 
  
-    private String extractTag(String commentLine) {
+    private String extractKeyword(String commentLine) {
 
         int tagEndIndex = commentLine.indexOf(' ');
         if (tagEndIndex == -1) tagEndIndex = commentLine.indexOf('\t');
@@ -139,16 +144,31 @@ public class DefaultExtractor implements Extractor {
         }
     }
 
+    private int nextWhiteSpace(String line, int start) {
+        for (int i = start; i < line.length(); ++i) {
+            if (Character.isWhitespace(line.charAt(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
     private String extractCommentLine(String line) {
-
+        
+        // ignore empty lines and lines that do not start with a comment
         String trimmedLine = line.trim();
-
         if (trimmedLine.length() == 0 || trimmedLine.charAt(0) != commentCharacter) return null;
 
-        int ywCommentTagBegin = trimmedLine.indexOf('@');
-        if (ywCommentTagBegin == -1) return null;
+        // extract the first YW keyword on the line 
+        int keywordBegin = trimmedLine.indexOf('@');
+        if (keywordBegin == -1) return null;
+        int keywordEnd = nextWhiteSpace(trimmedLine, keywordBegin + 1);
+        if (keywordEnd == -1) return null;
+        String keyword = trimmedLine.substring(keywordBegin, keywordEnd);
+        
+        if (! keywordMapping.isKeyword(keyword)) return null;
 
-        return trimmedLine.substring(ywCommentTagBegin);
+        return trimmedLine.substring(keywordBegin);
     }
 
     private BufferedReader getFileReaderForPath(String path) throws YWToolUsageException {
