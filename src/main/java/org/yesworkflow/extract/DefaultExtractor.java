@@ -198,16 +198,8 @@ public class DefaultExtractor implements Extractor {
 	public char getCommentCharacter() {
 		return commentCharacter;
 	}
-	
-//	enum CodeParserState {
-//	    IN_CODE,
-//	    IN_SINGLE_LINE_COMMENT_START,
-//	    IN_SINGLE_LINE_COMMENT,
-//	    IN_DELIMITED_COMMENT_START,
-//	    IN_DELIMITED_COMMENT,
-//	    IN_DELIMITED_COMMENT_END
-//	}
-
+	    
+    
     @Override
     public Language getLanguage() {
         return languageModel == null ? null : languageModel.getLanguage();
