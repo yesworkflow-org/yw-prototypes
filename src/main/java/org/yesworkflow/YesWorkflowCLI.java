@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.Map;
 
-import org.yesworkflow.LanguageModel.DelimiterPair;
 import org.yesworkflow.comments.Comment;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.exceptions.YWToolUsageException;
@@ -218,15 +218,16 @@ public class YesWorkflowCLI {
         languageModel = new LanguageModel(fileName);
 
         // use first character of single-line comment limiter if defined
-        List<String> delimiters = languageModel.getSingleLineCommentDelimiters();
+        List<String> delimiters = languageModel.getSingleCommentDelimiters();
         if (delimiters.size() > 0) {
             return delimiters.get(0).charAt(0);
         }
         
         // otherwise use the first character of the first delimited comment sequence
-        List<DelimiterPair> delimiterPairs = languageModel.getDelimitedCommentDelimiters();
+        Map<String,String> delimiterPairs = languageModel.getPairedCommentDelimiters();
         if (delimiterPairs.size() > 0) {
-            return delimiterPairs.get(0).start.charAt(0);
+            String firstStartDelimiter = delimiterPairs.keySet().iterator().next();
+            return firstStartDelimiter.charAt(0);
         }
         
         // return default comment character for unrecognized script file extensions

@@ -1,6 +1,7 @@
 package org.yesworkflow;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,11 @@ import java.util.HashMap;
  * <p>Supports strings indicating the start of single-line comments 
  * (e.g., lines starting with "#" in Python, Bash and R) as well as pairs of
  * strings that bracket comments (e.g., "%{" and "%}" in MATLAB). Allows
- * multiple strings of both kinds for each language.</p>
+ * multiple strings of both kinds for each language (needed, e.g., for SAS).</p>
+ * 
+ * <p>Provides methods for comparing potential comment delimiter strings 
+ * with those defined for the language.  These methods determine if there is 
+ * a partial or full match with any of them.
  */
 public class LanguageModel {
 
@@ -30,35 +35,15 @@ public class LanguageModel {
         R,
         SAS
     }
-
-    /** Class representing a pair of strings used to bracket a comment
-     *  spanning one or more lines. */
-    static public class DelimiterPair {
-        
-        /** The comment-start delimiter string. */
-        public final String start;          
-
-        /** The comment-end delimiter string. */
-        public final String end;
-        
-        /** Constructor that initializes both fields.
-         *  @param start Comment-start delimiter string.
-         *  @param end Comment-end delimiter string.  
-         */ 
-        DelimiterPair(String start, String end) {
-            this.start = start;
-            this.end = end;
-        }
-    }
     
     /** Programming language represented by this model. */
     private Language language;
     
     /** Backing for collection of single-line comment delimiters. */
-    private List<String> singleLineCommentDelimiters = new LinkedList<String>();
+    private List<String> singleCommentDelimiters = new LinkedList<String>();
 
     /** Backing for collection of paired comment delimiters. */
-    private List<DelimiterPair> delimitedCommentDelimiters = new LinkedList<DelimiterPair>();
+    private Map<String,String> pairedCommentDelimiters = new LinkedHashMap<String,String>();
     
     /** Mapping from recognized source file extensions to programming languages.*/
     private static Map<String,Language> languageForExtension;
@@ -89,7 +74,7 @@ public class LanguageModel {
 
     /** Constructor for models of languages not explicitly supported by 
      *  YesWorkflow. Comment delimiter strings can be assigned using 
-     *  the {@link #delimiter(String) delimiter()} and 
+     *  the {@link #singleDelimiter(String) delimiter()} and 
      *  {@link #delimiterPair(String, String) delimiterPair()} methods.
      *  @param language The programming language to model.
      */    
@@ -115,16 +100,16 @@ public class LanguageModel {
      *  that signal the beginning of single-line comments.
      *  @return The list of single-line comment delimiters.
      */
-    public List<String> getSingleLineCommentDelimiters() {
-        return new ArrayList<String>(singleLineCommentDelimiters);
+    public List<String> getSingleCommentDelimiters() {
+        return new ArrayList<String>(singleCommentDelimiters);
     }
 
     /** Provides access to the collection of pairs of strings
      *  used to bracket delimited, possibly multi-line comments.
      *  @return The list of comment delimiters pairs.
      */
-    public List<DelimiterPair> getDelimitedCommentDelimiters() {
-        return new ArrayList<DelimiterPair>(delimitedCommentDelimiters);
+    public Map<String,String> getPairedCommentDelimiters() {
+        return new HashMap<String,String>(pairedCommentDelimiters);
     }
     
     /** Provides access to the language modeled by this instance.
@@ -145,8 +130,8 @@ public class LanguageModel {
     /** Adds a single-line comment delimiter string to the model.
      * @param start A string indicating the start of a one-line comment.
      */
-    public void delimiter(String start) {
-        singleLineCommentDelimiters.add(start);
+    public void singleDelimiter(String start) {
+        singleCommentDelimiters.add(start);
     }
 
     /** Adds a pair of comment-delimiting strings to the model.
@@ -154,8 +139,77 @@ public class LanguageModel {
      * @param end The corresponding string indicating the end of the comment.
      */
     public void delimiterPair(String start, String end) {
-        delimitedCommentDelimiters.add(new DelimiterPair(start, end));
+        pairedCommentDelimiters.put(start, end);
     }
+    
+    /** Enumeration of match conditions returned from comment delimiter matching methods.
+     *  Enables match methods to distinguish between matches to the two kinds of start delimiters,
+     *  and between full and prefix matches. 
+     */
+    public enum MatchExtent {
+        NO_MATCH,
+        PREFIX_MATCH,
+        FULL_MATCH_SINGLE,
+        FULL_MATCH_PAIRED
+    }
+    
+    /**
+     * Determines if the passed string matches any of the comment start delimiters
+     * defined for the language.  Tries to match against the single delimiters
+     * used to start one-line comments, as well as the start delimiters of 
+     * delimiter pairs used to define partial-line or multi-line comments.  The
+     * return value distinguishes between matches to the two kinds of start delimiters,
+     * and between full and prefix matches.
+     * 
+     * @param s The potential comment start delimiter to be tested.
+     * @return The extent of the match found.
+     */
+    public MatchExtent commentStartMatches(String s) {
+        
+        int length = s.length();
+        
+        // look for a match with single-line comment start delimiter
+        for (String singleCommentDelimiter : singleCommentDelimiters) {
+            if (singleCommentDelimiter.startsWith(s)) {
+                return (length == singleCommentDelimiter.length()) ? 
+                        MatchExtent.FULL_MATCH_SINGLE : MatchExtent.PREFIX_MATCH;
+            }
+        }
+        
+        // look for a match with partial-line/multi-line comment start delimiters
+        for (String startCommentDelimiter : pairedCommentDelimiters.keySet()) {
+            if (startCommentDelimiter.startsWith(s)) {
+                return (length == startCommentDelimiter.length()) ? 
+                        MatchExtent.FULL_MATCH_PAIRED : MatchExtent.PREFIX_MATCH;
+            }
+        }
+
+        return MatchExtent.NO_MATCH;
+    }
+    
+    /**
+     * Determines if the passed string matches the comment end delimiter
+     * corresponding to the provided comment start delimiter. The
+     * return value distinguishes between full and prefix matches.
+     * 
+     * @param s The potential comment end delimiter to be tested.
+     * @param startDelimiter The comment start delimiter corresponding to the expected
+     *                       end delimiter.
+     * @return The extent of the match found.
+     */
+    public MatchExtent commentEndMatches(String s, String startDelimiter) {
+        
+        String endCommentDelimiter = pairedCommentDelimiters.get(startDelimiter);
+        if (endCommentDelimiter.startsWith(s)) {
+            if (s.length() == endCommentDelimiter.length()) { 
+                return MatchExtent.FULL_MATCH_PAIRED;
+            } else {
+                return MatchExtent.PREFIX_MATCH;
+            }        
+        } else {
+            return MatchExtent.NO_MATCH;
+        }
+    }  
     
     /** Assigns comment delimiter strings to the model according to the 
      *  language the model represents.
@@ -167,36 +221,36 @@ public class LanguageModel {
             switch(language) {
             
             case BASH:
-                delimiter("#");
+                singleDelimiter("#");
                 break;
                 
             case C:
-                delimiter("//");
+                singleDelimiter("//");
                 delimiterPair("/*", "*/");
                 break;
     
             case CPLUSPLUS:
-                delimiter("//");
+                singleDelimiter("//");
                 delimiterPair("/*", "*/");
                 break;
             
             case JAVA:
-                delimiter("//");
+                singleDelimiter("//");
                 delimiterPair("/*", "*/");
                 break;
             
             case MATLAB:
-                delimiter("%");
+                singleDelimiter("%");
                 delimiterPair("%{", "%}");
                 break;
     
             case PYTHON:
-                delimiter("#");
+                singleDelimiter("#");
                 delimiterPair("\"\"\"", "\"\"\"");
                 break;
             
             case R:
-                delimiter("#");
+                singleDelimiter("#");
                 break;
             
             case SAS:
@@ -206,5 +260,4 @@ public class LanguageModel {
             }
         }
     }
-    
 }
