@@ -1,7 +1,7 @@
 YesWorkflow Prototypes
 ======================
 
-Th yw-prototypes repository contains early implementations of YesWorkflow, an approach to modeling conventional scripts and programs as scientific workflows.  YesWorkflow is described in the paper, [YesWorkflow: A User-Oriented, Language-Independent Tool for Recovering Workflow Information from Scripts](http://arxiv.org/abs/1502.02403).
+Th yw-prototypes repository contains early implementations of YesWorkflow, an approach to modeling conventional scripts and programs as scientific workflows.  The software is described in the paper, [YesWorkflow: A User-Oriented, Language-Independent Tool for Recovering Workflow Information from Scripts](http://arxiv.org/abs/1502.02403).
 
 Overview
 --------
