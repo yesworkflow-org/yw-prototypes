@@ -29,6 +29,7 @@ public class LanguageModel {
         BASH,
         C,
         CPLUSPLUS,
+        GENERIC,
         JAVA,
         MATLAB,
         PYTHON,
@@ -37,7 +38,7 @@ public class LanguageModel {
     }
     
     /** Programming language represented by this model. */
-    private Language language;
+    private final Language language;
     
     /** Backing for collection of single-line comment delimiters. */
     private List<String> singleCommentDelimiters = new LinkedList<String>();
@@ -63,13 +64,23 @@ public class LanguageModel {
     /** Utility method for looking up the programming language
      * associated with the file extension of the provided file name.
      * @param fileName The name of the file from which to infer the language.
-     * @return The inferred programming language, or null if the extension is not recognized.
+     * @return The inferred programming language, or 
+     * {@link org.yesworkflow.LanguageModel.Language Language}.GENERIC
+     * if the extension is not recognized.
      */
     public static Language languageForFileName(String fileName) {
+
+        Language language = null;
+        
         int i = fileName.lastIndexOf(".");
-        if (i == -1) return null;        
-        String extension = fileName.substring(i+1);
-        return languageForExtension.get(extension.toLowerCase());
+        if (i != -1) {
+            String extension = fileName.substring(i+1);
+            language = languageForExtension.get(extension.toLowerCase());
+        }
+        
+        if (language == null) language = Language.GENERIC;
+        
+        return language;
     }
 
     /** Constructor for models of languages not explicitly supported by 
@@ -78,7 +89,9 @@ public class LanguageModel {
      *  {@link #delimiterPair(String, String) delimiterPair()} methods.
      *  @param language The programming language to model.
      */    
-    public LanguageModel() {}
+    public LanguageModel() {
+        this.language = Language.GENERIC;
+    }
     
     /** Constructor that builds a model for the given language.
      *  @param language The programming language to model.
@@ -234,6 +247,9 @@ public class LanguageModel {
                 delimiterPair("/*", "*/");
                 break;
             
+            case GENERIC:
+                break;
+
             case JAVA:
                 singleDelimiter("//");
                 delimiterPair("/*", "*/");
