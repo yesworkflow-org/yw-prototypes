@@ -42,10 +42,22 @@ public class CommentMatcher {
      * @return  A List of Strings representing the comments in the source code.
      * @throws IOException 
      */
-    public List<String> getCommentsAsLines(String source) throws IOException {
-        
+    public List<String> getCommentsAsLines(String source) throws IOException {    
         BufferedReader reader = new BufferedReader(new StringReader(source));
-        
+        return getCommentsAsLines(reader);
+    }
+    
+    /** Extracts the contents of all comments found in the source code provided via
+     *  a {@link java.io.BufferedReader BufferedReader}
+     *  and returns each line of each comment as a string.  Comments that span multiple lines
+     *  in the source are represented as multiple strings in the return value.
+     * 
+     * @param source A String containing the entire source code to analyze.
+     * @return  A List of Strings representing the comments in the source code.
+     * @throws IOException 
+     */
+    public List<String> getCommentsAsLines(BufferedReader reader) throws IOException {
+
         String line;
         List<String> commentLines = new LinkedList<String>();
         
@@ -56,23 +68,17 @@ public class CommentMatcher {
                 String newCommentChars = processNextChar((char)c);
                 commentLine.append(newCommentChars);
                 if (newCommentChars.equals(EOL)) {
-                    String trimmedCommentLine = commentLine.toString().trim();
-                    if (trimmedCommentLine.length() > 0) {
-                        commentLines.add(trimmedCommentLine);
-                    }
+                    addCommentLineToResult(commentLine.toString(), commentLines);
                     commentLine = new StringBuffer();            
                 }
             }
             commentLine.append(processNextChar('\n'));
-            String trimmedCommentLine = commentLine.toString().trim();
-            if (trimmedCommentLine.length() > 0) {
-                commentLines.add(trimmedCommentLine);
-            }
+            addCommentLineToResult(commentLine.toString(), commentLines);
         }
         
         return commentLines;
     }
-
+        
     /** Extracts the contents of all comments found in the provided source code,
      *  and returns all of the comments as a single string.  The comments are separated
      *  by end-of-line characters in the returned String. Comments that span multiple 
@@ -93,12 +99,22 @@ public class CommentMatcher {
         return comments.toString();
     }
     
+    /** Helper method for accumulating non-blank comment lines. */
+    private void addCommentLineToResult(String line, List<String> accumulatedLines) {
+        String trimmedCommentLine = line.toString().trim();
+        if (trimmedCommentLine.length() > 0) {
+            accumulatedLines.add(trimmedCommentLine);
+        }
+    }
+    
+    /** Enumeration defining the three states of the comment-matching finite state machine */
     private enum State {
         IN_CODE,
         IN_SINGLE_LINE_COMMENT,
         IN_MULTI_LINE_COMMENT,
     }
     
+    /** Updates the state of the comment-matching finite state machine. */
     @SuppressWarnings("incomplete-switch")
     private String processNextChar(int c) {
         
@@ -172,7 +188,8 @@ public class CommentMatcher {
         return newCommentCharacters;
     }
 
+    /** helper method used during update of finite state machine */ 
     private void clearBuffer() {
         buffer.delete(0, buffer.length());        
-    }    
+    }
 }
