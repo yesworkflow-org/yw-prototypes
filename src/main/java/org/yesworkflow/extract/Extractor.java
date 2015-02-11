@@ -10,7 +10,7 @@ import org.yesworkflow.comments.Comment;
 
 public interface Extractor extends YWStage {
     Extractor languageModel(LanguageModel languageModel);
-    Extractor commentCharacter(char c);
+    Extractor commentDelimiter(String c);
 	Extractor sourceReader(Reader reader);
     Extractor sourcePath(String path);
     Extractor databasePath(String path);
@@ -18,6 +18,5 @@ public interface Extractor extends YWStage {
     Language getLanguage();
     List<String> getLines();
     List<Comment> getComments();
-	char getCommentCharacter();
 }
 

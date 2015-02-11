@@ -47,7 +47,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Comment> comments = extractor.sourceReader(reader)
-                .commentCharacter('#')
+                .commentDelimiter("#")
                 .extract()
                 .getComments();
 
@@ -91,7 +91,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
       List<Comment> comments = extractor.sourceReader(reader)
-              .commentCharacter('#')
+              .commentDelimiter("#")
               .extract()
               .getComments();
 
@@ -141,7 +141,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
       List<Comment> comments = extractor.sourceReader(reader)
-              .commentCharacter('#')
+              .commentDelimiter("#")
               .extract()
               .getComments();
 
@@ -176,7 +176,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
      public void testDotGrapher_DataView_SamplePyScript() throws Exception {
          
          List<Comment> comments = extractor.sourcePath("src/main/resources/example.py")
-                 .commentCharacter('#')
+                 .commentDelimiter("#")
                  .extract()
                  .getComments();
 

@@ -36,7 +36,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Comment> comments = extractor.sourceReader(reader)
-                                          .commentCharacter('#')
+                                          .commentDelimiter("#")
                                           .extract()
                                           .getComments();
         
@@ -62,7 +62,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Comment> comments = extractor.sourceReader(reader)
-                .commentCharacter('#')
+                .commentDelimiter("#")
                 .extract()
                 .getComments();
 
@@ -93,7 +93,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Comment> comments = extractor.sourceReader(reader)
-                .commentCharacter('#')
+                .commentDelimiter("#")
                 .extract()
                 .getComments();
 
@@ -119,7 +119,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        BufferedReader reader = new BufferedReader(new StringReader(source));
        
        List<Comment> comments = extractor.sourceReader(reader)
-               .commentCharacter('#')
+               .commentDelimiter("#")
                .extract()
                .getComments();
 
@@ -157,7 +157,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Comment> comments = extractor.sourceReader(reader)
-                .commentCharacter('#')
+                .commentDelimiter("#")
                 .extract()
                 .getComments();
 
@@ -200,7 +200,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Comment> comments = extractor.sourceReader(reader)
-                .commentCharacter('#')
+                .commentDelimiter("#")
                 .extract()
                 .getComments();
 
@@ -245,7 +245,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Comment> comments = extractor.sourceReader(reader)
-                .commentCharacter('#')
+                .commentDelimiter("#")
                 .extract()
                 .getComments();
 
@@ -275,7 +275,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Comment> comments = extractor.sourceReader(reader)
-                .commentCharacter('#')
+                .commentDelimiter("#")
                 .extract()
                 .getComments();
 
@@ -334,7 +334,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Comment> comments = extractor.sourceReader(reader)
-                .commentCharacter('#')
+                .commentDelimiter("#")
                 .extract()
                 .getComments();
 
@@ -391,7 +391,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        BufferedReader reader = new BufferedReader(new StringReader(source));
 
        List<Comment> comments = extractor.sourceReader(reader)
-                                         .commentCharacter('#')
+                                         .commentDelimiter("#")
                                          .extract()
                                          .getComments();
        
@@ -423,7 +423,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        BufferedReader reader = new BufferedReader(new StringReader(source));
        
        List<Comment> comments = extractor.sourceReader(reader)
-                                         .commentCharacter('#')
+                                         .commentDelimiter("#")
                                          .extract()
                                          .getComments();
        

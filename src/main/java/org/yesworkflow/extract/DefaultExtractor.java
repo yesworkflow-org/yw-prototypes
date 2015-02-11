@@ -23,10 +23,9 @@ import org.yesworkflow.exceptions.YWToolUsageException;
 
 public class DefaultExtractor implements Extractor {
 
-    private char commentCharacter;
     private BufferedReader sourceReader = null;
     private String sourcePath = null;
-    private List<String> commentLines;
+    private List<String> ywCommentLines;
     private List<Comment> comments;
     private YWKeywords keywordMapping;
     private LanguageModel languageModel;
@@ -43,16 +42,17 @@ public class DefaultExtractor implements Extractor {
         this.stderrStream = stderrStream;
         this.keywordMapping = new YWKeywords();
     }
-    
+
     @Override
-    public DefaultExtractor languageModel(LanguageModel languageModel) {
-        this.languageModel = languageModel;
+    public DefaultExtractor languageModel(LanguageModel lm) {
+        languageModel = lm;
         return this;
     }
     
     @Override
-    public DefaultExtractor commentCharacter(char c) {
-        this.commentCharacter = c;
+    public DefaultExtractor commentDelimiter(String cd) {
+        languageModel = new LanguageModel();
+        languageModel.singleDelimiter(cd);
         return this;
     }
 
@@ -93,7 +93,7 @@ public class DefaultExtractor implements Extractor {
 
     @Override
     public List<String> getLines() {
-        return commentLines;
+        return ywCommentLines;
     }
 
     @Override
@@ -102,23 +102,22 @@ public class DefaultExtractor implements Extractor {
     }
 
     private void extractLines() throws IOException {
-
-        commentLines = new LinkedList<String>();
-
-        String line = null;
-        while ((line = sourceReader.readLine()) != null) {
-            String ywCommentLine = extractCommentLine(line);
-            if (ywCommentLine != null) {
-                commentLines.add(ywCommentLine);
-            }
-        }
+        
+        // extract all comments from script using the language model
+        CommentMatcher commentMatcher = new CommentMatcher(languageModel);
+        List<String> allCommentLines = commentMatcher.getCommentsAsLines(sourceReader);
+        
+        // select only the comments that contain YW keywords,
+        // trimming characters preceding the first YW keyword in each
+        KeywordMatcher ywCommentMatcher = new KeywordMatcher(keywordMapping.getKeywords());
+        ywCommentLines = ywCommentMatcher.match(allCommentLines, true);
     }
 
     private void extractComments() throws Exception {
 
         comments = new LinkedList<Comment>();
 
-        for (String commentLine : commentLines) {
+        for (String commentLine : ywCommentLines) {
 
             String keyword = extractKeyword(commentLine);
             Tag tag = keywordMapping.getTag(keyword);
@@ -139,7 +138,6 @@ public class DefaultExtractor implements Extractor {
             comments.add(comment);
         }
     }
-
  
     private String extractKeyword(String commentLine) {
 
@@ -153,32 +151,6 @@ public class DefaultExtractor implements Extractor {
         }
     }
 
-    private int nextWhiteSpace(String line, int start) {
-        for (int i = start; i < line.length(); ++i) {
-            if (Character.isWhitespace(line.charAt(i))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-    
-    private String extractCommentLine(String line) {
-        
-        // ignore empty lines and lines that do not start with a comment
-        String trimmedLine = line.trim();
-        if (trimmedLine.length() == 0 || trimmedLine.charAt(0) != commentCharacter) return null;
-
-        // extract the first YW keyword on the line 
-        int keywordBegin = trimmedLine.indexOf('@');
-        if (keywordBegin == -1) return null;
-        int keywordEnd = nextWhiteSpace(trimmedLine, keywordBegin + 1);
-        if (keywordEnd == -1) return null;
-        String keyword = trimmedLine.substring(keywordBegin, keywordEnd);
-        
-        if (! keywordMapping.isKeyword(keyword)) return null;
-
-        return trimmedLine.substring(keywordBegin);
-    }
 
     private BufferedReader getFileReaderForPath(String path) throws YWToolUsageException {
 
@@ -193,16 +165,9 @@ public class DefaultExtractor implements Extractor {
 
         return reader;
     }
-
-	@Override
-	public char getCommentCharacter() {
-		return commentCharacter;
-	}
-	    
     
     @Override
     public Language getLanguage() {
-        return languageModel == null ? null : languageModel.getLanguage();
+        return languageModel.getLanguage();
     }
-	
 }

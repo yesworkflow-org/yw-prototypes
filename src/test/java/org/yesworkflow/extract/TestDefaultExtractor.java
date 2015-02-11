@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.List;
 
+import org.yesworkflow.LanguageModel;
+import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.comments.BeginComment;
 import org.yesworkflow.comments.Comment;
 import org.yesworkflow.comments.EndComment;
@@ -15,11 +17,14 @@ import org.yesworkflow.util.YesWorkflowTestCase;
 public class TestDefaultExtractor extends YesWorkflowTestCase {
 
     DefaultExtractor extractor = null;
+    LanguageModel languageModel = null;
     
     @Override
     public void setUp() throws Exception {
         super.setUp();
+        languageModel = new LanguageModel(Language.PYTHON);
         extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
+        extractor.languageModel(languageModel);
     }
 
     public void testExtract_BlankLine() throws Exception {
@@ -29,7 +34,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         extractor.sourceReader(reader)
-                 .commentCharacter('#')
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -45,7 +49,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         extractor.sourceReader(reader)
-                 .commentCharacter('#')
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -61,7 +64,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         extractor.sourceReader(reader)
-                 .commentCharacter('#')
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -78,7 +80,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         extractor.sourceReader(reader)
-                 .commentCharacter('#')
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -94,7 +95,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         extractor.sourceReader(reader)
-                 .commentCharacter('#')
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -119,7 +119,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         extractor.sourceReader(reader)
-                 .commentCharacter('#')
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -132,6 +131,11 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
 
     public void testExtract_GetCommentLines_MultipleComments_Slash() throws Exception {
         
+        languageModel = new LanguageModel();
+        languageModel.singleDelimiter("//");
+        extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
+        extractor.languageModel(languageModel);
+
         String source = 
                 "// @begin step   " + EOL +
                 "  some code "      + EOL +
@@ -146,7 +150,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         extractor.sourceReader(reader)
-                 .commentCharacter('/')
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -160,7 +163,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
     public void testExtract_GetComments_MultipleComments() throws Exception {
         
         String source = 
-                "## @begin step   "  + EOL +
+                "## @begin step   " + EOL +
                 "  some code "      + EOL +
                 "   # @in x  "      + EOL +
                 "     more code"    + EOL +
@@ -173,7 +176,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         extractor.sourceReader(reader)
-                 .commentCharacter('#')
                  .extract();
         
         List<Comment> comments = extractor.getComments();
@@ -200,7 +202,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
     public void testExtract_GetComments_SamplePyScript() throws Exception {
         
         extractor.sourcePath("src/main/resources/example.py")
-                 .commentCharacter('#')
                  .extract();
         
         List<Comment> comments = extractor.getComments();

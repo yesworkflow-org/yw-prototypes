@@ -3,6 +3,7 @@ package org.yesworkflow;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Class that defines the keywords recognized by YW and maps them to the 
@@ -108,5 +109,10 @@ public class YWKeywords {
         String lowercaseKeyword = keyword.toLowerCase();
         standardkeywordForTag.put(tag, lowercaseKeyword);
         tagForKeyword.put(lowercaseKeyword, tag);
-    }    
+    }
+    
+    /** Returns the keywords defined for this configuration of YW */
+    public Set<String> getKeywords() {
+        return tagForKeyword.keySet();
+    }
 }
