@@ -6,13 +6,12 @@ package org.yesworkflow;
 
 import static java.util.Arrays.asList;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.List;
-import java.util.Map;
 
+import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.comments.Comment;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.exceptions.YWToolUsageException;
@@ -62,8 +61,7 @@ public class YesWorkflowCLI {
     private String command = null;
     private String sourceFilePath = null;
     private String databaseFilePath = null;
-    private char commentChar = 0;
-    private LanguageModel languageModel;
+    private String commentDelimiter = null;
     
     private Extractor extractor = null;
     private Modeler modeler = null;
@@ -125,7 +123,7 @@ public class YesWorkflowCLI {
             // extract remaining arguments
             extractSourcePathFromOptions();
             extractDatabasePathFromOptions();
-            extractCommentCharacter();
+            extractCommentDelimiter();
 
             // run extractor and exit if extract command given
             if (command.equals("extract")) {
@@ -198,42 +196,12 @@ public class YesWorkflowCLI {
         }
     }
 
-    private void extractCommentCharacter() {        
-    	if(options.hasArgument("x")) {// check the comment character from -x option
-       		commentChar = ((String)options.valueOf("x")).charAt(0);
-    	} else {
-    		commentChar = inferCommentCharFromFileExtension(); // get comment character based on file extension
+    private void extractCommentDelimiter() {        
+    	if(options.hasArgument("x")) {
+       		commentDelimiter = (String)options.valueOf("x");
     	}
     }
     
-    /**
-     * This method gets the comment character based on file extension
-     * @param path
-     * @return file extension
-     */
-    private char inferCommentCharFromFileExtension() {
-
-        // use filename to create a language model
-        String fileName = new File(sourceFilePath).getName();
-        languageModel = new LanguageModel(fileName);
-
-        // use first character of single-line comment limiter if defined
-        List<String> delimiters = languageModel.getSingleCommentDelimiters();
-        if (delimiters.size() > 0) {
-            return delimiters.get(0).charAt(0);
-        }
-        
-        // otherwise use the first character of the first delimited comment sequence
-        Map<String,String> delimiterPairs = languageModel.getPairedCommentDelimiters();
-        if (delimiterPairs.size() > 0) {
-            String firstStartDelimiter = delimiterPairs.keySet().iterator().next();
-            return firstStartDelimiter.charAt(0);
-        }
-        
-        // return default comment character for unrecognized script file extensions
-        return '#';
-    }
-
     private void extractDatabasePathFromOptions() {
         if (options.hasArgument("d")) {
             databaseFilePath = (String) options.valueOf("d");
@@ -320,11 +288,18 @@ public class YesWorkflowCLI {
         	databaseFilePath = (String) options.valueOf("d");
         }
 
-        extractor.databasePath(databaseFilePath)
-                 .languageModel(languageModel);
+        extractor.databasePath(databaseFilePath);
         
-        if (commentChar != 0) {
-            extractor.commentCharacter(commentChar);
+        if (commentDelimiter != null) {
+            extractor.commentDelimiter(commentDelimiter);
+        } else {
+            
+            Language language = LanguageModel.languageForFileName(sourceFilePath);
+            if (language != null) {
+                extractor.languageModel(new LanguageModel(language));
+            } else {
+                throw new YWToolUsageException("Cannot identify language of source file.  Please specify a comment character.");
+            }
         }
         
         extractor.extract();

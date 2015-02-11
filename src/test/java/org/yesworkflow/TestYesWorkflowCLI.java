@@ -145,12 +145,9 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         
         Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
-        cli.extractor(extractor);
-        
-        cli.runForArgs(new String[] {"-c", "extract", "-x", "#", "-s", "src/main/resources/example.py"});
-        
-        assertNull(extractor.getLanguage());
-        assertEquals('#', extractor.getCommentCharacter());
+        cli.extractor(extractor);        
+        cli.runForArgs(new String[] {"-c", "extract", "-x", "#", "-s", "src/main/resources/example.py"});        
+        assertEquals(Language.GENERIC, extractor.getLanguage());
     }
     
     public void testYesWorkflow_CommentCharacters_PythonLowercase() throws Exception{
@@ -158,11 +155,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-    
         cli.runForArgs(new String[] {"-c", "extract", "-s", "src/main/resources/example.py"});
-
         assertEquals(Language.PYTHON, extractor.getLanguage());
-        assertEquals('#', extractor.getCommentCharacter());
     }
     
     public void testYesWorkflow_CommentCharacters_PythonUppercase() throws Exception{
@@ -170,23 +164,16 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-
         cli.runForArgs(new String[] {"-c", "extract", "-s", "src/main/resources/example.PY"});
-
         assertEquals(Language.PYTHON, extractor.getLanguage());
-        assertEquals('#', extractor.getCommentCharacter());
     }
     
     public void testYesWorkflow_CommentCharacters_RUppercase() throws Exception{
-        
         Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-
         cli.runForArgs(new String[] {"-c", "extract", "-s", "incoming/drain_dem.R"});
-
         assertEquals(Language.R, extractor.getLanguage());
-        assertEquals('#', extractor.getCommentCharacter());
     }
     
     public void testYesWorkflow_CommentCharacters_JavaLowercase() throws Exception{
@@ -198,20 +185,15 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
         cli.runForArgs(new String[] {"-c", "extract", "-s", "src/test/resources/testJavaScript.java"});
         assertEquals(Language.JAVA, extractor.getLanguage());
-        assertEquals('/', extractor.getCommentCharacter());
     }
     
     
     public void testYesWorkflow_CommentCharacters_MatlabLowercase() throws Exception{
-        
         Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-
         cli.runForArgs(new String[] {"-c", "extract", "-s", "src/test/resources/testMatlab.m"});
-        
         assertEquals(Language.MATLAB, extractor.getLanguage());
-        assertEquals('%', extractor.getCommentCharacter());
     }
 
     public void testYesWorkflow_CommentCharacters_MatlabUpperCase() throws Exception{
@@ -223,7 +205,6 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
         cli.runForArgs(new String[] {"-c", "extract", "-s", "src/test/resources/testMatlab.M"});
         assertEquals(Language.MATLAB, extractor.getLanguage());
-        assertEquals('%', extractor.getCommentCharacter());
     }
     
     public void testYesWorkflow_CommentCharacters_MatlabLowercase_ExplicitOption() throws Exception{
@@ -233,9 +214,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         cli.extractor(extractor);
     
         cli.runForArgs(new String[] {"-c", "extract", "-x", "%", "-s", "src/test/resources/testMatlab.m"});
-
-        assertNull(extractor.getLanguage());
-        assertEquals('%', extractor.getCommentCharacter());
+        
+        assertEquals(Language.GENERIC, extractor.getLanguage());
     }
 
     public void testYesWorkflow_CommentCharacters_NoExtension() throws Exception{
@@ -243,11 +223,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-
-        cli.runForArgs(new String[] {"-c", "extract", "-s", "src/test/resources/testfileNoExtension"});
-        
-        assertNull(extractor.getLanguage());
-        assertEquals('#', extractor.getCommentCharacter());
+        cli.runForArgs(new String[] {"-c", "extract", "-s", "src/test/resources/testfileNoExtension"});        
+        assertEquals(Language.GENERIC, extractor.getLanguage());
     }
     
 //    public void testYesWorkflowCLI_Graph() throws Exception {
@@ -365,16 +342,15 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         public String sourcePath = null;
         public String databasePath = null;
         public boolean extracted = false;
-
-        public Extractor languageModel(LanguageModel language) { return this; };
-		public Extractor commentCharacter(char c) { return this; }
-		public Extractor sourceReader(Reader reader) { return this; }
-		public Extractor sourcePath(String path) { this.sourcePath = path; return this; }
-		public Extractor databasePath(String path) { this.databasePath = path; return this; }
-		public List<String> getLines() { return null; }
-		public List<Comment> getComments() { return null; }
-		public char getCommentCharacter() { return 0; }
-        public Extractor extract() throws Exception { this.extracted = true; return null; }
-        public Language getLanguage() { return null; }
+ 
+        @Override public Extractor languageModel(LanguageModel language) { return this; };
+        @Override public Extractor commentDelimiter(String c) { return this; }
+        @Override public Extractor sourceReader(Reader reader) { return this; }
+        @Override public Extractor sourcePath(String path) { this.sourcePath = path; return this; }
+        @Override public Extractor databasePath(String path) { this.databasePath = path; return this; }
+        @Override public List<String> getLines() { return null; }
+        @Override public List<Comment> getComments() { return null; }
+        @Override public Extractor extract() throws Exception { this.extracted = true; return null; }
+        @Override public Language getLanguage() { return null; }
     }
 }
