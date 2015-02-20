@@ -6,6 +6,9 @@ package org.yesworkflow;
 
 import static java.util.Arrays.asList;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -59,10 +62,8 @@ public class YesWorkflowCLI {
     private OptionSet options = null;
     
     private String command = null;
-    private String sourceFilePath = null;
-    private String commentDelimiter = null;
     
-    private Extractor extractor = null;
+    private Extractor injectedExtractor = null;
     private Modeler modeler = null;
     private Grapher grapher = null;
     
@@ -80,7 +81,7 @@ public class YesWorkflowCLI {
     }
 
     public YesWorkflowCLI extractor(Extractor extractor) {
-        this.extractor = extractor;
+        this.injectedExtractor = extractor;
         return this;
     }
 
@@ -118,10 +119,6 @@ public class YesWorkflowCLI {
             if (command == null) {
                 throw new YWToolUsageException("ERROR: No command provided to YesWorkflow");
             }
-
-            // extract remaining arguments
-            extractSourcePathFromOptions();
-            extractCommentDelimiter();
 
             // run extractor and exit if extract command given
             if (command.equals("extract")) {
@@ -176,7 +173,6 @@ public class YesWorkflowCLI {
     private void initialize() {
         options = null;
         command = null;
-        sourceFilePath = null;
     }
 
     private void extractCommandFromOptions() {
@@ -193,16 +189,6 @@ public class YesWorkflowCLI {
         }
     }
 
-    private void extractCommentDelimiter() {        
-    	if(options.hasArgument("x")) {
-       		commentDelimiter = (String)options.valueOf("x");
-    	}
-    }
-    
-    private void extractSourcePathFromOptions() {
-    	sourceFilePath = (String) options.valueOf("s");
-    }
-    
     private GraphView extractGraphView() throws YWToolUsageException {
         
         String viewString = (String) options.valueOf("v");
@@ -261,25 +247,36 @@ public class YesWorkflowCLI {
         return parser;
     }
 
-    public void extract() throws Exception {
+    private BufferedReader getFileReaderForPath(String path) throws YWToolUsageException {
 
-        if (extractor == null) {
-           extractor = new DefaultExtractor(this.outStream, this.errStream);
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(path));
+        } catch (FileNotFoundException e) {
+            throw new YWToolUsageException("ERROR: Input file not found: " + path);
         }
 
+        return reader;
+    }
+
+    
+    public void extract() throws Exception {
+    	
+    	Extractor extractor;
+
+    	String sourceFilePath = (String) options.valueOf("s");    	
         if (sourceFilePath.equals("-")) {
-        	extractor.sourceReader(new InputStreamReader(System.in));
+        	extractor = getStdinExtractor();
         } else {
-        	extractor.sourcePath(sourceFilePath);
+        	extractor = getSingleFileExtractor(sourceFilePath);
         }
         
-        if (commentDelimiter != null) {
-            extractor.commentDelimiter(commentDelimiter);
+        if (options.hasArgument("x")) {
+        	extractor.commentDelimiter((String)options.valueOf("x"));
         } else {
-            
             Language language = LanguageModel.languageForFileName(sourceFilePath);
             if (language != null) {
-                extractor.languageModel(new LanguageModel(language));
+            	extractor.languageModel(new LanguageModel(language));
             } else {
                 throw new YWToolUsageException("Cannot identify language of source file.  Please specify a comment character.");
             }
@@ -300,6 +297,36 @@ public class YesWorkflowCLI {
         
         comments = extractor.getComments();
     }
+    
+    private Extractor getStdinExtractor() {
+    	
+    	Extractor extractor;
+        if (injectedExtractor != null) {
+        	extractor = injectedExtractor;
+        } else {
+           extractor = new DefaultExtractor(this.outStream, this.errStream);
+        }
+    	extractor.source(new InputStreamReader(System.in));
+    	
+    	return extractor;
+    }
+    
+
+    private Extractor getSingleFileExtractor(String sourcePath) throws YWToolUsageException {
+
+    	Extractor extractor;
+        if (injectedExtractor != null) {
+        	extractor = injectedExtractor;
+        } else {
+           extractor = new DefaultExtractor(this.outStream, this.errStream);
+        }
+        
+    	BufferedReader reader = getFileReaderForPath(sourcePath);
+    	extractor.source(reader);
+    	
+    	return extractor;
+    }
+    
 
     public void model() throws Exception {
         
