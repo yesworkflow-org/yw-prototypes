@@ -13,7 +13,6 @@ public interface Extractor extends YWStage {
     Extractor commentDelimiter(String c);
 	Extractor sourceReader(Reader reader);
     Extractor sourcePath(String path);
-    Extractor databasePath(String path);
     Extractor extract() throws Exception;
     Language getLanguage();
     List<String> getLines();

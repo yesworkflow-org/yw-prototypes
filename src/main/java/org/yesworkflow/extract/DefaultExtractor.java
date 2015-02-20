@@ -34,9 +34,6 @@ public class DefaultExtractor implements Extractor {
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
 
-    @SuppressWarnings("unused")
-    private String databasePath = null;
-
     public DefaultExtractor(PrintStream stdoutStream, PrintStream stderrStream) {
         this.stdoutStream = stdoutStream;
         this.stderrStream = stderrStream;
@@ -65,12 +62,6 @@ public class DefaultExtractor implements Extractor {
     @Override
     public DefaultExtractor sourcePath(String path) {
         this.sourcePath = path;
-        return this;
-    }
-
-    @Override
-    public DefaultExtractor databasePath(String path) {
-        this.databasePath = path;
         return this;
     }
 
