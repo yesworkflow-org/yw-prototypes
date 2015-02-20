@@ -4,3 +4,5 @@
 .pydevproject
 target
 *.pyc
+bin
+.DS_Store

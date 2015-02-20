@@ -1,8 +1,6 @@
 package org.yesworkflow.extract;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
@@ -19,12 +17,10 @@ import org.yesworkflow.comments.EndComment;
 import org.yesworkflow.comments.InComment;
 import org.yesworkflow.comments.OutComment;
 import org.yesworkflow.exceptions.YWMarkupException;
-import org.yesworkflow.exceptions.YWToolUsageException;
 
 public class DefaultExtractor implements Extractor {
 
     private BufferedReader sourceReader = null;
-    private String sourcePath = null;
     private List<String> ywCommentLines;
     private List<Comment> comments;
     private YWKeywords keywordMapping;
@@ -53,24 +49,13 @@ public class DefaultExtractor implements Extractor {
         return this;
     }
 
-    @Override
-    public DefaultExtractor sourceReader(Reader reader) {
+    public DefaultExtractor source(Reader reader) {
         this.sourceReader = new BufferedReader(reader);
         return this;
     }
 
     @Override
-    public DefaultExtractor sourcePath(String path) {
-        this.sourcePath = path;
-        return this;
-    }
-
-    @Override
     public DefaultExtractor extract() throws Exception {
-
-        if (sourceReader == null) {
-            sourceReader = getFileReaderForPath(sourcePath);
-        }
 
         extractLines();
         extractComments();
@@ -140,21 +125,6 @@ public class DefaultExtractor implements Extractor {
         } else {
             return commentLine.substring(0, tagEndIndex);
         }
-    }
-
-
-    private BufferedReader getFileReaderForPath(String path) throws YWToolUsageException {
-
-        if (sourcePath == null) throw new YWToolUsageException("No source path provided to extractor");
-
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(path));
-        } catch (FileNotFoundException e) {
-            throw new YWToolUsageException("ERROR: Input source file not found: " + path);
-        }
-
-        return reader;
     }
     
     @Override

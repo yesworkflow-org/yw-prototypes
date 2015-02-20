@@ -11,8 +11,7 @@ import org.yesworkflow.comments.Comment;
 public interface Extractor extends YWStage {
     Extractor languageModel(LanguageModel languageModel);
     Extractor commentDelimiter(String c);
-	Extractor sourceReader(Reader reader);
-    Extractor sourcePath(String path);
+	Extractor source(Reader reader);
     Extractor extract() throws Exception;
     Language getLanguage();
     List<String> getLines();
