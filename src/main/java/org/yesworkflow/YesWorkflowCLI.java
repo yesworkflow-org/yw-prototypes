@@ -60,7 +60,6 @@ public class YesWorkflowCLI {
     
     private String command = null;
     private String sourceFilePath = null;
-    private String databaseFilePath = null;
     private String commentDelimiter = null;
     
     private Extractor extractor = null;
@@ -122,7 +121,6 @@ public class YesWorkflowCLI {
 
             // extract remaining arguments
             extractSourcePathFromOptions();
-            extractDatabasePathFromOptions();
             extractCommentDelimiter();
 
             // run extractor and exit if extract command given
@@ -179,7 +177,6 @@ public class YesWorkflowCLI {
         options = null;
         command = null;
         sourceFilePath = null;
-        databaseFilePath = null;
     }
 
     private void extractCommandFromOptions() {
@@ -202,12 +199,6 @@ public class YesWorkflowCLI {
     	}
     }
     
-    private void extractDatabasePathFromOptions() {
-        if (options.hasArgument("d")) {
-            databaseFilePath = (String) options.valueOf("d");
-        }
-    }
-
     private void extractSourcePathFromOptions() {
     	sourceFilePath = (String) options.valueOf("s");
     }
@@ -245,11 +236,6 @@ public class YesWorkflowCLI {
                 .ofType(String.class)
                 .describedAs("script");
 
-            acceptsAll(asList("d", "database"), "path to database file for storing extracted workflow graph")
-                .withRequiredArg()
-                .ofType(String.class)
-                .describedAs("database");
-
             acceptsAll(asList("g", "graph"), "path to graphviz dot file for storing rendered workflow graph")
                 .withOptionalArg()
                 .defaultsTo("-")
@@ -285,10 +271,7 @@ public class YesWorkflowCLI {
         	extractor.sourceReader(new InputStreamReader(System.in));
         } else {
         	extractor.sourcePath(sourceFilePath);
-        	databaseFilePath = (String) options.valueOf("d");
         }
-
-        extractor.databasePath(databaseFilePath);
         
         if (commentDelimiter != null) {
             extractor.commentDelimiter(commentDelimiter);
