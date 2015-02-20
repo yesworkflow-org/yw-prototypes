@@ -1,6 +1,7 @@
 package org.yesworkflow.extract;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.StringReader;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        extractor.sourceReader(reader)
+        extractor.source(reader)
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -48,7 +49,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        extractor.sourceReader(reader)
+        extractor.source(reader)
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -63,7 +64,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        extractor.sourceReader(reader)
+        extractor.source(reader)
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -79,7 +80,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        extractor.sourceReader(reader)
+        extractor.source(reader)
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -94,7 +95,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        extractor.sourceReader(reader)
+        extractor.source(reader)
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -118,7 +119,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        extractor.sourceReader(reader)
+        extractor.source(reader)
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -149,7 +150,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        extractor.sourceReader(reader)
+        extractor.source(reader)
                  .extract();
         
         List<String> commentLines = extractor.getLines();
@@ -175,7 +176,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        extractor.sourceReader(reader)
+        extractor.source(reader)
                  .extract();
         
         List<Comment> comments = extractor.getComments();
@@ -201,7 +202,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
     
     public void testExtract_GetComments_SamplePyScript() throws Exception {
         
-        extractor.sourcePath("src/main/resources/example.py")
+        extractor.source(new BufferedReader(new FileReader("src/main/resources/example.py")))
                  .extract();
         
         List<Comment> comments = extractor.getComments();

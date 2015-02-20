@@ -15,7 +15,7 @@ import org.yesworkflow.util.YesWorkflowTestCase;
 
 public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     
-    static final String TEST_RESOURCE_DIR = "org/yesworkflow/";
+    static final String TEST_RESOURCE_DIR = "src/test/resources/org/yesworkflow/testYesWorkflowCLI/";
 
     private static String EXPECTED_HELP_OUTPUT =
         ""                                                                              + EOL +
@@ -112,19 +112,18 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
                 ""                                                                          + EOL +
                 "****************** YESWORKFLOW TOOL USAGE ERRORS ***********************"  + EOL +
                 ""                                                                          + EOL +
-                "ERROR: Input source file not found: no_such_script.py"      + EOL +
+                "ERROR: Input file not found: no_such_script.py"      + EOL +
                 EXPECTED_HELP_OUTPUT,
                 stderrBuffer.toString());
     }
 
     public void testYesWorkflowCLI_Extract_InjectedExtractor_SourceOnly() throws Exception {
 
-        String[] args = {"-c", "extract", "-s", "script.py"};
+        String[] args = {"-c", "extract", "-s", "src/test/resources/simpleExample.py"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         MockExtractor extractor = new MockExtractor();
         cli.extractor(extractor);
 
-        assertNull(extractor.sourcePath);
         assertFalse(extractor.extracted);
 
         int returnValue = cli.runForArgs(args);
@@ -133,13 +132,12 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         assertEquals("", stdoutBuffer.toString());
         assertEquals("", stderrBuffer.toString());
 
-        assertEquals("script.py", extractor.sourcePath);
         assertTrue(extractor.extracted);
     }
 
     public void testYesWorkflow_CommentCharacters_Python_ExplicitOption() throws Exception{
         
-        Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
+    	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);        
         cli.runForArgs(new String[] {"-c", "extract", "-x", "#", "-s", "src/main/resources/example.py"});        
@@ -148,7 +146,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     
     public void testYesWorkflow_CommentCharacters_PythonLowercase() throws Exception{
         
-        Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
+    	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
         cli.runForArgs(new String[] {"-c", "extract", "-s", "src/main/resources/example.py"});
@@ -157,7 +155,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     
     public void testYesWorkflow_CommentCharacters_PythonUppercase() throws Exception{
         
-        Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
+    	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
         cli.runForArgs(new String[] {"-c", "extract", "-s", "src/main/resources/example.PY"});
@@ -165,85 +163,71 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     }
     
     public void testYesWorkflow_CommentCharacters_RUppercase() throws Exception{
-        Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
+    	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-        cli.runForArgs(new String[] {"-c", "extract", "-s", "incoming/drain_dem.R"});
+        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "rFileUppercaseExtension.R"});
         assertEquals(Language.R, extractor.getLanguage());
     }
     
     public void testYesWorkflow_CommentCharacters_JavaLowercase() throws Exception{
         
-        Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
+    	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
 
         cli.extractor(extractor);
 
-        cli.runForArgs(new String[] {"-c", "extract", "-s", "src/test/resources/testJavaScript.java"});
+        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "javaFile.java"});
         assertEquals(Language.JAVA, extractor.getLanguage());
     }
     
     
     public void testYesWorkflow_CommentCharacters_MatlabLowercase() throws Exception{
-        Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
+    	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-        cli.runForArgs(new String[] {"-c", "extract", "-s", "src/test/resources/testMatlab.m"});
+        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "matlabFileLowercaseExtension.m"});
         assertEquals(Language.MATLAB, extractor.getLanguage());
     }
 
     public void testYesWorkflow_CommentCharacters_MatlabUpperCase() throws Exception{
         
-        Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
+    	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         
         cli.extractor(extractor);
 
-        cli.runForArgs(new String[] {"-c", "extract", "-s", "src/test/resources/testMatlab.M"});
+        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "matlabFileUppercaseExtension.M"});
         assertEquals(Language.MATLAB, extractor.getLanguage());
     }
     
     public void testYesWorkflow_CommentCharacters_MatlabLowercase_ExplicitOption() throws Exception{
         
-        Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
+    	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
     
-        cli.runForArgs(new String[] {"-c", "extract", "-x", "%", "-s", "src/test/resources/testMatlab.m"});
+        cli.runForArgs(new String[] {"-c", "extract", "-x", "%", "-s", TEST_RESOURCE_DIR + "matlabFileLowercaseExtension.m"});
         
         assertEquals(Language.GENERIC, extractor.getLanguage());
     }
 
     public void testYesWorkflow_CommentCharacters_NoExtension() throws Exception{
         
-        Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
+    	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-        cli.runForArgs(new String[] {"-c", "extract", "-s", "src/test/resources/testfileNoExtension"});        
+        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "extensionlessSource"});        
         assertEquals(Language.GENERIC, extractor.getLanguage());
     }
-    
-//    public void testYesWorkflowCLI_Graph() throws Exception {
-//
-//        String[] args = {
-//                "-c", "graph",
-//                "-s", "src/main/resources/example.py"
-//        };
-//
-//        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
-//
-//        int returnValue = cli.runForArgs(args);
-//
-//    }
 
     public void testYesWorkflowCLI_Extract_InjectedExtractor_SourceOption() throws Exception {
 
-        String[] args = {"-c", "extract", "-s", "script.py"};
+        String[] args = {"-c", "extract", "-s", "src/test/resources/simpleExample.py"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         MockExtractor extractor = new MockExtractor();
         cli.extractor(extractor);
 
-        assertNull(extractor.sourcePath);
         assertFalse(extractor.extracted);
 
         int returnValue = cli.runForArgs(args);
@@ -252,7 +236,6 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         assertEquals("", stdoutBuffer.toString());
         assertEquals("", stderrBuffer.toString());
 
-        assertEquals("script.py", extractor.sourcePath);
         assertTrue(extractor.extracted);
     }
 
@@ -326,20 +309,18 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         cli.runForArgs(args);
 
         assertEquals(
-            readTextFileOnClasspath(TEST_RESOURCE_DIR + "testYesWorkflowCLI_Graph_ExamplePy_ProcessGraph.gv"),
+            readTextFile(TEST_RESOURCE_DIR + "graph_ExamplePy_ProcessGraph.gv"),
             stdoutBuffer.toString()
          );
     }
 
     private static class MockExtractor implements Extractor {
 
-        public String sourcePath = null;
         public boolean extracted = false;
  
         @Override public Extractor languageModel(LanguageModel language) { return this; };
         @Override public Extractor commentDelimiter(String c) { return this; }
-        @Override public Extractor sourceReader(Reader reader) { return this; }
-        @Override public Extractor sourcePath(String path) { this.sourcePath = path; return this; }
+        @Override public Extractor source(Reader reader) { return this; }
         @Override public List<String> getLines() { return null; }
         @Override public List<Comment> getComments() { return null; }
         @Override public Extractor extract() throws Exception { this.extracted = true; return null; }

@@ -1,6 +1,7 @@
 package org.yesworkflow.graph;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.StringReader;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import org.yesworkflow.util.YesWorkflowTestCase;
 
 public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
 
-    Extractor extractor = null;
+	Extractor extractor = null;
     Modeler modeler = null;
     Grapher grapher = null;
     
@@ -45,8 +46,9 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        List<Comment> comments = extractor.sourceReader(reader)
-                .commentDelimiter("#")
+        List<Comment> comments = extractor
+        		.commentDelimiter("#")
+        		.source(reader)                
                 .extract()
                 .getComments();
 
@@ -95,8 +97,9 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
       
-      List<Comment> comments = extractor.sourceReader(reader)
+      List<Comment> comments = extractor
               .commentDelimiter("#")
+    		  .source(reader)
               .extract()
               .getComments();
 
@@ -148,8 +151,9 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
 
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
-      List<Comment> comments = extractor.sourceReader(reader)
+      List<Comment> comments = extractor
               .commentDelimiter("#")
+              .source(reader)
               .extract()
               .getComments();
 
@@ -185,8 +189,9 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
          
      public void testDotGrapher_CombinedView_SamplePyScript() throws Exception {
          
-         List<Comment> comments = extractor.sourcePath("src/main/resources/example.py")
+         List<Comment> comments = extractor
                  .commentDelimiter("#")
+        		 .source(new BufferedReader(new FileReader("src/main/resources/example.py")))
                  .extract()
                  .getComments();
 

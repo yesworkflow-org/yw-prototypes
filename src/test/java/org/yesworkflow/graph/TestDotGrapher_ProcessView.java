@@ -1,6 +1,7 @@
 package org.yesworkflow.graph;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.StringReader;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import org.yesworkflow.util.YesWorkflowTestCase;
 
 public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
 
-    Extractor extractor = null;
+	Extractor extractor = null;
     Modeler modeler = null;
     Grapher grapher = null;
     
@@ -45,8 +46,9 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        List<Comment> comments = extractor.sourceReader(reader)
+        List<Comment> comments = extractor
                 .commentDelimiter("#")
+        		.source(reader)
                 .extract()
                 .getComments();
 
@@ -81,8 +83,9 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        List<Comment> comments = extractor.sourceReader(reader)
+        List<Comment> comments = extractor
                 .commentDelimiter("#")
+        		.source(reader)
                 .extract()
                 .getComments();
 
@@ -119,8 +122,9 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
 
           BufferedReader reader = new BufferedReader(new StringReader(source));
           
-          List<Comment> comments = extractor.sourceReader(reader)
+          List<Comment> comments = extractor
                   .commentDelimiter("#")
+                  .source(reader)
                   .extract()
                   .getComments();
 
@@ -156,9 +160,10 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
 
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
-      List<Comment> comments = extractor.sourceReader(reader)
-              .commentDelimiter("#")
-              .extract()
+      List<Comment> comments = extractor
+    		  .commentDelimiter("#")
+      		  .source(reader)
+      		  .extract()
               .getComments();
 
       Workflow workflow = (Workflow)modeler.comments(comments)
@@ -195,9 +200,10 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
 
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
-      List<Comment> comments = extractor.sourceReader(reader)
-              .commentDelimiter("#")
-              .extract()
+      List<Comment> comments = extractor
+    		  .commentDelimiter("#")
+      		  .source(reader)
+      		  .extract()
               .getComments();
 
       Workflow workflow = (Workflow)modeler.comments(comments)
@@ -239,8 +245,9 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
 
      BufferedReader reader = new BufferedReader(new StringReader(source));
      
-     List<Comment> comments = extractor.sourceReader(reader)
+     List<Comment> comments = extractor
              .commentDelimiter("#")
+     		 .source(reader)
              .extract()
              .getComments();
 
@@ -296,8 +303,9 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
 
          BufferedReader reader = new BufferedReader(new StringReader(source));
      
-         List<Comment> comments = extractor.sourceReader(reader)
+         List<Comment> comments = extractor
                  .commentDelimiter("#")
+         		 .source(reader)
                  .extract()
                  .getComments();
 
@@ -318,8 +326,9 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
  
      public void testDotGrapher_ProcessView_SamplePyScript() throws Exception {
          
-        List<Comment> comments = extractor.sourcePath("src/main/resources/example.py")
+        List<Comment> comments = extractor
                 .commentDelimiter("#")
+                .source(new BufferedReader(new FileReader("src/main/resources/example.py")))
                 .extract()
                 .getComments();
 

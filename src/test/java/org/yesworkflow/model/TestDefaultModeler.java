@@ -16,7 +16,7 @@ import org.yesworkflow.util.YesWorkflowTestCase;
 
 public class TestDefaultModeler extends YesWorkflowTestCase {
 
-    Extractor extractor = null;
+	Extractor extractor = null;
     Modeler modeler = null;
     
     @Override
@@ -35,10 +35,11 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        List<Comment> comments = extractor.sourceReader(reader)
-                                          .commentDelimiter("#")
-                                          .extract()
-                                          .getComments();
+        List<Comment> comments = extractor
+                .commentDelimiter("#")
+        		.source(reader)
+                .extract()
+                .getComments();
         
         Program program = modeler.comments(comments)
                                  .model()
@@ -61,8 +62,9 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        List<Comment> comments = extractor.sourceReader(reader)
+        List<Comment> comments = extractor
                 .commentDelimiter("#")
+        		.source(reader)
                 .extract()
                 .getComments();
 
@@ -92,9 +94,10 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        List<Comment> comments = extractor.sourceReader(reader)
+        List<Comment> comments = extractor
                 .commentDelimiter("#")
-                .extract()
+        		.source(reader)
+        		.extract()
                 .getComments();
 
         Exception caughtException = null;
@@ -118,10 +121,11 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
        BufferedReader reader = new BufferedReader(new StringReader(source));
        
-       List<Comment> comments = extractor.sourceReader(reader)
-               .commentDelimiter("#")
-               .extract()
-               .getComments();
+       List<Comment> comments = extractor
+                .commentDelimiter("#")
+       			.source(reader)
+       		    .extract()
+                .getComments();
 
        
        Exception caughtException = null;
@@ -156,8 +160,9 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        List<Comment> comments = extractor.sourceReader(reader)
+        List<Comment> comments = extractor
                 .commentDelimiter("#")
+        		.source(reader)
                 .extract()
                 .getComments();
 
@@ -199,8 +204,9 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        List<Comment> comments = extractor.sourceReader(reader)
+        List<Comment> comments = extractor
                 .commentDelimiter("#")
+        		.source(reader)
                 .extract()
                 .getComments();
 
@@ -244,8 +250,9 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        List<Comment> comments = extractor.sourceReader(reader)
+        List<Comment> comments = extractor
                 .commentDelimiter("#")
+        		.source(reader)
                 .extract()
                 .getComments();
 
@@ -274,8 +281,9 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        List<Comment> comments = extractor.sourceReader(reader)
+        List<Comment> comments = extractor
                 .commentDelimiter("#")
+        		.source(reader)
                 .extract()
                 .getComments();
 
@@ -333,8 +341,9 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        List<Comment> comments = extractor.sourceReader(reader)
+        List<Comment> comments = extractor
                 .commentDelimiter("#")
+        		.source(reader)
                 .extract()
                 .getComments();
 
@@ -390,10 +399,11 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        
        BufferedReader reader = new BufferedReader(new StringReader(source));
 
-       List<Comment> comments = extractor.sourceReader(reader)
-                                         .commentDelimiter("#")
-                                         .extract()
-                                         .getComments();
+       List<Comment> comments = extractor
+               	.commentDelimiter("#")
+               	.source(reader)
+               	.extract()
+               	.getComments();
        
        Exception caughtException = null;
        try {
@@ -422,10 +432,11 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        
        BufferedReader reader = new BufferedReader(new StringReader(source));
        
-       List<Comment> comments = extractor.sourceReader(reader)
-                                         .commentDelimiter("#")
-                                         .extract()
-                                         .getComments();
+       List<Comment> comments = extractor
+               	.commentDelimiter("#")
+               	.source(reader)                                         
+               	.extract()
+               	.getComments();
        
        Exception caughtException = null;
        try {
