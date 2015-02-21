@@ -119,7 +119,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_Extract_InjectedExtractor_SourceOnly() throws Exception {
 
-        String[] args = {"-c", "extract", "-s", "src/test/resources/simpleExample.py"};
+        String[] args = {"-c", "extract", "-s", TEST_RESOURCE_DIR + "pythonFileLowercase.py"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         MockExtractor extractor = new MockExtractor();
         cli.extractor(extractor);
@@ -140,16 +140,17 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);        
-        cli.runForArgs(new String[] {"-c", "extract", "-x", "#", "-s", "src/main/resources/example.py"});        
+        cli.runForArgs(new String[] {"-c", "extract", "-x", "#", "-s", TEST_RESOURCE_DIR + "pythonFileLowercase.py"});        
         assertEquals(Language.GENERIC, extractor.getLanguage());
     }
+    
     
     public void testYesWorkflow_CommentCharacters_PythonLowercase() throws Exception{
         
     	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-        cli.runForArgs(new String[] {"-c", "extract", "-s", "src/main/resources/example.py"});
+        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "pythonFileLowercase.py"});
         assertEquals(Language.PYTHON, extractor.getLanguage());
     }
     
@@ -158,7 +159,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-        cli.runForArgs(new String[] {"-c", "extract", "-s", "src/main/resources/example.PY"});
+        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "pythonFileUppercase.PY"});
         assertEquals(Language.PYTHON, extractor.getLanguage());
     }
     
