@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.yesworkflow.comments.BeginComment;
-import org.yesworkflow.comments.EndComment;
-import org.yesworkflow.comments.InComment;
-import org.yesworkflow.comments.OutComment;
+import org.yesworkflow.annotations.Begin;
+import org.yesworkflow.annotations.End;
+import org.yesworkflow.annotations.In;
+import org.yesworkflow.annotations.Out;
 
 public class Workflow extends Program {
 	
@@ -19,14 +19,14 @@ public class Workflow extends Program {
 	public final Channel[] channels;
     
 	public Workflow(
-        BeginComment beginComment,
-        EndComment endComment,
+        Begin beginAnnotation,
+        End endAnnotation,
         List<Port> inPorts,
         List<Port> outPorts,
         List<Program> programs,
         List<Channel> channels
     ) {
-	    super(beginComment, endComment, inPorts, outPorts);
+	    super(beginAnnotation, endAnnotation, inPorts, outPorts);
 		
     	this.programs = programs.toArray(new Program[programs.size()]);
     	this.channels = channels.toArray(new Channel[channels.size()]);
@@ -34,8 +34,8 @@ public class Workflow extends Program {
 	
 	public static class Builder {
 		
-        private BeginComment beginComment;
-        private EndComment endComment;
+        private Begin beginAnnotation;
+        private End endAnnotation;
         private List<Port> workflowInPorts = new LinkedList<Port>();
         private List<Port> workflowOutPorts = new LinkedList<Port>();
 
@@ -55,47 +55,47 @@ public class Workflow extends Program {
             this.stderrStream = stderrStream;
         }
                 
-		public Builder begin(BeginComment comment) {
-			this.beginComment = comment;
+		public Builder begin(Begin annotation) {
+			this.beginAnnotation = annotation;
 			return this;
 		}
 
-        public void end(EndComment comment) {
-            this.endComment = comment;
+        public void end(End annotation) {
+            this.endAnnotation = annotation;
         }
 
 		public String getProgramName() {
-			return beginComment.programName;
+			return beginAnnotation.name;
 		}
 		
 		public Builder nestedProgram(Program program) {
 			this.nestedPrograms.add(program);
-			this.programForName.put(program.beginComment.programName, program);
+			this.programForName.put(program.beginAnnotation.name, program);
 			return this;
 		}
 
-        public Port inPort(InComment inComment) throws Exception {
+        public Port inPort(In inAnnotation) throws Exception {
             
             // model the outward facing in port
-            Port inPort = new Port(inComment, beginComment);
+            Port inPort = new Port(inAnnotation, beginAnnotation);
             workflowInPorts.add(inPort);
             
             // model a corresponding, inward-facing out port
-            Port outPort = new Port(inComment, beginComment);
+            Port outPort = new Port(inAnnotation, beginAnnotation);
             nestedOutPort(outPort);
 
             // return the outward facing port
             return inPort;
         }
         
-        public Port outPort(OutComment outComment) {
+        public Port outPort(Out outAnnotation) {
 
             // model the outward facing out port
-            Port outPort = new Port(outComment, beginComment);
+            Port outPort = new Port(outAnnotation, beginAnnotation);
             workflowOutPorts.add(outPort);
             
             // model a corresponding, inward-facing in port
-            Port inPort = new Port(outComment, beginComment);
+            Port inPort = new Port(outAnnotation, beginAnnotation);
             nestedInPort(inPort);
             
             // return the outward facing port
@@ -103,7 +103,7 @@ public class Workflow extends Program {
         }
         
 		public Builder nestedInPort(Port inPort) {
-		    String binding = inPort.portComment.binding();
+		    String binding = inPort.flowAnnotation.binding();
 			addNestedInport(binding, inPort);
 			return this;
 		}
@@ -119,7 +119,7 @@ public class Workflow extends Program {
 		
 		public Builder nestedOutPort(Port outPort) throws Exception {
 			
-			String binding = outPort.portComment.binding();
+			String binding = outPort.flowAnnotation.binding();
 			
 			// ensure no other writers to this @out binding
 			if (nestedProgramOutPorts.containsKey(binding)) {
@@ -136,7 +136,7 @@ public class Workflow extends Program {
 			
 			// if no subprograms then we're building a simple program
 			if (nestedPrograms.size() == 0) {				
-				return new Program(beginComment, endComment, workflowInPorts, workflowOutPorts);
+				return new Program(beginAnnotation, endAnnotation, workflowInPorts, workflowOutPorts);
 			}
 			
 //			pruneUnusedWorkflowInPorts();
@@ -146,8 +146,8 @@ public class Workflow extends Program {
 			buildNestedChannels();
 			
 			return new Workflow(
-                beginComment,
-                endComment,
+                beginAnnotation,
+                endAnnotation,
                 workflowInPorts,
                 workflowOutPorts,
 				nestedPrograms,
@@ -166,7 +166,7 @@ public class Workflow extends Program {
                             "WARNING: No nested @out port and no workflow @in port for nested @in '"    +
                             binding                                                                     +
                             "' on '"                                                                    +
-                            beginComment.programName                                                    +
+                            beginAnnotation.name                                                    +
                             "'"
                     );
                     unmatchedInBindings.add(binding);
@@ -187,7 +187,7 @@ public class Workflow extends Program {
                             "WARNING: No nested @in port and no workflow @out port for nested @out '"   +
                             binding                                                                     +
                             "' in workflow '"                                                           +
-                            beginComment.programName                                                    +
+                            beginAnnotation.name                                                    +
                             "'"
                     );
                     unmatchedOutBindings.add(binding);
@@ -209,14 +209,14 @@ public class Workflow extends Program {
                 Port boundOutPort = nestedProgramOutPorts.get(binding);
                 if (boundOutPort == null) throw new Exception("No @out corresponding to @in " + binding);
                 
-                String outProgramName = boundOutPort.beginComment.programName;
+                String outProgramName = boundOutPort.beginAnnotation.name;
                 Program outProgram = programForName.get(outProgramName);
                 
                 // iterate over @in ports that bind to the current @out port
                 for (Port inPort : boundInPorts) {
                 
                     // get information about this @in port
-                    String inProgramName = inPort.beginComment.programName;
+                    String inProgramName = inPort.beginAnnotation.name;
                     Program inProgram = programForName.get(inProgramName);
     
                     // store the new channel

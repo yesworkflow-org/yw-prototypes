@@ -18,7 +18,7 @@ public class Channel {
    @Override
    public String toString() {
        StringBuffer sb = new StringBuffer();
-       sb.append(this.sourcePort.portComment.binding());
+       sb.append(this.sourcePort.flowAnnotation.binding());
        sb.append("[");
        if (this.sourceProgram != null) sb.append(this.sourceProgram);
        sb.append("->");

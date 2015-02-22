@@ -4,16 +4,16 @@ import java.io.PrintStream;
 import java.util.List;
 import java.util.Stack;
 
-import org.yesworkflow.comments.BeginComment;
-import org.yesworkflow.comments.Comment;
-import org.yesworkflow.comments.EndComment;
-import org.yesworkflow.comments.InComment;
-import org.yesworkflow.comments.OutComment;
+import org.yesworkflow.annotations.Annotation;
+import org.yesworkflow.annotations.Begin;
+import org.yesworkflow.annotations.End;
+import org.yesworkflow.annotations.In;
+import org.yesworkflow.annotations.Out;
 import org.yesworkflow.exceptions.YWMarkupException;
 
 public class DefaultModeler implements Modeler {
 
-    private List<Comment> comments;
+    private List<Annotation> annotations;
     private Program model;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
@@ -24,21 +24,26 @@ public class DefaultModeler implements Modeler {
     }
     
     @Override
-    public Modeler comments(List<Comment> comments) {
-        this.comments = comments;
+    public Modeler annotations(List<Annotation> annotations) {
+        this.annotations = annotations;
         return this;
     }
 
     @Override
-    public Modeler model() throws Exception {
+    public Modeler model() throws Exception {	
+    	buildWorkflow();
+    	return this;
+    }    
+    
+    private void buildWorkflow() throws Exception {
 
         Workflow.Builder workflowBuilder = null;
         Workflow.Builder parentBuilder = null;
         Stack<Workflow.Builder> parentWorkflowBuilders = new Stack<Workflow.Builder>();
 
-        for (Comment comment: comments) {
+        for (Annotation annotation : annotations) {
 
-            if (comment instanceof BeginComment) {
+            if (annotation instanceof Begin) {
 
                 if (workflowBuilder != null) {
                     parentWorkflowBuilders.push(workflowBuilder);
@@ -46,29 +51,29 @@ public class DefaultModeler implements Modeler {
                 }
 
                 workflowBuilder = new Workflow.Builder(this.stdoutStream, this.stderrStream)
-                    .begin((BeginComment)comment);
+                    .begin((Begin)annotation);
 
-            } else if (comment instanceof OutComment) {
-                Port outPort = workflowBuilder.outPort((OutComment)comment);
+            } else if (annotation instanceof Out) {
+                Port outPort = workflowBuilder.outPort((Out)annotation);
                 if (parentBuilder != null) {
                     parentBuilder.nestedOutPort(outPort);
                 }
 
-            } else if (comment instanceof InComment) {
-                Port inPort = workflowBuilder.inPort((InComment)comment);
+            } else if (annotation instanceof In) {
+                Port inPort = workflowBuilder.inPort((In)annotation);
                 if (parentBuilder != null) {
                     parentBuilder.nestedInPort(inPort);
                 }
 
-            } else if (comment instanceof EndComment) {
+            } else if (annotation instanceof End) {
 
-                workflowBuilder.end((EndComment)comment);
+                workflowBuilder.end((End)annotation);
 
                 Program program = workflowBuilder.build();
 
                 if (parentWorkflowBuilders.isEmpty()) {
                     this.model = program;
-                    return this;
+                    return;
                 }
 
                 workflowBuilder = parentWorkflowBuilders.pop();
