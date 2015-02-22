@@ -8,7 +8,7 @@ import java.io.Reader;
 import java.util.List;
 
 import org.yesworkflow.LanguageModel.Language;
-import org.yesworkflow.comments.Comment;
+import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.util.YesWorkflowTestCase;
@@ -323,8 +323,9 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         @Override public Extractor commentDelimiter(String c) { return this; }
         @Override public Extractor source(Reader reader) { return this; }
         @Override public List<String> getLines() { return null; }
-        @Override public List<Comment> getComments() { return null; }
+        @Override public List<String> getComments() { return null; }
         @Override public Extractor extract() throws Exception { this.extracted = true; return null; }
         @Override public Language getLanguage() { return null; }
+		@Override public List<Annotation> getAnnotations() { return null; }
     }
 }

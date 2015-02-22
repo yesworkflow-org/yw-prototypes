@@ -1,17 +1,11 @@
 package org.yesworkflow.extract;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.StringReader;
 import java.util.List;
 
 import org.yesworkflow.LanguageModel;
 import org.yesworkflow.LanguageModel.Language;
-import org.yesworkflow.comments.BeginComment;
-import org.yesworkflow.comments.Comment;
-import org.yesworkflow.comments.EndComment;
-import org.yesworkflow.comments.InComment;
-import org.yesworkflow.comments.OutComment;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.util.YesWorkflowTestCase;
 
@@ -169,7 +163,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                 "   # @in x  "      + EOL +
                 "     more code"    + EOL +
                 "     more code"    + EOL +
-                " #    @out y"      + EOL +
+                " #    @in y"      + EOL +
                 "     more code"    + EOL +
                 "     more code"    + EOL +
                 "    #  @end step"  + EOL;
@@ -179,86 +173,256 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.source(reader)
                  .extract();
         
-        List<Comment> comments = extractor.getComments();
+        List<String> comments = extractor.getComments();
 
         assertEquals(4, comments.size());
-        
-        BeginComment begin = (BeginComment) comments.get(0);
-        assertEquals("step", begin.programName);
-        assertNull(begin.description);
-
-        InComment in = (InComment) comments.get(1);
-        assertEquals("x", in.name);
-        assertNull(in.description);
-
-        OutComment out = (OutComment) comments.get(2);
-        assertEquals("y", out.name);
-        assertNull(out.description);
-
-        EndComment end = (EndComment) comments.get(3);
-        assertEquals("step", end.programName);
-        assertNull(end.description);
+        assertEquals("@begin step", comments.get(0));
+        assertEquals("@in x", comments.get(1));
+        assertEquals("@in y", comments.get(2));
+        assertEquals("@end step", comments.get(3));        
     }
     
-    public void testExtract_GetComments_SamplePyScript() throws Exception {
+    public void testExtract_GetComments_MultipleComments_WithAliasesOnSameLines() throws Exception {
         
-        extractor.source(new BufferedReader(new FileReader("src/main/resources/example.py")))
+        String source = 
+                "## @begin step   " 	+ EOL +
+                "  some code "      	+ EOL +
+                "   # @in x @as horiz " + EOL +
+                "     more code"    	+ EOL +
+                "     more code"    	+ EOL +
+                " #    @in y @as vert"	+ EOL +
+                "     more code"    	+ EOL +
+                "     more code"    	+ EOL +
+                "    #  @end step"  	+ EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.source(reader)
                  .extract();
         
-        List<Comment> comments = extractor.getComments();
+        List<String> comments = extractor.getComments();
 
-        assertEquals(22, comments.size());
-        
-        BeginComment begin0 = (BeginComment) comments.get(0);
-        assertEquals("main", begin0.programName);
-        assertNull(begin0.description);
-        
-        InComment in1 = (InComment) comments.get(1);
-        assertEquals("LandWaterMask_Global_CRUNCEP.nc", in1.name);
-        assertNull(in1.description);
-
-        InComment in2 = (InComment) comments.get(2);
-        assertEquals("NEE_first_year.nc", in2.name);
-        assertNull(in2.description);
-        
-        OutComment out3 = (OutComment) comments.get(3);
-        assertEquals("result_simple.pdf", out3.name);
-        assertNull(out3.description);
-
-        BeginComment begin4 = (BeginComment) comments.get(4);
-        assertEquals("fetch_mask", begin4.programName);
-        assertNull(begin4.description);
-        
-        InComment in5 = (InComment) comments.get(5);
-        assertEquals("\"LandWaterMask_Global_CRUNCEP.nc\"", in5.name);
-        assertEquals("input_mask_file", in5.alias);
-        assertNull(in5.description);
-
-        OutComment out6 = (OutComment) comments.get(6);
-        assertEquals("mask", out6.name);
-        assertEquals("land_water_mask", out6.alias);
-        assertNull(out6.description);
-        
-        EndComment end7 = (EndComment) comments.get(7);
-        assertEquals("fetch_mask", end7.programName);
-        assertNull(end7.description);
-        
-        BeginComment begin8 = (BeginComment) comments.get(8);
-        assertEquals("load_data", begin8.programName);
-        assertNull(begin8.description);
-
-        InComment in9 = (InComment) comments.get(9);
-        assertEquals("\"CLM4_BG1_V1_Monthly_NEE.nc4\"", in9.name);
-        assertEquals("input_data_file", in9.alias);
-        assertEquals(null, in9.description);
-
-        OutComment out10 = (OutComment) comments.get(10);
-        assertEquals("data", out10.name);
-        assertEquals("NEE_data", out10.alias);
-        assertNull(out10.description);
-        
-        EndComment end11 = (EndComment) comments.get(11);
-        assertEquals("load_data", end11.programName);
-        assertNull(end11.description);        
+        assertEquals(6, comments.size());
+        assertEquals("@begin step", comments.get(0));
+        assertEquals("@in x", comments.get(1));
+        assertEquals("@as horiz", comments.get(2));
+        assertEquals("@in y", comments.get(3));
+        assertEquals("@as vert", comments.get(4));
+        assertEquals("@end step", comments.get(5));        
     }
+    
+    
+    public void testExtract_GetComments_MultipleComments_WithAliasesOnDifferentLines() throws Exception {
+        
+        String source = 
+                "## @begin step   " 	+ EOL +
+                "  some code "      	+ EOL +
+                "   # @in x" 			+ EOL +
+                "    # @as horiz "		+ EOL +
+                "     more code"    	+ EOL +
+                "     more code"    	+ EOL +
+                " #    @in y  "			+ EOL +
+                "  #@as vert"			+ EOL +
+                "     more code"    	+ EOL +
+                "     more code"    	+ EOL +
+                "    #  @end step"  	+ EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.source(reader)
+                 .extract();
+        
+        List<String> comments = extractor.getComments();
+
+        assertEquals(6, comments.size());
+        assertEquals("@begin step", comments.get(0));
+        assertEquals("@in x", comments.get(1));
+        assertEquals("@as horiz", comments.get(2));
+        assertEquals("@in y", comments.get(3));
+        assertEquals("@as vert", comments.get(4));
+        assertEquals("@end step", comments.get(5));        
+    }
+    
+    public void testExtract_GetComments_MultipleCommentsOnOneLine() throws Exception {
+        
+        String source = "# @begin step @in x @as horiz @in y @as vert @end step";
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.source(reader)
+                 .extract();
+        
+        List<String> comments = extractor.getComments();
+
+        assertEquals(6, comments.size());
+        assertEquals("@begin step", comments.get(0));
+        assertEquals("@in x", comments.get(1));
+        assertEquals("@as horiz", comments.get(2));
+        assertEquals("@in y", comments.get(3));
+        assertEquals("@as vert", comments.get(4));
+        assertEquals("@end step", comments.get(5));    
+    }
+    
+//    public void testExtract_GetComments_SamplePyScript() throws Exception {
+//        
+//        extractor.source(new BufferedReader(new FileReader("src/main/resources/example.py")))
+//                 .extract();
+//        
+//        List<Comment> comments = extractor.getComments();
+//
+//        assertEquals(22, comments.size());
+//        
+//        BeginComment begin0 = (BeginComment) comments.get(0);
+//        assertEquals("main", begin0.programName);
+//        assertNull(begin0.description);
+//        
+//        InComment in1 = (InComment) comments.get(1);
+//        assertEquals("LandWaterMask_Global_CRUNCEP.nc", in1.name);
+//        assertNull(in1.description);
+//
+//        InComment in2 = (InComment) comments.get(2);
+//        assertEquals("NEE_first_year.nc", in2.name);
+//        assertNull(in2.description);
+//        
+//        OutComment out3 = (OutComment) comments.get(3);
+//        assertEquals("result_simple.pdf", out3.name);
+//        assertNull(out3.description);
+//
+//        BeginComment begin4 = (BeginComment) comments.get(4);
+//        assertEquals("fetch_mask", begin4.programName);
+//        assertNull(begin4.description);
+//        
+//        InComment in5 = (InComment) comments.get(5);
+//        assertEquals("\"LandWaterMask_Global_CRUNCEP.nc\"", in5.name);
+//        assertEquals("input_mask_file", in5.alias);
+//        assertNull(in5.description);
+//
+//        OutComment out6 = (OutComment) comments.get(6);
+//        assertEquals("mask", out6.name);
+//        assertEquals("land_water_mask", out6.alias);
+//        assertNull(out6.description);
+//        
+//        EndComment end7 = (EndComment) comments.get(7);
+//        assertEquals("fetch_mask", end7.programName);
+//        assertNull(end7.description);
+//        
+//        BeginComment begin8 = (BeginComment) comments.get(8);
+//        assertEquals("load_data", begin8.programName);
+//        assertNull(begin8.description);
+//
+//        InComment in9 = (InComment) comments.get(9);
+//        assertEquals("\"CLM4_BG1_V1_Monthly_NEE.nc4\"", in9.name);
+//        assertEquals("input_data_file", in9.alias);
+//        assertEquals(null, in9.description);
+//
+//        OutComment out10 = (OutComment) comments.get(10);
+//        assertEquals("data", out10.name);
+//        assertEquals("NEE_data", out10.alias);
+//        assertNull(out10.description);
+//        
+//        EndComment end11 = (EndComment) comments.get(11);
+//        assertEquals("load_data", end11.programName);
+//        assertNull(end11.description);        
+//    }
+
+//    public void testExtract_GetComments_MultipleComments() throws Exception {
+//        
+//        String source = 
+//                "## @begin step   " + EOL +
+//                "  some code "      + EOL +
+//                "   # @in x  "      + EOL +
+//                "     more code"    + EOL +
+//                "     more code"    + EOL +
+//                " #    @out y"      + EOL +
+//                "     more code"    + EOL +
+//                "     more code"    + EOL +
+//                "    #  @end step"  + EOL;
+//
+//        BufferedReader reader = new BufferedReader(new StringReader(source));
+//        
+//        extractor.source(reader)
+//                 .extract();
+//        
+//        List<Comment> comments = extractor.getComments();
+//
+//        assertEquals(4, comments.size());
+//        
+//        BeginComment begin = (BeginComment) comments.get(0);
+//        assertEquals("step", begin.programName);
+//        assertNull(begin.description);
+//
+//        InComment in = (InComment) comments.get(1);
+//        assertEquals("x", in.name);
+//        assertNull(in.description);
+//
+//        OutComment out = (OutComment) comments.get(2);
+//        assertEquals("y", out.name);
+//        assertNull(out.description);
+//
+//        EndComment end = (EndComment) comments.get(3);
+//        assertEquals("step", end.programName);
+//        assertNull(end.description);
+//    }
+//    
+//    public void testExtract_GetComments_SamplePyScript() throws Exception {
+//        
+//        extractor.source(new BufferedReader(new FileReader("src/main/resources/example.py")))
+//                 .extract();
+//        
+//        List<Comment> comments = extractor.getComments();
+//
+//        assertEquals(22, comments.size());
+//        
+//        BeginComment begin0 = (BeginComment) comments.get(0);
+//        assertEquals("main", begin0.programName);
+//        assertNull(begin0.description);
+//        
+//        InComment in1 = (InComment) comments.get(1);
+//        assertEquals("LandWaterMask_Global_CRUNCEP.nc", in1.name);
+//        assertNull(in1.description);
+//
+//        InComment in2 = (InComment) comments.get(2);
+//        assertEquals("NEE_first_year.nc", in2.name);
+//        assertNull(in2.description);
+//        
+//        OutComment out3 = (OutComment) comments.get(3);
+//        assertEquals("result_simple.pdf", out3.name);
+//        assertNull(out3.description);
+//
+//        BeginComment begin4 = (BeginComment) comments.get(4);
+//        assertEquals("fetch_mask", begin4.programName);
+//        assertNull(begin4.description);
+//        
+//        InComment in5 = (InComment) comments.get(5);
+//        assertEquals("\"LandWaterMask_Global_CRUNCEP.nc\"", in5.name);
+//        assertEquals("input_mask_file", in5.alias);
+//        assertNull(in5.description);
+//
+//        OutComment out6 = (OutComment) comments.get(6);
+//        assertEquals("mask", out6.name);
+//        assertEquals("land_water_mask", out6.alias);
+//        assertNull(out6.description);
+//        
+//        EndComment end7 = (EndComment) comments.get(7);
+//        assertEquals("fetch_mask", end7.programName);
+//        assertNull(end7.description);
+//        
+//        BeginComment begin8 = (BeginComment) comments.get(8);
+//        assertEquals("load_data", begin8.programName);
+//        assertNull(begin8.description);
+//
+//        InComment in9 = (InComment) comments.get(9);
+//        assertEquals("\"CLM4_BG1_V1_Monthly_NEE.nc4\"", in9.name);
+//        assertEquals("input_data_file", in9.alias);
+//        assertEquals(null, in9.description);
+//
+//        OutComment out10 = (OutComment) comments.get(10);
+//        assertEquals("data", out10.name);
+//        assertEquals("NEE_data", out10.alias);
+//        assertNull(out10.description);
+//        
+//        EndComment end11 = (EndComment) comments.get(11);
+//        assertEquals("load_data", end11.programName);
+//        assertNull(end11.description);        
+//    }
 }

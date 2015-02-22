@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.StringReader;
 import java.util.List;
 
-import org.yesworkflow.comments.Comment;
+import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.model.DefaultModeler;
@@ -46,13 +46,13 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
-        List<Comment> comments = extractor
+        List<Annotation> annotations = extractor
         		.commentDelimiter("#")
         		.source(reader)                
                 .extract()
-                .getComments();
+                .getAnnotations();
 
-        Workflow workflow = (Workflow)modeler.comments(comments)
+        Workflow workflow = (Workflow)modeler.annotations(annotations)
                                              .model()
                                              .getModel();
 
@@ -97,13 +97,13 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
       
-      List<Comment> comments = extractor
+      List<Annotation> annotations = extractor
               .commentDelimiter("#")
     		  .source(reader)
               .extract()
-              .getComments();
+              .getAnnotations();
 
-      Workflow workflow = (Workflow)modeler.comments(comments)
+      Workflow workflow = (Workflow)modeler.annotations(annotations)
                                            .model()
                                            .getModel();
 
@@ -151,13 +151,13 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
 
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
-      List<Comment> comments = extractor
+      List<Annotation> annotations = extractor
               .commentDelimiter("#")
               .source(reader)
               .extract()
-              .getComments();
+              .getAnnotations();
 
-      Workflow workflow = (Workflow)modeler.comments(comments)
+      Workflow workflow = (Workflow)modeler.annotations(annotations)
                                            .model()
                                            .getModel();
 
@@ -189,13 +189,13 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
          
      public void testDotGrapher_CombinedView_SamplePyScript() throws Exception {
          
-         List<Comment> comments = extractor
+         List<Annotation> annotations = extractor
                  .commentDelimiter("#")
         		 .source(new BufferedReader(new FileReader("src/main/resources/example.py")))
                  .extract()
-                 .getComments();
+                 .getAnnotations();
 
-         Workflow workflow = (Workflow)modeler.comments(comments)
+         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                               .model()
                                               .getModel();
     
