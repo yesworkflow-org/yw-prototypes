@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
+
+import org.yesworkflow.YWKeywords;
+import org.yesworkflow.YWKeywords.Tag;
 
 /** Simple class for searching a list of comment lines for those
  *  containing YW keywords.  Optionally trims from each line
@@ -44,6 +48,25 @@ public class KeywordMatcher {
         return matchingLines;
     }
     
+    public static enum MatchExtent {
+        NO_MATCH,
+        PREFIX_MATCH,
+        FULL_MATCH
+    }
+    
+    public MatchExtent matchesKeyword(String s) {
+        
+        int length = s.length();
+        
+        // look for a match with single-line comment start delimiter
+        for (String keyword : keywords) {
+            if (keyword.startsWith(s)) {
+                return (length == keyword.length()) ? MatchExtent.FULL_MATCH : MatchExtent.PREFIX_MATCH;
+            }
+        }
+        return MatchExtent.NO_MATCH;
+    }
+    
     /** Searches a comment line for YW keywords.  Returns the line if
      *  a keyword is found and null otherwise.  Trims characters
      *  preceding the first keyword in the return value if requested.
@@ -81,4 +104,10 @@ public class KeywordMatcher {
         }
         return firstKeywordStart;
     }
+    
+    public static Tag extractInitialKeyword(String s, YWKeywords keywords) {
+        String firstToken = new StringTokenizer(s).nextToken();
+        return keywords.getTag(firstToken);
+    }
+    
 }
