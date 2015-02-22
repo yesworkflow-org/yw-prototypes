@@ -133,18 +133,18 @@ public class CommentMatcher {
                 
                 case FULL_MATCH_SINGLE:
                     nextState = State.IN_SINGLE_LINE_COMMENT;
-                    clearBuffer();
+                    buffer.setLength(0);
                     break;
                 
                 case FULL_MATCH_PAIRED:
                     nextState = State.IN_MULTI_LINE_COMMENT;
                     commentStartToken = buffer.toString();
-                    clearBuffer();
+                    buffer.setLength(0);
                     break;
                 
                 default:
                     nextState = State.IN_CODE;
-                    clearBuffer();
+                    buffer.setLength(0);
             }
             
             break;
@@ -157,7 +157,7 @@ public class CommentMatcher {
             } else {
                 newCommentCharacters = buffer.toString();
             }
-            clearBuffer();
+            buffer.setLength(0);
 
             break;
             
@@ -167,7 +167,7 @@ public class CommentMatcher {
             
                 case NO_MATCH:
                     newCommentCharacters = buffer.toString();
-                    clearBuffer();
+                    buffer.setLength(0);
                     break;
                 
                 case PREFIX_MATCH:
@@ -176,7 +176,7 @@ public class CommentMatcher {
                 case FULL_MATCH_PAIRED:
                     nextState = State.IN_CODE;
                     newCommentCharacters = EOL;
-                    clearBuffer();
+                    buffer.setLength(0);
                     break;
             }
             
@@ -186,10 +186,5 @@ public class CommentMatcher {
         currentState = nextState;
         
         return newCommentCharacters;
-    }
-
-    /** helper method used during update of finite state machine */ 
-    private void clearBuffer() {
-        buffer.delete(0, buffer.length());        
     }
 }
