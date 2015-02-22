@@ -15,7 +15,7 @@ import java.io.PrintStream;
 import java.util.List;
 
 import org.yesworkflow.LanguageModel.Language;
-import org.yesworkflow.comments.Comment;
+import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.extract.DefaultExtractor;
@@ -67,7 +67,8 @@ public class YesWorkflowCLI {
     private Modeler modeler = null;
     private Grapher grapher = null;
     
-    private List<Comment> comments;
+    private List<String> comments;
+    private List<Annotation> annotations;
     private Program model = null;
 
     public YesWorkflowCLI() throws Exception {
@@ -296,6 +297,7 @@ public class YesWorkflowCLI {
         }
         
         comments = extractor.getComments();
+        annotations = extractor.getAnnotations();
     }
     
     private Extractor getStdinExtractor() {
@@ -334,7 +336,7 @@ public class YesWorkflowCLI {
             modeler = new DefaultModeler(this.outStream, this.errStream);
          }
 
-        model = (Program) modeler.comments(comments)
+        model = (Program) modeler.annotations(annotations)
                                  .model()
                                  .getModel();
     }
