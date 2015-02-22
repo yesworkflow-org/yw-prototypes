@@ -107,7 +107,7 @@ public class DotGrapher implements Grapher  {
         
         dot.comment("Nodes representing workflow input ports");
         for (Port p : workflow.inPorts) {
-            String binding = p.portComment.binding(); 
+            String binding = p.flowAnnotation.binding(); 
             if (workflowHasChannelForBinding(binding)) {
                 dot.node(binding, null);
             }
@@ -115,7 +115,7 @@ public class DotGrapher implements Grapher  {
         
         dot.comment("Nodes representing workflow output ports");
         for (Port p : workflow.outPorts) {
-            String binding = p.portComment.binding(); 
+            String binding = p.flowAnnotation.binding(); 
             if (workflowHasChannelForBinding(binding)) {
                 dot.node(binding, null);
             }
@@ -131,7 +131,7 @@ public class DotGrapher implements Grapher  {
         dot.comment("Nodes representing programs in workflow");
         for (Program p : workflow.programs) {
             if (! (p instanceof Workflow)) {
-                dot.node(p.beginComment.programName);
+                dot.node(p.beginAnnotation.name);
             }
         }
 
@@ -143,7 +143,7 @@ public class DotGrapher implements Grapher  {
         dot.shape("box").peripheries(depth+1).fillcolor("#CCFFCC");   
         for (Program p : workflow.programs) {
             if (p instanceof Workflow) {
-                dot.node(p.beginComment.programName);
+                dot.node(p.beginAnnotation.name);
             }
         }
 
@@ -160,23 +160,23 @@ public class DotGrapher implements Grapher  {
             // draw edges for channels between workflow in ports and programs in workflow
             if (sourceProgram == null) {
                 
-                dot.edge(c.sinkPort.portComment.binding(),
-                         c.sinkProgram.beginComment.programName,
-                         c.sinkPort.portComment.binding());
+                dot.edge(c.sinkPort.flowAnnotation.binding(),
+                         c.sinkProgram.beginAnnotation.name,
+                         c.sinkPort.flowAnnotation.binding());
                 
             // draw edges for channels between programs in workflow and workflow out ports
             } else if (sinkProgram == null) {
                 
-                dot.edge(c.sourceProgram.beginComment.programName,
-                         c.sourcePort.portComment.binding(),
-                         c.sourcePort.portComment.binding());
+                dot.edge(c.sourceProgram.beginAnnotation.name,
+                         c.sourcePort.flowAnnotation.binding(),
+                         c.sourcePort.flowAnnotation.binding());
                 
             // draw edges for channels between programs within workflow
             } else {
             
-                dot.edge(c.sourceProgram.beginComment.programName,
-                         c.sinkProgram.beginComment.programName,
-                         c.sourcePort.portComment.binding());
+                dot.edge(c.sourceProgram.beginAnnotation.name,
+                         c.sinkProgram.beginAnnotation.name,
+                         c.sourcePort.flowAnnotation.binding());
             }
         }
         
@@ -193,7 +193,7 @@ public class DotGrapher implements Grapher  {
     
     private boolean workflowHasChannelForBinding(String binding) {
         for (Channel c : workflow.channels) {
-            if (binding.equals(c.sourcePort.portComment.binding())) {
+            if (binding.equals(c.sourcePort.flowAnnotation.binding())) {
                 return true;
             }
         }
@@ -218,7 +218,7 @@ public class DotGrapher implements Grapher  {
         List<String> channelBindings = new LinkedList<String>();
 
         for (Channel c : workflow.channels) {
-            String binding = c.sourcePort.portComment.binding();
+            String binding = c.sourcePort.flowAnnotation.binding();
             channelBindings.add(binding);
             dot.node(binding);
         }
@@ -228,11 +228,11 @@ public class DotGrapher implements Grapher  {
             for (Port out : p.outPorts) {
                 for (Port in : p.inPorts) {
                     
-                    if (channelBindings.contains(in.portComment.binding()) && channelBindings.contains(out.portComment.binding())) {
+                    if (channelBindings.contains(in.flowAnnotation.binding()) && channelBindings.contains(out.flowAnnotation.binding())) {
                         dot.edge(
-                            in.portComment.binding(), 
-                            out.portComment.binding(), 
-                            p.beginComment.programName
+                            in.flowAnnotation.binding(), 
+                            out.flowAnnotation.binding(), 
+                            p.beginAnnotation.name
                         );
                     }
                 }
@@ -257,7 +257,7 @@ public class DotGrapher implements Grapher  {
         
         // draw a box for each program in the workflow
         dot.shape("box3d").fillcolor("#CCFFCC");
-        for (Program p : workflow.programs) dot.node(p.beginComment.programName);
+        for (Program p : workflow.programs) dot.node(p.beginAnnotation.name);
 
         
         List<String> channelBindings = new LinkedList<String>();
@@ -268,7 +268,7 @@ public class DotGrapher implements Grapher  {
         // draw a box for each channel in the workflow
         dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
         for (Channel c : workflow.channels) {
-            String binding = c.sourcePort.portComment.binding(); 
+            String binding = c.sourcePort.flowAnnotation.binding(); 
             channelBindings.add(binding);
             dot.node(binding);
         }
@@ -278,21 +278,21 @@ public class DotGrapher implements Grapher  {
 
             for (Port out : p.outPorts) {
                 
-                String binding = out.portComment.binding();
+                String binding = out.flowAnnotation.binding();
                 if (channelBindings.contains(binding)) {
                     dot.edge(
-                        p.beginComment.programName,
+                        p.beginAnnotation.name,
                         binding
                     );
                 }
             }
 
             for (Port in : p.inPorts) {
-                String binding = in.portComment.binding();
+                String binding = in.flowAnnotation.binding();
                 if (channelBindings.contains(binding)) {                
                     dot.edge(
                         binding,
-                        p.beginComment.programName
+                        p.beginAnnotation.name
                     );
                 }
             }
