@@ -6,7 +6,7 @@ import java.util.List;
 import org.yesworkflow.LanguageModel;
 import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.YWStage;
-import org.yesworkflow.comments.Comment;
+import org.yesworkflow.annotations.Annotation;
 
 public interface Extractor extends YWStage {
     Extractor languageModel(LanguageModel languageModel);
@@ -15,6 +15,7 @@ public interface Extractor extends YWStage {
     Extractor extract() throws Exception;
     Language getLanguage();
     List<String> getLines();
-    List<Comment> getComments();
+    List<String> getComments();
+    List<Annotation> getAnnotations();
 }
 
