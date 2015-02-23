@@ -11,12 +11,13 @@ public class TestEnd extends YesWorkflowTestCase {
     }
 
     public void testEndComment_NameOnly() throws Exception {
-        End annotation = new End("@end main");
-        assertEquals("main", annotation.name);
+        End end = new End("@end main");
+        assertEquals("main", end.name);
     }
 
-    public void EndComment() throws Exception {
-        End annotation = new End("@end main extra stuff");
-        assertEquals("main", annotation.name);
+    public void testEndComment_WithDescription() throws Exception {
+        End end = new End("@end main extra stuff");
+        assertEquals("main", end.name);
+        assertEquals("extra stuff", end.description);
     }
 }

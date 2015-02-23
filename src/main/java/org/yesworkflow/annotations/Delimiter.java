@@ -2,8 +2,8 @@ package org.yesworkflow.annotations;
 
 public abstract class Delimiter extends Annotation {
 
-    public Delimiter(String commentLine, String expectedTag) throws Exception {
-    	super(commentLine, expectedTag);    	
+    public Delimiter(String comment, String expectedTag) throws Exception {
+    	super(comment, expectedTag);    	
     }
     
     @Override
@@ -11,13 +11,13 @@ public abstract class Delimiter extends Annotation {
         
         StringBuffer sb = new StringBuffer();
         
-        sb.append(this.tag)
+        sb.append(tag)
           .append("{name=")
-          .append(this.name);
+          .append(name);
 
-        if (this.description != null) {
+        if (description != null) {
           sb.append(",description=")
-            .append(this.description);
+            .append(description);
         }
         
         sb.append("}");

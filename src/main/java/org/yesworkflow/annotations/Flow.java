@@ -1,6 +1,6 @@
 package org.yesworkflow.annotations;
 
-public abstract class Flow extends Annotation {
+public abstract class Flow extends AliasableAnnotation {
     	
     public Flow(String comment, String expectedTag) throws Exception {
     	super(comment, expectedTag);    	
@@ -11,18 +11,18 @@ public abstract class Flow extends Annotation {
         
         StringBuffer sb = new StringBuffer();
         
-        sb.append(this.tag)
+        sb.append(tag)
           .append("{name=")
-          .append(this.name);
+          .append(name);
 
-        if (this.as != null) {
+        if (as != null) {
             sb.append(",alias=")
-              .append(this.as.name);
+              .append(as.name);
         }
         
         if (this.description != null) {
           sb.append(",description=")
-            .append(this.description);
+            .append(description);
         }
         
         sb.append("}");

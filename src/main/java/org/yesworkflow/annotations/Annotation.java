@@ -7,49 +7,35 @@ public abstract class Annotation {
     public final String tag;
     public final String name;
     
-    protected String description;
-	protected Qualification as;
-	
-    public Annotation(String commentLine, String expectedTag) throws Exception {
+    protected String description = null;
+    
+    public Annotation(String comment, String expectedTag) throws Exception {
         
-        StringTokenizer commentTokens = new StringTokenizer(commentLine);
+        StringTokenizer commentTokens = new StringTokenizer(comment);
         
-        this.tag = commentTokens.nextToken();
+        tag = commentTokens.nextToken();
         if (!tag.equalsIgnoreCase(expectedTag)) {
             throw new Exception("Wrong tag for " + expectedTag + " comment: " + tag);
         }
        
-        this.name = commentTokens.nextToken();
+        name = commentTokens.nextToken();
         
-        if (commentTokens.hasMoreTokens()) {
-            this.description = buildDescription(commentTokens);
-        } else  {
-            this.description = null;
-        }
+        description = buildDescription(commentTokens);
     }
 
-	public Annotation qualifyWith(Qualification qualification) throws Exception {
-		
-		if (qualification instanceof As) {
-			this.as = qualification;
-			if (this.as.description != null) {
-				if (this.description == null) {
-					this.description = as.description;
-				} else {
-					this.description += " " + as.description;
-				}
-			}
-			
-		} else {
-			throw new Exception("Annotation type does not accept qualification " + qualification);
-		}
-		
+	public Annotation qualifyWith(Qualification qualification) throws Exception {		
 		return this;
 	}
-	
-	public String binding() {
-		return as == null ? name : as.name;
-	}	
+
+	public void appendDescription(String extraDescription) {
+		if (extraDescription != null) {
+			if (this.description == null) {
+				this.description = extraDescription;
+			} else {
+				this.description += " " + extraDescription;
+			}
+		}
+	}
 	
 	public String description() {
 		return description();

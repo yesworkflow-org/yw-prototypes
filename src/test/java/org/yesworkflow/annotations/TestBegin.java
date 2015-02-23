@@ -11,20 +11,20 @@ public class TestBegin extends YesWorkflowTestCase {
     }
 
     public void testBeginComment_NameOnly() throws Exception {
-        Begin annotation = new Begin("@begin main");
-        assertEquals("main", annotation.name);
-        assertNull(annotation.description);
+        Begin begin = new Begin("@begin main");
+        assertEquals("main", begin.name);
+        assertNull(begin.description);
     }
 
     public void testBeginComment_NameAndOneWordDescription() throws Exception {
-        Begin annotation = new Begin("@begin main myprogram");
-        assertEquals("main", annotation.name);
-        assertEquals("myprogram", annotation.description);
+        Begin begin = new Begin("@begin main myprogram");
+        assertEquals("main", begin.name);
+        assertEquals("myprogram", begin.description);
     }
 
     public void testBeginComment_NameAndTwoWordDescription() throws Exception {
-        Begin annotation = new Begin("@begin main my program");
-        assertEquals("main", annotation.name);
-        assertEquals("my program", annotation.description);
+        Begin begin = new Begin("@begin main my program");
+        assertEquals("main", begin.name);
+        assertEquals("my program", begin.description);
     }
 }

@@ -10,38 +10,52 @@ public class TestOut extends YesWorkflowTestCase {
         super.setUp();
     }
 
-    public void testOutComment_VariableOnly() throws Exception {
-        Out annotation = new Out("@out x");
-        assertEquals("x", annotation.name);
-        assertEquals("x", annotation.binding());
-        assertNull(annotation.description);
+    public void testOutComment_NameOnly() throws Exception {
+        Out out = new Out("@out x");
+        assertEquals("x", out.name);
+        assertEquals("x", out.binding());
+        assertNull(out.description);
     }
     
-    public void testOutComment_VariableAndDescription() throws Exception {
-        Out annotation = new Out("@out x The longitude");
-        assertEquals("x", annotation.name);
-        assertEquals("x", annotation.binding());
-        assertEquals("The longitude", annotation.description);
+    public void testOutComment_NameAndDescription() throws Exception {
+        Out out = new Out("@out x The longitude");
+        assertEquals("x", out.name);
+        assertEquals("x", out.binding());
+        assertEquals("The longitude", out.description);
     }
     
-    public void testOutComment_VariableAndLabel() throws Exception {
-        Out annotation = (Out) new Out("@out x").qualifyWith(new As(" @as longitude"));
-        assertEquals("x", annotation.name);
-        assertEquals("longitude", annotation.binding());
-        assertNull(annotation.description);
+    public void testOutComment_NameAndAlias() throws Exception {
+        Out out = (Out) new Out("@out x").qualifyWith(new As("@as longitude"));
+        assertEquals("x", out.name);
+        assertEquals("longitude", out.binding());
+        assertNull(out.description);
     }
 
-    public void testOutComment_VariableAndLabel_ExtraSpaces() throws Exception {
-        Out comment = (Out) new Out("@out x  ").qualifyWith(new As("  @as  longitude"));
-        assertEquals("x", comment.name);
-        assertEquals("longitude", comment.binding());
-        assertNull(comment.description);
+    public void testOutComment_NameAndAlias_ExtraSpaces() throws Exception {
+        Out out = (Out) new Out("@out x  ").qualifyWith(new As("  @as  longitude"));
+        assertEquals("x", out.name);
+        assertEquals("longitude", out.binding());
+        assertNull(out.description);
     }
 
-    public void testOutComment_VariableLabelDescription_ExtraSpaces() throws Exception {
-        Out comment = (Out) new Out("@out x  ").qualifyWith(new As("  @as  longitude  Half of the coordinates"));
-        assertEquals("x", comment.name);
-        assertEquals("longitude", comment.binding());
-        assertEquals("Half of the coordinates", comment.description);
+    public void testOutComment_NameAndAlias_DescriptionOnName() throws Exception {
+        Out out = (Out) new Out("@out x  Half of the coordinates ").qualifyWith(new As("  @as  longitude "));
+        assertEquals("x", out.name);
+        assertEquals("longitude", out.binding());
+        assertEquals("Half of the coordinates", out.description);
     }
+
+    public void testOutComment_NameAndAlias_DescriptionOnAlias() throws Exception {
+        Out out = (Out) new Out("@out x  ").qualifyWith(new As("  @as  longitude  Half of the coordinates"));
+        assertEquals("x", out.name);
+        assertEquals("longitude", out.binding());
+        assertEquals("Half of the coordinates", out.description);
+    }
+    
+    public void testOutComment_NameAndAlias_DescriptionOnNameAndAlias() throws Exception {
+        Out out = (Out) new Out("@out x Half of  ").qualifyWith(new As("  @as  longitude  the coordinates"));
+        assertEquals("x", out.name);
+        assertEquals("longitude", out.binding());
+        assertEquals("Half of the coordinates", out.description);
+    }    
 }
