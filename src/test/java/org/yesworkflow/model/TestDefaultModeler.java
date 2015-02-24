@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.List;
 
+import org.yesworkflow.LanguageModel;
+import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.extract.DefaultExtractor;
@@ -51,6 +53,55 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(0, program.outPorts.length);
     }
 
+    public void testExtract_GetModel_OneProgram_OneComment() throws Exception {
+        
+        String source = 
+                "# @begin script @end script";
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor
+                .commentDelimiter("#")
+        		.source(reader)
+                .extract()
+                .getAnnotations();
+        
+        Program program = modeler.annotations(annotations)
+                                 .model()
+                                 .getModel();
+        
+        assertFalse(program instanceof Workflow);
+        assertEquals("script", program.beginAnnotation.name);
+        assertEquals("script", program.endAnnotation.name);
+        assertEquals(0, program.inPorts.length);
+        assertEquals(0, program.outPorts.length);
+    }
+
+    public void testExtract_GetModel_OneProgram_TwoCommentsOnOneLine() throws Exception {
+        
+        String source = 
+                "/* @begin script */some code /* @end script */";
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor
+               	.languageModel(new LanguageModel(Language.JAVA))
+        		.source(reader)
+                .extract()
+                .getAnnotations();
+        
+        Program program = modeler.annotations(annotations)
+                                 .model()
+                                 .getModel();
+        
+        assertFalse(program instanceof Workflow);
+        assertEquals("script", program.beginAnnotation.name);
+        assertEquals("script", program.endAnnotation.name);
+        assertEquals(0, program.inPorts.length);
+        assertEquals(0, program.outPorts.length);
+    }
+
+    
     public void testExtract_GetModel_WorkflowWithOneProgram() throws Exception {
         
         String source = 
@@ -58,6 +109,36 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "#   @begin program"	+ EOL +
                 "#   @end program"		+ EOL +
                 "# @end script"			+ EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor
+                .commentDelimiter("#")
+        		.source(reader)
+                .extract()
+                .getAnnotations();
+
+        Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                             .model()
+                                             .getModel();
+
+        assertEquals("script", workflow.beginAnnotation.name);
+        assertEquals("script", workflow.endAnnotation.name);
+        assertEquals(0, workflow.inPorts.length);
+        assertEquals(0, workflow.outPorts.length);
+        assertEquals(1, workflow.programs.length);
+        assertEquals(0, workflow.channels.length);
+        
+        Program program = workflow.programs[0];
+        assertFalse(program instanceof Workflow);
+        assertEquals("program", program.beginAnnotation.name);
+    }
+
+    public void testExtract_GetModel_WorkflowWithOneProgram_TwoLines() throws Exception {
+        
+        String source = 
+                "# @begin script @begin program"	+ EOL +
+                "# @end program  @end script"		+ EOL;
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
@@ -265,6 +346,33 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(2, program.inPorts.length);
         assertEquals(1, program.outPorts.length);
     }
+
+    public void testExtract_GetModel_OneProgramInAndOut_TwoCommentLines() throws Exception {
+        
+        String source = 
+                "# @begin script @in x @in y @out z"	+ EOL +
+                "some code                         "	+ EOL +
+                "# @end script                     "	+ EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor
+                .commentDelimiter("#")
+        		.source(reader)
+                .extract()
+                .getAnnotations();
+
+        Program program = modeler.annotations(annotations)
+                                 .model()
+                                 .getModel();
+        
+        assertFalse(program instanceof Workflow);
+        assertEquals("script", program.beginAnnotation.name);
+        assertEquals("script", program.endAnnotation.name);
+        assertEquals(2, program.inPorts.length);
+        assertEquals(1, program.outPorts.length);
+    }
+
     
     public void testExtract_GetModel_TwoProgramsWithOneChannel() throws Exception {
         
@@ -317,6 +425,64 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals("program1", channel.sinkProgram.beginAnnotation.name);
         assertEquals("channel", channel.sinkPort.flowAnnotation.name);
     }
+    
+   public void testExtract_GetModel_TwoProgramsWithOneChannel_CombinedCommentLines() throws Exception {
+        
+        String source = 
+                "# @begin script                   "	+ EOL +
+                "                                  "	+ EOL +
+                "#   @begin program0 @out channel  "	+ EOL +
+                "    some code in program0         "	+ EOL +
+                "#   @end program0                 "    + EOL +
+                "                                  "	+ EOL +
+                "    some code in script           "    + EOL +
+                "                                  "	+ EOL +
+                "#   @begin program1 @in channel   "	+ EOL +
+                "    some code in program1         "	+ EOL +
+                "#   @end program1                 "	+ EOL +
+                "                                  "	+ EOL +
+                "# @end script                     "	+ EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor
+                .commentDelimiter("#")
+        		.source(reader)
+                .extract()
+                .getAnnotations();
+
+        Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                             .model()
+                                             .getModel();
+        
+        assertEquals("script", workflow.beginAnnotation.name);
+        assertEquals("script", workflow.endAnnotation.name);
+        assertEquals(0, workflow.inPorts.length);
+        assertEquals(0, workflow.outPorts.length);
+        assertEquals(2, workflow.programs.length);
+        assertEquals(1, workflow.channels.length);
+
+        Program program0 = workflow.programs[0];
+        assertFalse(program0 instanceof Workflow);
+        assertEquals("program0", program0.beginAnnotation.name);
+        assertEquals("program0", program0.endAnnotation.name);
+        assertEquals(0, program0.inPorts.length);
+        assertEquals(1, program0.outPorts.length);
+
+        Program program1 = workflow.programs[1];
+        assertFalse(program1 instanceof Workflow);
+        assertEquals("program1", program1.beginAnnotation.name);
+        assertEquals("program1", program1.endAnnotation.name);
+        assertEquals(1, program1.inPorts.length);
+        assertEquals(0, program1.outPorts.length);
+        
+        Channel channel = workflow.channels[0];
+        assertEquals("program0", channel.sourceProgram.beginAnnotation.name);
+        assertEquals("channel", channel.sourcePort.flowAnnotation.name);
+        assertEquals("program1", channel.sinkProgram.beginAnnotation.name);
+        assertEquals("channel", channel.sinkPort.flowAnnotation.name);
+    }
+    
     
     public void testExtract_GetModel_ThreeProgramsMultipleChannels() throws Exception {
         
@@ -450,10 +616,5 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        
        assertNotNull(caughtException);
        assertEquals("ERROR: No @end comment paired with '@begin main'" + EOL, caughtException.getMessage());
-       
-//       assertEquals(1, comments.size());
-//       BeginComment comment = (BeginComment) comments.get(0);
-//       assertEquals("main", comment.programName);
-//       assertNull(comment.description);
    }
 }
