@@ -29,16 +29,16 @@ public abstract class Annotation {
 
 	public void appendDescription(String extraDescription) {
 		if (extraDescription != null) {
-			if (this.description == null) {
-				this.description = extraDescription;
+			if (description == null) {
+				description = extraDescription;
 			} else {
-				this.description += " " + extraDescription;
+				description += " " + extraDescription;
 			}
 		}
 	}
 	
 	public String description() {
-		return description();
+		return description;
 	}
 	
 	private String buildDescription(StringTokenizer commentTokens) {

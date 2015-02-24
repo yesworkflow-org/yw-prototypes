@@ -19,8 +19,12 @@ public abstract class AliasableAnnotation extends Annotation {
 		
 		return this;
 	}
+	
+	public String alias() {
+		return as == null ? null : as.name;
+	}
 
 	public String binding() {
 		return as == null ? name : as.name;
-	}	
+	}
 }

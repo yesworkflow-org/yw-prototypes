@@ -142,9 +142,9 @@ public class DefaultExtractor implements Extractor {
             	}
             } else {
             	primaryAnnotation = annotation;
+                annotations.add(annotation);
             }
             
-            annotations.add(annotation);
         }
     }
     
