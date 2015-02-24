@@ -1,11 +1,17 @@
 package org.yesworkflow.extract;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.StringReader;
 import java.util.List;
 
 import org.yesworkflow.LanguageModel;
 import org.yesworkflow.LanguageModel.Language;
+import org.yesworkflow.annotations.Annotation;
+import org.yesworkflow.annotations.Begin;
+import org.yesworkflow.annotations.End;
+import org.yesworkflow.annotations.In;
+import org.yesworkflow.annotations.Out;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.util.YesWorkflowTestCase;
 
@@ -262,167 +268,107 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertEquals("@as vert", comments.get(4));
         assertEquals("@end step", comments.get(5));    
     }
-    
-//    public void testExtract_GetComments_SamplePyScript() throws Exception {
-//        
-//        extractor.source(new BufferedReader(new FileReader("src/main/resources/example.py")))
-//                 .extract();
-//        
-//        List<Comment> comments = extractor.getComments();
-//
-//        assertEquals(22, comments.size());
-//        
-//        BeginComment begin0 = (BeginComment) comments.get(0);
-//        assertEquals("main", begin0.programName);
-//        assertNull(begin0.description);
-//        
-//        InComment in1 = (InComment) comments.get(1);
-//        assertEquals("LandWaterMask_Global_CRUNCEP.nc", in1.name);
-//        assertNull(in1.description);
-//
-//        InComment in2 = (InComment) comments.get(2);
-//        assertEquals("NEE_first_year.nc", in2.name);
-//        assertNull(in2.description);
-//        
-//        OutComment out3 = (OutComment) comments.get(3);
-//        assertEquals("result_simple.pdf", out3.name);
-//        assertNull(out3.description);
-//
-//        BeginComment begin4 = (BeginComment) comments.get(4);
-//        assertEquals("fetch_mask", begin4.programName);
-//        assertNull(begin4.description);
-//        
-//        InComment in5 = (InComment) comments.get(5);
-//        assertEquals("\"LandWaterMask_Global_CRUNCEP.nc\"", in5.name);
-//        assertEquals("input_mask_file", in5.alias);
-//        assertNull(in5.description);
-//
-//        OutComment out6 = (OutComment) comments.get(6);
-//        assertEquals("mask", out6.name);
-//        assertEquals("land_water_mask", out6.alias);
-//        assertNull(out6.description);
-//        
-//        EndComment end7 = (EndComment) comments.get(7);
-//        assertEquals("fetch_mask", end7.programName);
-//        assertNull(end7.description);
-//        
-//        BeginComment begin8 = (BeginComment) comments.get(8);
-//        assertEquals("load_data", begin8.programName);
-//        assertNull(begin8.description);
-//
-//        InComment in9 = (InComment) comments.get(9);
-//        assertEquals("\"CLM4_BG1_V1_Monthly_NEE.nc4\"", in9.name);
-//        assertEquals("input_data_file", in9.alias);
-//        assertEquals(null, in9.description);
-//
-//        OutComment out10 = (OutComment) comments.get(10);
-//        assertEquals("data", out10.name);
-//        assertEquals("NEE_data", out10.alias);
-//        assertNull(out10.description);
-//        
-//        EndComment end11 = (EndComment) comments.get(11);
-//        assertEquals("load_data", end11.programName);
-//        assertNull(end11.description);        
-//    }
 
-//    public void testExtract_GetComments_MultipleComments() throws Exception {
-//        
-//        String source = 
-//                "## @begin step   " + EOL +
-//                "  some code "      + EOL +
-//                "   # @in x  "      + EOL +
-//                "     more code"    + EOL +
-//                "     more code"    + EOL +
-//                " #    @out y"      + EOL +
-//                "     more code"    + EOL +
-//                "     more code"    + EOL +
-//                "    #  @end step"  + EOL;
-//
-//        BufferedReader reader = new BufferedReader(new StringReader(source));
-//        
-//        extractor.source(reader)
-//                 .extract();
-//        
-//        List<Comment> comments = extractor.getComments();
-//
-//        assertEquals(4, comments.size());
-//        
-//        BeginComment begin = (BeginComment) comments.get(0);
-//        assertEquals("step", begin.programName);
-//        assertNull(begin.description);
-//
-//        InComment in = (InComment) comments.get(1);
-//        assertEquals("x", in.name);
-//        assertNull(in.description);
-//
-//        OutComment out = (OutComment) comments.get(2);
-//        assertEquals("y", out.name);
-//        assertNull(out.description);
-//
-//        EndComment end = (EndComment) comments.get(3);
-//        assertEquals("step", end.programName);
-//        assertNull(end.description);
-//    }
-//    
-//    public void testExtract_GetComments_SamplePyScript() throws Exception {
-//        
-//        extractor.source(new BufferedReader(new FileReader("src/main/resources/example.py")))
-//                 .extract();
-//        
-//        List<Comment> comments = extractor.getComments();
-//
-//        assertEquals(22, comments.size());
-//        
-//        BeginComment begin0 = (BeginComment) comments.get(0);
-//        assertEquals("main", begin0.programName);
-//        assertNull(begin0.description);
-//        
-//        InComment in1 = (InComment) comments.get(1);
-//        assertEquals("LandWaterMask_Global_CRUNCEP.nc", in1.name);
-//        assertNull(in1.description);
-//
-//        InComment in2 = (InComment) comments.get(2);
-//        assertEquals("NEE_first_year.nc", in2.name);
-//        assertNull(in2.description);
-//        
-//        OutComment out3 = (OutComment) comments.get(3);
-//        assertEquals("result_simple.pdf", out3.name);
-//        assertNull(out3.description);
-//
-//        BeginComment begin4 = (BeginComment) comments.get(4);
-//        assertEquals("fetch_mask", begin4.programName);
-//        assertNull(begin4.description);
-//        
-//        InComment in5 = (InComment) comments.get(5);
-//        assertEquals("\"LandWaterMask_Global_CRUNCEP.nc\"", in5.name);
-//        assertEquals("input_mask_file", in5.alias);
-//        assertNull(in5.description);
-//
-//        OutComment out6 = (OutComment) comments.get(6);
-//        assertEquals("mask", out6.name);
-//        assertEquals("land_water_mask", out6.alias);
-//        assertNull(out6.description);
-//        
-//        EndComment end7 = (EndComment) comments.get(7);
-//        assertEquals("fetch_mask", end7.programName);
-//        assertNull(end7.description);
-//        
-//        BeginComment begin8 = (BeginComment) comments.get(8);
-//        assertEquals("load_data", begin8.programName);
-//        assertNull(begin8.description);
-//
-//        InComment in9 = (InComment) comments.get(9);
-//        assertEquals("\"CLM4_BG1_V1_Monthly_NEE.nc4\"", in9.name);
-//        assertEquals("input_data_file", in9.alias);
-//        assertEquals(null, in9.description);
-//
-//        OutComment out10 = (OutComment) comments.get(10);
-//        assertEquals("data", out10.name);
-//        assertEquals("NEE_data", out10.alias);
-//        assertNull(out10.description);
-//        
-//        EndComment end11 = (EndComment) comments.get(11);
-//        assertEquals("load_data", end11.programName);
-//        assertNull(end11.description);        
-//    }
+    public void testExtract_GetAnnotations_MultipleComments() throws Exception {
+        
+        String source = 
+                "## @begin step   " + EOL +
+                "  some code "      + EOL +
+                "   # @in x  "      + EOL +
+                "     more code"    + EOL +
+                "     more code"    + EOL +
+                " #    @out y"      + EOL +
+                "     more code"    + EOL +
+                "     more code"    + EOL +
+                "    #  @end step"  + EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        extractor.source(reader)
+                 .extract();
+        
+        List<Annotation> annotations = extractor.getAnnotations();
+
+        assertEquals(4, annotations.size());
+        
+        Begin begin = (Begin) annotations.get(0);
+        assertEquals("step", begin.name);
+        assertNull(begin.description());
+
+        In in = (In) annotations.get(1);
+        assertEquals("x", in.name);
+        assertEquals("x", in.binding());
+        assertNull(in.description());
+
+        Out out = (Out) annotations.get(2);
+        assertEquals("y", out.name);
+        assertEquals("y", out.binding());
+        assertNull(out.description());
+
+        End end = (End) annotations.get(3);
+        assertEquals("step", end.name);
+        assertNull(end.description());
+    }
+    
+    public void testExtract_GetComments_SamplePyScript() throws Exception {
+        
+        extractor.source(new BufferedReader(new FileReader("src/main/resources/example.py")))
+                 .extract();
+        
+        List<Annotation> annotations = extractor.getAnnotations();
+
+        assertEquals(22, annotations.size());
+        
+        Begin begin0 = (Begin) annotations.get(0);
+        assertEquals("main", begin0.name);
+        assertNull(begin0.description());
+        
+        In in1 = (In) annotations.get(1);
+        assertEquals("LandWaterMask_Global_CRUNCEP.nc", in1.name);
+        assertNull(in1.description());
+
+        In in2 = (In) annotations.get(2);
+        assertEquals("NEE_first_year.nc", in2.name);
+        assertNull(in2.description());
+        
+        Out out3 = (Out) annotations.get(3);
+        assertEquals("result_simple.pdf", out3.name);
+        assertNull(out3.description());
+
+        Begin begin4 = (Begin) annotations.get(4);
+        assertEquals("fetch_mask", begin4.name);
+        assertNull(begin4.description());
+        
+        In in5 = (In) annotations.get(5);
+        assertEquals("\"LandWaterMask_Global_CRUNCEP.nc\"", in5.name);
+        assertEquals("input_mask_file", in5.alias());
+        assertNull(in5.description());
+
+        Out out6 = (Out) annotations.get(6);
+        assertEquals("mask", out6.name);
+        assertEquals("land_water_mask", out6.alias());
+        assertNull(out6.description());
+        
+        End end7 = (End) annotations.get(7);
+        assertEquals("fetch_mask", end7.name);
+        assertNull(end7.description());
+        
+        Begin begin8 = (Begin) annotations.get(8);
+        assertEquals("load_data", begin8.name);
+        assertNull(begin8.description());
+
+        In in9 = (In) annotations.get(9);
+        assertEquals("\"CLM4_BG1_V1_Monthly_NEE.nc4\"", in9.name);
+        assertEquals("input_data_file", in9.alias());
+        assertEquals(null, in9.description());
+
+        Out out10 = (Out) annotations.get(10);
+        assertEquals("data", out10.name);
+        assertEquals("NEE_data", out10.alias());
+        assertNull(out10.description());
+        
+        End end11 = (End) annotations.get(11);
+        assertEquals("load_data", end11.name);
+        assertNull(end11.description());        
+    }
 }
