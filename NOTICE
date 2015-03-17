@@ -1,0 +1,77 @@
+YesWorkflow
+Copyright 2015 The YesWorkflow Contributors
+
+This product includes software developed by the contributors listed on
+the web page http://yesworkflow.org/contributors.  All source code in 
+this repository is distributed under an Apache 2.0 license as described
+in the LICENSE file.
+
+YesWorkflow depends on a number of software packages that are developed
+and distributed by others.  Binary distributions of these third-party
+packages are necessary for building, testing, or running YesWorkflow,
+and are included in some binary distributions of YesWorkflow.  
+YesWorkflow also includes adaptations of source files from other
+software distributions. The remainder of this file includes license
+information for each binary and source-code dependency.
+
+Note that where any terms of the license under which YesWorkflow is
+distributed differ from the licenses for the third-party packages
+comprising or distributed with YesWorkflow, the terms of the 
+YesWorkflow license are offered by the distibutors of YesWorkflow
+alone, and not by the initial developer or any contributor to the
+third-party packages.
+
+-----------------------------------------------------------------------
+Several source files in YesWorkflow are adaptations of source files 
+from the RestFlow software distribution.  The full source code for 
+RestFlow is available at https://github.com/restflow-org/restflow.  
+The copyright notice and MIT license for RestFlow are include below:
+-----------------------------------------------------------------------
+
+                    Copyright 2010 - 2013
+                             by
+                The Board of Trustees of the 
+              Leland Stanford Junior University
+                     All rights reserved.
+
+
+                      Disclaimer Notice
+
+    The items furnished herewith were developed under the sponsorship
+of the U.S. Government.  Neither the U.S., nor the U.S. D.O.E., nor the
+Leland Stanford Junior University, nor their employees, makes any war-
+ranty, express or implied, or assumes any liability or responsibility
+for accuracy, completeness or usefulness of any information, apparatus,
+product or process disclosed, or represents that its use will not in-
+fringe privately-owned rights.  Mention of any product, its manufactur-
+er, or suppliers shall not, nor is it intended to, imply approval, dis-
+approval, or fitness for any particular use.  The U.S. and the Univer-
+sity at all times retain the right to use and disseminate the furnished
+items for any purpose whatsoever.                       Notice 91 02 01
+
+  Work supported by the U.S. Department of Energy under contract
+  DE-AC02-76SF00515; and the National Institutes of Health, National
+  Center for Research Resources, grant P41RR001209. 
+
+
+                      Permission Notice
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTA-
+BILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO
+EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
