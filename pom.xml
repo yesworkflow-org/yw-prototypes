@@ -9,7 +9,7 @@
 
     <groupId>org.yesworkflow</groupId>
     <artifactId>yesworkflow</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>YesWorkflow Prototype</name>
     <url>https://github.com/yesworkflow-org/yw-prototypes</url>
@@ -122,7 +122,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>yesworkflow-0.1-executable</finalName>
+                    <finalName>yesworkflow-0.2-SNAPSHOT</finalName>
                 </configuration>
                 <executions>
                     <execution>
