@@ -41,6 +41,15 @@ public class YesWorkflowCLI {
 
     public static final String EOL = System.getProperty("line.separator");
 
+    private PrintStream errStream;
+    private PrintStream outStream;    
+    private OptionSet options = null;
+    private Extractor injectedExtractor = null;
+    private Modeler modeler = null;
+    private Grapher grapher = null;
+    private List<Annotation> annotations;
+    private Program model = null;
+    
     public static void main(String[] args) throws Exception {
 
         Integer returnValue = null;
@@ -55,21 +64,6 @@ public class YesWorkflowCLI {
         System.exit(returnValue);
     }
 
-    private PrintStream errStream;
-    private PrintStream outStream;
-    
-    private OptionParser parser = null;
-    private OptionSet options = null;
-    
-    private String command = null;
-    
-    private Extractor injectedExtractor = null;
-    private Modeler modeler = null;
-    private Grapher grapher = null;
-    
-    private List<String> comments;
-    private List<Annotation> annotations;
-    private Program model = null;
 
     public YesWorkflowCLI() throws Exception {
         this(System.out, System.err);
@@ -78,7 +72,6 @@ public class YesWorkflowCLI {
     public YesWorkflowCLI(PrintStream outStream, PrintStream errStream) throws Exception {
         this.outStream = outStream;
         this.errStream = errStream;
-        this.parser = createOptionsParser();
     }
 
     public YesWorkflowCLI extractor(Extractor extractor) {
@@ -98,7 +91,7 @@ public class YesWorkflowCLI {
 
     public int runForArgs(String[] args) throws Exception {
 
-        initialize();
+        OptionParser parser = createOptionsParser();
 
         try {
 
@@ -111,12 +104,12 @@ public class YesWorkflowCLI {
 
             // print help and exit if requested
             if (options.has("h")) {
-                printCLIHelp();
+                printCLIHelp(parser);
                 return YW_CLI_SUCCESS;
             }
 
             // extract YesWorkflow command from arguments
-            extractCommandFromOptions();
+            String command = extractCommandFromOptions();
             if (command == null) {
                 throw new YWToolUsageException("ERROR: No command provided to YesWorkflow");
             }
@@ -136,7 +129,7 @@ public class YesWorkflowCLI {
 
         } catch (YWToolUsageException e) {
             printToolUsageErrors(e.getMessage());
-            printCLIHelp();
+            printCLIHelp(parser);
             return YW_CLI_USAGE_EXCEPTION;
         } catch (YWMarkupException e) {
             printMarkupErrors(e.getMessage());
@@ -162,7 +155,7 @@ public class YesWorkflowCLI {
         errStream.println(message);
     }
     
-    private void printCLIHelp() throws IOException {
+    private void printCLIHelp(OptionParser parser) throws IOException {
         errStream.println();
         errStream.println("---------------------- YesWorkflow usage summary -----------------------");
         errStream.println();
@@ -171,22 +164,22 @@ public class YesWorkflowCLI {
         errStream.println("------------------------------------------------------------------------");
     }
     
-    private void initialize() {
-        options = null;
-        command = null;
-    }
-
-    private void extractCommandFromOptions() {
+    private String extractCommandFromOptions() {
 
         if (options.nonOptionArguments().size() == 1) {
 
             // if there is only one non-option argument assume this is the command to YesWorkflow
-            command = (String) options.nonOptionArguments().get(0);
+           return (String) options.nonOptionArguments().get(0);
 
         } else if (options.hasArgument("c")) {
 
-            // otherwise use the argument to the -c option
-            command = (String) options.valueOf("c");
+            // otherwise use the argument to the -c option if present
+            return (String) options.valueOf("c");
+
+        } else {
+            
+            // and return null if no command given at all
+            return null;
         }
     }
 
@@ -261,7 +254,7 @@ public class YesWorkflowCLI {
     }
 
     
-    public void extract() throws Exception {
+    private void extract() throws Exception {
     	
     	Extractor extractor;
 
@@ -296,7 +289,8 @@ public class YesWorkflowCLI {
             writeTextToOptionNamedFile("l", linesBuffer.toString());
         }
         
-        comments = extractor.getComments();
+        @SuppressWarnings("unused")
+        List<String> comments = extractor.getComments();
         annotations = extractor.getAnnotations();
     }
     
@@ -330,7 +324,7 @@ public class YesWorkflowCLI {
     }
     
 
-    public void model() throws Exception {
+    private void model() throws Exception {
         
         if (modeler == null) {
             modeler = new DefaultModeler(this.outStream, this.errStream);
@@ -341,7 +335,7 @@ public class YesWorkflowCLI {
                                  .getModel();
     }
 
-    public void graph() throws Exception {
+    private void graph() throws Exception {
 
         GraphView view = extractGraphView();
 
@@ -357,7 +351,7 @@ public class YesWorkflowCLI {
         writeTextToOptionNamedFile("g", graph);
     }
 
-    public void writeTextToOptionNamedFile(String option, String text) throws IOException {
+    private void writeTextToOptionNamedFile(String option, String text) throws IOException {
         String path = (String) options.valueOf(option);
         PrintStream linesOutputStream = (path.equals("-")) ? outStream : new PrintStream(path);
         linesOutputStream.print(text);
