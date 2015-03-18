@@ -52,7 +52,7 @@ public class CommentMatcher {
      *  and returns each line of each comment as a string.  Comments that span multiple lines
      *  in the source are represented as multiple strings in the return value.
      * 
-     * @param source A String containing the entire source code to analyze.
+     * @param reader The BufferedReader used to read the source file.
      * @return  A List of Strings representing the comments in the source code.
      * @throws IOException 
      */

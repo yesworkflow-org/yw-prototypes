@@ -87,7 +87,6 @@ public class LanguageModel {
      *  YesWorkflow. Comment delimiter strings can be assigned using 
      *  the {@link #singleDelimiter(String) delimiter()} and 
      *  {@link #delimiterPair(String, String) delimiterPair()} methods.
-     *  @param language The programming language to model.
      */    
     public LanguageModel() {
         this.language = Language.GENERIC;
