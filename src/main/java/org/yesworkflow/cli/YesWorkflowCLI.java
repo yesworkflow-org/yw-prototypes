@@ -1,4 +1,4 @@
-package org.yesworkflow;
+package org.yesworkflow.cli;
 
 import static java.util.Arrays.asList;
 
@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.List;
 
+import org.yesworkflow.LanguageModel;
 import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.exceptions.YWMarkupException;

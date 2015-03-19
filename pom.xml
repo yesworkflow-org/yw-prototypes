@@ -87,7 +87,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>org.yesworkflow.YesWorkflowCLI</mainClass>
+                            <mainClass>org.yesworkflow.cli.YesWorkflowCLI</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -116,7 +116,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.yesworkflow.YesWorkflowCLI</mainClass>
+                            <mainClass>org.yesworkflow.cli.YesWorkflowCLI</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

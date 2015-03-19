@@ -1,4 +1,4 @@
-package org.yesworkflow;
+package org.yesworkflow.cli;
 
 public enum YWExitCode {
     
