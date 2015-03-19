@@ -10,7 +10,7 @@ import java.util.List;
 import org.yesworkflow.LanguageModel;
 import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.annotations.Annotation;
-import org.yesworkflow.cli.YWExitCode;
+import org.yesworkflow.cli.ExitCode;
 import org.yesworkflow.cli.YesWorkflowCLI;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
@@ -60,8 +60,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_HelpOption() throws Exception {
         String[] args = {"--help"};
-        YWExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
-        assertEquals(YWExitCode.SUCCESS, returnValue);
+        ExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
+        assertEquals(ExitCode.SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
             EXPECTED_HELP_OUTPUT,
@@ -70,8 +70,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_HelpOption_Abbreviation() throws Exception {
         String[] args = {"-h"};
-        YWExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
-        assertEquals(YWExitCode.SUCCESS, returnValue);
+        ExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
+        assertEquals(ExitCode.SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
             EXPECTED_HELP_OUTPUT,
@@ -80,8 +80,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_CommandOption_NoArgument() throws Exception {
         String[] args = {"-c"};
-        YWExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
-        assertEquals(YWExitCode.CLI_USAGE_ERROR, returnValue);
+        ExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
+        assertEquals(ExitCode.CLI_USAGE_ERROR, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
             ""                                                                          + EOL +
@@ -94,8 +94,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_SourceOption_NoArgument() throws Exception {
         String[] args = {"-s"};
-        YWExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
-        assertEquals(YWExitCode.CLI_USAGE_ERROR, returnValue);
+        ExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
+        assertEquals(ExitCode.CLI_USAGE_ERROR, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
             ""                                                                          + EOL +
@@ -129,9 +129,9 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
         assertFalse(extractor.extracted);
 
-        YWExitCode returnValue = cli.runForArgs(args);
+        ExitCode returnValue = cli.runForArgs(args);
 
-        assertEquals(YWExitCode.SUCCESS, returnValue);
+        assertEquals(ExitCode.SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals("", stderrBuffer.toString());
 
@@ -234,9 +234,9 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
         assertFalse(extractor.extracted);
 
-        YWExitCode returnValue = cli.runForArgs(args);
+        ExitCode returnValue = cli.runForArgs(args);
 
-        assertEquals(YWExitCode.SUCCESS, returnValue);
+        assertEquals(ExitCode.SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals("", stderrBuffer.toString());
 
