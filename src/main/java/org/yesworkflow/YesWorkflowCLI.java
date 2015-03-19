@@ -1,9 +1,5 @@
 package org.yesworkflow;
 
-/* This file is an adaptation of KuratorAkka.java in the org.kurator.akka
- * package as of 18Dec2014.
- */
-
 import static java.util.Arrays.asList;
 
 import java.io.BufferedReader;
@@ -32,15 +28,19 @@ import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
+
+/** 
+ * Class that provides the default command-line interface for YesWorkflow.
+ * 
+ * <p> The CLI takes one argument (or option) representing the operation to 
+ * be carried out (currently <i>extract</i>, <i>model</i>, or <i>graph</i>).  
+ * Each operation implies and automatically runs the operations that logically 
+ * precede it (i.e. the <i>graph</i> command implies the <i>extract</i> and 
+ * <i>model</i> operations).</p>
+ */
+
 public class YesWorkflowCLI {
-
-    public static int YW_CLI_SUCCESS            =  0;
-    public static int YW_UNCAUGHT_EXCEPTION     = -1;
-    public static int YW_CLI_USAGE_EXCEPTION    = -2;
-    public static int YW_MARKUP_EXCEPTION       = -3;
-
-    public static final String EOL = System.getProperty("line.separator");
-
+    
     private PrintStream errStream;
     private PrintStream outStream;    
     private OptionSet options = null;
@@ -50,18 +50,25 @@ public class YesWorkflowCLI {
     private List<Annotation> annotations;
     private Program model = null;
     
-    public static void main(String[] args) throws Exception {
+    /** Method invoked first when the YesWorkflow CLI is run from the 
+     * command line. Creates an instance of {@link YesWorkflowCLI},
+     * passes the command line arguments to {@link runForArgs}, and
+     * returns an exit code to the system.
+     * 
+     * @param args Arguments provided to the CLI on the command line.
+     */
+    public static void main(String[] args) {
 
-        Integer returnValue = null;
+        YWExitCode exitCode = null;
 
         try {
-            returnValue = new YesWorkflowCLI().runForArgs(args);
+            exitCode = new YesWorkflowCLI().runForArgs(args);
         } catch (Exception e) {
             e.printStackTrace();
-            returnValue = YW_UNCAUGHT_EXCEPTION;
+            exitCode = YWExitCode.UNCAUGHT_ERROR;
         }
 
-        System.exit(returnValue);
+        System.exit(exitCode.value());
     }
 
 
@@ -89,7 +96,7 @@ public class YesWorkflowCLI {
         return this;
     }
 
-    public int runForArgs(String[] args) throws Exception {
+    public YWExitCode runForArgs(String[] args) throws Exception {
 
         OptionParser parser = createOptionsParser();
 
@@ -105,7 +112,7 @@ public class YesWorkflowCLI {
             // print help and exit if requested
             if (options.has("h")) {
                 printCLIHelp(parser);
-                return YW_CLI_SUCCESS;
+                return YWExitCode.SUCCESS;
             }
 
             // extract YesWorkflow command from arguments
@@ -117,26 +124,26 @@ public class YesWorkflowCLI {
             // run extractor and exit if extract command given
             if (command.equals("extract")) {
                 extract();
-                return YW_CLI_SUCCESS;
+                return YWExitCode.SUCCESS;
             }
 
             if (command.equals("graph")) {
                 extract();
                 model();
                 graph();
-                return YW_CLI_SUCCESS;
+                return YWExitCode.SUCCESS;
             }
 
         } catch (YWToolUsageException e) {
             printToolUsageErrors(e.getMessage());
             printCLIHelp(parser);
-            return YW_CLI_USAGE_EXCEPTION;
+            return YWExitCode.CLI_USAGE_ERROR;
         } catch (YWMarkupException e) {
             printMarkupErrors(e.getMessage());
-            return YW_MARKUP_EXCEPTION;
+            return YWExitCode.MARKUP_ERROR;
         } 
 
-        return YW_CLI_SUCCESS;
+        return YWExitCode.SUCCESS;
     }
     
     private void printMarkupErrors(String message) {
@@ -283,7 +290,7 @@ public class YesWorkflowCLI {
             StringBuffer linesBuffer = new StringBuffer();
             for (String line : extractor.getLines()) {
                 linesBuffer.append(line);
-                linesBuffer.append(EOL);
+                linesBuffer.append(System.getProperty("line.separator"));
             }
 
             writeTextToOptionNamedFile("l", linesBuffer.toString());
