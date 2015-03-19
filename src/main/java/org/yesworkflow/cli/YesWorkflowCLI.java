@@ -29,17 +29,32 @@ import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
-
 /** 
- * Class that provides the default command-line interface for YesWorkflow.
- * 
- * <p> The CLI takes one argument (or option) representing the operation to 
- * be carried out (currently <i>extract</i>, <i>model</i>, or <i>graph</i>).  
+ * Class that provides the default command-line interface (CLI) for YesWorkflow.
+ * The CLI takes one argument (or option) representing the operation to 
+ * be carried out (currently <i>extract</i>, <i>model</i>, or <i>graph</i>),
+ * along with additional options that specify desired outputs and formats.  
  * Each operation implies and automatically runs the operations that logically 
- * precede it (i.e. the <i>graph</i> command implies the <i>extract</i> and 
- * <i>model</i> operations).</p>
+ * precede it, i.e. the <i>graph</i> command implies the <i>extract</i> and 
+ * <i>model</i> operations.</p>
+ *
+ * <p>The static {@link #main(String[]) main()} method instantiates this class
+ * and passes the command line arguments it receives from the OS to 
+ * the {@link #runForArgs(String[]) runForArgs()} method.
+ * It then uses the {@link ExitCode} returned by 
+ * {@link #runForArgs(String[]) runForArgs()} as the process exit code. 
+ * 
+ * <p>The CLI can be invoked programmatically by instantiating this class and
+ * calling {@link #runForArgs(String[]) runForArgs()}. This function takes an argument 
+ * of array of String representing command line arguments and options.
+ * The {@link org.yesworkflow.extract.Extractor}, {@link org.yesworkflow.model.Modeler}, 
+ * and {@link org.yesworkflow.graph.Grapher} used by the instance may be injected 
+ * using the {@link #extractor(Extractor) extractor()}, {@link #modeler(Modeler) modeler()},
+ * and {@link #grapher(Grapher) grapher()} methods before calling 
+ * {@link #runForArgs(String[]) runForArgs()}.  A 
+ * {@link #YesWorkflowCLI(PrintStream, PrintStream) non-default constructor} allows 
+ * the output streams used by YesWorkflow to be assigned.</p>
  */
-
 public class YesWorkflowCLI {
     
     private PrintStream errStream;
@@ -53,20 +68,22 @@ public class YesWorkflowCLI {
     
     /** Method invoked first when the YesWorkflow CLI is run from the 
      * command line. Creates an instance of {@link YesWorkflowCLI},
-     * passes the command line arguments to {@link runForArgs}, and
-     * returns an exit code to the system.
+     * passes the command line arguments to {@link #runForArgs(String[]) runForArgs()}, 
+     * and uses the integer value associated with the {@link ExitCode} 
+     * returned by {@link #runForArgs(String[]) runForArgs()} as the process
+     * exit code.
      * 
      * @param args Arguments provided to the CLI on the command line.
      */
     public static void main(String[] args) {
 
-        YWExitCode exitCode = null;
+        ExitCode exitCode;
 
         try {
             exitCode = new YesWorkflowCLI().runForArgs(args);
         } catch (Exception e) {
             e.printStackTrace();
-            exitCode = YWExitCode.UNCAUGHT_ERROR;
+            exitCode = ExitCode.UNCAUGHT_ERROR;
         }
 
         System.exit(exitCode.value());
@@ -97,7 +114,7 @@ public class YesWorkflowCLI {
         return this;
     }
 
-    public YWExitCode runForArgs(String[] args) throws Exception {
+    public ExitCode runForArgs(String[] args) throws Exception {
 
         OptionParser parser = createOptionsParser();
 
@@ -113,7 +130,7 @@ public class YesWorkflowCLI {
             // print help and exit if requested
             if (options.has("h")) {
                 printCLIHelp(parser);
-                return YWExitCode.SUCCESS;
+                return ExitCode.SUCCESS;
             }
 
             // extract YesWorkflow command from arguments
@@ -125,26 +142,26 @@ public class YesWorkflowCLI {
             // run extractor and exit if extract command given
             if (command.equals("extract")) {
                 extract();
-                return YWExitCode.SUCCESS;
+                return ExitCode.SUCCESS;
             }
 
             if (command.equals("graph")) {
                 extract();
                 model();
                 graph();
-                return YWExitCode.SUCCESS;
+                return ExitCode.SUCCESS;
             }
 
         } catch (YWToolUsageException e) {
             printToolUsageErrors(e.getMessage());
             printCLIHelp(parser);
-            return YWExitCode.CLI_USAGE_ERROR;
+            return ExitCode.CLI_USAGE_ERROR;
         } catch (YWMarkupException e) {
             printMarkupErrors(e.getMessage());
-            return YWExitCode.MARKUP_ERROR;
+            return ExitCode.MARKUP_ERROR;
         } 
 
-        return YWExitCode.SUCCESS;
+        return ExitCode.SUCCESS;
     }
     
     private void printMarkupErrors(String message) {
