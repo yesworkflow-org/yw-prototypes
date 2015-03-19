@@ -1,6 +1,6 @@
 package org.yesworkflow.cli;
 
-public enum YWExitCode {
+public enum ExitCode {
     
     SUCCESS          (0),
     UNCAUGHT_ERROR  (-1),
@@ -8,6 +8,6 @@ public enum YWExitCode {
     MARKUP_ERROR    (-3);
     
     private int value;
-    YWExitCode(int value) { this.value = value; }
+    ExitCode(int value) { this.value = value; }
     public int value() { return value;}
 }
