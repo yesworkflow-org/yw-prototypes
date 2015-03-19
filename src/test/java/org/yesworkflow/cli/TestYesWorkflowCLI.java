@@ -1,4 +1,4 @@
-package org.yesworkflow;
+package org.yesworkflow.cli;
 
 /* This file is an adaptation of TestKuratorAkka.java in the org.kurator.akka
  * package as of 18Dec2014.
@@ -7,6 +7,7 @@ package org.yesworkflow;
 import java.io.Reader;
 import java.util.List;
 
+import org.yesworkflow.LanguageModel;
 import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.cli.YWExitCode;
