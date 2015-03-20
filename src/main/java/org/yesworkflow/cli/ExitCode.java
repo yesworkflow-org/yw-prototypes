@@ -8,6 +8,6 @@ public enum ExitCode {
     MARKUP_ERROR    (-3);
     
     private int value;
-    ExitCode(int value) { this.value = value; }
+    private ExitCode(int value) { this.value = value; }
     public int value() { return value;}
 }
