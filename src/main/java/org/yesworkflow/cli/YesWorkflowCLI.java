@@ -47,8 +47,9 @@ import joptsimple.OptionSet;
  * <p>The CLI can be invoked programmatically by instantiating this class and
  * calling {@link #runForArgs(String[]) runForArgs()}. This function takes an argument 
  * of array of String representing command line arguments and options.
- * The {@link org.yesworkflow.extract.Extractor}, {@link org.yesworkflow.model.Modeler}, 
- * and {@link org.yesworkflow.graph.Grapher} used by the instance may be injected 
+ * The {@link org.yesworkflow.extract.Extractor Extractor}, 
+ * {@link org.yesworkflow.model.Modeler Modeler}, 
+ * and {@link org.yesworkflow.graph.Grapher Grapher} used by the instance may be injected 
  * using the {@link #extractor(Extractor) extractor()}, {@link #modeler(Modeler) modeler()},
  * and {@link #grapher(Grapher) grapher()} methods before calling 
  * {@link #runForArgs(String[]) runForArgs()}.  A 
@@ -89,31 +90,68 @@ public class YesWorkflowCLI {
         System.exit(exitCode.value());
     }
 
-
-    public YesWorkflowCLI() throws Exception {
+    /** 
+     * Default constructor.  Used when YesWorkflow should use the
+     * system-provided System.out and System.err streams.
+     */
+    public YesWorkflowCLI() {
         this(System.out, System.err);
     }
 
-    public YesWorkflowCLI(PrintStream outStream, PrintStream errStream) throws Exception {
+    /** 
+     * Constructor that injects custom output streams. Used when 
+     * YesWorkflow should use the streams provided as parameters instead 
+     * of System.out and System.err.
+     * @param outStream The PrintStream to use instead of System.out.
+     * @param errStream The PrintStream to use instead of System.err.
+     */
+    public YesWorkflowCLI(PrintStream outStream, PrintStream errStream) {
         this.outStream = outStream;
         this.errStream = errStream;
     }
 
+    /** Method used to inject the 
+     * {@link org.yesworkflow.extract.Extractor Extractor} to be used.
+     * @param extractor A configured {@link org.yesworkflow.extract.Extractor Extractor} to use.
+     * @return This instance.
+     */
     public YesWorkflowCLI extractor(Extractor extractor) {
         this.injectedExtractor = extractor;
         return this;
     }
 
+    /** Method used to inject the 
+     * {@link org.yesworkflow.model.Modeler Modeler} to be used.
+     * @param modeler A configured {@link org.yesworkflow.model.Modeler Modeler} to use.
+     * @return This instance.
+     */
     public YesWorkflowCLI modeler(Modeler modeler) {
         this.modeler = modeler;
         return this;
     }
 
+    /** Method used to inject the 
+     * {@link org.yesworkflow.graph.Grapher Grapher} to be used.
+     * @param grapher A configured {@link org.yesworkflow.graph.Grapher Grapher} to use.
+     * @return This instance.
+     */
     public YesWorkflowCLI grapher(Grapher grapher) {
         this.grapher = grapher;
         return this;
     }
 
+    /** 
+     * Method that parses the provided command line arguments and executes the 
+     * sequence of YesWorkflow operations requested by them.
+     * @param args The command line arguments to parse.
+     * @return An {@link ExitCode} indicating either that YesWorkflow 
+     * ran successfully, or that an error of the indicated type occurred.
+     * @throws Exception if an exception other than 
+     * {@link org.yesworkflow.exceptions.YWToolUsageException YWToolUsageException}
+     * or {@link org.yesworkflow.exceptions.YWMarkupException YWMarkupException}
+     * is thrown while parsing the command line options or executing the YesWorkflow
+     * operations. 
+     */
     public ExitCode runForArgs(String[] args) throws Exception {
 
         OptionParser parser = createOptionsParser();
@@ -139,12 +177,13 @@ public class YesWorkflowCLI {
                 throw new YWToolUsageException("ERROR: No command provided to YesWorkflow");
             }
 
-            // run extractor and exit if extract command given
+            // run just the extractor if extract command given
             if (command.equals("extract")) {
                 extract();
                 return ExitCode.SUCCESS;
             }
 
+            // run extractor, modeler, and grapher if extract command given
             if (command.equals("graph")) {
                 extract();
                 model();
