@@ -30,7 +30,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
     }
     
 
-    public void testDotGrapher_DataView_TwoProgramsOneChannel() throws Exception {
+    public void testDotGrapher_DataView_TwoProgramsOneChannel_OneInOneOut() throws Exception {
         
         String source = 
             "# @begin script"       + EOL +
@@ -75,7 +75,55 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
             "}"                                                                                         + EOL,
             dotString);
     }
+
+    
+    public void testDotGrapher_DataView_TwoProgramsOneChannel_OneParamOneOut() throws Exception {
         
+        String source = 
+            "# @begin script"       + EOL +
+            "#"                     + EOL +
+            "#   @begin program0"   + EOL +
+            "#   @out channel"      + EOL +
+            "#   @end program0"     + EOL +                
+            "#"                     + EOL +
+            "#   @begin program1"   + EOL +
+            "#   @param channel"    + EOL +
+            "#   @end program1"     + EOL +
+            "#"                     + EOL +
+            "# @end script"         + EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor
+                .commentDelimiter("#")
+                .source(reader)
+                .extract()
+                .getAnnotations();
+
+        Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                             .model()
+                                             .getModel();
+
+        grapher.workflow(workflow)
+               .view(GraphView.DATA_CENTRIC_VIEW)
+               .enableComments(false)
+               .graph();
+        
+        String dotString = grapher.toString();
+
+        assertEquals(
+            "digraph Workflow {"                                                                        + EOL +
+            "rankdir=LR"                                                                                + EOL +
+            "graph[fontname=Courier]"                                                                   + EOL +
+            "edge[fontname=Courier]"                                                                    + EOL +
+            "node[fontname=Helvetica]"                                                                  + EOL +
+            "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]"   + EOL +
+            "node1 [label=\"channel\"]"                                                                 + EOL +
+            "}"                                                                                         + EOL,
+            dotString);
+    }
+
+    
     public void testDotGrapher_DataView_TwoChannels_OneProgram_OneInOneOut() throws Exception {
       
       String source = 
@@ -124,8 +172,56 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
           dotString);
   }
   
+    public void testDotGrapher_DataView_TwoChannels_OneProgram_OneInOneParam() throws Exception {
+        
+        String source = 
+            "# @begin script"       + EOL +
+            "# @param x"            + EOL +
+            "# @out d"              + EOL +
+            "#"                     + EOL +
+            "#   @begin program"    + EOL +
+            "#   @param x"          + EOL +
+            "#   @out d"            + EOL +
+            "#   @end program"      + EOL +                
+            "#"                     + EOL +
+            "# @end script"         + EOL;
 
-  public void testDotGrapher_DataView_TwoChannels_OneProgram_TwoInOneOut() throws Exception {
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor
+                .commentDelimiter("#")
+                .source(reader)
+                .extract()
+                .getAnnotations();
+
+        Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                             .model()
+                                             .getModel();
+
+        grapher.workflow(workflow)
+               .view(GraphView.DATA_CENTRIC_VIEW)
+               .enableComments(false)
+               .graph();
+
+        
+        String dotString = grapher.toString();
+
+        assertEquals(
+            "digraph Workflow {"                                                                      + EOL +
+            "rankdir=LR"                                                                              + EOL +
+            "graph[fontname=Courier]"                                                                 + EOL +
+            "edge[fontname=Courier]"                                                                  + EOL +
+            "node[fontname=Helvetica]"                                                                + EOL +
+            "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
+            "node1 [label=\"d\"]"                                                                     + EOL +
+            "node2 [label=\"x\"]"                                                                     + EOL +
+            "node2 -> node1 [label=\"program\"]"                                                      + EOL +
+            "}"                                                                                       + EOL,
+            dotString);
+    }
+    
+    
+    public void testDotGrapher_DataView_TwoChannels_OneProgram_TwoInOneOut() throws Exception {
       
       String source = 
           "# @begin script"       + EOL +
@@ -174,10 +270,60 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
           "node3 -> node1 [label=\"program\"]"                                                      + EOL +
           "}"                                                                                       + EOL,
           dotString);
-  }
-  
+    }
 
-     public void testDotGrapher_DataView_SamplePyScript() throws Exception {
+    public void testDotGrapher_DataView_TwoChannels_OneProgram_OneInOneParamOneOut() throws Exception {
+        
+        String source = 
+            "# @begin script"       + EOL +
+            "# @in x"               + EOL +
+            "# @param y"            + EOL +
+            "# @out d"              + EOL +
+            "#"                     + EOL +
+            "#   @begin program"    + EOL +
+            "#   @in x"             + EOL +
+            "#   @param y"          + EOL +
+            "#   @out d"            + EOL +
+            "#   @end program"      + EOL +                
+            "#"                     + EOL +
+            "# @end script"         + EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor
+                .commentDelimiter("#")
+                .source(reader)
+                .extract()
+                .getAnnotations();
+
+        Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                             .model()
+                                             .getModel();
+
+        grapher.workflow(workflow)
+               .view(GraphView.DATA_CENTRIC_VIEW)
+               .enableComments(false)
+               .graph();
+        
+        String dotString = grapher.toString();
+
+        assertEquals(
+            "digraph Workflow {"                                                                      + EOL +
+            "rankdir=LR"                                                                              + EOL +
+            "graph[fontname=Courier]"                                                                 + EOL +
+            "edge[fontname=Courier]"                                                                  + EOL +
+            "node[fontname=Helvetica]"                                                                + EOL +
+            "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
+            "node1 [label=\"d\"]"                                                                     + EOL +
+            "node2 [label=\"x\"]"                                                                     + EOL +
+            "node3 [label=\"y\"]"                                                                     + EOL +
+            "node2 -> node1 [label=\"program\"]"                                                      + EOL +
+            "node3 -> node1 [label=\"program\"]"                                                      + EOL +
+            "}"                                                                                       + EOL,
+            dotString);
+    }
+
+    public void testDotGrapher_DataView_SamplePyScript() throws Exception {
          
          List<Annotation> annotations = extractor
                  .commentDelimiter("#")

@@ -102,7 +102,45 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
             readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoChannels_OneProgram_OneInOneOut.gv"),
             grapher.toString()
         );
+    }
+    
+    public void testDotGrapher_ProcessView_TwoChannels_OneProgram_OneParamOneOut() throws Exception {
+        
+        String source = 
+            "# @begin script"       + EOL +
+            "# @param x"            + EOL +
+            "# @out d"              + EOL +
+            "#"                     + EOL +
+            "#   @begin program"    + EOL +
+            "#   @in x"             + EOL +
+            "#   @out d"            + EOL +
+            "#   @end program"      + EOL +                
+            "#"                     + EOL +
+            "# @end script"         + EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor
+                .commentDelimiter("#")
+                .source(reader)
+                .extract()
+                .getAnnotations();
+
+        Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                             .model()
+                                             .getModel();
+
+        grapher.workflow(workflow)
+               .view(GraphView.PROCESS_CENTRIC_VIEW)
+               .enableComments(false)
+               .graph();
+        
+        assertEquals(
+            readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoChannels_OneProgram_OneInOneOut.gv"),
+            grapher.toString()
+        );
     }  
+
   
     public void testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut() throws Exception {
       
@@ -115,6 +153,45 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
             "#   @begin program"    + EOL +
             "#   @in x"             + EOL +
             "#   @in y"             + EOL +
+            "#   @out d"            + EOL +
+            "#   @end program"      + EOL +                
+            "#"                     + EOL +
+            "# @end script"         + EOL;
+
+          BufferedReader reader = new BufferedReader(new StringReader(source));
+          
+          List<Annotation> annotations = extractor
+                  .commentDelimiter("#")
+                  .source(reader)
+                  .extract()
+                  .getAnnotations();
+
+          Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                               .model()
+                                               .getModel();
+        
+          grapher.workflow(workflow)
+                 .view(GraphView.PROCESS_CENTRIC_VIEW)
+                 .enableComments(false)
+                 .graph();
+          
+          assertEquals(
+              readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut.gv"),
+              grapher.toString()
+          );
+    }
+
+    public void testDotGrapher_ProcessView_TwoChannels_OneProgram_OneParamOneInOneOut() throws Exception {
+        
+        String source = 
+            "# @begin script"       + EOL +
+            "# @in x"               + EOL +
+            "# @param y"            + EOL +
+            "# @out d"              + EOL +
+            "#"                     + EOL +
+            "#   @begin program"    + EOL +
+            "#   @in x"             + EOL +
+            "#   @param y"          + EOL +
             "#   @out d"            + EOL +
             "#   @end program"      + EOL +                
             "#"                     + EOL +
@@ -322,7 +399,7 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
                  readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_NestedSubworkflow.gv"),
                  grapher.toString()
              );
-     }      
+     }
  
      public void testDotGrapher_ProcessView_SamplePyScript() throws Exception {
          

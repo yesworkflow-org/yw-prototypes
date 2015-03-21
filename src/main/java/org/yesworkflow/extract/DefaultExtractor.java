@@ -17,6 +17,7 @@ import org.yesworkflow.annotations.Begin;
 import org.yesworkflow.annotations.End;
 import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
+import org.yesworkflow.annotations.Param;
 import org.yesworkflow.annotations.Qualification;
 
 public class DefaultExtractor implements Extractor {
@@ -127,11 +128,12 @@ public class DefaultExtractor implements Extractor {
             
             Annotation annotation = null;
             switch(tag) {
-                case BEGIN: annotation = new Begin(s);    break;
-                case END:   annotation = new End(s);      break;
-                case IN:    annotation = new In(s);       break;
-                case OUT:   annotation = new Out(s);      break;
-                case AS:    annotation = new As(s);		  break;
+                case BEGIN: annotation = new Begin(s);  break;
+                case END:   annotation = new End(s);    break;
+                case IN:    annotation = new In(s);     break;
+                case OUT:   annotation = new Out(s);    break;
+                case AS:    annotation = new As(s);		break;
+                case PARAM: annotation = new Param(s);  break;
             }
 
             if (annotation instanceof Qualification) {

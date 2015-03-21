@@ -169,7 +169,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                 "   # @in x  "      + EOL +
                 "     more code"    + EOL +
                 "     more code"    + EOL +
-                " #    @in y"      + EOL +
+                " #    @param y"    + EOL +
                 "     more code"    + EOL +
                 "     more code"    + EOL +
                 "    #  @end step"  + EOL;
@@ -184,22 +184,22 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertEquals(4, comments.size());
         assertEquals("@begin step", comments.get(0));
         assertEquals("@in x", comments.get(1));
-        assertEquals("@in y", comments.get(2));
-        assertEquals("@end step", comments.get(3));        
+        assertEquals("@param y", comments.get(2));
+        assertEquals("@end step", comments.get(3));
     }
     
     public void testExtract_GetComments_MultipleComments_WithAliasesOnSameLines() throws Exception {
         
         String source = 
-                "## @begin step   " 	+ EOL +
-                "  some code "      	+ EOL +
-                "   # @in x @as horiz " + EOL +
-                "     more code"    	+ EOL +
-                "     more code"    	+ EOL +
-                " #    @in y @as vert"	+ EOL +
-                "     more code"    	+ EOL +
-                "     more code"    	+ EOL +
-                "    #  @end step"  	+ EOL;
+                "## @begin step   " 	   + EOL +
+                "  some code "      	   + EOL +
+                "   # @in x @as horiz "    + EOL +
+                "     more code"    	   + EOL +
+                "     more code"    	   + EOL +
+                " #    @param y @as vert"  + EOL +
+                "     more code"    	   + EOL +
+                "     more code"    	   + EOL +
+                "    #  @end step"  	   + EOL;
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
@@ -212,7 +212,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertEquals("@begin step", comments.get(0));
         assertEquals("@in x", comments.get(1));
         assertEquals("@as horiz", comments.get(2));
-        assertEquals("@in y", comments.get(3));
+        assertEquals("@param y", comments.get(3));
         assertEquals("@as vert", comments.get(4));
         assertEquals("@end step", comments.get(5));        
     }
@@ -227,7 +227,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                 "    # @as horiz "		+ EOL +
                 "     more code"    	+ EOL +
                 "     more code"    	+ EOL +
-                " #    @in y  "			+ EOL +
+                " #    @param y  "		+ EOL +
                 "  #@as vert"			+ EOL +
                 "     more code"    	+ EOL +
                 "     more code"    	+ EOL +
@@ -244,14 +244,14 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertEquals("@begin step", comments.get(0));
         assertEquals("@in x", comments.get(1));
         assertEquals("@as horiz", comments.get(2));
-        assertEquals("@in y", comments.get(3));
+        assertEquals("@param y", comments.get(3));
         assertEquals("@as vert", comments.get(4));
         assertEquals("@end step", comments.get(5));        
     }
     
     public void testExtract_GetComments_MultipleCommentsOnOneLine() throws Exception {
         
-        String source = "# @begin step @in x @as horiz @in y @as vert @end step";
+        String source = "# @begin step @in x @as horiz @param y @as vert @end step";
 
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
@@ -264,7 +264,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertEquals("@begin step", comments.get(0));
         assertEquals("@in x", comments.get(1));
         assertEquals("@as horiz", comments.get(2));
-        assertEquals("@in y", comments.get(3));
+        assertEquals("@param y", comments.get(3));
         assertEquals("@as vert", comments.get(4));
         assertEquals("@end step", comments.get(5));    
     }

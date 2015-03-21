@@ -139,8 +139,6 @@ public class Workflow extends Program {
 				return new Program(beginAnnotation, endAnnotation, workflowInPorts, workflowOutPorts);
 			}
 			
-//			pruneUnusedWorkflowInPorts();
-//			pruneUnusedWorkflowOutPorts();
 			pruneUnusedNestedProgramInPorts();
 			pruneUnusedNestedProgramOutPorts();
 			buildNestedChannels();
@@ -166,7 +164,7 @@ public class Workflow extends Program {
                             "WARNING: No nested @out port and no workflow @in port for nested @in '"    +
                             binding                                                                     +
                             "' on '"                                                                    +
-                            beginAnnotation.name                                                    +
+                            beginAnnotation.name                                                        +
                             "'"
                     );
                     unmatchedInBindings.add(binding);
@@ -187,7 +185,7 @@ public class Workflow extends Program {
                             "WARNING: No nested @in port and no workflow @out port for nested @out '"   +
                             binding                                                                     +
                             "' in workflow '"                                                           +
-                            beginAnnotation.name                                                    +
+                            beginAnnotation.name                                                        +
                             "'"
                     );
                     unmatchedOutBindings.add(binding);
