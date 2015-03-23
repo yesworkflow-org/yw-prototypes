@@ -16,12 +16,14 @@ public class TestDefaultModer_ExtractTopPorts extends YesWorkflowTestCase {
     public void testDefaultModeler_ExtractTopPorts() throws Exception {
         
         BufferedReader reader = new BufferedReader(new StringReader(
-                "% @begin script"       + EOL +
-                "% @in x @as horiz"     + EOL +
-                "% @in y @as vert"      + EOL +
-                "% @out d @as dist"     + EOL +
-                "  some Matlab code"    + EOL +
-                "% @end script"         + EOL
+                "    %  @begin script           " + EOL +
+                "    %  @in x @as horiz         " + EOL +
+                "    %  @in y @as vert          " + EOL +
+                "    %  @out d @as dist         " + EOL +
+                "                               " + EOL +
+                "    some Matlab code           " + EOL +
+                "                               " + EOL +
+                "    % @end script              " + EOL
         ));
         
         LanguageModel lm = new LanguageModel(Language.MATLAB);
