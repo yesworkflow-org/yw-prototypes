@@ -1,7 +1,7 @@
 package org.yesworkflow.annotations;
 
+import org.yesworkflow.YesWorkflowTestCase;
 import org.yesworkflow.annotations.Param;
-import org.yesworkflow.util.YesWorkflowTestCase;
 
 public class TestParam extends YesWorkflowTestCase {
 

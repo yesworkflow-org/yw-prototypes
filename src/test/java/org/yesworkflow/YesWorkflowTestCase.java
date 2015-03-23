@@ -1,8 +1,4 @@
-package org.yesworkflow.util;
-
-/* This file is an adaptation of KuratorAkkaTestCase.java in the org.kurator.akka
- * package as of 18Dec2014.
- */
+package org.yesworkflow;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -15,7 +11,7 @@ import java.io.ByteArrayOutputStream;
 
 import junit.framework.TestCase;
 
-public class YesWorkflowTestCase extends TestCase {
+public abstract class YesWorkflowTestCase extends TestCase {
     
     public static final String EOL = System.getProperty("line.separator");
 

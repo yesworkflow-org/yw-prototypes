@@ -13,7 +13,7 @@ import org.yesworkflow.annotations.End;
 import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
 import org.yesworkflow.extract.DefaultExtractor;
-import org.yesworkflow.util.YesWorkflowTestCase;
+import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestDefaultExtractor extends YesWorkflowTestCase {
 

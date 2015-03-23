@@ -16,7 +16,7 @@ import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.model.Channel;
 import org.yesworkflow.model.Program;
 import org.yesworkflow.model.Workflow;
-import org.yesworkflow.util.YesWorkflowTestCase;
+import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestDefaultModeler extends YesWorkflowTestCase {
 

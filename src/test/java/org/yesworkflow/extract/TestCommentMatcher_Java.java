@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.yesworkflow.LanguageModel;
 import org.yesworkflow.LanguageModel.Language;
-import org.yesworkflow.util.YesWorkflowTestCase;
+import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestCommentMatcher_Java extends YesWorkflowTestCase {
 

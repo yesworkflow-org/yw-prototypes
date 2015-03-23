@@ -4,6 +4,7 @@ package org.yesworkflow.cli;
  * package as of 18Dec2014.
  */
 
+
 import java.io.Reader;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import org.yesworkflow.cli.ExitCode;
 import org.yesworkflow.cli.YesWorkflowCLI;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
-import org.yesworkflow.util.YesWorkflowTestCase;
+import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     

@@ -14,7 +14,7 @@ import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.model.DefaultModeler;
 import org.yesworkflow.model.Modeler;
 import org.yesworkflow.model.Workflow;
-import org.yesworkflow.util.YesWorkflowTestCase;
+import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
 

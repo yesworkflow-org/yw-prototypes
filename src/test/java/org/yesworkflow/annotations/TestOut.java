@@ -1,7 +1,7 @@
 package org.yesworkflow.annotations;
 
+import org.yesworkflow.YesWorkflowTestCase;
 import org.yesworkflow.annotations.Out;
-import org.yesworkflow.util.YesWorkflowTestCase;
 
 public class TestOut extends YesWorkflowTestCase {
 
