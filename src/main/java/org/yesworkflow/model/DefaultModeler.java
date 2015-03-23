@@ -18,6 +18,10 @@ public class DefaultModeler implements Modeler {
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
     
+    public DefaultModeler() {
+        this(System.out, System.err);
+    }
+
     public DefaultModeler(PrintStream stdoutStream, PrintStream stderrStream) {
         this.stdoutStream = stdoutStream;
         this.stderrStream = stderrStream;

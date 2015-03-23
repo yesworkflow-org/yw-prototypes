@@ -34,6 +34,12 @@ public class DefaultExtractor implements Extractor {
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
 
+    public DefaultExtractor() {
+        this(System.out, System.err);
+        this.keywordMapping = new YWKeywords();
+        this.keywordMatcher = new KeywordMatcher(keywordMapping.getKeywords());
+    }
+
     public DefaultExtractor(PrintStream stdoutStream, PrintStream stderrStream) {
         this.stdoutStream = stdoutStream;
         this.stderrStream = stderrStream;
