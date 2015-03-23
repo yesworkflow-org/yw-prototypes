@@ -1,8 +1,10 @@
 package org.yesworkflow.graph;
 
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.yesworkflow.model.Channel;
 import org.yesworkflow.model.Port;
@@ -13,8 +15,10 @@ public class DotGrapher implements Grapher  {
 
     private Workflow workflow = null;
     private GraphView graphView = null;
+    private ParamVisibility paramVisibility;
     private String graphText = null;
-    private boolean commentsEnabled = true;
+    private CommentView commentView;
+    private Map<String,Object> config = new HashMap<String,Object>();
 
     @SuppressWarnings("unused")
     private GraphFormat graphFormat = null;
@@ -31,27 +35,17 @@ public class DotGrapher implements Grapher  {
     }
     
     @Override
-    public DotGrapher enableComments(boolean state) {
-        commentsEnabled = state;
-        return this;
-    }
-    
-    @Override
     public DotGrapher workflow(Workflow workflow) {
         this.workflow = workflow;
         return this;
     }
-
-    @Override
-    public DotGrapher view(GraphView graphView) {
-        this.graphView = graphView;
-        return this;
-    }
     
     @Override
-    public Grapher format(GraphFormat format) {
-       this.graphFormat = format;
-       return this;
+    public DotGrapher config(Map<String,Object> config) throws Exception {
+        if (config != null) {        
+           this.config = config;
+        }
+        return this;
     }
     
 	public String toString() {
@@ -59,7 +53,9 @@ public class DotGrapher implements Grapher  {
     }
     
     @Override
-    public DotGrapher graph() {
+    public DotGrapher graph() throws Exception {
+
+        applyConfig();
         
         switch(graphView) {
         
@@ -78,13 +74,25 @@ public class DotGrapher implements Grapher  {
         
         return this;
     }
+
+    private void applyConfig() throws Exception {
+        
+        String gv = (String)config.get("view");
+        graphView = (gv != null) ? GraphView.get(gv) : GraphView.PROCESS_CENTRIC_VIEW; 
+        
+        String cv = (String)config.get("comments");
+        commentView = (cv != null) ? CommentView.get(cv) : CommentView.HIDE;
+        
+        String pv = (String)config.get("params");
+        paramVisibility = (pv != null) ? ParamVisibility.get(pv) : ParamVisibility.LOW;
+    }
     
     private String renderProcessCentricView() {
 
 	    DotBuilder dot = new DotBuilder();
 		
 		dot.beginGraph()
-		   .enableComments(commentsEnabled);
+		   .enableComments(commentView == CommentView.SHOW);
 		
         dot.comment("Use serif font for process labels and sans serif font for data labels");
 		dot.graphFont("Courier")
@@ -205,7 +213,7 @@ public class DotGrapher implements Grapher  {
         DotBuilder dot = new DotBuilder();
         
         dot.beginGraph()
-           .enableComments(commentsEnabled);
+           .enableComments(commentView == CommentView.SHOW);
 
         dot.comment("Use serif font for process labels and sans serif font for data labels");
         dot.graphFont("Courier")
@@ -249,7 +257,7 @@ public class DotGrapher implements Grapher  {
         DotBuilder dot = new DotBuilder();
         
         dot.beginGraph()
-           .enableComments(commentsEnabled);
+           .enableComments(commentView == CommentView.SHOW);
 
         dot.comment("Use serif font for process labels");
         dot.graphFont("Courier")
