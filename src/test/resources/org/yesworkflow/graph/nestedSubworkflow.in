@@ -1,0 +1,31 @@
+# @begin workflow
+# @in workflowInput
+# @out workflowOutput
+#
+#   @begin program0
+#   @in workflowInput
+#   @out channel0
+#   @end program0
+#
+#   @begin subWorkflow
+#   @in channel0
+#   @out channel3
+#
+#     @begin program2
+#     @in channel0
+#     @out channel2
+#     @end program2
+#
+#     @begin program3
+#     @in channel2
+#     @out channel3
+#     @end program3
+#
+#   @end subWorkflow
+#
+#   @begin program4
+#   @in channel3
+#   @out workflowOutput
+#   @end program4
+#
+# @end workflow

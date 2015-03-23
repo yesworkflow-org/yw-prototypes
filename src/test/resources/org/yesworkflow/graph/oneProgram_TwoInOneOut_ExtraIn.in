@@ -1,0 +1,11 @@
+# @begin script
+# @in x
+# @in y
+# @out d
+#
+#   @begin program
+#   @in x
+#   @out d
+#   @end program
+#
+# @end script

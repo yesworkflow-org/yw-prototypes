@@ -1,0 +1,16 @@
+# @begin script
+#
+#   @begin program0
+#   @out channel0
+#   @out channel1
+#   @end program0
+#
+#   @begin program1
+#   @in channel0
+#   @end program1
+#
+#   @begin program2
+#   @in channel1
+#   @end program2
+#
+# @end script

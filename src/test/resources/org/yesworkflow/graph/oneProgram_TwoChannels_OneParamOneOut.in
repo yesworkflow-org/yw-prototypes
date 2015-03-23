@@ -1,0 +1,10 @@
+# @begin script
+# @param x
+# @out d
+#
+#   @begin program
+#   @param x
+#   @out d
+#   @end program
+#
+# @end script

@@ -2,8 +2,11 @@ package org.yesworkflow.graph;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.StringReader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.extract.DefaultExtractor;
@@ -18,409 +21,110 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
 	Extractor extractor = null;
     Modeler modeler = null;
     Grapher grapher = null;
+    Map<String,Object> config = null;
     
-    static final String TEST_RESOURCE_DIR = "org/yesworkflow/graph/";
+    static final String TEST_RESOURCE_DIR = "src/test/resources/org/yesworkflow/graph/";
     
     @Override
     public void setUp() throws Exception {
+        
         super.setUp();
+        
         extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
         modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
+
+        config = new HashMap<String,Object>();
+        config.put("view", "process");
+        config.put("comments", "hide");
+        grapher.config(config);
     }
-
-    public void testDotGrapher_ProcessView_TwoProgramsOneChannel() throws Exception {
-        
-        String source = 
-            "# @begin script"       + EOL +
-            "#"                     + EOL +
-            "#   @begin program0"   + EOL +
-            "#   @out channel"      + EOL +
-            "#   @end program0"     + EOL +                
-            "#"                     + EOL +
-            "#   @begin program1"   + EOL +
-            "#   @in channel"       + EOL +
-            "#   @end program1"     + EOL +
-            "#"                     + EOL +
-            "# @end script"         + EOL;
-
-        BufferedReader reader = new BufferedReader(new StringReader(source));
-        
-        List<Annotation> annotations = extractor
-                .commentDelimiter("#")
-        		.source(reader)
-                .extract()
-                .getAnnotations();
-
-        Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                             .model()
-                                             .getModel();
-
-        grapher.workflow(workflow)
-               .view(GraphView.PROCESS_CENTRIC_VIEW)
-               .enableComments(false)
-               .graph();
-        
-        assertEquals(
-            readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoProgramsOneChannel.gv"),
-            grapher.toString()
-        );
+    
+    public void test_TwoProgramsOneChannel_In() throws Exception {
+        String src = "twoProgramsOneChannel_In";
+        assertEquals(expectedGraph(src), actualGraph(src));
+        assertEquals("", stderrBuffer.toString());
     }    
     
-    public void testDotGrapher_ProcessView_TwoChannels_OneProgram_OneInOneOut() throws Exception {
-        
-        String source = 
-            "# @begin script"       + EOL +
-            "# @in x"               + EOL +
-            "# @out d"              + EOL +
-            "#"                     + EOL +
-            "#   @begin program"    + EOL +
-            "#   @in x"             + EOL +
-            "#   @out d"            + EOL +
-            "#   @end program"      + EOL +                
-            "#"                     + EOL +
-            "# @end script"         + EOL;
-
-        BufferedReader reader = new BufferedReader(new StringReader(source));
-        
-        List<Annotation> annotations = extractor
-                .commentDelimiter("#")
-        		.source(reader)
-                .extract()
-                .getAnnotations();
-
-        Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                             .model()
-                                             .getModel();
-
-        grapher.workflow(workflow)
-               .view(GraphView.PROCESS_CENTRIC_VIEW)
-               .enableComments(false)
-               .graph();
-        
-        assertEquals(
-            readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoChannels_OneProgram_OneInOneOut.gv"),
-            grapher.toString()
-        );
+    public void test_OneProgram_TwoChannels_OneInOneOut() throws Exception {  
+        String src = "oneProgram_TwoChannels_OneInOneOut";
+        assertEquals(expectedGraph(src), actualGraph(src));
+        assertEquals("", stderrBuffer.toString());
     }
     
-    public void testDotGrapher_ProcessView_TwoChannels_OneProgram_OneParamOneOut() throws Exception {
-        
-        String source = 
-            "# @begin script"       + EOL +
-            "# @param x"            + EOL +
-            "# @out d"              + EOL +
-            "#"                     + EOL +
-            "#   @begin program"    + EOL +
-            "#   @in x"             + EOL +
-            "#   @out d"            + EOL +
-            "#   @end program"      + EOL +                
-            "#"                     + EOL +
-            "# @end script"         + EOL;
-
-        BufferedReader reader = new BufferedReader(new StringReader(source));
-        
-        List<Annotation> annotations = extractor
-                .commentDelimiter("#")
-                .source(reader)
-                .extract()
-                .getAnnotations();
-
-        Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                             .model()
-                                             .getModel();
-
-        grapher.workflow(workflow)
-               .view(GraphView.PROCESS_CENTRIC_VIEW)
-               .enableComments(false)
-               .graph();
-        
-        assertEquals(
-            readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoChannels_OneProgram_OneInOneOut.gv"),
-            grapher.toString()
-        );
-    }  
-
+    public void test_OneProgram_TwoChannels_OneParamOneOut() throws Exception {
+        String src = "oneProgram_TwoChannels_OneParamOneOut";
+        assertEquals(expectedGraph(src), actualGraph(src));
+        assertEquals("", stderrBuffer.toString());
+    }
   
-    public void testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut() throws Exception {
-      
-        String source = 
-            "# @begin script"       + EOL +
-            "# @in x"               + EOL +
-            "# @in y"               + EOL +
-            "# @out d"              + EOL +
-            "#"                     + EOL +
-            "#   @begin program"    + EOL +
-            "#   @in x"             + EOL +
-            "#   @in y"             + EOL +
-            "#   @out d"            + EOL +
-            "#   @end program"      + EOL +                
-            "#"                     + EOL +
-            "# @end script"         + EOL;
-
-          BufferedReader reader = new BufferedReader(new StringReader(source));
-          
-          List<Annotation> annotations = extractor
-                  .commentDelimiter("#")
-                  .source(reader)
-                  .extract()
-                  .getAnnotations();
-
-          Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                               .model()
-                                               .getModel();
-        
-          grapher.workflow(workflow)
-                 .view(GraphView.PROCESS_CENTRIC_VIEW)
-                 .enableComments(false)
-                 .graph();
-          
-          assertEquals(
-              readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut.gv"),
-              grapher.toString()
-          );
+    public void test_OneProgram_ThreeChannels_TwoInOneOut() throws Exception {
+        String src = "oneProgram_ThreeChannels_TwoInOneOut";
+        assertEquals(expectedGraph(src), actualGraph(src));
+        assertEquals("", stderrBuffer.toString());
     }
 
-    public void testDotGrapher_ProcessView_TwoChannels_OneProgram_OneParamOneInOneOut() throws Exception {
-        
-        String source = 
-            "# @begin script"       + EOL +
-            "# @in x"               + EOL +
-            "# @param y"            + EOL +
-            "# @out d"              + EOL +
-            "#"                     + EOL +
-            "#   @begin program"    + EOL +
-            "#   @in x"             + EOL +
-            "#   @param y"          + EOL +
-            "#   @out d"            + EOL +
-            "#   @end program"      + EOL +                
-            "#"                     + EOL +
-            "# @end script"         + EOL;
-
-          BufferedReader reader = new BufferedReader(new StringReader(source));
-          
-          List<Annotation> annotations = extractor
-                  .commentDelimiter("#")
-                  .source(reader)
-                  .extract()
-                  .getAnnotations();
-
-          Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                               .model()
-                                               .getModel();
-        
-          grapher.workflow(workflow)
-                 .view(GraphView.PROCESS_CENTRIC_VIEW)
-                 .enableComments(false)
-                 .graph();
-          
-          assertEquals(
-              readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut.gv"),
-              grapher.toString()
-          );
+    public void test_OneProgram_TwoChannels_OneParamOneInOneOut() throws Exception {
+        String src = "oneProgram_TwoChannels_OneParamOneInOneOut";
+        assertEquals(expectedGraph(src), actualGraph(src));
+        assertEquals("", stderrBuffer.toString());
     }
     
-  public void testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut_ExtraIn() throws Exception {
-      
-      String source = 
-          "# @begin script"       + EOL +
-          "# @in x"               + EOL +
-          "# @in y"               + EOL +
-          "# @out d"              + EOL +
-          "#"                     + EOL +
-          "#   @begin program"    + EOL +
-          "#   @in x"             + EOL +
-          "#   @out d"            + EOL +
-          "#   @end program"      + EOL +                
-          "#"                     + EOL +
-          "# @end script"         + EOL;
-
-      BufferedReader reader = new BufferedReader(new StringReader(source));
-      
-      List<Annotation> annotations = extractor
-    		  .commentDelimiter("#")
-      		  .source(reader)
-      		  .extract()
-              .getAnnotations();
-
-      Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                           .model()
-                                           .getModel();
-
-      grapher.workflow(workflow)
-             .view(GraphView.PROCESS_CENTRIC_VIEW)
-             .enableComments(false)
-             .graph();
-      
-      assertEquals(
-          readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut_ExtraIn.gv"),
-          grapher.toString()
-      );
-
-      assertEquals("WARNING: No nested @in port and no workflow @out port for nested @out 'y' in workflow 'script'" + EOL, super.stderrBuffer.toString());
-  }
+    public void test_OneProgram_TwoInOneOut_ExtraIn() throws Exception {      
+        String src = "oneProgram_TwoInOneOut_ExtraIn";
+        assertEquals(expectedGraph(src), actualGraph(src));
+        assertEquals(
+            "WARNING: No nested @in port and no workflow @out port for nested @out 'y' in workflow 'script'" + EOL, 
+            stderrBuffer.toString());
+    }
   
-  public void testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut_ExtraOut() throws Exception {
-      
-      String source = 
-          "# @begin script"       + EOL +
-          "# @in x"               + EOL +
-          "# @out c"              + EOL +
-          "# @out d"              + EOL +
-          "#"                     + EOL +
-          "#   @begin program"    + EOL +
-          "#   @in x"             + EOL +
-          "#   @out d"            + EOL +
-          "#   @end program"      + EOL +                
-          "#"                     + EOL +
-          "# @end script"         + EOL;
-
-      BufferedReader reader = new BufferedReader(new StringReader(source));
-      
-      List<Annotation> annotations = extractor
-    		  .commentDelimiter("#")
-      		  .source(reader)
-      		  .extract()
-              .getAnnotations();
-
-      Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                           .model()
-                                           .getModel();
-      
-      grapher.workflow(workflow)
-             .view(GraphView.PROCESS_CENTRIC_VIEW)
-             .enableComments(false)
-             .graph();
-      
-      assertEquals(
-          readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_TwoChannels_OneProgram_TwoInOneOut_ExtraOut.gv"),
-          grapher.toString()
-      );
-      
-      assertEquals("WARNING: No nested @out port and no workflow @in port for nested @in 'c' on 'script'" + EOL, super.stderrBuffer.toString());
-  }
+    public void test_OneProgram__TwoChannels_OneInOneOut_ExtraOut() throws Exception {
+        String src = "oneProgram__TwoChannels_OneInOneOut_ExtraOut";
+        assertEquals(expectedGraph(src), actualGraph(src));      
+        assertEquals(
+            "WARNING: No nested @out port and no workflow @in port for nested @in 'c' on 'script'" + EOL,
+            stderrBuffer.toString());
+    }
   
- public void testDotGrapher_ProcessView_ThreeProgramsTwoChannel() throws Exception {
-     
-     String source = 
-             "# @begin script"       + EOL +
-             "#"                     + EOL +
-             "#   @begin program0"   + EOL +
-             "#   @out channel0"     + EOL +
-             "#   @out channel1"     + EOL +
-             "#   @end program0"     + EOL +                
-             "#"                     + EOL +
-             "#   @begin program1"   + EOL +
-             "#   @in channel0"      + EOL +
-             "#   @end program1"     + EOL +
-             "#"                     + EOL +
-             "#   @begin program2"   + EOL +
-             "#   @in channel1"      + EOL +
-             "#   @end program2"     + EOL +
-             "#"                     + EOL +
-             "# @end script"         + EOL;
-
-     BufferedReader reader = new BufferedReader(new StringReader(source));
-     
-     List<Annotation> annotations = extractor
-             .commentDelimiter("#")
-     		 .source(reader)
-             .extract()
-             .getAnnotations();
-
-     Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                          .model()
-                                          .getModel();
-
-     grapher.workflow(workflow)
-            .view(GraphView.PROCESS_CENTRIC_VIEW)
-            .enableComments(false)
-            .graph();
-     
-     assertEquals(
-         readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_ThreeProgramsTwoChannel.gv"),
-         grapher.toString()
-     );
- }
- 
- public void testDotGrapher_ProcessView_NestedSubworkflow() throws Exception {
-     
-     String source = 
-             "# @begin workflow"            + EOL +
-             "# @in workflowInput"          + EOL +
-             "# @out workflowOutput"        + EOL +
-             "#"                            + EOL +
-             "#   @begin program0"          + EOL +
-             "#   @in workflowInput"        + EOL +
-             "#   @out channel0"            + EOL +
-             "#   @end program0"            + EOL +                
-             "#"                            + EOL +
-             "#   @begin subWorkflow"       + EOL +
-             "#   @in channel0"             + EOL +
-             "#   @out channel3"            + EOL +
-             "#"                            + EOL +
-             "#     @begin program2"        + EOL +
-             "#     @in channel0"           + EOL +
-             "#     @out channel2"          + EOL +
-             "#     @end program2"          + EOL +
-             "#"                            + EOL +
-             "#     @begin program3"        + EOL +
-             "#     @in channel2"           + EOL +
-             "#     @out channel3"          + EOL +
-             "#     @end program3"          + EOL +                
-             "#"                            + EOL +
-             "#   @end subWorkflow"         + EOL +
-             "#"                            + EOL +
-             "#   @begin program4"          + EOL +
-             "#   @in channel3"             + EOL +
-             "#   @out workflowOutput"      + EOL +
-             "#   @end program4"            + EOL +
-             "#"                            + EOL +
-             "# @end workflow"              + EOL;
-
-         BufferedReader reader = new BufferedReader(new StringReader(source));
-     
-         List<Annotation> annotations = extractor
-                 .commentDelimiter("#")
-         		 .source(reader)
-                 .extract()
-                 .getAnnotations();
-
-         Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                              .model()
-                                              .getModel();
-
-             grapher.workflow(workflow)
-                    .view(GraphView.PROCESS_CENTRIC_VIEW)
-                    .enableComments(false)
-                    .graph();
-     
-             assertEquals(
-                 readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_NestedSubworkflow.gv"),
-                 grapher.toString()
-             );
+     public void test_ThreePrograms_TwoChannels() throws Exception {
+         String src = "threePrograms_TwoChannels";
+         assertEquals(expectedGraph(src), actualGraph(src));  
      }
  
-     public void testDotGrapher_ProcessView_SamplePyScript() throws Exception {
-         
-        List<Annotation> annotations = extractor
-                .commentDelimiter("#")
-                .source(new BufferedReader(new FileReader("src/main/resources/example.py")))
-                .extract()
-                .getAnnotations();
+     public void test_NestedSubworkflow() throws Exception {
+         String src = "nestedSubworkflow";
+         assertEquals(expectedGraph(src), actualGraph(src));  
+     }
+ 
+     public void test_ExamplePyScript() throws Exception {
+         String src = "examplePyScript";
+         assertEquals(expectedGraph(src), actualGraph(src));  
+     }
 
-        Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                             .model()
-                                             .getModel();
-    
-         grapher.workflow(workflow)
-                .view(GraphView.PROCESS_CENTRIC_VIEW)
-                .enableComments(false)
-                .graph();
-         
-         assertEquals(
-             readTextFileOnClasspath(TEST_RESOURCE_DIR + "testDotGrapher_ProcessView_SamplePyScript.gv"),
-             grapher.toString()
-         );
+     private String actualGraph(String name) throws Exception {
+          
+          String script = super.readTextFile(TEST_RESOURCE_DIR + name + ".in");
+
+          BufferedReader reader = new BufferedReader(new StringReader(script));
+          
+          List<Annotation> annotations = extractor
+                  .commentDelimiter("#")
+                  .source(reader)
+                  .extract()
+                  .getAnnotations();
+
+          Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                               .model()
+                                               .getModel();
+
+          grapher.workflow(workflow)
+                 .graph();
+          
+          return grapher.toString();
+     }
+      
+     
+     private String expectedGraph(String name) throws IOException {
+         return readTextFile(TEST_RESOURCE_DIR + name + ".gv");
      }
 }
