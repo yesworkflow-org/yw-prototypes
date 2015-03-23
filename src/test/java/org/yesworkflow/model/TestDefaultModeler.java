@@ -381,8 +381,11 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(2, program.inPorts.length);
         assertEquals(1, program.outPorts.length);
         assertEquals(Param.class, program.inPorts[0].flowAnnotation.getClass());
+        assertEquals("x", program.inPorts[0].flowAnnotation.binding());
         assertEquals(Param.class, program.inPorts[1].flowAnnotation.getClass());
+        assertEquals("y", program.inPorts[1].flowAnnotation.binding());
         assertEquals(Out.class, program.outPorts[0].flowAnnotation.getClass());
+        assertEquals("z", program.outPorts[0].flowAnnotation.binding());
     }
 
     public void testExtract_GetModel_OneProgramInAndOut_TwoCommentLines() throws Exception {
