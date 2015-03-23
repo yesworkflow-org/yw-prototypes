@@ -13,6 +13,7 @@ import java.util.List;
 import org.yesworkflow.LanguageModel;
 import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.annotations.Annotation;
+import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.extract.DefaultExtractor;
@@ -66,6 +67,7 @@ public class YesWorkflowCLI {
     private Grapher grapher = null;
     private List<Annotation> annotations;
     private Program model = null;
+    private YWConfiguration config = null;
     
     /** Method invoked first when the YesWorkflow CLI is run from the 
      * command line. Creates an instance of {@link YesWorkflowCLI},
@@ -171,6 +173,9 @@ public class YesWorkflowCLI {
                 return ExitCode.SUCCESS;
             }
 
+            // load the configuration file
+            config = new YWConfiguration(".yw");
+                    
             // extract YesWorkflow command from arguments
             String command = extractCommandFromOptions();
             if (command == null) {
@@ -401,14 +406,12 @@ public class YesWorkflowCLI {
 
     private void graph() throws Exception {
 
-        GraphView view = extractGraphView();
-
         if (grapher == null) {
             grapher = new DotGrapher(this.outStream, this.errStream);
          }
         
-        String graph = grapher.workflow((Workflow)model)
-                              .view(view)
+        String graph = grapher.config(config.getMap("graph"))
+                              .workflow((Workflow)model)
                               .graph()
                               .toString();
 
