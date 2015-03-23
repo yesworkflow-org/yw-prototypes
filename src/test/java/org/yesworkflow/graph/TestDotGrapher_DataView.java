@@ -3,7 +3,9 @@ package org.yesworkflow.graph;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.StringReader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.extract.DefaultExtractor;
@@ -18,6 +20,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
 	Extractor extractor = null;
     Modeler modeler = null;
     Grapher grapher = null;
+    Map<String,Object> config = null;
     
     static final String TEST_RESOURCE_DIR = "org/yesworkflow/graph/";
     
@@ -27,6 +30,11 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
         modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
+        config = new HashMap<String,Object>();
+        
+        config.put("view", "data");
+        config.put("comments", "hide");
+        grapher.config(config);
     }
     
 
@@ -58,8 +66,6 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                                              .getModel();
 
         grapher.workflow(workflow)
-               .view(GraphView.DATA_CENTRIC_VIEW)
-               .enableComments(false)
                .graph();
         
         String dotString = grapher.toString();
@@ -105,8 +111,6 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                                              .getModel();
 
         grapher.workflow(workflow)
-               .view(GraphView.DATA_CENTRIC_VIEW)
-               .enableComments(false)
                .graph();
         
         String dotString = grapher.toString();
@@ -151,8 +155,6 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                                            .getModel();
 
       grapher.workflow(workflow)
-             .view(GraphView.DATA_CENTRIC_VIEW)
-             .enableComments(false)
              .graph();
 
       
@@ -199,8 +201,6 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                                              .getModel();
 
         grapher.workflow(workflow)
-               .view(GraphView.DATA_CENTRIC_VIEW)
-               .enableComments(false)
                .graph();
 
         
@@ -250,8 +250,6 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                                            .getModel();
 
       grapher.workflow(workflow)
-             .view(GraphView.DATA_CENTRIC_VIEW)
-             .enableComments(false)
              .graph();
       
       String dotString = grapher.toString();
@@ -301,8 +299,6 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                                              .getModel();
 
         grapher.workflow(workflow)
-               .view(GraphView.DATA_CENTRIC_VIEW)
-               .enableComments(false)
                .graph();
         
         String dotString = grapher.toString();
@@ -336,8 +332,6 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                                               .getModel();
     
          grapher.workflow(workflow)
-                .view(GraphView.DATA_CENTRIC_VIEW)
-                .enableComments(false)
                 .graph();
          
          String dotString = grapher.toString();
