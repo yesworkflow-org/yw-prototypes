@@ -51,7 +51,6 @@
            <groupId>org.yaml</groupId>
            <artifactId>snakeyaml</artifactId>
            <version>1.13</version>
-           <optional>true</optional>
        </dependency>
 
     </dependencies>
