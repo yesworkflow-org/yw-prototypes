@@ -160,9 +160,13 @@ public class LanguageModel {
      */
     public enum MatchExtent {
         NO_MATCH,
-        PREFIX_MATCH,
+        PREFIX_MATCH_SINGLE,
+        PREFIX_MATCH_PAIRED,
+        PREFIX_MATCH_BOTH,
         FULL_MATCH_SINGLE,
-        FULL_MATCH_PAIRED
+        FULL_MATCH_PAIRED,
+        FULL_MATCH_SINGLE_PREFIX_MATCH_PAIRED,
+        FULL_MATCH_PAIRED_PREFIX_MATCH_SINGLE
     }
     
     /**
@@ -181,22 +185,55 @@ public class LanguageModel {
         int length = s.length();
         
         // look for a match with single-line comment start delimiter
+        MatchExtent singleMatchExtent = MatchExtent.NO_MATCH;
         for (String singleCommentDelimiter : singleCommentDelimiters) {
             if (singleCommentDelimiter.startsWith(s)) {
-                return (length == singleCommentDelimiter.length()) ? 
-                        MatchExtent.FULL_MATCH_SINGLE : MatchExtent.PREFIX_MATCH;
+                singleMatchExtent = (length == singleCommentDelimiter.length()) ? 
+                        MatchExtent.FULL_MATCH_SINGLE : MatchExtent.PREFIX_MATCH_SINGLE;
+                break;
             }
         }
         
         // look for a match with partial-line/multi-line comment start delimiters
+        MatchExtent pairedMatchExtent = MatchExtent.NO_MATCH;
         for (String startCommentDelimiter : pairedCommentDelimiters.keySet()) {
             if (startCommentDelimiter.startsWith(s)) {
-                return (length == startCommentDelimiter.length()) ? 
-                        MatchExtent.FULL_MATCH_PAIRED : MatchExtent.PREFIX_MATCH;
+                pairedMatchExtent = (length == startCommentDelimiter.length()) ? 
+                        MatchExtent.FULL_MATCH_PAIRED : MatchExtent.PREFIX_MATCH_PAIRED;
+                break;
             }
         }
 
-        return MatchExtent.NO_MATCH;
+        switch(singleMatchExtent) {
+                            
+            case PREFIX_MATCH_SINGLE:
+                
+                switch(pairedMatchExtent) {
+                
+                    case PREFIX_MATCH_PAIRED:
+                        return MatchExtent.PREFIX_MATCH_BOTH;
+                        
+                    case FULL_MATCH_PAIRED:
+                        return MatchExtent.FULL_MATCH_PAIRED_PREFIX_MATCH_SINGLE;
+                        
+                    default:
+                        return MatchExtent.PREFIX_MATCH_SINGLE;
+                }
+                
+            case FULL_MATCH_SINGLE:
+                
+                switch(pairedMatchExtent) {
+                
+                    case PREFIX_MATCH_PAIRED:
+                        return MatchExtent.FULL_MATCH_SINGLE_PREFIX_MATCH_PAIRED;
+                        
+                    default:
+                        return MatchExtent.FULL_MATCH_SINGLE;
+                }
+                
+            default:
+                return pairedMatchExtent;
+        }
     }
     
     /**
@@ -216,7 +253,7 @@ public class LanguageModel {
             if (s.length() == endCommentDelimiter.length()) { 
                 return MatchExtent.FULL_MATCH_PAIRED;
             } else {
-                return MatchExtent.PREFIX_MATCH;
+                return MatchExtent.PREFIX_MATCH_PAIRED;
             }        
         } else {
             return MatchExtent.NO_MATCH;
@@ -257,6 +294,7 @@ public class LanguageModel {
             case MATLAB:
                 singleDelimiter("%");
                 delimiterPair("%{", "%}");
+                delimiterPair("...", "...");
                 break;
     
             case PYTHON:
