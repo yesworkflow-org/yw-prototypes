@@ -32,8 +32,8 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
         config = new HashMap<String,Object>();
         
-        config.put("view", "data");
-        config.put("comments", "hide");
+        config.put("view", GraphView.DATA_CENTRIC_VIEW);
+        config.put("comments", CommentVisibility.HIDE);
         grapher.config(config);
     }
     

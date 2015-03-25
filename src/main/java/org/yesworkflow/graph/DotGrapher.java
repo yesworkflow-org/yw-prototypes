@@ -13,11 +13,15 @@ import org.yesworkflow.model.Workflow;
 
 public class DotGrapher implements Grapher  {
 
+    public static GraphView DEFAULT_GRAPH_VIEW = GraphView.PROCESS_CENTRIC_VIEW;
+    public static CommentVisibility DEFAULT_COMMENT_VISIBILITY = CommentVisibility.HIDE;
+    public static ParamVisibility DEFAULT_PARAM_VISIBILITY = ParamVisibility.LOW;
+    
     private Workflow workflow = null;
     private GraphView graphView = null;
     private ParamVisibility paramVisibility;
     private String graphText = null;
-    private CommentView commentView;
+    private CommentVisibility commentView;
     private Map<String,Object> config = new HashMap<String,Object>();
 
     @SuppressWarnings("unused")
@@ -77,14 +81,17 @@ public class DotGrapher implements Grapher  {
 
     private void applyConfig() throws Exception {
         
-        String gv = (String)config.get("view");
-        graphView = (gv != null) ? GraphView.get(gv) : GraphView.PROCESS_CENTRIC_VIEW; 
+        Object gv = config.get("view");
+        graphView = (gv != null) ? GraphView.toGraphView(gv) : 
+                                   DEFAULT_GRAPH_VIEW; 
         
-        String cv = (String)config.get("comments");
-        commentView = (cv != null) ? CommentView.get(cv) : CommentView.HIDE;
+        Object cv = config.get("comments");
+        commentView = (cv != null) ? CommentVisibility.toCommentVisibility(cv) : 
+                                     DEFAULT_COMMENT_VISIBILITY;
         
-        String pv = (String)config.get("params");
-        paramVisibility = (pv != null) ? ParamVisibility.get(pv) : ParamVisibility.LOW;
+        Object pv = config.get("params");
+        paramVisibility = (pv != null) ? ParamVisibility.toParamVisibility(pv) : 
+                                         DEFAULT_PARAM_VISIBILITY;
     }
     
     private String renderProcessCentricView() {
@@ -92,7 +99,7 @@ public class DotGrapher implements Grapher  {
 	    DotBuilder dot = new DotBuilder();
 		
 		dot.beginGraph()
-		   .enableComments(commentView == CommentView.SHOW);
+		   .enableComments(commentView == CommentVisibility.SHOW);
 		
         dot.comment("Use serif font for process labels and sans serif font for data labels");
 		dot.graphFont("Courier")
@@ -213,7 +220,7 @@ public class DotGrapher implements Grapher  {
         DotBuilder dot = new DotBuilder();
         
         dot.beginGraph()
-           .enableComments(commentView == CommentView.SHOW);
+           .enableComments(commentView == CommentVisibility.SHOW);
 
         dot.comment("Use serif font for process labels and sans serif font for data labels");
         dot.graphFont("Courier")
@@ -257,7 +264,7 @@ public class DotGrapher implements Grapher  {
         DotBuilder dot = new DotBuilder();
         
         dot.beginGraph()
-           .enableComments(commentView == CommentView.SHOW);
+           .enableComments(commentView == CommentVisibility.SHOW);
 
         dot.comment("Use serif font for process labels");
         dot.graphFont("Courier")

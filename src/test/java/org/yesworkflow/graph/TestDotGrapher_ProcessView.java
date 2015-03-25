@@ -35,8 +35,8 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
 
         config = new HashMap<String,Object>();
-        config.put("view", "process");
-        config.put("comments", "hide");
+        config.put("view", GraphView.PROCESS_CENTRIC_VIEW);
+        config.put("comments", CommentVisibility.HIDE);
         grapher.config(config);
     }
     

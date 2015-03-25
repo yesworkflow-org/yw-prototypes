@@ -32,8 +32,8 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
         config = new HashMap<String,Object>();
         
-        config.put("view", "combined");
-        config.put("comments", "hide");
+        config.put("view", GraphView.COMBINED_VIEW);
+        config.put("comments", CommentVisibility.HIDE);
         grapher.config(config);
     }
     
