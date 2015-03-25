@@ -86,7 +86,7 @@ public class TestCommentMatcher_Matlab extends YesWorkflowTestCase {
                      comments);
     }
 
-    public void test_Matlab_TwoMultilineComments_JavaStyle()  throws IOException {
+    public void test_Matlab_TwoMultilineComments_Paired()  throws IOException {
         String source = "  %{ a comment    "        + EOL +
                         "      on two lines %}"     + EOL +
                         "  some code"               + EOL +
