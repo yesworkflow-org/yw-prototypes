@@ -160,9 +160,7 @@ public class LanguageModel {
      */
     public enum MatchExtent {
         NO_MATCH,
-        PREFIX_MATCH_SINGLE,
-        PREFIX_MATCH_PAIRED,
-        PREFIX_MATCH_BOTH,
+        PREFIX_MATCH,
         FULL_MATCH_SINGLE,
         FULL_MATCH_PAIRED,
         FULL_MATCH_SINGLE_PREFIX_MATCH_PAIRED,
@@ -189,7 +187,7 @@ public class LanguageModel {
         for (String singleCommentDelimiter : singleCommentDelimiters) {
             if (singleCommentDelimiter.startsWith(s)) {
                 singleMatchExtent = (length == singleCommentDelimiter.length()) ? 
-                        MatchExtent.FULL_MATCH_SINGLE : MatchExtent.PREFIX_MATCH_SINGLE;
+                        MatchExtent.FULL_MATCH_SINGLE : MatchExtent.PREFIX_MATCH;
                 break;
             }
         }
@@ -199,32 +197,29 @@ public class LanguageModel {
         for (String startCommentDelimiter : pairedCommentDelimiters.keySet()) {
             if (startCommentDelimiter.startsWith(s)) {
                 pairedMatchExtent = (length == startCommentDelimiter.length()) ? 
-                        MatchExtent.FULL_MATCH_PAIRED : MatchExtent.PREFIX_MATCH_PAIRED;
+                        MatchExtent.FULL_MATCH_PAIRED : MatchExtent.PREFIX_MATCH;
                 break;
             }
         }
 
         switch(singleMatchExtent) {
                             
-            case PREFIX_MATCH_SINGLE:
+            case PREFIX_MATCH:
                 
                 switch(pairedMatchExtent) {
                 
-                    case PREFIX_MATCH_PAIRED:
-                        return MatchExtent.PREFIX_MATCH_BOTH;
-                        
                     case FULL_MATCH_PAIRED:
                         return MatchExtent.FULL_MATCH_PAIRED_PREFIX_MATCH_SINGLE;
                         
                     default:
-                        return MatchExtent.PREFIX_MATCH_SINGLE;
+                        return MatchExtent.PREFIX_MATCH;
                 }
                 
             case FULL_MATCH_SINGLE:
                 
                 switch(pairedMatchExtent) {
                 
-                    case PREFIX_MATCH_PAIRED:
+                    case PREFIX_MATCH:
                         return MatchExtent.FULL_MATCH_SINGLE_PREFIX_MATCH_PAIRED;
                         
                     default:
@@ -253,7 +248,7 @@ public class LanguageModel {
             if (s.length() == endCommentDelimiter.length()) { 
                 return MatchExtent.FULL_MATCH_PAIRED;
             } else {
-                return MatchExtent.PREFIX_MATCH_PAIRED;
+                return MatchExtent.PREFIX_MATCH;
             }        
         } else {
             return MatchExtent.NO_MATCH;

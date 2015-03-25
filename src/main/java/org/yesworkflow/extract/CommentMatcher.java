@@ -145,9 +145,7 @@ public class CommentMatcher {
                     buffer.setLength(0);
                     break;
 
-                case PREFIX_MATCH_SINGLE:
-                case PREFIX_MATCH_PAIRED:
-                case PREFIX_MATCH_BOTH:
+                case PREFIX_MATCH:
                     nextState = State.IN_PREFIX;
                     break;
 
@@ -198,9 +196,7 @@ public class CommentMatcher {
                     buffer.append((char)c);
                     break;
                     
-                case PREFIX_MATCH_SINGLE:
-                case PREFIX_MATCH_PAIRED:
-                case PREFIX_MATCH_BOTH:
+                case PREFIX_MATCH:
                     nextState = State.IN_PREFIX;
                     break;
 
