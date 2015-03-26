@@ -37,7 +37,17 @@ public class DefaultModeler implements Modeler {
     public Modeler model() throws Exception {	
     	buildWorkflow();
     	return this;
-    }    
+    }
+    
+    @Override
+    public Program getModel() {
+        return this.model;
+    }
+
+    @Override
+    public Workflow getWorkflow() {
+        return (Workflow)this.model;
+    }
     
     private void buildWorkflow() throws Exception {
 
@@ -99,10 +109,5 @@ public class DefaultModeler implements Modeler {
             workflowBuilder = parentWorkflowBuilders.isEmpty() ? null : parentWorkflowBuilders.pop();
         } while (workflowBuilder != null);        
         throw new YWMarkupException(messageBuilder.toString());
-    }
-    
-    public Program getModel() {
-        return this.model;
-    }
-
+    }   
 }

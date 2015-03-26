@@ -60,10 +60,10 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
                 .extract()
                 .getAnnotations();
 
-        Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                             .model()
-                                             .getModel();
-
+        Workflow workflow = modeler.annotations(annotations)
+                .model()
+                .getWorkflow();
+        
         grapher.workflow(workflow)
                .graph();
         
@@ -109,9 +109,9 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
                 .extract()
                 .getAnnotations();
 
-        Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                             .model()
-                                             .getModel();
+        Workflow workflow = modeler.annotations(annotations)
+                .model()
+                .getWorkflow();
 
         grapher.workflow(workflow)
                .graph();
@@ -158,9 +158,9 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
               .extract()
               .getAnnotations();
 
-      Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                           .model()
-                                           .getModel();
+      Workflow workflow = modeler.annotations(annotations)
+                                 .model()
+                                 .getWorkflow();
 
       grapher.workflow(workflow)
              .graph();
@@ -209,9 +209,9 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
               .extract()
               .getAnnotations();
 
-      Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                           .model()
-                                           .getModel();
+      Workflow workflow = modeler.annotations(annotations)
+              .model()
+              .getWorkflow();
 
       grapher.workflow(workflow)
              .graph();
@@ -261,9 +261,9 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
               .extract()
               .getAnnotations();
 
-      Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                           .model()
-                                           .getModel();
+      Workflow workflow = modeler.annotations(annotations)
+                                 .model()
+                                 .getWorkflow();
 
       grapher.workflow(workflow)
              .graph();
@@ -298,9 +298,9 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
                  .extract()
                  .getAnnotations();
 
-         Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                              .model()
-                                              .getModel();
+         Workflow workflow = modeler.annotations(annotations)
+                                    .model()
+                                    .getWorkflow();
     
          grapher.workflow(workflow)
                 .graph();

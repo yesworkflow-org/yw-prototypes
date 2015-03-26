@@ -9,4 +9,5 @@ public interface Modeler extends YWStage {
     Modeler annotations(List<Annotation> annotations);
     Modeler model() throws Exception;
     Program getModel();
+    Workflow getWorkflow();
 }

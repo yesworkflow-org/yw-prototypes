@@ -113,9 +113,9 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
                   .extract()
                   .getAnnotations();
 
-          Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                               .model()
-                                               .getModel();
+          Workflow workflow = modeler.annotations(annotations)
+                                     .model()
+                                     .getWorkflow();
 
           grapher.workflow(workflow)
                  .graph();
