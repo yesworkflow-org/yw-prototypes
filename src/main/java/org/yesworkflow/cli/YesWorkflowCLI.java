@@ -8,7 +8,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.yesworkflow.LanguageModel;
 import org.yesworkflow.LanguageModel.Language;
@@ -19,7 +21,6 @@ import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.graph.DotGrapher;
-import org.yesworkflow.graph.GraphView;
 import org.yesworkflow.graph.Grapher;
 import org.yesworkflow.model.DefaultModeler;
 import org.yesworkflow.model.Modeler;
@@ -112,6 +113,11 @@ public class YesWorkflowCLI {
         this.errStream = errStream;
     }
 
+    public YesWorkflowCLI config(YWConfiguration config) {
+        this.config = config;
+        return this;
+    }
+    
     /** Method used to inject the 
      * {@link org.yesworkflow.extract.Extractor Extractor} to be used.
      * @param extractor A configured {@link org.yesworkflow.extract.Extractor Extractor} to use.
@@ -167,15 +173,20 @@ public class YesWorkflowCLI {
                 throw new YWToolUsageException("ERROR: " + exception.getMessage());
             }
 
+            // load the configuration file
+            if (config == null) {
+                config = new YWConfiguration(".yw");
+            }
+            
+            // apply command-line overrides of config file
+            applyConfigOptions(config, options.valuesOf("c"));
+                    
             // print help and exit if requested
             if (options.has("h")) {
                 printCLIHelp(parser);
                 return ExitCode.SUCCESS;
             }
 
-            // load the configuration file
-            config = new YWConfiguration(".yw");
-                    
             // extract YesWorkflow command from arguments
             String command = extractCommandFromOptions();
             if (command == null) {
@@ -233,34 +244,46 @@ public class YesWorkflowCLI {
         errStream.println("------------------------------------------------------------------------");
     }
     
-    private String extractCommandFromOptions() {
-
-        if (options.nonOptionArguments().size() == 1) {
-
-            // if there is only one non-option argument assume this is the command to YesWorkflow
-           return (String) options.nonOptionArguments().get(0);
-
-        } else if (options.hasArgument("c")) {
-
-            // otherwise use the argument to the -c option if present
-            return (String) options.valueOf("c");
-
-        } else {
-            
-            // and return null if no command given at all
-            return null;
+    
+    @SuppressWarnings("unchecked")
+    private void applyConfigOptions(YWConfiguration config, List<?> configurationOptions) throws YWToolUsageException {
+        
+        for (Object configOptionObject : configurationOptions) {
+            String configOptionString = (String) configOptionObject;
+            int indexOfFirstEquals = configOptionString.indexOf("=");
+            if (indexOfFirstEquals == -1) {
+                throw new YWToolUsageException(
+                    "Configuration options should be key-value pairs separated by equal signs.");
+            } else {
+                String configName = configOptionString.substring(0, indexOfFirstEquals);
+                String configValue = configOptionString.substring(indexOfFirstEquals + 1);
+                String[] configNameParts = configName.split("\\.");
+                Map<String, Object> configTableToUpdate = config;
+                if (configNameParts.length > 0) {
+                    for (int i = 0; i < configNameParts.length - 1; ++i) {
+                        String partName = configNameParts[i];
+                        Object tableObject =  configTableToUpdate.get(partName);
+                        if (tableObject == null) {
+                            tableObject = new HashMap<String,Object>();
+                            configTableToUpdate.put(partName, tableObject);
+                        }
+                        configTableToUpdate = (Map<String, Object>)tableObject;
+                    }
+                }
+                String terminalPartName = configNameParts[configNameParts.length - 1];
+                configTableToUpdate.put(terminalPartName, configValue);
+            }
         }
     }
+    
+    private String extractCommandFromOptions() throws YWToolUsageException {
 
-    private GraphView extractGraphView() throws YWToolUsageException {
-        
-        String viewString = (String) options.valueOf("v");
-        
-        if (viewString.equalsIgnoreCase("process"))     return GraphView.PROCESS_CENTRIC_VIEW;
-        if (viewString.equalsIgnoreCase("data"))        return GraphView.DATA_CENTRIC_VIEW;
-        if (viewString.equalsIgnoreCase("combined"))    return GraphView.COMBINED_VIEW;
-        
-        throw new YWToolUsageException("Unsupported graph view: " + viewString);
+        if (options.nonOptionArguments().size() == 0) {
+            throw new YWToolUsageException("ERROR: Command must be first non-option argument to YesWorkflow");
+        }
+
+        // if there is only one non-option argument assume this is the command to YesWorkflow
+        return (String) options.nonOptionArguments().get(0);
     }
 
     private OptionParser createOptionsParser() throws Exception {
@@ -268,11 +291,6 @@ public class YesWorkflowCLI {
         OptionParser parser = null;
 
         parser = new OptionParser() {{
-
-            acceptsAll(asList("c", "command"), "command to YesWorkflow")
-                .withRequiredArg()
-                .ofType(String.class)
-                .describedAs("command");
 
             acceptsAll(asList("x", "commchar"), "comment character")
         		.withOptionalArg()
@@ -291,17 +309,17 @@ public class YesWorkflowCLI {
                 .ofType(String.class)
                 .describedAs("dot file");
 
-            acceptsAll(asList("v", "view"), "view of model to render as a graph")
-                .withRequiredArg()
-                .ofType(String.class)
-                .defaultsTo("process")
-                .describedAs("process|data|combined");
-
             acceptsAll(asList("l", "lines"), "path to file for saving extracted comment lines")
                 .withOptionalArg()
                 .defaultsTo("-")
                 .ofType(String.class)
                 .describedAs("lines file");
+            
+            acceptsAll(asList("c", "config"), "key-valued configuration value assignment")
+                .withRequiredArg()
+                .ofType(String.class)
+                .describedAs("configuration")
+                .describedAs("key=value");
 
             acceptsAll(asList("h", "help"), "display help");
 

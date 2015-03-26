@@ -7,12 +7,14 @@ package org.yesworkflow.cli;
 
 import java.io.Reader;
 import java.util.List;
+import java.util.Map;
 
 import org.yesworkflow.LanguageModel;
 import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.cli.ExitCode;
 import org.yesworkflow.cli.YesWorkflowCLI;
+import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.YesWorkflowTestCase;
@@ -25,19 +27,18 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         ""                                                                              + EOL +
         "---------------------- YesWorkflow usage summary -----------------------"      + EOL +
         ""                                                                              + EOL +
-        "Option                              Description                           "    + EOL +
-        "------                              -----------                           "    + EOL +
-        "-c, --command <command>             command to YesWorkflow                "    + EOL +
-        "-g, --graph [dot file]              path to graphviz dot file for storing "    + EOL +
-        "                                      rendered workflow graph (default: -)"    + EOL +
-        "-h, --help                          display help                          "    + EOL +
-        "-l, --lines [lines file]            path to file for saving extracted     "    + EOL +
-        "                                      comment lines (default: -)          "    + EOL +
-        "-s, --source [script]               path to source file to analyze        "    + EOL +
-        "                                      (default: -)                        "    + EOL +
-        "-v, --view <process|data|combined>  view of model to render as a graph    "    + EOL +
-        "                                      (default: process)                  "    + EOL +
-        "-x, --commchar [comment]            comment character                     "    + EOL +
+        "Option                    Description                           "              + EOL +
+        "------                    -----------                           "              + EOL +
+        "-c, --config <key=value>  key-valued configuration value        "              + EOL +
+        "                            assignment                          "              + EOL +
+        "-g, --graph [dot file]    path to graphviz dot file for storing "              + EOL +
+        "                            rendered workflow graph (default: -)"              + EOL +
+        "-h, --help                display help                          "              + EOL +
+        "-l, --lines [lines file]  path to file for saving extracted     "              + EOL +
+        "                            comment lines (default: -)          "              + EOL +
+        "-s, --source [script]     path to source file to analyze        "              + EOL +
+        "                            (default: -)                        "              + EOL +
+        "-x, --commchar [comment]  comment character                     "              + EOL +
         ""                                                                              + EOL +
         "------------------------------------------------------------------------"      + EOL;
 
@@ -54,7 +55,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             ""                                                                          + EOL +
             "****************** YESWORKFLOW TOOL USAGE ERRORS ***********************"  + EOL +
             ""                                                                          + EOL +
-            "ERROR: No command provided to YesWorkflow"   + EOL +
+            "ERROR: Command must be first non-option argument to YesWorkflow"           + EOL +
             EXPECTED_HELP_OUTPUT,
             stderrBuffer.toString());
     }
@@ -79,8 +80,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             stderrBuffer.toString());
     }
 
-    public void testYesWorkflowCLI_CommandOption_NoArgument() throws Exception {
-        String[] args = {"-c"};
+    public void testYesWorkflowCLI_NoArgument() throws Exception {
+        String[] args = new String[]{};
         ExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
         assertEquals(ExitCode.CLI_USAGE_ERROR, returnValue);
         assertEquals("", stdoutBuffer.toString());
@@ -88,28 +89,14 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             ""                                                                          + EOL +
             "****************** YESWORKFLOW TOOL USAGE ERRORS ***********************"  + EOL +
             ""                                                                          + EOL +
-            "ERROR: Option c/command requires an argument"                              + EOL +
-            EXPECTED_HELP_OUTPUT,
-            stderrBuffer.toString());
-    }
-
-    public void testYesWorkflowCLI_SourceOption_NoArgument() throws Exception {
-        String[] args = {"-s"};
-        ExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
-        assertEquals(ExitCode.CLI_USAGE_ERROR, returnValue);
-        assertEquals("", stdoutBuffer.toString());
-        assertEquals(
-            ""                                                                          + EOL +
-            "****************** YESWORKFLOW TOOL USAGE ERRORS ***********************"  + EOL +
-            ""                                                                          + EOL +
-            "ERROR: No command provided to YesWorkflow"                                 + EOL +
+            "ERROR: Command must be first non-option argument to YesWorkflow"           + EOL +
             EXPECTED_HELP_OUTPUT,
             stderrBuffer.toString());
     }
 
     public void testYesWorkflowCLI_Extract_DefaultExtractor_MissingSourceFile() throws Exception {
 
-        String[] args = {"-c", "extract", "-s", "no_such_script.py"};
+        String[] args = {"extract", "-s", "no_such_script.py"};
         new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
@@ -121,9 +108,96 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
                 stderrBuffer.toString());
     }
 
+    public void testYesWorkflowCLI_SingleConfigureOption_TopLevel() throws Exception {
+
+        String[] args = { "-h", "-c", "conf0=val0"};
+        YWConfiguration config = new YWConfiguration();
+        assertEquals(0, config.size());
+        
+        ExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream)
+                                   .config(config)
+                                   .runForArgs(args);
+
+        assertEquals(ExitCode.SUCCESS, returnValue);
+        assertEquals(1, config.size());
+        assertEquals("val0", config.get("conf0"));
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testYesWorkflowCLI_SingleConfigureOption_TwoLevels() throws Exception {
+
+        String[] args = { "-h", "-c", "table1.conf1=val1"};
+        YWConfiguration config = new YWConfiguration();
+        assertEquals(0, config.size());
+        
+        ExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream)
+                                   .config(config)
+                                   .runForArgs(args);
+
+        assertEquals(ExitCode.SUCCESS, returnValue);
+        assertEquals(1, config.size());
+        Map<String,Object> table1 = (Map<String,Object>)(config.get("table1"));
+        assertEquals(1, table1.size());
+        String value1 = (String)(table1.get("conf1"));
+        assertEquals("val1", value1);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testYesWorkflowCLI_SingleConfigureOption_ThreeLevels() throws Exception {
+
+        String[] args = { "-h", "-c", "table1.table2.conf2=val2"};
+        YWConfiguration config = new YWConfiguration();
+        assertEquals(0, config.size());
+        
+        ExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream)
+                                   .config(config)
+                                   .runForArgs(args);
+
+        assertEquals(ExitCode.SUCCESS, returnValue);
+        assertEquals(1, config.size());
+        Map<String,Object> table1 = (Map<String,Object>)(config.get("table1"));
+        assertEquals(1, table1.size());
+        Map<String,Object> table2 = (Map<String,Object>)(table1.get("table2"));
+        assertEquals(1, table2.size());
+        String value2 = (String)(table2.get("conf2"));
+        assertEquals("val2", value2);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public void testYesWorkflowCLI_ThreeConfigureOptions() throws Exception {
+
+        String[] args = { 
+                "-h", 
+                "-c", "conf0=val0",
+                "-c", "table1.conf1=val1",
+                "-c", "table1.table2.conf2=val2"};
+        YWConfiguration config = new YWConfiguration();
+        assertEquals(0, config.size());
+        
+        ExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream)
+                                   .config(config)
+                                   .runForArgs(args);
+
+        assertEquals(ExitCode.SUCCESS, returnValue);
+
+        assertEquals(2, config.size());        
+        assertEquals("val0", config.get("conf0"));
+
+        Map<String,Object> table1 = (Map<String,Object>)(config.get("table1"));
+        assertEquals(2, table1.size());
+        String value1 = (String)(table1.get("conf1"));
+        assertEquals("val1", value1);
+    
+        Map<String,Object> table2 = (Map<String,Object>)(table1.get("table2"));
+        assertEquals(1, table2.size());
+        String value2 = (String)(table2.get("conf2"));
+        assertEquals("val2", value2);
+    }    
+
+    
     public void testYesWorkflowCLI_Extract_InjectedExtractor_SourceOnly() throws Exception {
 
-        String[] args = {"-c", "extract", "-s", TEST_RESOURCE_DIR + "pythonFileLowercase.py"};
+        String[] args = {"extract", "-s", TEST_RESOURCE_DIR + "pythonFileLowercase.py"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         MockExtractor extractor = new MockExtractor();
         cli.extractor(extractor);
@@ -144,7 +218,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);        
-        cli.runForArgs(new String[] {"-c", "extract", "-x", "#", "-s", TEST_RESOURCE_DIR + "pythonFileLowercase.py"});        
+        cli.runForArgs(new String[] {"extract", "-x", "#", "-s", TEST_RESOURCE_DIR + "pythonFileLowercase.py"});        
         assertEquals(Language.GENERIC, extractor.getLanguage());
     }
     
@@ -154,7 +228,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "pythonFileLowercase.py"});
+        cli.runForArgs(new String[] {"extract", "-s", TEST_RESOURCE_DIR + "pythonFileLowercase.py"});
         assertEquals(Language.PYTHON, extractor.getLanguage());
     }
     
@@ -163,7 +237,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "pythonFileUppercase.PY"});
+        cli.runForArgs(new String[] {"extract", "-s", TEST_RESOURCE_DIR + "pythonFileUppercase.PY"});
         assertEquals(Language.PYTHON, extractor.getLanguage());
     }
     
@@ -171,7 +245,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "rFileUppercaseExtension.R"});
+        cli.runForArgs(new String[] {"extract", "-s", TEST_RESOURCE_DIR + "rFileUppercaseExtension.R"});
         assertEquals(Language.R, extractor.getLanguage());
     }
     
@@ -182,7 +256,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
         cli.extractor(extractor);
 
-        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "javaFile.java"});
+        cli.runForArgs(new String[] {"extract", "-s", TEST_RESOURCE_DIR + "javaFile.java"});
         assertEquals(Language.JAVA, extractor.getLanguage());
     }
     
@@ -191,7 +265,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "matlabFileLowercaseExtension.m"});
+        cli.runForArgs(new String[] {"extract", "-s", TEST_RESOURCE_DIR + "matlabFileLowercaseExtension.m"});
         assertEquals(Language.MATLAB, extractor.getLanguage());
     }
 
@@ -202,7 +276,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         
         cli.extractor(extractor);
 
-        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "matlabFileUppercaseExtension.M"});
+        cli.runForArgs(new String[] {"extract", "-s", TEST_RESOURCE_DIR + "matlabFileUppercaseExtension.M"});
         assertEquals(Language.MATLAB, extractor.getLanguage());
     }
     
@@ -212,7 +286,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
     
-        cli.runForArgs(new String[] {"-c", "extract", "-x", "%", "-s", TEST_RESOURCE_DIR + "matlabFileLowercaseExtension.m"});
+        cli.runForArgs(new String[] {"extract", "-x", "%", "-s", TEST_RESOURCE_DIR + "matlabFileLowercaseExtension.m"});
         
         assertEquals(Language.GENERIC, extractor.getLanguage());
     }
@@ -222,13 +296,13 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
-        cli.runForArgs(new String[] {"-c", "extract", "-s", TEST_RESOURCE_DIR + "extensionlessSource"});        
+        cli.runForArgs(new String[] {"extract", "-s", TEST_RESOURCE_DIR + "extensionlessSource"});        
         assertEquals(Language.GENERIC, extractor.getLanguage());
     }
 
     public void testYesWorkflowCLI_Extract_InjectedExtractor_SourceOption() throws Exception {
 
-        String[] args = {"-c", "extract", "-s", "src/test/resources/simpleExample.py"};
+        String[] args = {"extract", "-s", "src/test/resources/simpleExample.py"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         MockExtractor extractor = new MockExtractor();
         cli.extractor(extractor);
@@ -246,7 +320,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_Extract_ExamplePy_OutputLines() throws Exception {
 
-        String[] args = {"-c", "extract", "-s", "src/main/resources/example.py", "-l"};
+        String[] args = {"extract", "-s", "src/main/resources/example.py", "-l"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args);
 
@@ -277,7 +351,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     }
 
     public void testYesWorkflowCLI_ExamplePy_OutputLines_WithCommentChar() throws Exception{
-    	String[] args = {"-c", "extract", "-x", "#", "-s", "src/main/resources/example.py", "-l"};
+    	String[] args = {"extract", "-x", "#", "-s", "src/main/resources/example.py", "-l"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args);
 
@@ -309,7 +383,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_Graph_ExamplePy_ProcessGraph() throws Exception {
 
-        String[] args = {"-c", "graph", "-s", "src/main/resources/example.py", "-g"};
+        String[] args = {"graph", "-s", "src/main/resources/example.py", "-g"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args);
 
