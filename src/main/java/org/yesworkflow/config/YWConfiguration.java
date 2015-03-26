@@ -11,6 +11,9 @@ import org.yaml.snakeyaml.Yaml;
 @SuppressWarnings("serial")
 public class YWConfiguration extends HashMap<String,Object> {
 
+    public YWConfiguration() throws Exception {        
+    }
+
     public YWConfiguration(String path) throws Exception {
         
         File yamlFile = new File(path);
