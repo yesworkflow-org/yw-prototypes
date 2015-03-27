@@ -9,7 +9,6 @@ import java.util.Map;
 import org.yesworkflow.model.Channel;
 import org.yesworkflow.model.Port;
 import org.yesworkflow.model.Program;
-import org.yesworkflow.model.Workflow;
 
 public class DotGrapher implements Grapher  {
 
@@ -17,7 +16,7 @@ public class DotGrapher implements Grapher  {
     public static CommentVisibility DEFAULT_COMMENT_VISIBILITY = CommentVisibility.HIDE;
     public static ParamVisibility DEFAULT_PARAM_VISIBILITY = ParamVisibility.LOW;
     
-    private Workflow workflow = null;
+    private Program topWorkflow = null;
     private GraphView graphView = null;
     private ParamVisibility paramVisibility;
     private String graphText = null;
@@ -39,8 +38,8 @@ public class DotGrapher implements Grapher  {
     }
     
     @Override
-    public DotGrapher workflow(Workflow workflow) {
-        this.workflow = workflow;
+    public DotGrapher workflow(Program workflow) {
+        this.topWorkflow = workflow;
         return this;
     }
     
@@ -106,14 +105,14 @@ public class DotGrapher implements Grapher  {
            .edgeFont("Helvetica")
            .nodeFont("Courier");
 		
-		renderProgramAsProcess(this.workflow, dot, 1);
+		renderWorkflowAsProcess(this.topWorkflow, dot, 1);
 		
 		dot.endGraph();
 		
 		return dot.toString();
 	}
     
-    private void renderProgramAsProcess(Workflow workflow, DotBuilder dot, int depth) {
+    private void renderWorkflowAsProcess(Program workflow, DotBuilder dot, int depth) {
 
         // draw a small circle for each outward facing in and out port
         dot.comment("Set node style for input and output ports");
@@ -123,15 +122,15 @@ public class DotGrapher implements Grapher  {
         dot.comment("Nodes representing workflow input ports");
         for (Port p : workflow.inPorts) {
             String binding = p.flowAnnotation.binding(); 
-            if (workflowHasChannelForBinding(binding)) {
+            if (workflowHasChannelForBinding(workflow, binding)) {
                 dot.node(binding, null);
             }
         }
         
         dot.comment("Nodes representing workflow output ports");
         for (Port p : workflow.outPorts) {
-            String binding = p.flowAnnotation.binding(); 
-            if (workflowHasChannelForBinding(binding)) {
+            String binding = p.flowAnnotation.binding();
+            if (workflowHasChannelForBinding(workflow, binding)) {
                 dot.node(binding, null);
             }
         }
@@ -145,7 +144,7 @@ public class DotGrapher implements Grapher  {
         
         dot.comment("Nodes representing programs in workflow");
         for (Program p : workflow.programs) {
-            if (! (p instanceof Workflow)) {
+            if (! (p.isWorkflow())) {
                 dot.node(p.beginAnnotation.name);
             }
         }
@@ -157,7 +156,7 @@ public class DotGrapher implements Grapher  {
         dot.comment("Nodes representing subworkflows in workflow");
         dot.shape("box").peripheries(depth+1).fillcolor("#CCFFCC");   
         for (Program p : workflow.programs) {
-            if (p instanceof Workflow) {
+            if (p.isWorkflow()) {
                 dot.node(p.beginAnnotation.name);
             }
         }
@@ -198,15 +197,13 @@ public class DotGrapher implements Grapher  {
 
         // render subworkflows
         for (Program p : workflow.programs) {
-            if (p instanceof Workflow) {
-                renderProgramAsProcess((Workflow)p, dot, depth + 1);
+            if (p.isWorkflow()) {
+                renderWorkflowAsProcess(p, dot, depth + 1);
             }
         }
     }
-    
-    
-    
-    private boolean workflowHasChannelForBinding(String binding) {
+
+    private boolean workflowHasChannelForBinding(Program workflow, String binding) {
         for (Channel c : workflow.channels) {
             if (binding.equals(c.sourcePort.flowAnnotation.binding())) {
                 return true;
@@ -214,7 +211,7 @@ public class DotGrapher implements Grapher  {
         }
         return false;
     }
-    
+
     private String renderDataCentricView() {
 
         DotBuilder dot = new DotBuilder();
@@ -232,14 +229,14 @@ public class DotGrapher implements Grapher  {
 
         List<String> channelBindings = new LinkedList<String>();
 
-        for (Channel c : workflow.channels) {
+        for (Channel c : topWorkflow.channels) {
             String binding = c.sourcePort.flowAnnotation.binding();
             channelBindings.add(binding);
             dot.node(binding);
         }
 
         // draw an edge for each pairing of out port and in port for each program
-        for (Program p : workflow.programs) {
+        for (Program p : topWorkflow.programs) {
             for (Port out : p.outPorts) {
                 for (Port in : p.inPorts) {
                     
@@ -272,7 +269,7 @@ public class DotGrapher implements Grapher  {
         
         // draw a box for each program in the workflow
         dot.shape("box3d").fillcolor("#CCFFCC");
-        for (Program p : workflow.programs) dot.node(p.beginAnnotation.name);
+        for (Program p : topWorkflow.programs) dot.node(p.beginAnnotation.name);
 
         
         List<String> channelBindings = new LinkedList<String>();
@@ -282,14 +279,14 @@ public class DotGrapher implements Grapher  {
 
         // draw a box for each channel in the workflow
         dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
-        for (Channel c : workflow.channels) {
+        for (Channel c : topWorkflow.channels) {
             String binding = c.sourcePort.flowAnnotation.binding(); 
             channelBindings.add(binding);
             dot.node(binding);
         }
 
         // draw an edge for each pairing of out port and in port for each program
-        for (Program p : workflow.programs) {
+        for (Program p : topWorkflow.programs) {
 
             for (Port out : p.outPorts) {
                 
