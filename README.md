@@ -353,7 +353,7 @@ The remaining arrows are drawn between blocks and represent flow of data between
 YesWorkflow infers the language employed in a script by inspecting the script file extension.  Currently the following extensions and associated commenting mechanisms are recognized:
 
 Extension | Language | Single-line comments | Block comments
-----------|----------|-------------------------------------------
+----------|----------|----------------------|--------------------
 .c, .h    | C        | `// a comment`       | `/* a comment */`
 .cpp      | C++      | `// a comment`       | `/* a comment */`
 .java     | Java     | `// a comment`       | `/* a comment */`
