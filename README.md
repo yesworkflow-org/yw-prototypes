@@ -359,11 +359,11 @@ Extension | Language | Single-line comments | Block comments
 .java     | Java     | `// a comment`       | `/* a comment */`
 .m        | MATLAB   | `% a comment`        | `%{ a comment  %}` or `... a comment ...`
 .py       | python   | `# a comment`        | `''' a comment '''`
-.R        | R        | `# a comment`        |   
+.R        | R        | `# a comment`        |
 .sh       | bash     | `# a comment`        |
 .sas      | SAS      |                      | `* a comment ;` or `/* a comment */`
 
-Support for single-line comments begun started with a '#' character is assumed if the extension is not one of the above, if the file name has no extension, or if the script code is piped to YesWorkflow via the standard input stream. To manually specify a single-line comment character use the -x option and provide the comment character in double quotes.  For example, to pipe a MATLAB program to YesWorkflow and use the correct comment character you may use the following command on Unix platforms:
+Support for single-line comments started with a '#' character is assumed if the extension is not one of the above, if the file name has no extension, or if the script code is piped to YesWorkflow via the standard input stream. To manually specify a single-line comment character use the -x option and provide the comment character in double quotes.  For example, to pipe a MATLAB program to YesWorkflow and use the correct comment character you may use the following command on Unix platforms:
 
     cat myprogram.m | yw graph -x "%" > myprogram.gv
 
