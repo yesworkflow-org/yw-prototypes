@@ -215,7 +215,7 @@ And on Windows platforms:
 
 #### 6. Mark up and analyze your own script
 
-You should now be able to add YW comments to your own data processing script and analyze your script using the YesWorkflow prototype.  Note that the prototype has limitations that will be addressed in future releases (see **7** below).
+You should now be able to add YW comments to your own data processing script and analyze your script using the YesWorkflow prototype.
 
 ##### Delimit your script with `@begin` and `@end` comments
 
@@ -235,7 +235,7 @@ Note that comments that do not contain YW keywords are ignored by YesWorkflow.
 
 `@begin` and `@end` keywords both should be followed by the name of the block of code they bracket (in this case, the script as a whole), and these names should match for each `@begin` and `@end` pair.  This convention makes it easier to identify incorrectly paired `@begin` and `@end` keywords in the script.
 
-##### Use `@in` and `@out` comments to declare the data consumed and produced by the script
+##### Use `@in` and `@out` comments to declare the data consumed and produced in the script
 
 The next step in marking up a script with YW comments is to declare the inputs and outputs of the script.  These do not need to be actual command-line options to your script or files read from or output to disk by the script.  The comments you add simply declare that the script accepts these inputs in some way, and produces the indicated outputs somehow.  
 
@@ -350,18 +350,18 @@ The remaining arrows are drawn between blocks and represent flow of data between
 
 ##### Override the comment character used in your script
 
-YesWorkflow infers the language employed in a script by inspecting the script file extension.  Currently the following extensions and associated commenting mechanisms are recognized:
+YesWorkflow infers the programming language employed in a script by inspecting the source file extension.  Currently the following extensions and associated comment syntaxes are recognized:
 
-Extension | Language | Single-line comments | Block comments
+Language  | Extension | Single-line comments | Block comments
 ----------|----------|----------------------|--------------------
-.c, .h    | C        | `// a comment`       | `/* a comment */`
-.cpp      | C++      | `// a comment`       | `/* a comment */`
-.java     | Java     | `// a comment`       | `/* a comment */`
-.m        | MATLAB   | `% a comment`        | `%{ a comment  %}` or `... a comment ...`
-.py       | python   | `# a comment`        | `''' a comment '''`
-.R        | R        | `# a comment`        |
-.sh       | bash     | `# a comment`        |
-.sas      | SAS      |                      | `* a comment ;` or `/* a comment */`
+bash      | .sh      | `# a comment`        |
+C         | .c, .h   | `// a comment`       | `/* a comment */`
+C++       | .cpp     | `// a comment`       | `/* a comment */`
+Java      | .java    | `// a comment`       | `/* a comment */`
+MATLAB    | .m       | `% a comment`        | `%{ a comment  %}` or `... a comment ...`
+python    | .py      | `# a comment`        | `''' a comment '''`
+R         | .R       | `# a comment`        |
+SAS       | .sas     |                      | `* a comment ;` or `/* a comment */`
 
 Support for single-line comments started with a '#' character is assumed if the extension is not one of the above, if the file name has no extension, or if the script code is piped to YesWorkflow via the standard input stream. To manually specify a single-line comment character use the -x option and provide the comment character in double quotes.  For example, to pipe a MATLAB program to YesWorkflow and use the correct comment character you may use the following command on Unix platforms:
 
@@ -416,11 +416,11 @@ YesWorkflow can be built and tested from the command line using the following co
 
 Maven command | Description
 --------------|------------
-mvn clean     | Delete the target directory including all compiled code.
-mvn compile   | Download required dependencies and compile source code in src/main/java.  Only those source files changes since the last compilation are built.
+mvn clean     | Delete the target directory including all compiled classes.
+mvn compile   | Download required dependencies and compile source code in src/main/java.  Only those source files changes since the last compilation or clean are built.
 mvn test      | Compile the classes in src/test/java and run all tests found therein. Peforms *mvn compile* first.
 mvn package   | Package the compiled classes in target/classes and files found in src/main/resources in two jar files, **yesworkflow-0.2-SNAPSHOT.jar** and **yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar**.  The latter also contains all jar dependencies. Performs *mvn compile* and *mvn test* first, and will not perform packaging step if any tests fail. Use the `-DskipTests` option to bypass tests.
-mvn javadoc:javadoc | Build Javadoc documentation. The `mvn package` command also builds the Javadoc.
+mvn javadoc:javadoc | Build Javadoc documentation. The `mvn package` command also builds Javadoc.
 
 #### Continuous integration with Bamboo
 
