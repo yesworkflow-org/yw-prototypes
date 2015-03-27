@@ -14,9 +14,6 @@ import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
 
 public class Workflow extends Program {
-	
-	public final Program[] programs;
-	public final Channel[] channels;
     
 	public Workflow(
         Begin beginAnnotation,
@@ -26,12 +23,16 @@ public class Workflow extends Program {
         List<Program> programs,
         List<Channel> channels
     ) {
-	    super(beginAnnotation, endAnnotation, inPorts, outPorts);
-		
-    	this.programs = programs.toArray(new Program[programs.size()]);
-    	this.channels = channels.toArray(new Channel[channels.size()]);
+	    super(beginAnnotation, endAnnotation, inPorts, outPorts, 
+	          programs.toArray(new Program[programs.size()]),
+	          channels.toArray(new Channel[channels.size()]));
 	}
 	
+    @Override
+    public boolean isWorkflow() {
+        return true;
+    }
+    
 	public static class Builder {
 		
         private Begin beginAnnotation;
@@ -54,7 +55,7 @@ public class Workflow extends Program {
             this.stdoutStream = stdoutStream;
             this.stderrStream = stderrStream;
         }
-                
+        
 		public Builder begin(Begin annotation) {
 			this.beginAnnotation = annotation;
 			return this;
