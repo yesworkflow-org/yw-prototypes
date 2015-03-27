@@ -7,6 +7,9 @@ import org.yesworkflow.annotations.End;
 
 public class Program {
 
+    static final Program[] EMPTY_PROGRAM_ARRAY = new Program[]{};
+    static final Channel[] EMPTY_CHANNEL_ARRAY = new Channel[]{};
+
     public final Begin beginAnnotation;
     public final End endAnnotation;
     public final Port[] inPorts;
@@ -14,27 +17,35 @@ public class Program {
     public final Program[] programs;
     public final Channel[] channels;
     
-    static final Program[] EMPTY_PROGRAM_ARRAY = new Program[]{};
-    static final Channel[] EMPTY_CHANNEL_ARRAY = new Channel[]{};
-    
-	public Program(Begin beginAnnotation, End endAnnotation, List<Port> inPorts, List<Port> outPorts) {
-	    this.beginAnnotation = beginAnnotation;
-        this.endAnnotation = endAnnotation;
-	    this.inPorts = inPorts.toArray(new Port[inPorts.size()]);
-	    this.outPorts = outPorts.toArray(new Port[outPorts.size()]);
-	    this.programs = EMPTY_PROGRAM_ARRAY;
-	    this.channels = EMPTY_CHANNEL_ARRAY;
-	}
-	
-	protected Program(Begin beginAnnotation, End endAnnotation, List<Port> inPorts, List<Port> outPorts,
-	        Program[] programs, Channel[] channels) {
+    public Program(
+            Begin beginAnnotation, 
+            End endAnnotation, 
+            Port[] inPorts, 
+            Port[] outPorts, 
+            Program[] programs,
+            Channel[] channels
+    ) {
         this.beginAnnotation = beginAnnotation;
         this.endAnnotation = endAnnotation;
-        this.inPorts = inPorts.toArray(new Port[inPorts.size()]);
-        this.outPorts = outPorts.toArray(new Port[outPorts.size()]);
+        this.inPorts = inPorts;
+        this.outPorts = outPorts;
         this.programs = programs;
         this.channels = channels;
     }
+    
+	public Program(
+	        Begin beginAnnotation, 
+	        End endAnnotation, 
+	        List<Port> inPorts, 
+	        List<Port> outPorts
+    ) {
+	    this(beginAnnotation,  
+	         endAnnotation, 
+	         inPorts.toArray(new Port[inPorts.size()]), 
+	         outPorts.toArray(new Port[outPorts.size()]),
+	         EMPTY_PROGRAM_ARRAY,
+	         EMPTY_CHANNEL_ARRAY);
+	}
 
     public boolean isWorkflow() {
 	    return false;

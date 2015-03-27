@@ -14,18 +14,26 @@ import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
 
 public class Workflow extends Program {
-    
-	public Workflow(
-        Begin beginAnnotation,
-        End endAnnotation,
-        List<Port> inPorts,
-        List<Port> outPorts,
-        List<Program> programs,
-        List<Channel> channels
+
+    public Workflow(
+           Begin beginAnnotation,
+           End endAnnotation,
+           List<Port> inPorts,
+           List<Port> outPorts,
+           List<Program> programs,
+           List<Channel> channels
     ) {
-	    super(beginAnnotation, endAnnotation, inPorts, outPorts, 
-	          programs.toArray(new Program[programs.size()]),
-	          channels.toArray(new Channel[channels.size()]));
+        super(beginAnnotation, endAnnotation, 
+             inPorts.toArray(new Port[inPorts.size()]),
+             outPorts.toArray(new Port[outPorts.size()]),
+             programs.toArray(new Program[programs.size()]),
+             channels.toArray(new Channel[channels.size()]));
+    }
+
+	public Workflow(Program program) {
+	    super(program.beginAnnotation, program.endAnnotation, 
+	          program.inPorts, program.outPorts,
+	          program.programs, program.channels);
 	}
 	
     @Override

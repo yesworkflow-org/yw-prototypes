@@ -47,9 +47,8 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         Program program = modeler.annotations(annotations)
                                  .model()
-                                 .getModel();
+                                 .getWorkflow();
         
-        assertFalse(program instanceof Workflow);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(0, program.inPorts.length);
@@ -71,9 +70,8 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         Program program = modeler.annotations(annotations)
                                  .model()
-                                 .getModel();
+                                 .getWorkflow();
         
-        assertFalse(program instanceof Workflow);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(0, program.inPorts.length);
@@ -95,9 +93,8 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         Program program = modeler.annotations(annotations)
                                  .model()
-                                 .getModel();
+                                 .getWorkflow();
         
-        assertFalse(program instanceof Workflow);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(0, program.inPorts.length);
@@ -123,7 +120,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                              .model()
-                                             .getModel();
+                                             .getWorkflow();
 
         assertEquals("script", workflow.beginAnnotation.name);
         assertEquals("script", workflow.endAnnotation.name);
@@ -153,7 +150,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                              .model()
-                                             .getModel();
+                                             .getWorkflow();
 
         assertEquals("script", workflow.beginAnnotation.name);
         assertEquals("script", workflow.endAnnotation.name);
@@ -187,7 +184,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         try {
             modeler.annotations(annotations)
                    .model()
-                   .getModel();
+                   .getWorkflow();
         } catch (YWMarkupException e) {
             caughtException = e;
         }
@@ -216,7 +213,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        
            modeler.annotations(annotations)
                   .model()
-                  .getModel();
+                  .getWorkflow();
        
        } catch (YWMarkupException e) {
            caughtException = e;
@@ -251,7 +248,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                              .model()
-                                             .getModel();
+                                             .getWorkflow();
         
         assertEquals("script", workflow.beginAnnotation.name);
         assertEquals("script", workflow.endAnnotation.name);
@@ -295,7 +292,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                              .model()
-                                             .getModel();
+                                             .getWorkflow();
 
         
         assertEquals("workflow", workflow.beginAnnotation.name);
@@ -341,9 +338,8 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Program program = modeler.annotations(annotations)
                                  .model()
-                                 .getModel();
+                                 .getWorkflow();
         
-        assertFalse(program instanceof Workflow);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(2, program.inPorts.length);
@@ -373,9 +369,8 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Program program = modeler.annotations(annotations)
                                  .model()
-                                 .getModel();
+                                 .getWorkflow();
         
-        assertFalse(program instanceof Workflow);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(2, program.inPorts.length);
@@ -405,9 +400,8 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Program program = modeler.annotations(annotations)
                                  .model()
-                                 .getModel();
+                                 .getWorkflow();
         
-        assertFalse(program instanceof Workflow);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(2, program.inPorts.length);
@@ -437,7 +431,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                              .model()
-                                             .getModel();
+                                             .getWorkflow();
         
         assertEquals("script", workflow.beginAnnotation.name);
         assertEquals("script", workflow.endAnnotation.name);
@@ -493,7 +487,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                              .model()
-                                             .getModel();
+                                             .getWorkflow();
         
         assertEquals("script", workflow.beginAnnotation.name);
         assertEquals("script", workflow.endAnnotation.name);
@@ -555,7 +549,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                              .model()
-                                             .getModel();
+                                             .getWorkflow();
         
         assertEquals("script", workflow.beginAnnotation.name);
         assertEquals("script", workflow.endAnnotation.name);
@@ -616,7 +610,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                              .model()
-                                             .getModel();
+                                             .getWorkflow();
         
         assertEquals("script", workflow.beginAnnotation.name);
         assertEquals("script", workflow.endAnnotation.name);
@@ -679,7 +673,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
            
            modeler.annotations(annotations)
                   .model()
-                  .getModel();
+                  .getWorkflow();
            
        } catch (YWMarkupException e) {
            caughtException = e;
@@ -712,7 +706,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        
            modeler.annotations(annotations)
                   .model()
-                  .getModel();
+                  .getWorkflow();
 
        } catch (YWMarkupException e) {
            caughtException = e;

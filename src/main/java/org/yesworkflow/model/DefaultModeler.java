@@ -14,7 +14,7 @@ import org.yesworkflow.exceptions.YWMarkupException;
 public class DefaultModeler implements Modeler {
 
     private List<Annotation> annotations;
-    private Program model;
+    private Workflow model;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
     
@@ -40,13 +40,13 @@ public class DefaultModeler implements Modeler {
     }
     
     @Override
-    public Program getModel() {
-        return this.model;
+    public Workflow getModel() {
+        return getWorkflow();
     }
 
     @Override
     public Workflow getWorkflow() {
-        return (Workflow)this.model;
+        return this.model;
     }
     
     private void buildWorkflow() throws Exception {
@@ -86,7 +86,7 @@ public class DefaultModeler implements Modeler {
                 Program program = workflowBuilder.build();
 
                 if (parentWorkflowBuilders.isEmpty()) {
-                    this.model = program;
+                    this.model = new Workflow(program);
                     return;
                 }
 

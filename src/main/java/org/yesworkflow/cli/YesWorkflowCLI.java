@@ -67,7 +67,7 @@ public class YesWorkflowCLI {
     private Modeler modeler = null;
     private Grapher grapher = null;
     private List<Annotation> annotations;
-    private Program model = null;
+    private Workflow workflow = null;
     private YWConfiguration config = null;
     
     /** Method invoked first when the YesWorkflow CLI is run from the 
@@ -417,9 +417,9 @@ public class YesWorkflowCLI {
             modeler = new DefaultModeler(this.outStream, this.errStream);
          }
 
-        model = (Program) modeler.annotations(annotations)
-                                 .model()
-                                 .getModel();
+        workflow =  modeler.annotations(annotations)
+                           .model()
+                           .getWorkflow();
     }
 
     private void graph() throws Exception {
@@ -429,7 +429,7 @@ public class YesWorkflowCLI {
          }
         
         String graph = grapher.config(config.getMap("graph"))
-                              .workflow((Workflow)model)
+                              .workflow(workflow)
                               .graph()
                               .toString();
 
