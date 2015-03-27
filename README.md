@@ -80,45 +80,48 @@ YesWorkflow produces graphical representations that is rendered using Graphviz o
 
 The YesWorkflow prototype is distributed as a jar (Java archive) file that can be executed using the `java -jar` command.  
 
-If you will be building YesWorkflow yourself using Maven (see *Instructions for Developers* below) then you may simply use the file `target/yesworkflow-0.1-executable.jar` produced by the `mvn package` command.
+If you will be building YesWorkflow yourself using Maven (see *Instructions for Developers* below) then you may simply use the file `target/yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar` produced by the `mvn package` command.
 
-Otherwise download the latest automatically built jar from the build server.  Navigate to the results for the [last successful build](https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW/latestSuccessful "last successful build") of YesWorkflow, click the *Artifacts* tab, then download the `executable jar`.  The file will be named `yesworkflow-0.1-executable.jar`.
+Otherwise download the latest automatically built jar from the build server.  Navigate to the results for the [last successful build](https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW/latestSuccessful "last successful build") of YesWorkflow, click the *Artifacts* tab, then download the `executable jar`.  The file will be named `yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar`.
 
 Once you have obtained the YesWorkflow jar, save the file in a convenient location.   YesWorkflow can now be run using the `java -jar` command.  Test that the jar works correctly using the `--help` option to display the command line options for YesWorkflow:
 
-    $ java -jar yesworkflow-0.1-executable.jar --help
+    $ java -jar yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar --help
 
-    Option                     Description
-    ------                     -----------
-    -c, --command <command>    command to YesWorkflow
-    -d, --database <database>  path to database file for storing
-                                 extracted workflow graph
-    -g, --graph [dot file]     path to graphviz dot file for storing
-                                 rendered workflow graph (default: -)
-    -h, --help                 display help
-    -l, --lines [lines file]   path to file for saving extracted
-                                 comment lines (default: -)
-    -s, --source [script]      path to source file to analyze
-                                 (default: -)
+    ---------------------- YesWorkflow usage summary -----------------------
+    
+    Option                    Description                           
+    ------                    -----------                           
+    -c, --config <key=value>  key-valued configuration value        
+                                assignment                          
+    -g, --graph [dot file]    path to graphviz dot file for storing 
+                                rendered workflow graph (default: -)
+    -h, --help                display help                          
+    -l, --lines [lines file]  path to file for saving extracted     
+                                comment lines (default: -)          
+    -s, --source [script]     path to source file to analyze        
+                                (default: -)                        
+    -x, --commchar [comment]  comment character                     
+     
+    ------------------------------------------------------------------------
     $
 
 #### 4.  Define a short command for running YesWorkflow at the prompt
 
-If you are running YesWorkflow on an Apple OSX or Linux system (or use Git Bash or Cygwin on Windows), you may define a bash alias to simplify running YesWorkflow at the command line.  On Windows platforms you similarly may define a macro for running YesWorkflow at the prompt.  
+If you are running YesWorkflow on an Apple OSX or Linux system (or use Git Bash or Cygwin on Windows), you may define a bash alias to simplify running YesWorkflow at the command line.  On Windows platforms you similarly may define a macro for running YesWorkflow at the prompt.
 
-For example, if you have saved  `yesworkflow-0.1-executable.jar` to the bin subdirectory of your home directory, the following command will create a bash alias for running YesWorkflow simply by typing `yw`:
+For example, if you have saved  `yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar` to the bin subdirectory of your home directory, the following command will create a bash alias for running YesWorkflow simply by typing `yw`:
 
-    alias yw='java -jar ~/bin/yesworkflow-0.1-executable.jar' 
+    alias yw='java -jar ~/bin/yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar'
 
 On Windows the command to create the `yw` macro is:
 
-    doskey yw=java -jar %USERPROFILE%\bin\yesworkflow-0.1-executable.jar $*
+    doskey yw=java -jar %USERPROFILE%\bin\yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar $*
 
 The command to display YesWorkflow command line options is now simply:
 
     $ yw --help
 
-If you do not define an alias or macro you will need to type `java -jar yesworkflow-0.1-executable.jar` instead of `yw` in the examples below (and prepend yesworkflow-0.1-executable.jar with the path to the jar file).
 
 #### 5. Run YesWorkflow on the example python script
 
@@ -162,21 +165,33 @@ Next, use the `graph` command to produce a graphical representations of the scri
     $ yw graph -s example.py
     digraph Workflow {
     rankdir=LR
-    node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=1]
-    node1 [label="fetch_mask"];
-    node2 [label="load_data"];
-    node3 [label="standardize_with_mask"];
-    node4 [label="simple_diagnose"];
-    node[shape=circle style="filled" fillcolor="#FFFFFF" peripheries=1 width=0.1]
-    node5 [label=""];
-    node6 [label=""];
-    node7 [label=""];
-    node4 -> node7 [label="result_NEE_pdf"];
-    node5 -> node1 [label="input_mask_file"];
-    node6 -> node2 [label="input_data_file"];
-    node2 -> node3 [label="NEE_data"];
-    node1 -> node3 [label="land_water_mask"];
-    node3 -> node4 [label="standardized_NEE_data"];
+    graph[fontname=Courier]
+    edge[fontname=Helvetica]
+    node[fontname=Courier]
+    node[shape=circle style="filled" fillcolor="#FFFFFF" peripheries=1 label="" width=0.1]
+    node1
+    node2
+    node3
+    subgraph cluster0 {
+    label="main"
+    penwidth=2
+    fontsize=18
+    subgraph cluster1 {
+    label=""
+    color="white"
+    node[shape=box3d style="filled" fillcolor="#CCFFCC" peripheries=1 label="" width=0.1]
+    node4 [label="fetch_mask"]
+    node5 [label="load_data"]
+    node6 [label="standardize_with_mask"]
+    node7 [label="simple_diagnose"]
+    node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=2 label="" width=0.1]
+    }}
+    node7 -> node3 [label="result_NEE_pdf"]
+    node1 -> node4 [label="input_mask_file"]
+    node2 -> node5 [label="input_data_file"]
+    node5 -> node6 [label="NEE_data"]
+    node4 -> node6 [label="land_water_mask"]
+    node6 -> node7 [label="standardized_NEE_data"]
     }
     $
 
@@ -204,7 +219,7 @@ You should now be able to add YW comments to your own data processing script and
 
 ##### Delimit your script with `@begin` and `@end` comments
 
-The YesWorkflow prototype assumes that the code for the entire script to be analyzed is bracketed by a pair of `@begin` and `@end` comments.  The YW comments should begin with whatever character(s) indicate a full-line comment in the scripting language you are using.   For example, a script written in a language that uses the # character to start comments might look like the following
+The YesWorkflow prototype assumes that the code for the entire script to be analyzed is bracketed by a pair of `@begin` and `@end` comments.  The YW comments may appear anywhere comments are allowed by the scripting language you are using.   For example, a script written in a language that uses the # character to start comments might look like the following
 
     # @begin MyScript    
     script statement
@@ -240,6 +255,18 @@ This is done by adding `@in` and `@out` comments following the `@begin` comment 
     # @end MyScript
 
 The `@in` and `@out` comments above indicate that the script takes two inputs, `x` and `y`, and produces output `d`.  The names of these inputs and outputs (multiple inputs and outputs are allowed) are expected to correspond to the names of variables that store these input and output values at some point in the script (although this is not enforced by the prototype).  Declaring the names of the relevant variables is meant to make it easier for others to find the actual input and output operations in your script.
+
+Multiple YW comments can be placed on the same line.  For example, the example below is equivalent to the one above:
+
+    # @begin MyScript @in x @in y @out d 
+    script statement
+    script statement  
+    script statement
+    # a non-YW comment
+    script statement
+    script statement  
+    script statement
+    # @end MyScript
 
 Because variable names are often kept relatively short in scripts, YesWorkflow allows you to associate a more verbose alias for each input and output using the `@as` keyword.  For example:
 
@@ -323,16 +350,20 @@ The remaining arrows are drawn between blocks and represent flow of data between
 
 ##### Override the comment character used in your script
 
-YesWorkflow infers the character used to indicate the beginning of a full-line comment in an analyzed script by inspecting the script file extension.  Currently the following extensions are recognized:
+YesWorkflow infers the language employed in a script by inspecting the script file extension.  Currently the following extensions and associated commenting mechanisms are recognized:
 
-Extension | Language | Default comment character
-----------|----------|--------------------------
-.py       | python   | #
-.R        | R        | #
-.m        | MATLAB   | %
-.java     | Java     | /
+Extension | Language | Single-line comments | Block comments
+----------|----------|-------------------------------------------
+.c, .h    | C        | `// a comment`       | `/* a comment */`
+.cpp      | C++      | `// a comment`       | `/* a comment */`
+.java     | Java     | `// a comment`       | `/* a comment */`
+.m        | MATLAB   | `% a comment`        | `%{ a comment  %}` or `... a comment ...`
+.py       | python   | `# a comment`        | `''' a comment '''`
+.R        | R        | `# a comment`        |   
+.sh       | bash     | `# a comment`        |
+.sas      | SAS      |                      | `* a comment ;` or `/* a comment */`
 
-A comment character of '#' is assumed if the extension is not one of the above, if the file name has no extension, or if the script code is piped to YesWorkflow via the standard input stream. To override the comment character use the -x option and provide the comment character in double quotes.  For example, to pipe a MATLAB program to YesWorkflow and use the correct comment character you may use the following command on Unix platforms:
+Support for single-line comments begun started with a '#' character is assumed if the extension is not one of the above, if the file name has no extension, or if the script code is piped to YesWorkflow via the standard input stream. To manually specify a single-line comment character use the -x option and provide the comment character in double quotes.  For example, to pipe a MATLAB program to YesWorkflow and use the correct comment character you may use the following command on Unix platforms:
 
     cat myprogram.m | yw graph -x "%" > myprogram.gv
 
@@ -388,8 +419,8 @@ Maven command | Description
 mvn clean     | Delete the target directory including all compiled code.
 mvn compile   | Download required dependencies and compile source code in src/main/java.  Only those source files changes since the last compilation are built.
 mvn test      | Compile the classes in src/test/java and run all tests found therein. Peforms *mvn compile* first.
-mvn package   | Package the compiled classes in target/classes and files found in src/main/resources in two jar files, **yesworkflow-0.1.jar** and **yesworkflow-0.1-executable.jar**.  The latter also contains all jar dependencies. Performs *mvn compile* and *mvn test* first, and will not perform packaging step if any tests fail. Use the `-DskipTests` option to bypass tests.
-mvn javadoc:javadoc | Build Javadoc documentation.
+mvn package   | Package the compiled classes in target/classes and files found in src/main/resources in two jar files, **yesworkflow-0.2-SNAPSHOT.jar** and **yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar**.  The latter also contains all jar dependencies. Performs *mvn compile* and *mvn test* first, and will not perform packaging step if any tests fail. Use the `-DskipTests` option to bypass tests.
+mvn javadoc:javadoc | Build Javadoc documentation. The `mvn package` command also builds the Javadoc.
 
 #### Continuous integration with Bamboo
 
