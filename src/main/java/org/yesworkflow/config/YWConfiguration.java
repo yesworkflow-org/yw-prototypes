@@ -14,20 +14,23 @@ public class YWConfiguration extends HashMap<String,Object> {
     public YWConfiguration() throws Exception {        
     }
 
-    public YWConfiguration(String path) throws Exception {
+    public YWConfiguration(String... paths) throws Exception {
         
-        File yamlFile = new File(path);
-        if(yamlFile.exists()) {
-            InputStream input = new FileInputStream(yamlFile);
-            Yaml yaml = new Yaml();
-            @SuppressWarnings("unchecked")
-            Map<String,Object> config = (Map<String, Object>) yaml.load(input);
-            put("graph",config.get("graph"));
+        for (String path : paths) {
+            File yamlFile = new File(path);
+            if(yamlFile.exists()) {
+                InputStream input = new FileInputStream(yamlFile);
+                Yaml yaml = new Yaml();
+                @SuppressWarnings("unchecked")
+                Map<String,Object> yamlDefinedMap = (Map<String, Object>) yaml.load(input);
+                putAll(yamlDefinedMap);
+                break;
+            }
         }
     }
     
     @SuppressWarnings("unchecked")
-    public Map<String,Object> getMap(String key) {
+    public Map<String,Object> getSection(String key) {
         return (Map<String,Object>) get(key);
     }
 }
