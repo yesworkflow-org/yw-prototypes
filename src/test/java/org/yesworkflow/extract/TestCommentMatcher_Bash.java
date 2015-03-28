@@ -2,8 +2,8 @@ package org.yesworkflow.extract;
 
 import java.io.IOException;
 
+import org.yesworkflow.Language;
 import org.yesworkflow.LanguageModel;
-import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestCommentMatcher_Bash extends YesWorkflowTestCase {

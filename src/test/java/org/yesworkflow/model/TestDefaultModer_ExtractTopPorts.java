@@ -2,13 +2,13 @@ package org.yesworkflow.model;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.yesworkflow.LanguageModel;
-import org.yesworkflow.LanguageModel.Language;
+import org.yesworkflow.Language;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.extract.DefaultExtractor;
-import org.yesworkflow.model.Program;
 import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestDefaultModer_ExtractTopPorts extends YesWorkflowTestCase {
@@ -25,10 +25,11 @@ public class TestDefaultModer_ExtractTopPorts extends YesWorkflowTestCase {
                 "                               " + EOL +
                 "    % @end script              " + EOL
         ));
-        
-        LanguageModel lm = new LanguageModel(Language.MATLAB);
+
+        Map<String,Object> config = new HashMap<String,Object>();
+        config.put("language", Language.MATLAB);
         List<Annotation> annotations = new DefaultExtractor()
-                                           .languageModel(lm)
+                                           .configure(config)
                                            .source(reader)
                                            .extract()
                                            .getAnnotations();

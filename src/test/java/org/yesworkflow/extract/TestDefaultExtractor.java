@@ -5,8 +5,8 @@ import java.io.FileReader;
 import java.io.StringReader;
 import java.util.List;
 
+import org.yesworkflow.Language;
 import org.yesworkflow.LanguageModel;
-import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.annotations.Begin;
 import org.yesworkflow.annotations.End;
@@ -23,9 +23,8 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        languageModel = new LanguageModel(Language.PYTHON);
         extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
-        extractor.languageModel(languageModel);
+        extractor.configure("language", Language.PYTHON);
     }
 
     public void testExtract_BlankLine() throws Exception {
@@ -132,10 +131,8 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
 
     public void testExtract_GetCommentLines_MultipleComments_Slash() throws Exception {
         
-        languageModel = new LanguageModel();
-        languageModel.singleDelimiter("//");
         extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
-        extractor.languageModel(languageModel);
+        extractor.configure("commentDelimiter", "//");
 
         String source = 
                 "// @begin step   " + EOL +

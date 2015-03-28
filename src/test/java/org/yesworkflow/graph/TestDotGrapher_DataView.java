@@ -34,7 +34,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         
         config.put("view", GraphView.DATA_CENTRIC_VIEW);
         config.put("comments", CommentVisibility.HIDE);
-        grapher.config(config);
+        grapher.configure(config);
     }
     
 
@@ -56,7 +56,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .commentDelimiter("#")
+                .configure("commentDelimiter", "#")
         		.source(reader)
                 .extract()
                 .getAnnotations();
@@ -101,7 +101,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .commentDelimiter("#")
+                .configure("commentDelimiter", "#")
                 .source(reader)
                 .extract()
                 .getAnnotations();
@@ -145,7 +145,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
       List<Annotation> annotations = extractor
-              .commentDelimiter("#")
+              .configure("commentDelimiter", "#")
     		  .source(reader)
               .extract()
               .getAnnotations();
@@ -191,7 +191,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .commentDelimiter("#")
+                .configure("commentDelimiter", "#")
                 .source(reader)
                 .extract()
                 .getAnnotations();
@@ -240,7 +240,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
       List<Annotation> annotations = extractor
-              .commentDelimiter("#")
+              .configure("commentDelimiter", "#")
     		  .source(reader)
               .extract()
               .getAnnotations();
@@ -289,7 +289,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .commentDelimiter("#")
+                .configure("commentDelimiter", "#")
                 .source(reader)
                 .extract()
                 .getAnnotations();
@@ -322,7 +322,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
     public void testDotGrapher_DataView_SamplePyScript() throws Exception {
          
          List<Annotation> annotations = extractor
-                 .commentDelimiter("#")
+                 .configure("commentDelimiter", "#")
         		 .source(new BufferedReader(new FileReader("src/main/resources/example.py")))
                  .extract()
                  .getAnnotations();

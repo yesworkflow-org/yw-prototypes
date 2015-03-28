@@ -1,10 +1,8 @@
 package org.yesworkflow.graph;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,10 +32,8 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
         modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
 
-        config = new HashMap<String,Object>();
-        config.put("view", GraphView.PROCESS_CENTRIC_VIEW);
-        config.put("comments", CommentVisibility.HIDE);
-        grapher.config(config);
+        grapher.configure("view", GraphView.PROCESS_CENTRIC_VIEW)
+               .configure("comments", CommentVisibility.HIDE);
     }
     
     public void test_TwoProgramsOneChannel_In() throws Exception {
@@ -108,7 +104,7 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
           BufferedReader reader = new BufferedReader(new StringReader(script));
           
           List<Annotation> annotations = extractor
-                  .commentDelimiter("#")
+                  .configure("commentDelimiter", "#")
                   .source(reader)
                   .extract()
                   .getAnnotations();

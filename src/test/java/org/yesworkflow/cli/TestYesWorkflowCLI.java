@@ -9,8 +9,7 @@ import java.io.Reader;
 import java.util.List;
 import java.util.Map;
 
-import org.yesworkflow.LanguageModel;
-import org.yesworkflow.LanguageModel.Language;
+import org.yesworkflow.Language;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.cli.ExitCode;
 import org.yesworkflow.cli.YesWorkflowCLI;
@@ -397,13 +396,13 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
         public boolean extracted = false;
  
-        @Override public Extractor languageModel(LanguageModel language) { return this; };
-        @Override public Extractor commentDelimiter(String c) { return this; }
         @Override public Extractor source(Reader reader) { return this; }
         @Override public List<String> getLines() { return null; }
         @Override public List<String> getComments() { return null; }
         @Override public Extractor extract() throws Exception { this.extracted = true; return null; }
         @Override public Language getLanguage() { return null; }
 		@Override public List<Annotation> getAnnotations() { return null; }
+        @Override public MockExtractor configure(Map<String, Object> config) throws Exception { return null; }
+        @Override public Extractor configure(String key, Object value) throws Exception { return null; }
     }
 }

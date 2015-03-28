@@ -3,9 +3,7 @@ package org.yesworkflow.graph;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.StringReader;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.extract.DefaultExtractor;
@@ -20,7 +18,6 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
 	Extractor extractor = null;
     Modeler modeler = null;
     Grapher grapher = null;
-    Map<String,Object> config = null;
     
     static final String TEST_RESOURCE_DIR = "org/yesworkflow/graph/";
     
@@ -30,11 +27,9 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
         extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
         modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
-        config = new HashMap<String,Object>();
         
-        config.put("view", GraphView.COMBINED_VIEW);
-        config.put("comments", CommentVisibility.HIDE);
-        grapher.config(config);
+        grapher.configure("view", GraphView.COMBINED_VIEW)
+               .configure("comments", CommentVisibility.HIDE);
     }
     
     public void testDotGrapher_CombinedView_TwoProgramsOneChannel_InOut() throws Exception {
@@ -55,7 +50,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-        		.commentDelimiter("#")
+                .configure("commentDelimiter", "#")
         		.source(reader)                
                 .extract()
                 .getAnnotations();
@@ -104,7 +99,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .commentDelimiter("#")
+                .configure("commentDelimiter", "#")
                 .source(reader)                
                 .extract()
                 .getAnnotations();
@@ -153,7 +148,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
       
       
       List<Annotation> annotations = extractor
-              .commentDelimiter("#")
+              .configure("commentDelimiter", "#")
     		  .source(reader)
               .extract()
               .getAnnotations();
@@ -204,7 +199,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
       List<Annotation> annotations = extractor
-              .commentDelimiter("#")
+              .configure("commentDelimiter", "#")
               .source(reader)
               .extract()
               .getAnnotations();
@@ -256,7 +251,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
       BufferedReader reader = new BufferedReader(new StringReader(source));
       
       List<Annotation> annotations = extractor
-              .commentDelimiter("#")
+              .configure("commentDelimiter", "#")
               .source(reader)
               .extract()
               .getAnnotations();
@@ -293,7 +288,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
      public void testDotGrapher_CombinedView_SamplePyScript() throws Exception {
          
          List<Annotation> annotations = extractor
-                 .commentDelimiter("#")
+                 .configure("commentDelimiter", "#")
         		 .source(new BufferedReader(new FileReader("src/main/resources/example.py")))
                  .extract()
                  .getAnnotations();
