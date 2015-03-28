@@ -7,6 +7,7 @@ import org.yesworkflow.model.Program;
 
 public interface Grapher extends YWStage {    
     Grapher workflow(Program workflow);
-    DotGrapher config(Map<String, Object> config) throws Exception;
+    DotGrapher configure(String key, Object value) throws Exception;
+    DotGrapher configure(Map<String, Object> config) throws Exception;
     Grapher graph() throws Exception;
 }
