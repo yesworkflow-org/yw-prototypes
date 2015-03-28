@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.yesworkflow.Language;
 import org.yesworkflow.LanguageModel;
-import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.exceptions.YWMarkupException;
@@ -24,7 +24,6 @@ import org.yesworkflow.graph.DotGrapher;
 import org.yesworkflow.graph.Grapher;
 import org.yesworkflow.model.DefaultModeler;
 import org.yesworkflow.model.Modeler;
-import org.yesworkflow.model.Program;
 import org.yesworkflow.model.Workflow;
 
 import joptsimple.OptionException;
@@ -59,6 +58,8 @@ import joptsimple.OptionSet;
  * the output streams used by YesWorkflow to be assigned.</p>
  */
 public class YesWorkflowCLI {
+    
+    private static final String[] ALLOWED_CONFIG_FILE_NAMES = new String[]{".yw", "yw.yaml"};
     
     private PrintStream errStream;
     private PrintStream outStream;    
@@ -175,7 +176,7 @@ public class YesWorkflowCLI {
 
             // load the configuration file
             if (config == null) {
-                config = new YWConfiguration(".yw");
+                config = new YWConfiguration(ALLOWED_CONFIG_FILE_NAMES);
             }
             
             // apply command-line overrides of config file
@@ -352,12 +353,14 @@ public class YesWorkflowCLI {
         	extractor = getSingleFileExtractor(sourceFilePath);
         }
         
+        extractor.configure(config.getSection("extract"));
+        
         if (options.hasArgument("x")) {
-        	extractor.commentDelimiter((String)options.valueOf("x"));
+        	extractor.configure("commentDelimiter", (String)options.valueOf("x"));
         } else {
             Language language = LanguageModel.languageForFileName(sourceFilePath);
             if (language != null) {
-            	extractor.languageModel(new LanguageModel(language));
+            	extractor.configure("language", language);
             } else {
                 throw new YWToolUsageException("Cannot identify language of source file.  Please specify a comment character.");
             }
@@ -417,7 +420,8 @@ public class YesWorkflowCLI {
             modeler = new DefaultModeler(this.outStream, this.errStream);
          }
 
-        workflow =  modeler.annotations(annotations)
+        workflow =  modeler.configure(config.getSection("model"))
+                           .annotations(annotations)
                            .model()
                            .getWorkflow();
     }
@@ -428,7 +432,7 @@ public class YesWorkflowCLI {
             grapher = new DotGrapher(this.outStream, this.errStream);
          }
         
-        String graph = grapher.config(config.getMap("graph"))
+        String graph = grapher.configure(config.getSection("graph"))
                               .workflow(workflow)
                               .graph()
                               .toString();
