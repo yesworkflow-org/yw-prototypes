@@ -6,9 +6,10 @@ import java.io.PrintStream;
 import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import org.yesworkflow.Language;
 import org.yesworkflow.LanguageModel;
-import org.yesworkflow.LanguageModel.Language;
 import org.yesworkflow.YWKeywords;
 import org.yesworkflow.YWKeywords.Tag;
 import org.yesworkflow.annotations.Annotation;
@@ -22,12 +23,14 @@ import org.yesworkflow.annotations.Qualification;
 
 public class DefaultExtractor implements Extractor {
 
+    static private Language DEFAULT_LANGUAGE = Language.GENERIC;
+    
+    private LanguageModel languageModel = new LanguageModel(DEFAULT_LANGUAGE);
     private BufferedReader sourceReader = null;
     private List<String> lines;
     private List<String> comments;
     private List<Annotation> annotations;
     private YWKeywords keywordMapping;
-    private LanguageModel languageModel;
     private KeywordMatcher keywordMatcher;
     
     @SuppressWarnings("unused")
@@ -48,15 +51,28 @@ public class DefaultExtractor implements Extractor {
     }
 
     @Override
-    public DefaultExtractor languageModel(LanguageModel lm) {
-        languageModel = lm;
+    public DefaultExtractor configure(Map<String,Object> config) throws Exception {
+        if (config != null) {
+            for (Map.Entry<String, Object> entry : config.entrySet()) {
+                configure(entry.getKey(), entry.getValue());
+            }
+        }
         return this;
     }
     
     @Override
-    public DefaultExtractor commentDelimiter(String cd) {
-        languageModel = new LanguageModel();
-        languageModel.singleDelimiter(cd);
+    public DefaultExtractor configure(String key, Object value) throws Exception {
+
+        if (key.equalsIgnoreCase("language")) {
+            Language language = Language.toLanguage(value);
+            languageModel = new LanguageModel(language);
+        } else if (key.equalsIgnoreCase("languageModel")) {
+            languageModel = (LanguageModel)value;
+        } else if (key.equalsIgnoreCase("commentDelimiter")) {        
+            languageModel = new LanguageModel();
+            languageModel.singleDelimiter((String)value);
+        }
+        
         return this;
     }
     

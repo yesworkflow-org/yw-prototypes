@@ -1,7 +1,6 @@
 package org.yesworkflow.graph;
 
 import java.io.PrintStream;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +16,11 @@ public class DotGrapher implements Grapher  {
     public static ParamVisibility DEFAULT_PARAM_VISIBILITY = ParamVisibility.LOW;
     
     private Program topWorkflow = null;
-    private GraphView graphView = null;
-    private ParamVisibility paramVisibility;
+    private GraphView graphView = DEFAULT_GRAPH_VIEW;
+    @SuppressWarnings("unused")
+    private ParamVisibility paramVisibility = DEFAULT_PARAM_VISIBILITY;
+    private CommentVisibility commentView = DEFAULT_COMMENT_VISIBILITY;
     private String graphText = null;
-    private CommentVisibility commentView;
-    private Map<String,Object> config = new HashMap<String,Object>();
 
     @SuppressWarnings("unused")
     private GraphFormat graphFormat = null;
@@ -44,12 +43,27 @@ public class DotGrapher implements Grapher  {
     }
     
     @Override
-    public DotGrapher config(Map<String,Object> config) throws Exception {
-        if (config != null) {        
-           this.config = config;
+    public DotGrapher configure(Map<String,Object> config) throws Exception {
+        if (config != null) {
+            for (Map.Entry<String, Object> entry : config.entrySet()) {
+                configure(entry.getKey(), entry.getValue());
+            }
         }
         return this;
     }
+    
+    public DotGrapher configure(String key, Object value) throws Exception {
+        if (key.equalsIgnoreCase("view")) {   
+            graphView = GraphView.toGraphView(value);
+        } else if (key.equalsIgnoreCase("comments")) {
+            commentView = CommentVisibility.toCommentVisibility(value);
+        } else if (key.equalsIgnoreCase("params")) {
+            paramVisibility = ParamVisibility.toParamVisibility(value);
+        }
+        
+        return this;
+    }
+    
     
 	public String toString() {
         return graphText;
@@ -58,8 +72,6 @@ public class DotGrapher implements Grapher  {
     @Override
     public DotGrapher graph() throws Exception {
 
-        applyConfig();
-        
         switch(graphView) {
         
             case PROCESS_CENTRIC_VIEW:
@@ -76,21 +88,6 @@ public class DotGrapher implements Grapher  {
         }
         
         return this;
-    }
-
-    private void applyConfig() throws Exception {
-        
-        Object gv = config.get("view");
-        graphView = (gv != null) ? GraphView.toGraphView(gv) : 
-                                   DEFAULT_GRAPH_VIEW; 
-        
-        Object cv = config.get("comments");
-        commentView = (cv != null) ? CommentVisibility.toCommentVisibility(cv) : 
-                                     DEFAULT_COMMENT_VISIBILITY;
-        
-        Object pv = config.get("params");
-        paramVisibility = (pv != null) ? ParamVisibility.toParamVisibility(pv) : 
-                                         DEFAULT_PARAM_VISIBILITY;
     }
     
     private String renderProcessCentricView() {

@@ -2,6 +2,7 @@ package org.yesworkflow.model;
 
 import java.io.PrintStream;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import org.yesworkflow.annotations.Annotation;
@@ -26,6 +27,21 @@ public class DefaultModeler implements Modeler {
         this.stdoutStream = stdoutStream;
         this.stderrStream = stderrStream;
     }
+    
+    @Override
+    public DefaultModeler configure(Map<String,Object> config) throws Exception {
+        if (config != null) {
+            for (Map.Entry<String, Object> entry : config.entrySet()) {
+                configure(entry.getKey(), entry.getValue());
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public DefaultModeler configure(String key, Object value) throws Exception {
+        return this;
+    }  
     
     @Override
     public Modeler annotations(List<Annotation> annotations) {
@@ -109,5 +125,5 @@ public class DefaultModeler implements Modeler {
             workflowBuilder = parentWorkflowBuilders.isEmpty() ? null : parentWorkflowBuilders.pop();
         } while (workflowBuilder != null);        
         throw new YWMarkupException(messageBuilder.toString());
-    }   
+    }
 }
