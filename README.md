@@ -350,7 +350,7 @@ The remaining arrows are drawn between blocks and represent flow of data between
 
 ##### Override the comment character used in your script
 
-YesWorkflow infers the programming language employed in a script by inspecting the source file extension.  Currently the following extensions and associated comment syntaxes are recognized:
+YesWorkflow infers the programming language employed in a script by inspecting the source file extension.  Currently the following file extensions and associated comment syntaxes are recognized.  Block comments may span multiple consecutive lines.
 
 Language  | Extension | Single-line comments | Block comments
 ----------|----------|----------------------|--------------------
@@ -359,7 +359,7 @@ C         | .c, .h   | `// a comment`       | `/* a comment */`
 C++       | .cpp     | `// a comment`       | `/* a comment */`
 Java      | .java    | `// a comment`       | `/* a comment */`
 MATLAB    | .m       | `% a comment`        | `%{ a comment  %}` or `... a comment ...`
-python    | .py      | `# a comment`        | `''' a comment '''`
+python    | .py      | `# a comment`        | `''' a comment '''` or `""" a comment """`
 R         | .R       | `# a comment`        |
 SAS       | .sas     |                      | `* a comment ;` or `/* a comment */`
 
