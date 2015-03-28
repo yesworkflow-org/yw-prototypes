@@ -24,19 +24,6 @@ import java.util.HashMap;
  */
 public class LanguageModel {
 
-    /** Enumeration of programming languages recognized by YesWorkflow. */
-    public enum Language {
-        BASH,
-        C,
-        CPLUSPLUS,
-        GENERIC,
-        JAVA,
-        MATLAB,
-        PYTHON,
-        R,
-        SAS
-    }
-    
     /** Programming language represented by this model. */
     private final Language language;
     
@@ -65,7 +52,7 @@ public class LanguageModel {
      * associated with the file extension of the provided file name.
      * @param fileName The name of the file from which to infer the language.
      * @return The inferred programming language, or 
-     * {@link org.yesworkflow.LanguageModel.Language Language}.GENERIC
+     * {@link org.yesworkflow.Language Language}.GENERIC
      * if the extension is not recognized.
      */
     public static Language languageForFileName(String fileName) {
@@ -295,6 +282,7 @@ public class LanguageModel {
             case PYTHON:
                 singleDelimiter("#");
                 delimiterPair("\"\"\"", "\"\"\"");
+                delimiterPair("'''", "'''");
                 break;
             
             case R:
