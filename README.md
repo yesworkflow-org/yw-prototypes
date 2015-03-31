@@ -78,7 +78,7 @@ YesWorkflow produces graphical representations that is rendered using Graphviz o
 
 #### 3. Download the YesWorkflow jar file
 
-The YesWorkflow prototype is distributed as a jar (Java archive) file that can be executed using the `java -jar` command.  
+The YesWorkflow prototype is distributed as a jar (Java archive) file that can be executed using the `java -jar` command.
 
 If you will be building YesWorkflow yourself using Maven (see *Instructions for Developers* below) then you may simply use the file `target/yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar` produced by the `mvn package` command.
 
@@ -101,7 +101,6 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
                                 comment lines (default: -)          
     -s, --source [script]     path to source file to analyze        
                                 (default: -)                        
-    -x, --commchar [comment]  comment character                     
      
     ------------------------------------------------------------------------
     $
@@ -244,13 +243,13 @@ This is done by adding `@in` and `@out` comments following the `@begin` comment 
     # @begin MyScript
     # @in x
     # @in y
-    # @out d 
+    # @out d
     script statement
-    script statement  
+    script statement
     script statement
     # a non-YW comment
     script statement
-    script statement  
+    script statement
     script statement
     # @end MyScript
 
@@ -258,13 +257,13 @@ The `@in` and `@out` comments above indicate that the script takes two inputs, `
 
 Multiple YW comments can be placed on the same line.  For example, the example below is equivalent to the one above:
 
-    # @begin MyScript @in x @in y @out d 
+    # @begin MyScript @in x @in y @out d
     script statement
-    script statement  
+    script statement
     script statement
     # a non-YW comment
     script statement
-    script statement  
+    script statement
     script statement
     # @end MyScript
 
@@ -275,11 +274,11 @@ Because variable names are often kept relatively short in scripts, YesWorkflow a
     # @in y @as YCoordinate
     # @out d @as DistanceFromOrigin
     script statement
-    script statement  
+    script statement
     script statement
     # a non-YW comment
     script statement
-    script statement  
+    script statement
     script statement
     # @end MyScript
 
@@ -303,7 +302,7 @@ The YesWorkflow prototype assumes that a script has a single, top-level block of
       # @out xx @as XSquared
       # @out yy @as YSquared
       script statement
-      script statement  
+      script statement
       # @end SquareCoordinates
 
       # @begin SumSquares
@@ -311,13 +310,13 @@ The YesWorkflow prototype assumes that a script has a single, top-level block of
       # @in  yy @as YSquared
       # @out s  @as SumOfSquares
       script statement
-      script statement  
+      script statement
       # @end SumSquares
 
       # @begin TakeSquareRoot
       # @in  s @as SumOfSquares
       # @out d @as DistanceFromOrigin
-      script statement  
+      script statement
       script statement
       # @end TakeSquareRoot
 
@@ -342,7 +341,7 @@ will render your script as a dataflow program and illustrate how data flows from
 ![](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/MyScript.png)
 
 
-Notice that the `@in` and `@out` comments for MyScript (the script as a whole) correspond to the small, empty circles at the left and right sides of the figure, respectively.  The circles on the left are connected by arrows  to the SquareCoordinates block.  These arrows indicate dataflow into the script and are labeled with the aliases for the script `@in` comments, which in turn match the `@in` aliases for the SquareCoordinates block.  
+Notice that the `@in` and `@out` comments for MyScript (the script as a whole) correspond to the small, empty circles at the left and right sides of the figure, respectively.  The circles on the left are connected by arrows  to the SquareCoordinates block.  These arrows indicate dataflow into the script and are labeled with the aliases for the script `@in` comments, which in turn match the `@in` aliases for the SquareCoordinates block.
 
 Similarly, the circle on the far right corresponds to the script `@out` comment, and is connected by an incoming arrow from the TakeSquareRoot block because the MyScript `@out` comment and TakeSquareRoot `@out` comment have matching aliases. This right-most arrow represents flow of data out of the script. 
 
@@ -363,13 +362,13 @@ python    | .py      | `# a comment`        | `''' a comment '''` or `""" a comm
 R         | .R       | `# a comment`        |
 SAS       | .sas     |                      | `* a comment ;` or `/* a comment */`
 
-Support for single-line comments started with a '#' character is assumed if the extension is not one of the above, if the file name has no extension, or if the script code is piped to YesWorkflow via the standard input stream. To manually specify a single-line comment character use the -x option and provide the comment character in double quotes.  For example, to pipe a MATLAB program to YesWorkflow and use the correct comment character you may use the following command on Unix platforms:
+Support for single-line comments started with a `#` character is assumed if the extension is not one of the above, if the file name has no extension, or if the script code is piped to YesWorkflow via the standard input stream. To manually specify a single-line comment character use the `-c extract.comment=` configuration option to provide the comment character in quotes.  For example, to pipe a MATLAB program to YesWorkflow and use the correct comment character you may use the following command on Unix platforms:
 
-    cat myprogram.m | yw graph -x "%" > myprogram.gv
+    cat myprogram.m | yw graph -c extract.comment='%' > myprogram.gv
 
 And on Windows:
 
-    yw graph -x "%" < myprogram.m > myprogram.gv
+    yw graph -c extract.comment='%' < myprogram.m > myprogram.gv
 
 Instructions for developers
 ---------------------------
@@ -393,7 +392,7 @@ JDK 7 and Maven 3 downloads and installation instructions can be found at the fo
 - [http://maven.apache.org/download.cgi](http://maven.apache.org/download.cgi)
 
 
-#### Project directory layout  
+#### Project directory layout
 
 YesWorkflow adopts the default organization of source code, resources, and tests as defined by Maven.  See [maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html](http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) for more information.  The most important directories are listed below:
 
