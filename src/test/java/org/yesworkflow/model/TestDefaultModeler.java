@@ -39,7 +39,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
         		.source(reader)
                 .extract()
                 .getAnnotations();
@@ -62,7 +62,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
         		.source(reader)
                 .extract()
                 .getAnnotations();
@@ -111,7 +111,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
         		.source(reader)
                 .extract()
                 .getAnnotations();
@@ -141,7 +141,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
         		.source(reader)
                 .extract()
                 .getAnnotations();
@@ -173,7 +173,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
         		.source(reader)
         		.extract()
                 .getAnnotations();
@@ -200,7 +200,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        BufferedReader reader = new BufferedReader(new StringReader(source));
        
        List<Annotation> annotations = extractor
-               .configure("commentDelimiter", "#")
+               .configure("comment", "#")
        			.source(reader)
        		    .extract()
                 .getAnnotations();
@@ -239,7 +239,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
         		.source(reader)
                 .extract()
                 .getAnnotations();
@@ -283,7 +283,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
         		.source(reader)
                 .extract()
                 .getAnnotations();
@@ -329,7 +329,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
         		.source(reader)
                 .extract()
                 .getAnnotations();
@@ -360,7 +360,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
                 .source(reader)
                 .extract()
                 .getAnnotations();
@@ -391,7 +391,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
         		.source(reader)
                 .extract()
                 .getAnnotations();
@@ -422,7 +422,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
         		.source(reader)
                 .extract()
                 .getAnnotations();
@@ -478,7 +478,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
                 .source(reader)
                 .extract()
                 .getAnnotations();
@@ -540,7 +540,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
         		.source(reader)
                 .extract()
                 .getAnnotations();
@@ -601,7 +601,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         List<Annotation> annotations = extractor
-                .configure("commentDelimiter", "#")
+                .configure("comment", "#")
         		.source(reader)
                 .extract()
                 .getAnnotations();
@@ -661,7 +661,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        BufferedReader reader = new BufferedReader(new StringReader(source));
 
        List<Annotation> annotations = extractor
-               .configure("commentDelimiter", "#")
+               .configure("comment", "#")
                	.source(reader)
                	.extract()
                	.getAnnotations();
@@ -694,7 +694,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        BufferedReader reader = new BufferedReader(new StringReader(source));
        
        List<Annotation> annotations = extractor
-               .configure("commentDelimiter", "#")
+               .configure("comment", "#")
                	.source(reader)                                         
                	.extract()
                	.getAnnotations();

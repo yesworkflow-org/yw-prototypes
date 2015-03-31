@@ -14,6 +14,7 @@ import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.cli.ExitCode;
 import org.yesworkflow.cli.YesWorkflowCLI;
 import org.yesworkflow.config.YWConfiguration;
+import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.YesWorkflowTestCase;
@@ -37,7 +38,6 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         "                            comment lines (default: -)          "              + EOL +
         "-s, --source [script]     path to source file to analyze        "              + EOL +
         "                            (default: -)                        "              + EOL +
-        "-x, --commchar [comment]  comment character                     "              + EOL +
         ""                                                                              + EOL +
         "------------------------------------------------------------------------"      + EOL;
 
@@ -217,7 +217,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     	Extractor extractor = new DefaultExtractor(stderrStream, stderrStream);
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);        
-        cli.runForArgs(new String[] {"extract", "-x", "#", "-s", TEST_RESOURCE_DIR + "pythonFileLowercase.py"});        
+        cli.runForArgs(new String[] {"extract", "-c", "extract.comment=#", "-s", TEST_RESOURCE_DIR + "pythonFileLowercase.py"});        
         assertEquals(Language.GENERIC, extractor.getLanguage());
     }
     
@@ -285,7 +285,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.extractor(extractor);
     
-        cli.runForArgs(new String[] {"extract", "-x", "%", "-s", TEST_RESOURCE_DIR + "matlabFileLowercaseExtension.m"});
+        cli.runForArgs(new String[] {"extract", "-c", "extract.comment=%", "-s", TEST_RESOURCE_DIR + "matlabFileLowercaseExtension.m"});
         
         assertEquals(Language.GENERIC, extractor.getLanguage());
     }
@@ -350,7 +350,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     }
 
     public void testYesWorkflowCLI_ExamplePy_OutputLines_WithCommentChar() throws Exception{
-    	String[] args = {"extract", "-x", "#", "-s", "src/main/resources/example.py", "-l"};
+    	String[] args = {"extract", "-c", "extract.comment=#", "-s", "src/main/resources/example.py", "-l"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args);
 
@@ -404,5 +404,6 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 		@Override public List<Annotation> getAnnotations() { return null; }
         @Override public MockExtractor configure(Map<String, Object> config) throws Exception { return null; }
         @Override public Extractor configure(String key, Object value) throws Exception { return null; }
+        @Override public DefaultExtractor setLanguageBySource(String path) throws YWToolUsageException { return null; }
     }
 }

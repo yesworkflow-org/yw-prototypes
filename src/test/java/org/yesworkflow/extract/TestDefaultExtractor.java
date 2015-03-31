@@ -132,7 +132,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
     public void testExtract_GetCommentLines_MultipleComments_Slash() throws Exception {
         
         extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
-        extractor.configure("commentDelimiter", "//");
+        extractor.configure("comment", "//");
 
         String source = 
                 "// @begin step   " + EOL +

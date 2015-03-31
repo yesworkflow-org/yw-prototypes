@@ -20,6 +20,7 @@ import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Param;
 import org.yesworkflow.annotations.Qualification;
+import org.yesworkflow.exceptions.YWToolUsageException;
 
 public class DefaultExtractor implements Extractor {
 
@@ -51,6 +52,18 @@ public class DefaultExtractor implements Extractor {
     }
 
     @Override
+    public DefaultExtractor setLanguageBySource(String sourceFilePath) throws YWToolUsageException {
+    
+        Language language = LanguageModel.languageForFileName(sourceFilePath);
+        if (language != null) {
+            languageModel = new LanguageModel(language);
+        } else {
+            throw new YWToolUsageException("Cannot identify language of source file.");
+        }
+        return this;
+    }
+
+    @Override
     public DefaultExtractor configure(Map<String,Object> config) throws Exception {
         if (config != null) {
             for (Map.Entry<String, Object> entry : config.entrySet()) {
@@ -68,7 +81,7 @@ public class DefaultExtractor implements Extractor {
             languageModel = new LanguageModel(language);
         } else if (key.equalsIgnoreCase("languageModel")) {
             languageModel = (LanguageModel)value;
-        } else if (key.equalsIgnoreCase("commentDelimiter")) {        
+        } else if (key.equalsIgnoreCase("comment")) {        
             languageModel = new LanguageModel();
             languageModel.singleDelimiter((String)value);
         }

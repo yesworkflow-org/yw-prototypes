@@ -104,7 +104,7 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
           BufferedReader reader = new BufferedReader(new StringReader(script));
           
           List<Annotation> annotations = extractor
-                  .configure("commentDelimiter", "#")
+                  .configure("comment", "#")
                   .source(reader)
                   .extract()
                   .getAnnotations();

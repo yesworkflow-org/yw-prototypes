@@ -12,8 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.yesworkflow.Language;
-import org.yesworkflow.LanguageModel;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.exceptions.YWMarkupException;
@@ -293,11 +291,6 @@ public class YesWorkflowCLI {
 
         parser = new OptionParser() {{
 
-            acceptsAll(asList("x", "commchar"), "comment character")
-        		.withOptionalArg()
-        		.ofType(String.class)
-        		.describedAs("comment");
-
             acceptsAll(asList("s", "source"), "path to source file to analyze")
                 .withOptionalArg()
                 .defaultsTo("-")
@@ -354,18 +347,7 @@ public class YesWorkflowCLI {
         }
         
         extractor.configure(config.getSection("extract"));
-        
-        if (options.hasArgument("x")) {
-        	extractor.configure("commentDelimiter", (String)options.valueOf("x"));
-        } else {
-            Language language = LanguageModel.languageForFileName(sourceFilePath);
-            if (language != null) {
-            	extractor.configure("language", language);
-            } else {
-                throw new YWToolUsageException("Cannot identify language of source file.  Please specify a comment character.");
-            }
-        }
-        
+                
         extractor.extract();
 
         if (options.has("l")) {
@@ -406,7 +388,9 @@ public class YesWorkflowCLI {
         } else {
            extractor = new DefaultExtractor(this.outStream, this.errStream);
         }
-        
+
+        extractor.setLanguageBySource(sourcePath);
+
     	BufferedReader reader = getFileReaderForPath(sourcePath);
     	extractor.source(reader);
     	
