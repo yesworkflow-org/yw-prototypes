@@ -14,12 +14,14 @@ public class DotGrapher implements Grapher  {
     public static GraphView DEFAULT_GRAPH_VIEW = GraphView.PROCESS_CENTRIC_VIEW;
     public static CommentVisibility DEFAULT_COMMENT_VISIBILITY = CommentVisibility.HIDE;
     public static ParamVisibility DEFAULT_PARAM_VISIBILITY = ParamVisibility.LOW;
+    public static LayoutDirection DEFAULT_LAYOUT_DIRECTION = LayoutDirection.LEFT_TO_RIGHT;
     
     private Program topWorkflow = null;
     private GraphView graphView = DEFAULT_GRAPH_VIEW;
     @SuppressWarnings("unused")
     private ParamVisibility paramVisibility = DEFAULT_PARAM_VISIBILITY;
     private CommentVisibility commentView = DEFAULT_COMMENT_VISIBILITY;
+    private LayoutDirection layoutDirection = DEFAULT_LAYOUT_DIRECTION;
     private String graphText = null;
 
     @SuppressWarnings("unused")
@@ -53,12 +55,14 @@ public class DotGrapher implements Grapher  {
     }
     
     public DotGrapher configure(String key, Object value) throws Exception {
-        if (key.equalsIgnoreCase("view")) {   
+        if (key.equalsIgnoreCase("view")) { 
             graphView = GraphView.toGraphView(value);
         } else if (key.equalsIgnoreCase("comments")) {
             commentView = CommentVisibility.toCommentVisibility(value);
         } else if (key.equalsIgnoreCase("params")) {
             paramVisibility = ParamVisibility.toParamVisibility(value);
+        } else if (key.equalsIgnoreCase("layout")) {
+            layoutDirection = LayoutDirection.toLayoutDirection(value);
         }
         
         return this;
@@ -72,30 +76,31 @@ public class DotGrapher implements Grapher  {
     @Override
     public DotGrapher graph() throws Exception {
 
+        DotBuilder dotBuilder = new DotBuilder();
+        
+        dotBuilder.beginGraph()
+                  .rankDir(layoutDirection == LayoutDirection.LEFT_TO_RIGHT ? "LR" : "TB")
+                  .enableComments(commentView == CommentVisibility.SHOW);
+        
         switch(graphView) {
         
             case PROCESS_CENTRIC_VIEW:
-                this.graphText = renderProcessCentricView();
+                this.graphText = renderProcessCentricView(dotBuilder);
                 break;
             
             case DATA_CENTRIC_VIEW:
-                this.graphText = renderDataCentricView();
+                this.graphText = renderDataCentricView(dotBuilder);
                 break;
             
             case COMBINED_VIEW:
-                this.graphText = renderCombinedView();
+                this.graphText = renderCombinedView(dotBuilder);
                 break;
         }
         
         return this;
     }
     
-    private String renderProcessCentricView() {
-
-	    DotBuilder dot = new DotBuilder();
-		
-		dot.beginGraph()
-		   .enableComments(commentView == CommentVisibility.SHOW);
+    private String renderProcessCentricView(DotBuilder dot) {
 		
         dot.comment("Use serif font for process labels and sans serif font for data labels");
 		dot.graphFont("Courier")
@@ -209,12 +214,7 @@ public class DotGrapher implements Grapher  {
         return false;
     }
 
-    private String renderDataCentricView() {
-
-        DotBuilder dot = new DotBuilder();
-        
-        dot.beginGraph()
-           .enableComments(commentView == CommentVisibility.SHOW);
+    private String renderDataCentricView(DotBuilder dot) {
 
         dot.comment("Use serif font for process labels and sans serif font for data labels");
         dot.graphFont("Courier")
@@ -253,12 +253,7 @@ public class DotGrapher implements Grapher  {
         return dot.toString();
     }
     
-    private String renderCombinedView() {
-
-        DotBuilder dot = new DotBuilder();
-        
-        dot.beginGraph()
-           .enableComments(commentView == CommentVisibility.SHOW);
+    private String renderCombinedView(DotBuilder dot) {
 
         dot.comment("Use serif font for process labels");
         dot.graphFont("Courier")

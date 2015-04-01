@@ -24,11 +24,13 @@ public class DotBuilder {
     private boolean commentsEnabled = true;
 
 	public DotBuilder beginGraph() {
-	    
-		_buffer.append(	"digraph Workflow {" + EOL )
-		       .append( "rankdir=LR"         + EOL );
-
+		_buffer.append(	"digraph Workflow {" + EOL );
 		return this;
+	}
+
+	public DotBuilder rankDir(String rankdir) {
+        _buffer.append( "rankdir=" + rankdir + EOL );
+	    return this;
 	}
 	
     public DotBuilder enableComments(boolean state) {
