@@ -49,7 +49,7 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
     }
 
     public void test_OneProgram_TwoChannels_OneInOneOut_VerticalLayout() throws Exception {  
-        grapher.configure("layout", LayoutDirection.TOP_TO_BOTTOM);
+        grapher.configure("layout", LayoutDirection.TB);
         String src = "oneProgram_TwoChannels_OneInOneOut";
         assertEquals(expectedGraph("oneProgram_TwoChannels_OneInOneOut_VerticalLayout"), actualGraph(src));
         assertEquals("", stderrBuffer.toString());

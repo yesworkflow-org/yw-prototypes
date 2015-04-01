@@ -14,7 +14,8 @@ public class DotGrapher implements Grapher  {
     public static GraphView DEFAULT_GRAPH_VIEW = GraphView.PROCESS_CENTRIC_VIEW;
     public static CommentVisibility DEFAULT_COMMENT_VISIBILITY = CommentVisibility.HIDE;
     public static ParamVisibility DEFAULT_PARAM_VISIBILITY = ParamVisibility.LOW;
-    public static LayoutDirection DEFAULT_LAYOUT_DIRECTION = LayoutDirection.LEFT_TO_RIGHT;
+    public static LayoutDirection DEFAULT_LAYOUT_DIRECTION = LayoutDirection.LR;
+    public static WorkflowBoxMode DEFAULT_WORKFLOW_BOX_MODE = WorkflowBoxMode.SHOW;
     
     private Program topWorkflow = null;
     private GraphView graphView = DEFAULT_GRAPH_VIEW;
@@ -22,6 +23,7 @@ public class DotGrapher implements Grapher  {
     private ParamVisibility paramVisibility = DEFAULT_PARAM_VISIBILITY;
     private CommentVisibility commentView = DEFAULT_COMMENT_VISIBILITY;
     private LayoutDirection layoutDirection = DEFAULT_LAYOUT_DIRECTION;
+    private WorkflowBoxMode workflowBoxMode = DEFAULT_WORKFLOW_BOX_MODE;
     private String graphText = null;
 
     @SuppressWarnings("unused")
@@ -63,6 +65,8 @@ public class DotGrapher implements Grapher  {
             paramVisibility = ParamVisibility.toParamVisibility(value);
         } else if (key.equalsIgnoreCase("layout")) {
             layoutDirection = LayoutDirection.toLayoutDirection(value);
+        } else if (key.equalsIgnoreCase("workflowbox")) {
+            workflowBoxMode = WorkflowBoxMode.toWorkflowBoxMode(value);
         }
         
         return this;
@@ -79,8 +83,9 @@ public class DotGrapher implements Grapher  {
         DotBuilder dotBuilder = new DotBuilder();
         
         dotBuilder.beginGraph()
-                  .rankDir(layoutDirection == LayoutDirection.LEFT_TO_RIGHT ? "LR" : "TB")
-                  .enableComments(commentView == CommentVisibility.SHOW);
+                  .rankDir(layoutDirection.toString())
+                  .enableComments(commentView == CommentVisibility.SHOW)
+                  .showClusterBox(workflowBoxMode == WorkflowBoxMode.SHOW);
         
         switch(graphView) {
         

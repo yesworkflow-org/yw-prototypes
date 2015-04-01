@@ -22,7 +22,8 @@ public class DotBuilder {
     private boolean newNodeStyle = true;
     private Double width = null;
     private boolean commentsEnabled = true;
-
+    private boolean showClusterBox = true;
+    
 	public DotBuilder beginGraph() {
 		_buffer.append(	"digraph Workflow {" + EOL );
 		return this;
@@ -37,7 +38,12 @@ public class DotBuilder {
         commentsEnabled = state;
         return this;
     }
-	
+
+    public DotBuilder showClusterBox(boolean show) {
+        showClusterBox = show;
+        return this;
+    }
+    
     public DotBuilder comment(String c) {
         
         if (commentsEnabled) {
@@ -66,6 +72,13 @@ public class DotBuilder {
                .append(     EOL                 )
                .append(     "fontsize=18"       )
                .append(     EOL                 );
+        
+        if (!showClusterBox) {
+            
+            _buffer.append(     "color="            )
+                   .append(     dq("white")         )
+                   .append(     EOL                 );
+        }
         
         name = "cluster" + subgraphCount++;
         
