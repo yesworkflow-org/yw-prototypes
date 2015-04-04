@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -187,20 +188,22 @@ public class YesWorkflowCLI {
             }
 
             // extract YesWorkflow command from arguments
-            String command = extractCommandFromOptions();
+            String command = extractCommandFromFirstNonOptionArgument();
             if (command == null) {
                 throw new YWToolUsageException("ERROR: No command provided to YesWorkflow");
             }
 
+            List<String> sourceFiles = extractSourceFileNamesFromRemainingArguments();
+            
             // run just the extractor if extract command given
             if (command.equals("extract")) {
-                extract();
+                extract(sourceFiles);
                 return ExitCode.SUCCESS;
             }
 
             // run extractor, modeler, and grapher if extract command given
             if (command.equals("graph")) {
-                extract();
+                extract(sourceFiles);
                 model();
                 graph();
                 return ExitCode.SUCCESS;
@@ -275,27 +278,26 @@ public class YesWorkflowCLI {
         }
     }
     
-    private String extractCommandFromOptions() throws YWToolUsageException {
-
+    private String extractCommandFromFirstNonOptionArgument() throws YWToolUsageException {
         if (options.nonOptionArguments().size() == 0) {
             throw new YWToolUsageException("ERROR: Command must be first non-option argument to YesWorkflow");
         }
-
-        // if there is only one non-option argument assume this is the command to YesWorkflow
         return (String) options.nonOptionArguments().get(0);
     }
 
+    private List<String> extractSourceFileNamesFromRemainingArguments() throws YWToolUsageException {
+        List<String> sourceFilePaths = new LinkedList<String>();
+        for (int i = 1; i < options.nonOptionArguments().size(); ++i) {
+            sourceFilePaths.add((String) options.nonOptionArguments().get(i));
+        }
+        return sourceFilePaths;
+    }
+    
     private OptionParser createOptionsParser() throws Exception {
 
         OptionParser parser = null;
 
         parser = new OptionParser() {{
-
-            acceptsAll(asList("s", "source"), "path to source file to analyze")
-                .withOptionalArg()
-                .defaultsTo("-")
-                .ofType(String.class)
-                .describedAs("script");
 
             acceptsAll(asList("g", "graph"), "path to graphviz dot file for storing rendered workflow graph")
                 .withOptionalArg()
@@ -335,15 +337,17 @@ public class YesWorkflowCLI {
     }
 
     
-    private void extract() throws Exception {
+    private void extract(List<String> sourceFiles) throws Exception {
     	
-    	Extractor extractor;
+    	Extractor extractor = null;
 
-    	String sourceFilePath = (String) options.valueOf("s");    	
-        if (sourceFilePath.equals("-")) {
+    	if (sourceFiles.size() == 0 || 
+    	        (sourceFiles.size() == 1 && sourceFiles.get(0).equals("-"))) {
         	extractor = getStdinExtractor();
+        } else if (sourceFiles.size() == 1 ) {
+        	extractor = getSingleFileExtractor(sourceFiles.get(0));
         } else {
-        	extractor = getSingleFileExtractor(sourceFilePath);
+            throw new YWToolUsageException("YW does not support multiple input source files.");
         }
         
         extractor.configure(config.getSection("extract"));
