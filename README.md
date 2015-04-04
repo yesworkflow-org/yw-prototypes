@@ -99,8 +99,6 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
     -h, --help                display help                          
     -l, --lines [lines file]  path to file for saving extracted     
                                 comment lines (default: -)          
-    -s, --source [script]     path to source file to analyze        
-                                (default: -)                        
      
     ------------------------------------------------------------------------
     $
@@ -130,7 +128,7 @@ The [`example.py`](https://raw.githubusercontent.com/yesworkflow-org/yw-prototyp
 
 First, use the YesWorkflow `extract` command and `-l` option to list the YW commands found in the script:
 
-    $ yw extract -s example.py -l
+    $ yw extract example.py -l
     @begin main
     @in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file
     @in NEE_first_year.nc @as input_data_file
@@ -161,7 +159,7 @@ This command is useful for confirming that YesWorkflow is finding the comments t
 
 Next, use the `graph` command to produce a graphical representations of the script based on the YW comments it contains.  YesWorkflow natively outputs GraphViz's DOT format (file extension `.gv`).  If you don't provide a file name for storing the DOT output it will be sent to the terminal:
 
-    $ yw graph -s example.py
+    $ yw graph example.py
     digraph Workflow {
     rankdir=LR
     graph[fontname=Courier]
@@ -196,7 +194,7 @@ Next, use the `graph` command to produce a graphical representations of the scri
 
 You can save the DOT output to a file, render it as PDF file using Graphviz's `dot` command, then open the PDF file to view the diagram:
 
-    $ yw graph -s example.py > example.gv
+    $ yw graph example.py > example.gv
     $ dot -Tpdf example.gv -o example.pdf
     $ open example.pdf
 
@@ -206,11 +204,11 @@ On Windows platforms the last line above should be replaced with:
 
 Alternatively, you can pipe `yw` into `dot` and open the graphics file immediately (here using png rather than PDF).  In the case of bash running on Unix platforms:
 
-    $ yw graph -s example.py | dot -Tpng -o example.png && open example.png
+    $ yw graph example.py | dot -Tpng -o example.png && open example.png
 
 And on Windows platforms:
 
-    $ yw graph -s example.py | dot -Tpng -o example.png && start example.png
+    $ yw graph example.py | dot -Tpng -o example.png && start example.png
 
 #### 6. Mark up and analyze your own script
 
@@ -330,11 +328,11 @@ The `@begin`, `@end`, `@in`, `@out`, and `@as` keywords have the same meaning fo
 
 At this point you may analyze your script and render it graphically, just as we did above for `example.py`.  If your script is called `MyScript.py` then the command (for Unix platforms):
 
-    $ yw graph -s MyScript.py | dot -Tpng -o MyScript.png && open MyScript.png
+    $ yw graph MyScript.py | dot -Tpng -o MyScript.png && open MyScript.png
 
 or (for Windows platforms):
 
-    $ yw graph -s MyScript.py  | dot -Tpng -o MyScript.png && start MyScript.png
+    $ yw graph MyScript.py | dot -Tpng -o MyScript.png && start MyScript.png
 
 will render your script as a dataflow program and illustrate how data flows from script inputs, into successive computational blocks, and finally to script outputs.  For the example above, YesWorkflow produces this:
 
