@@ -27,7 +27,7 @@
     # @out sampleId
     # @out energy
     # @out frameNumber
-    # @out rawImage @uri file:data/{name}/images/raw/{energy}/image_{frame}.raw
+    # @out rawImage @uri file:data/{sampleId}/images/raw/{energy}/image_{frameNumber}.raw
     # @end CollectDataSet
 
     # @begin TransformImage
@@ -35,7 +35,7 @@
     # @param energy
     # @param frameNumber
     # @in rawImage
-    # @out correctedImage @uri file:data/{id}/image_{eV}_{frameNumber}.img
+    # @out correctedImage @uri file:data/{sampleId}/image_{energy}_{frameNumber}.img
     # @end TransformImage
 
     # @begin LogAverageImageIntensity
