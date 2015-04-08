@@ -1,0 +1,63 @@
+digraph Workflow {
+rankdir=TB
+graph[fontname=Courier]
+node[fontname=Courier]
+node[shape=box3d style="filled" fillcolor="#CCFFCC" peripheries=1 label=""]
+node1 [label="load_screening_results"]
+node2 [label="calculate_strategy"]
+node3 [label="collect_data_set"]
+node4 [label="transform_image"]
+node5 [label="log_average_image_intensity"]
+node6 [label="log_rejected_sample"]
+node[fontname=Helvetica]
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 label=""]
+node7 [label="corrected_image"]
+node8 [label="collection_log"]
+node9 [label="rejection_log"]
+node10 [label="cassette_id"]
+node11 [label="spreadsheet_file"]
+node12 [label="sample_score_cutoff"]
+node13 [label="sample_name"]
+node14 [label="sample_quality"]
+node15 [label="accepted_sample"]
+node16 [label="num_images"]
+node17 [label="energies"]
+node18 [label="sample_id"]
+node19 [label="energy"]
+node20 [label="frame_number"]
+node21 [label="calibration_image"]
+node22 [label="raw_image"]
+node23 [label="rejected_sample"]
+node1 -> node13
+node1 -> node14
+node10 -> node1
+node11 -> node1
+node2 -> node15
+node2 -> node23
+node2 -> node16
+node2 -> node17
+node12 -> node2
+node13 -> node2
+node14 -> node2
+node3 -> node18
+node3 -> node19
+node3 -> node20
+node3 -> node22
+node15 -> node3
+node16 -> node3
+node17 -> node3
+node4 -> node7
+node18 -> node4
+node19 -> node4
+node20 -> node4
+node21 -> node4
+node22 -> node4
+node5 -> node8
+node10 -> node5
+node7 -> node5
+node18 -> node5
+node20 -> node5
+node6 -> node9
+node10 -> node6
+node23 -> node6
+}
