@@ -2,6 +2,8 @@ import csv
 import sys
 import math
 import os
+import time
+from datetime import datetime
 
 """
 @begin simulate_data_collection
@@ -83,12 +85,13 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                 @out frame_number
                 @out raw_image @uri file:raw/{sample_id}/e{energy}/image_{frame_number}.raw            
                 """
-                run_log.write("Collecting data for sample {0}".format(accepted_sample))
+                run_log.write("Collecting data set for sample {0}".format(accepted_sample))
                 sample_id = accepted_sample
                 for energy, frame_number, intensity in collect_next_frame(num_images, energies):
 
                     raw_image_directory = 'raw/{0}/e{1}/'.format(sample_id, energy)
                     raw_image_name = 'image_{0:03d}.raw'.format(frame_number)
+                    run_log.write("Collecting image {0}".format(raw_image_name))
                     with new_image_file(raw_image_directory, raw_image_name) as raw_image:
                         raw_image.write_values(10 * [intensity])
                         """ @end collect_data_set """
@@ -153,12 +156,11 @@ class run_logger:
         return self
         
     def write(self, message):
-        if (self.log_file is not None):
-            self.log_file.write(message)
-            self.log_file.write('\n')
-        if (self.terminal is not None):
-            self.terminal.write(message)
-            self.terminal.write('\n')
+        current_time = time.time()
+        timestamp = datetime.fromtimestamp(current_time).strftime('%Y-%m-%d %H:%M:%S')
+        log_message = "{0} {1}\n".format(timestamp, message)
+        for log in (self.log_file, self.terminal): 
+            log.write(log_message)
 
     def __exit__(self, type, value, traceback):
         if self.log_file is not None:
