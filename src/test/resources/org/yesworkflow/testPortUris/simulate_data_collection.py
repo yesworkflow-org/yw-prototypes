@@ -11,21 +11,22 @@ from datetime import datetime
 @param sample_score_cutoff
 @in sample_spreadsheet @uri file:cassette_{}_spreadsheet.csv
 @in calibration_image  @uri file:calibration.img 
-@out corrected_image   @uri file:data/{}/{}_{}eV_{}.img
-@out run_log           @uri file:run_log.txt
-@out collection_log    @uri file:collected_images.csv
-@out rejection_log     @uri file:rejected_samples.txt
+@out corrected_image   @uri file:run/data/{}/{}_{}eV_{}.img
+@out run_log           @uri file:run/run_log.txt
+@out collection_log    @uri file:run/collected_images.csv
+@out rejection_log     @uri file:run/rejected_samples.txt
 """
 
 def simulate_data_collection(cassette_id, sample_score_cutoff):
 
-    with run_logger(log_file_name="run_log.txt") as run_log:
+    os.makedirs('run')
+    with run_logger(log_file_name="run/run_log.txt") as run_log:
     
         run_log.write("Processing samples in cassette " + cassette_id)
         run_log.write("Sample quality cutoff:" + str(sample_score_cutoff))
 
-        with open('rejected_samples.txt', 'wt') as rejection_log, \
-             open('collected_images.csv', 'wt') as collection_log_file:
+        with open('run/rejected_samples.txt', 'wt') as rejection_log, \
+             open('run/collected_images.csv', 'wt') as collection_log_file:
             collection_log = csv.writer(collection_log_file)
             collection_log.writerow(['cassette', 'sample', 'energy', 'average intensity', 
                                      'file'])
@@ -66,7 +67,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                 @begin log_rejected_sample 
                 @param cassette_id 
                 @param rejected_sample
-                @out rejection_log @uri file:/{cassette_id}/rejected_samples.txt
+                @out rejection_log @uri file:/run/rejected_samples.txt
                 """
                 if (rejected_sample is not None):
                     run_log.write("Rejected sample {0}".format(rejected_sample))
@@ -83,13 +84,13 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                 @out sample_id 
                 @out energy 
                 @out frame_number
-                @out raw_image @uri file:raw/{sample_id}/e{energy}/image_{frame_number}.raw            
+                @out raw_image @uri file:run/raw/{sample_id}/e{energy}/image_{frame_number}.raw            
                 """
                 run_log.write("Collecting data set for sample {0}".format(accepted_sample))
                 sample_id = accepted_sample
                 for energy, frame_number, intensity in collect_next_frame(num_images, energies):
 
-                    raw_image_directory = 'raw/{0}/e{1}/'.format(sample_id, energy)
+                    raw_image_directory = 'run/raw/{0}/e{1}/'.format(sample_id, energy)
                     raw_image_name = 'image_{0:03d}.raw'.format(frame_number)
                     run_log.write("Collecting image {0}".format(raw_image_name))
                     with new_image_file(raw_image_directory, raw_image_name) as raw_image:
@@ -108,7 +109,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                     @out total_intensity
                     @out pixel_count
                     """
-                    corrected_image_directory = 'data/{0}'.format(sample_id)
+                    corrected_image_directory = 'run/data/{0}'.format(sample_id)
                     corrected_image_name = '{0}_{1}eV_{2:03d}.img'.format(sample_id,energy, frame_number)
                     with open(raw_image_directory + "/" + raw_image_name, 'rt') as raw_image, \
                          open("calibration.img", 'rt') as calibration_image, \
@@ -124,6 +125,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                             corrected_image.write(corrected_value)
                             total_intensity += corrected_value
                             pixel_count += 1
+                        run_log.write("Wrote transformed image {0}".format(corrected_image_name))
                     """ @end transform_image """
 
                     """
@@ -134,7 +136,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                     @in total_intensity
                     @in pixel_count
                     @in corrected_image_name
-                    @out collection_log @uri file:collected_images.csv
+                    @out collection_log @uri file:run/collected_images.csv
                     """
                     average_intensity = total_intensity / pixel_count
                     collection_log.writerow([cassette_id, sample_id, energy, 
@@ -170,8 +172,9 @@ class run_logger:
         current_time = time.time()
         timestamp = datetime.fromtimestamp(current_time).strftime('%Y-%m-%d %H:%M:%S')
         log_message = "{0} {1}\n".format(timestamp, message)
-        for log in (self.log_file, self.terminal): 
-            log.write(log_message)
+        for log in (self.log_file, self.terminal):
+            if (log is not None):
+                log.write(log_message)
 
     def __exit__(self, type, value, traceback):
         if self.log_file is not None:
@@ -202,7 +205,7 @@ class new_image_file:
         self.image_file.close()
 
 if __name__ == '__main__':
-    cassette_id = sys.argv[1]
-    sample_score_cutoff = int(sys.argv[2])
+    cassette_id = 'q55'
+    sample_score_cutoff = 12
     simulate_data_collection(cassette_id, sample_score_cutoff)
     
