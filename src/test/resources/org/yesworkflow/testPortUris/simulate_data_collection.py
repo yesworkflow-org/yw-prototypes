@@ -9,12 +9,12 @@ from datetime import datetime
 @begin simulate_data_collection
 @param cassette_id 
 @param sample_score_cutoff
-@in sample_spreadsheet 
-@in calibration_image
-@out corrected_image
-@out run_log @uri run_log.txt
-@out collection_log
-@out rejection_log
+@in sample_spreadsheet @uri file:cassette_{}_spreadsheet.csv
+@in calibration_image  @uri file:calibration.img 
+@out corrected_image   @uri file:data/{}/{}_{}eV_{}.img
+@out run_log           @uri file:run_log.txt
+@out collection_log    @uri file:collected_images.csv
+@out rejection_log     @uri file:rejected_samples.txt
 """
 
 def simulate_data_collection(cassette_id, sample_score_cutoff):
@@ -25,14 +25,15 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
         run_log.write("Sample quality cutoff:" + str(sample_score_cutoff))
 
         with open('rejected_samples.txt', 'wt') as rejection_log, \
-             open('collected_images.txt', 'wt') as collection_log_file:
+             open('collected_images.csv', 'wt') as collection_log_file:
             collection_log = csv.writer(collection_log_file)
-            collection_log.writerow(['cassette', 'sample', 'energy', 'frame', 'file'])
+            collection_log.writerow(['cassette', 'sample', 'energy', 'average intensity', 
+                                     'file'])
 
             """
             @begin load_screening_results
             @param cassette_id
-            @in sample_spreadsheet @uri file:cassette_{cassette_id}_spreadsheet.csv
+            @in sample_spreadsheet  @uri file:cassette_{cassette_id}_spreadsheet.csv
             @out sample_name 
             @out sample_quality
             """
@@ -65,8 +66,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                 @begin log_rejected_sample 
                 @param cassette_id 
                 @param rejected_sample
-                @out rejection_log 
-                @uri file:/{cassette_id}/rejected_samples.txt
+                @out rejection_log @uri file:/{cassette_id}/rejected_samples.txt
                 """
                 if (rejected_sample is not None):
                     run_log.write("Rejected sample {0}".format(rejected_sample))
@@ -101,9 +101,12 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                     @param sample_id 
                     @param energy 
                     @param frame_number
-                    @in calibration_image @uri file:calibration.img 
                     @in raw_image
-                    @out corrected_image @uri file:data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img
+                    @in calibration_image @uri file:calibration.img 
+                    @out corrected_image  @uri file:data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img
+                    @out corrected_image_name
+                    @out total_intensity
+                    @out pixel_count
                     """
                     corrected_image_directory = 'data/{0}'.format(sample_id)
                     corrected_image_name = '{0}_{1}eV_{2:03d}.img'.format(sample_id,energy, frame_number)
@@ -111,11 +114,16 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                          open("calibration.img", 'rt') as calibration_image, \
                          new_image_file(corrected_image_directory, corrected_image_name) as corrected_image:
                     
+                        pixel_count = 0
+                        total_intensity = 0
                         for line in raw_image:
                             raw_value = int(line)
                             correction = int(calibration_image.readline())
-                            corrected_value = raw_value - correction    
+                            adjusted_value = raw_value - correction
+                            corrected_value = adjusted_value if adjusted_value >= 0 else 0
                             corrected_image.write(corrected_value)
+                            total_intensity += corrected_value
+                            pixel_count += 1
                     """ @end transform_image """
 
                     """
@@ -123,11 +131,14 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                     @param cassette_id 
                     @param sample_id 
                     @param frame_number
-                    @in corrected_image
-                    @out collection_log 
-                    @uri file:/{cassette_id}/collectedImages.txt
+                    @in total_intensity
+                    @in pixel_count
+                    @in corrected_image_name
+                    @out collection_log @uri file:collected_images.csv
                     """
-                    collection_log.writerow([cassette_id, sample_id, energy, frame_number, corrected_image.name()])
+                    average_intensity = total_intensity / pixel_count
+                    collection_log.writerow([cassette_id, sample_id, energy, 
+                                            average_intensity, corrected_image_name ])
                     """ @end log_average_image_intensity """
     
     """

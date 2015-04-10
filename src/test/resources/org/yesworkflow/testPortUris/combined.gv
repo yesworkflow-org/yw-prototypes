@@ -26,8 +26,11 @@ node18 [label="energies"]
 node19 [label="sample_id"]
 node20 [label="energy"]
 node21 [label="frame_number"]
-node22 [label="calibration_image"]
-node23 [label="raw_image"]
+node22 [label="raw_image"]
+node23 [label="calibration_image"]
+node24 [label="total_intensity"]
+node25 [label="pixel_count"]
+node26 [label="corrected_image_name"]
 node1 -> node13
 node1 -> node14
 node10 -> node1
@@ -45,11 +48,14 @@ node15 -> node3
 node4 -> node19
 node4 -> node20
 node4 -> node21
-node4 -> node23
+node4 -> node22
 node16 -> node4
 node17 -> node4
 node18 -> node4
 node5 -> node7
+node5 -> node26
+node5 -> node24
+node5 -> node25
 node19 -> node5
 node20 -> node5
 node21 -> node5
@@ -59,5 +65,7 @@ node6 -> node8
 node10 -> node6
 node19 -> node6
 node21 -> node6
-node7 -> node6
+node24 -> node6
+node25 -> node6
+node26 -> node6
 }
