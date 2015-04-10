@@ -58,7 +58,8 @@ import joptsimple.OptionSet;
  */
 public class YesWorkflowCLI {
     
-    private static final String[] ALLOWED_CONFIG_FILE_NAMES = new String[]{".yw", "yw.yaml"};
+    private static final String[] ALLOWED_PROPERTY_FILE_NAMES = 
+                                    new String[]{".yw", "yw.properties"};
     
     private PrintStream errStream;
     private PrintStream outStream;    
@@ -175,7 +176,7 @@ public class YesWorkflowCLI {
 
             // load the configuration file
             if (config == null) {
-                config = new YWConfiguration(ALLOWED_CONFIG_FILE_NAMES);
+                config = new YWConfiguration(ALLOWED_PROPERTY_FILE_NAMES);
             }
             
             // apply command-line overrides of config file

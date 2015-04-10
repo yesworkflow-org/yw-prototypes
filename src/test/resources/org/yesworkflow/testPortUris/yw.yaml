@@ -1,6 +1,0 @@
-
-
-graph:
-  view: combined
-  layout: tb
-  dotfile: combined.gv

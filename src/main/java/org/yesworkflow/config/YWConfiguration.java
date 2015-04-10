@@ -1,13 +1,13 @@
 package org.yesworkflow.config;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.FileReader;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
-import org.yaml.snakeyaml.Yaml;
 import org.yesworkflow.exceptions.YWToolUsageException;
 
 @SuppressWarnings("serial")
@@ -17,17 +17,20 @@ public class YWConfiguration extends HashMap<String,Object> {
     }
 
     public YWConfiguration(String... paths) throws Exception {
-        
         for (String path : paths) {
-            File yamlFile = new File(path);
-            if(yamlFile.exists()) {
-                InputStream input = new FileInputStream(yamlFile);
-                Yaml yaml = new Yaml();
-                @SuppressWarnings("unchecked")
-                Map<String,Object> yamlDefinedMap = (Map<String, Object>) yaml.load(input);
-                putAll(yamlDefinedMap);
+            File configFile = new File(path);
+            if(configFile.exists()) {
+                applyConfigProperties(new FileReader(configFile));
                 break;
             }
+        }
+    }
+
+    public void applyConfigProperties(Reader reader) throws Exception {
+        Properties properties = new Properties();
+        properties.load(reader);
+        for (Map.Entry<Object, Object> entry: properties.entrySet()) {
+            applyConfigOption((String) entry.getKey(), (String) entry.getValue());
         }
     }
     
@@ -35,6 +38,12 @@ public class YWConfiguration extends HashMap<String,Object> {
         for (Object option : options) {
             applyConfigOption((String) option);
         }
+    }
+
+    public void applyConfigOption(String name, String value) {
+        System.out.println(name + " = " + value);
+        ConfigAddress address = configurationAddress(name, true);
+        address.table.put(address.key, value);
     }
     
     public void applyConfigOption(String option) throws YWToolUsageException {
@@ -54,7 +63,7 @@ public class YWConfiguration extends HashMap<String,Object> {
         return address == null ? null : (String)address.table.get(address.key);
     }
     
-    public class ConfigAddress {
+    private class ConfigAddress {
         String key;
         Map<String,Object> table;
     }
