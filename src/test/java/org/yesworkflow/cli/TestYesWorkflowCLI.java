@@ -24,20 +24,18 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     static final String TEST_RESOURCE_DIR = "src/test/resources/org/yesworkflow/testYesWorkflowCLI/";
 
     private static String EXPECTED_HELP_OUTPUT =
-        ""                                                                              + EOL +
-        "---------------------- YesWorkflow usage summary -----------------------"      + EOL +
-        ""                                                                              + EOL +
-        "Option                    Description                           "              + EOL +
-        "------                    -----------                           "              + EOL +
-        "-c, --config <key=value>  key-valued configuration value        "              + EOL +
-        "                            assignment                          "              + EOL +
-        "-g, --graph [dot file]    path to graphviz dot file for storing "              + EOL +
-        "                            rendered workflow graph (default: -)"              + EOL +
-        "-h, --help                display help                          "              + EOL +
-        "-l, --lines [lines file]  path to file for saving extracted     "              + EOL +
-        "                            comment lines (default: -)          "              + EOL +
-        ""                                                                              + EOL +
-        "------------------------------------------------------------------------"      + EOL;
+        ""                                                                          + EOL +
+        "---------------------- YesWorkflow usage summary -----------------------"  + EOL +
+        ""                                                                          + EOL +
+        "Option                    Description                      "               + EOL +
+        "------                    -----------                      "               + EOL +
+        "-c, --config <key=value>  key-valued configuration value   "               + EOL +
+        "                            assignment                     "               + EOL +
+        "-h, --help                display help                     "               + EOL +
+        "-l, --lines [lines file]  path to file for saving extracted"               + EOL +
+        "                            comment lines (default: -)     "               + EOL +
+        ""                                                                          + EOL +
+        "------------------------------------------------------------------------"  + EOL;
 
     @Override
     public void setUp() throws Exception {
@@ -380,7 +378,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_Graph_ExamplePy_ProcessGraph() throws Exception {
 
-        String[] args = {"graph", "src/main/resources/example.py", "-g"};
+        String[] args = {"graph", "src/main/resources/example.py"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args);
 

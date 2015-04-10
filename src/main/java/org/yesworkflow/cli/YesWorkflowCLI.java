@@ -179,7 +179,7 @@ public class YesWorkflowCLI {
             }
             
             // apply command-line overrides of config file
-            applyConfigOptions(config, options.valuesOf("c"));
+            config.applyConfigOptions(options.valuesOf("c"));
                     
             // print help and exit if requested
             if (options.has("h")) {
@@ -246,38 +246,6 @@ public class YesWorkflowCLI {
         errStream.println("------------------------------------------------------------------------");
     }
     
-    
-    @SuppressWarnings("unchecked")
-    private void applyConfigOptions(YWConfiguration config, List<?> configurationOptions) throws YWToolUsageException {
-        
-        for (Object configOptionObject : configurationOptions) {
-            String configOptionString = (String) configOptionObject;
-            int indexOfFirstEquals = configOptionString.indexOf("=");
-            if (indexOfFirstEquals == -1) {
-                throw new YWToolUsageException(
-                    "Configuration options should be key-value pairs separated by equal signs.");
-            } else {
-                String configName = configOptionString.substring(0, indexOfFirstEquals);
-                String configValue = configOptionString.substring(indexOfFirstEquals + 1);
-                String[] configNameParts = configName.split("\\.");
-                Map<String, Object> configTableToUpdate = config;
-                if (configNameParts.length > 0) {
-                    for (int i = 0; i < configNameParts.length - 1; ++i) {
-                        String partName = configNameParts[i];
-                        Object tableObject =  configTableToUpdate.get(partName);
-                        if (tableObject == null) {
-                            tableObject = new HashMap<String,Object>();
-                            configTableToUpdate.put(partName, tableObject);
-                        }
-                        configTableToUpdate = (Map<String, Object>)tableObject;
-                    }
-                }
-                String terminalPartName = configNameParts[configNameParts.length - 1];
-                configTableToUpdate.put(terminalPartName, configValue);
-            }
-        }
-    }
-    
     private String extractCommandFromFirstNonOptionArgument() throws YWToolUsageException {
         if (options.nonOptionArguments().size() == 0) {
             throw new YWToolUsageException("ERROR: Command must be first non-option argument to YesWorkflow");
@@ -298,12 +266,6 @@ public class YesWorkflowCLI {
         OptionParser parser = null;
 
         parser = new OptionParser() {{
-
-            acceptsAll(asList("g", "graph"), "path to graphviz dot file for storing rendered workflow graph")
-                .withOptionalArg()
-                .defaultsTo("-")
-                .ofType(String.class)
-                .describedAs("dot file");
 
             acceptsAll(asList("l", "lines"), "path to file for saving extracted comment lines")
                 .withOptionalArg()
@@ -425,9 +387,20 @@ public class YesWorkflowCLI {
                               .graph()
                               .toString();
 
-        writeTextToOptionNamedFile("g", graph);
+        writeTextToConfigNamedFile("graph.dotfile", graph);
     }
 
+    private void writeTextToConfigNamedFile(String configuration, String text) throws IOException {        
+        String path = config.getConfigOptionValue(configuration);
+        PrintStream stream = (path == null || path.equals("-")) ?
+                             outStream : new PrintStream(path);
+        stream.print(text);
+        if (stream != outStream) {
+            stream.close();
+        }
+    }
+
+    
     private void writeTextToOptionNamedFile(String option, String text) throws IOException {
         String path = (String) options.valueOf(option);
         PrintStream linesOutputStream = (path.equals("-")) ? outStream : new PrintStream(path);

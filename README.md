@@ -87,19 +87,17 @@ Otherwise download the latest automatically built jar from the build server.  Na
 Once you have obtained the YesWorkflow jar, save the file in a convenient location.   YesWorkflow can now be run using the `java -jar` command.  Test that the jar works correctly using the `--help` option to display the command line options for YesWorkflow:
 
     $ java -jar yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar --help
-
+    
     ---------------------- YesWorkflow usage summary -----------------------
     
-    Option                    Description                           
-    ------                    -----------                           
-    -c, --config <key=value>  key-valued configuration value        
-                                assignment                          
-    -g, --graph [dot file]    path to graphviz dot file for storing 
-                                rendered workflow graph (default: -)
-    -h, --help                display help                          
-    -l, --lines [lines file]  path to file for saving extracted     
-                                comment lines (default: -)          
-     
+    Option                    Description                      
+    ------                    -----------                      
+    -c, --config <key=value>  key-valued configuration value   
+                                assignment                     
+    -h, --help                display help                     
+    -l, --lines [lines file]  path to file for saving extracted
+                                comment lines (default: -)     
+    
     ------------------------------------------------------------------------
     $
 
