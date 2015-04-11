@@ -16,6 +16,8 @@ import org.yesworkflow.exceptions.YWToolUsageException;
 @SuppressWarnings("serial")
 public class YWConfiguration extends HashMap<String,Object> {
 
+    public static String EMPTY_VALUE = "";
+    
     public YWConfiguration() throws Exception {        
     }
 
@@ -52,19 +54,19 @@ public class YWConfiguration extends HashMap<String,Object> {
     }
 
     public void applyConfigOption(String name, String value) {
-        System.out.println(name + " = " + value);
         ConfigAddress address = configurationAddress(name, true);
         address.table.put(address.key, value);
     }
     
     public void applyConfigOption(String option) throws YWToolUsageException {
         String[] optionParts = option.split("=");
-        if (optionParts.length != 2) {
+        if (optionParts.length > 2) {
             throw new YWToolUsageException(
                 "Configuration options should be key-value pairs separated by equal signs.");
         }
+        
         String name = optionParts[0];
-        String value = optionParts[1];
+        String value = (optionParts.length == 2) ? optionParts[1] : EMPTY_VALUE;
         ConfigAddress address = configurationAddress(name, true);
         address.table.put(address.key, value);
     }

@@ -390,20 +390,11 @@ public class YesWorkflowCLI {
 
     
     private void writeTextToFileOrStdout(String path, String text) throws IOException {        
-        PrintStream stream = (path == null || path.equals("-")) ?
+        PrintStream stream = (path == null || path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
                              outStream : new PrintStream(path);
         stream.print(text);
         if (stream != outStream) {
             stream.close();
         }
-    }
-    
-    private void writeTextToOptionNamedFile(String option, String text) throws IOException {
-        String path = (String) options.valueOf(option);
-        PrintStream linesOutputStream = (path.equals("-")) ? outStream : new PrintStream(path);
-        linesOutputStream.print(text);
-        if (linesOutputStream != outStream) {
-            linesOutputStream.close();
-        }
-    }
+    }    
 }

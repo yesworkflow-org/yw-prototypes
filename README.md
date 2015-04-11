@@ -95,8 +95,6 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
     -c, --config <key=value>  key-valued configuration value   
                                 assignment                     
     -h, --help                display help                     
-    -l, --lines [lines file]  path to file for saving extracted
-                                comment lines (default: -)     
     
     ------------------------------------------------------------------------
     $
@@ -124,9 +122,9 @@ The [`example.py`](https://raw.githubusercontent.com/yesworkflow-org/yw-prototyp
 
 ##### Extracting YW comment lines
 
-First, use the YesWorkflow `extract` command and `-l` option to list the YW commands found in the script:
+First, use the YesWorkflow `extract` command and `-c extract.listing` option to list the YW commands found in the script:
 
-    $ yw extract example.py -l
+    $ yw extract example.py -c extract.listing
     @begin main
     @in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file
     @in NEE_first_year.nc @as input_data_file
