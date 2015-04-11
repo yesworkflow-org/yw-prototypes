@@ -8,10 +8,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.config.YWConfiguration;
@@ -58,9 +56,9 @@ import joptsimple.OptionSet;
  */
 public class YesWorkflowCLI {
     
-    private static final String[] ALLOWED_PROPERTY_FILE_NAMES = 
-                                    new String[]{".yw", "yw.properties"};
-    
+    private static final String PROPERTY_FILE_NAME = "yw.properties";
+    private static final String YAML_FILE_NAME = "yw.yaml";
+       
     private PrintStream errStream;
     private PrintStream outStream;    
     private OptionSet options = null;
@@ -176,7 +174,8 @@ public class YesWorkflowCLI {
 
             // load the configuration file
             if (config == null) {
-                config = new YWConfiguration(ALLOWED_PROPERTY_FILE_NAMES);
+                config = YWConfiguration.fromYamlFile(YAML_FILE_NAME);
+                config.applyPropertyFile(PROPERTY_FILE_NAME);
             }
             
             // apply command-line overrides of config file
@@ -268,12 +267,6 @@ public class YesWorkflowCLI {
 
         parser = new OptionParser() {{
 
-            acceptsAll(asList("l", "lines"), "path to file for saving extracted comment lines")
-                .withOptionalArg()
-                .defaultsTo("-")
-                .ofType(String.class)
-                .describedAs("lines file");
-            
             acceptsAll(asList("c", "config"), "key-valued configuration value assignment")
                 .withRequiredArg()
                 .ofType(String.class)
@@ -317,15 +310,14 @@ public class YesWorkflowCLI {
                 
         extractor.extract();
 
-        if (options.has("l")) {
-
+        String commentListingPath = config.getConfigOptionValue("extract.listing");
+        if (commentListingPath != null) {
             StringBuffer linesBuffer = new StringBuffer();
             for (String line : extractor.getLines()) {
                 linesBuffer.append(line);
                 linesBuffer.append(System.getProperty("line.separator"));
             }
-
-            writeTextToOptionNamedFile("l", linesBuffer.toString());
+            writeTextToFileOrStdout(commentListingPath, linesBuffer.toString());
         }
         
         @SuppressWarnings("unused")
@@ -393,6 +385,11 @@ public class YesWorkflowCLI {
 
     private void writeTextToConfigNamedFile(String configuration, String text) throws IOException {        
         String path = config.getConfigOptionValue(configuration);
+        writeTextToFileOrStdout(path, text);
+    }
+
+    
+    private void writeTextToFileOrStdout(String path, String text) throws IOException {        
         PrintStream stream = (path == null || path.equals("-")) ?
                              outStream : new PrintStream(path);
         stream.print(text);
@@ -400,7 +397,6 @@ public class YesWorkflowCLI {
             stream.close();
         }
     }
-
     
     private void writeTextToOptionNamedFile(String option, String text) throws IOException {
         String path = (String) options.valueOf(option);

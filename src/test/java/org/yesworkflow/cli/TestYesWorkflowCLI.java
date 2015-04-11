@@ -27,13 +27,11 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         ""                                                                          + EOL +
         "---------------------- YesWorkflow usage summary -----------------------"  + EOL +
         ""                                                                          + EOL +
-        "Option                    Description                      "               + EOL +
-        "------                    -----------                      "               + EOL +
-        "-c, --config <key=value>  key-valued configuration value   "               + EOL +
-        "                            assignment                     "               + EOL +
-        "-h, --help                display help                     "               + EOL +
-        "-l, --lines [lines file]  path to file for saving extracted"               + EOL +
-        "                            comment lines (default: -)     "               + EOL +
+        "Option                    Description                   "                  + EOL +
+        "------                    -----------                   "                  + EOL +
+        "-c, --config <key=value>  key-valued configuration value"                  + EOL +
+        "                            assignment                  "                  + EOL +
+        "-h, --help                display help                  "                  + EOL +
         ""                                                                          + EOL +
         "------------------------------------------------------------------------"  + EOL;
 
@@ -315,7 +313,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_Extract_ExamplePy_OutputLines() throws Exception {
 
-        String[] args = {"extract", "src/main/resources/example.py", "-l"};
+        String[] args = {"extract", "src/main/resources/example.py", 
+                         "-c", "extract.listing=-"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args);
 
@@ -346,7 +345,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     }
 
     public void testYesWorkflowCLI_ExamplePy_OutputLines_WithCommentChar() throws Exception{
-    	String[] args = {"extract", "-c", "extract.comment=#", "src/main/resources/example.py", "-l"};
+    	String[] args = {"extract", "-c", "extract.comment=#", "src/main/resources/example.py", 
+    	                 "-c", "extract.listing=-"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args);
 
