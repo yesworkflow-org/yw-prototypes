@@ -194,6 +194,12 @@ public class YesWorkflowCLI {
             }
 
             List<String> sourceFiles = extractSourceFileNamesFromRemainingArguments();
+            if (sourceFiles.isEmpty()) {
+                String sourceFile = config.getConfigOptionValue("source.file");
+                if (sourceFile != null && !sourceFile.isEmpty()) {
+                    sourceFiles.add(sourceFile);
+                }                
+            }
             
             // run just the extractor if extract command given
             if (command.equals("extract")) {
