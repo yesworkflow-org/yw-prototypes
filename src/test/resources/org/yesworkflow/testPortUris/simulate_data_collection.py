@@ -9,7 +9,7 @@ from datetime import datetime
 @begin simulate_data_collection
 @param cassette_id 
 @param sample_score_cutoff
-@in sample_spreadsheet @uri file:cassette_{}_spreadsheet.csv
+@in sample_spreadsheet @uri file:cassette_{cassette_id}_spreadsheet.csv
 @in calibration_image  @uri file:calibration.img 
 @out corrected_image   @uri file:run/data/{}/{}_{}eV_{}.img
 @out run_log           @uri file:run/run_log.txt
@@ -78,19 +78,20 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
     
                 """ 
                 @begin collect_data_set
+                @param cassette_id 
                 @param accepted_sample 
                 @param num_images 
                 @param energies
                 @out sample_id 
                 @out energy 
                 @out frame_number
-                @out raw_image @uri file:run/raw/{sample_id}/e{energy}/image_{frame_number}.raw            
+                @out raw_image @uri file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw            
                 """
                 run_log.write("Collecting data set for sample {0}".format(accepted_sample))
                 sample_id = accepted_sample
                 for energy, frame_number, intensity in collect_next_frame(num_images, energies):
 
-                    raw_image_directory = 'run/raw/{0}/e{1}/'.format(sample_id, energy)
+                    raw_image_directory = 'run/raw/{0}/{1}/e{2}/'.format(cassette_id, sample_id, energy)
                     raw_image_name = 'image_{0:03d}.raw'.format(frame_number)
                     run_log.write("Collecting image {0}".format(raw_image_name))
                     with new_image_file(raw_image_directory, raw_image_name) as raw_image:

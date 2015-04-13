@@ -1,24 +1,18 @@
 digraph Workflow {
 rankdir=TB
 node[shape=circle style="filled" fillcolor="#FFFFFF" peripheries=1 label="" width=0.2]
-subgraph cluster0 { label="" color="white"
-subgraph cluster1 { label="" color="white"
 node1
 node2
 node3
 node4
-}}
-subgraph cluster2 { label="" color="white"
-subgraph cluster3 { label="" color="white"
 node5
 node6
 node7
-}}
-subgraph cluster4 {
+subgraph cluster0 {
 label=""
 penwidth=2
 fontsize=18
-subgraph cluster5 {
+subgraph cluster1 {
 label=""
 color="white"
 graph[fontname=Courier]
@@ -70,6 +64,7 @@ node11 -> node26
 node11 -> node27
 node11 -> node28
 node11 -> node29
+node17 -> node11
 node23 -> node11
 node24 -> node11
 node25 -> node11
