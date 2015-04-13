@@ -57,10 +57,42 @@ public class DotBuilder {
         return this;
     }
 
+    public DotBuilder beginSubgraph() {
+        return beginSubgraph("");
+    }
+    
+    public DotBuilder beginHiddenSubgraph() {
+        
+        String name = "cluster" + subgraphCount++;
+                
+        _buffer.append(     "subgraph "         )
+               .append(     name                )
+               .append(     " {"                )
+               .append(     " label="           )
+               .append(     dq("")              )
+               .append(     " color="           )
+               .append(     dq("white")         )
+               .append(     EOL                 );
+            
+        name = "cluster" + subgraphCount++;
+        
+        _buffer.append(     "subgraph "         )
+               .append(     name                )
+               .append(     " {"                )
+               .append(     " label="           )
+               .append(     dq("")              )
+               .append(     " color="           )
+               .append(     dq("white")         )
+               .append(     EOL                 );
+
+        return this;
+    }
+    
+
     public DotBuilder beginSubgraph(String label) {
         
         String name = "cluster" + subgraphCount++;
-        
+                
         _buffer.append(     "subgraph "         )
                .append(     name                )
                .append(     " {"                )
@@ -79,7 +111,7 @@ public class DotBuilder {
                    .append(     dq("white")         )
                    .append(     EOL                 );
         }
-        
+            
         name = "cluster" + subgraphCount++;
         
         _buffer.append(     "subgraph "         )
@@ -93,6 +125,12 @@ public class DotBuilder {
                .append(     dq("white")         )
                .append(     EOL                 );
 
+        return this;
+    }
+    
+    
+   public DotBuilder endSubgraph() {
+        _buffer .append(    "}}" + EOL       );
         return this;
     }
 		
@@ -148,7 +186,7 @@ public class DotBuilder {
 		
 		_buffer	.append(      id			   );
 		
-		if (label != null) {
+		if (label != null && !label.isEmpty()) {
 		    _buffer.append(	  " [label="	   )
 				   .append(	   dq(label)	   )				
 				   .append(	   "]"             );
@@ -159,6 +197,7 @@ public class DotBuilder {
 		return this;
 	}
 
+    
     public DotBuilder edge(String fromNode, String toNode) {
         return edge(fromNode, toNode, null);
     }
@@ -240,12 +279,6 @@ public class DotBuilder {
         
         newNodeStyle = false;
 	}
-
-	
-   public DotBuilder endSubraph() {
-        _buffer .append(    "}}" + EOL       );
-        return this;
-    }
 
 	public DotBuilder endGraph() {
 		_buffer	.append(	"}" + EOL		);
