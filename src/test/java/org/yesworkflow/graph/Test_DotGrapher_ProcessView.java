@@ -14,14 +14,14 @@ import org.yesworkflow.model.Modeler;
 import org.yesworkflow.model.Workflow;
 import org.yesworkflow.YesWorkflowTestCase;
 
-public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
+public class Test_DotGrapher_ProcessView extends YesWorkflowTestCase {
 
 	Extractor extractor = null;
     Modeler modeler = null;
     Grapher grapher = null;
     Map<String,Object> config = null;
     
-    static final String TEST_RESOURCE_DIR = "src/test/resources/org/yesworkflow/graph/";
+    static final String TEST_RESOURCE_DIR = "src/test/resources/org/yesworkflow/graph/TestDotGrapher_ProcessView/";
     
     @Override
     public void setUp() throws Exception {
@@ -81,8 +81,8 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
             stderrBuffer.toString());
     }
   
-    public void test_OneProgram__TwoChannels_OneInOneOut_ExtraOut() throws Exception {
-        String src = "oneProgram__TwoChannels_OneInOneOut_ExtraOut";
+    public void test_OneProgram_TwoChannels_OneInOneOut_ExtraOut() throws Exception {
+        String src = "oneProgram_TwoChannels_OneInOneOut_ExtraOut";
         assertEquals(expectedGraph(src), actualGraph(src));      
         assertEquals(
             "WARNING: No nested @out port and no workflow @in port for nested @in 'c' on 'script'" + EOL,

@@ -1,0 +1,11 @@
+# @begin script
+
+    # @begin program0
+    # @out channel
+    # @end program0
+
+    # @begin program1
+    # @in channel
+    # @end program1
+
+# @end script
