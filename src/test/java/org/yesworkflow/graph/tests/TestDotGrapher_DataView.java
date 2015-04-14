@@ -1,4 +1,4 @@
-package org.yesworkflow.graph;
+package org.yesworkflow.graph.tests;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,6 +10,10 @@ import java.util.Map;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
+import org.yesworkflow.graph.CommentVisibility;
+import org.yesworkflow.graph.DotGrapher;
+import org.yesworkflow.graph.GraphView;
+import org.yesworkflow.graph.Grapher;
 import org.yesworkflow.model.DefaultModeler;
 import org.yesworkflow.model.Modeler;
 import org.yesworkflow.model.Workflow;
