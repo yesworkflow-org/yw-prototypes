@@ -19,130 +19,134 @@ from datetime import datetime
 
 def simulate_data_collection(cassette_id, sample_score_cutoff):
 
+    """
+    @begin initialize_run
+    @out run_log  @uri file:run/run_log.txt
+    """
     os.makedirs('run')
     with run_logger(log_file_name="run/run_log.txt") as run_log:
-    
         run_log.write("Processing samples in cassette " + cassette_id)
         run_log.write("Sample quality cutoff:" + str(sample_score_cutoff))
+        """
+        @end initialize_run
+        """
 
-        with open('run/rejected_samples.txt', 'wt') as rejection_log, \
-             open('run/collected_images.csv', 'wt') as collection_log_file:
-            collection_log = csv.writer(collection_log_file)
-            collection_log.writerow(['cassette', 'sample', 'energy', 'average intensity', 
-                                     'file'])
+        """     
+        @begin load_screening_results
+        @param cassette_id
+        @in sample_spreadsheet  @uri file:cassette_{cassette_id}_spreadsheet.csv
+        @out sample_name 
+        @out sample_quality
+        """
+        sample_spreadsheet = 'cassette_{0}_spreadsheet.csv'.format(cassette_id)
+        for sample_name, sample_quality in spreadsheet_rows(sample_spreadsheet):
+            run_log.write("Sample {0} had score of {1}".format(sample_name, sample_quality))
+            """ @end load_screening_results """
 
             """
-            @begin load_screening_results
-            @param cassette_id
-            @in sample_spreadsheet  @uri file:cassette_{cassette_id}_spreadsheet.csv
-            @out sample_name 
-            @out sample_quality
+            @begin calculate_strategy
+            @param sample_score_cutoff
+            @in sample_name 
+            @in sample_quality
+            @out accepted_sample 
+            @out rejected_sample 
+            @out num_images 
+            @out energies
             """
-            sample_spreadsheet = 'cassette_{0}_spreadsheet.csv'.format(cassette_id)
-            for sample_name, sample_quality in spreadsheet_rows(sample_spreadsheet):
-                run_log.write("Sample {0} had score of {1}".format(sample_name, sample_quality))
-                """ @end load_screening_results """
-
-                """
-                @begin calculate_strategy
-                @param sample_score_cutoff
-                @in sample_name 
-                @in sample_quality
-                @out accepted_sample 
-                @out rejected_sample 
-                @out num_images 
-                @out energies
-                """
-                if sample_quality >= sample_score_cutoff: 
-                    accepted_sample = sample_name
-                    rejected_sample = None
-                    num_images = sample_quality + 2
-                    energies = [10000, 11000, 12000, 13000, 14000][:sample_quality/sample_score_cutoff]
-                else:
-                    accepted_sample = None
-                    rejected_sample = sample_name            
-                """ @end calculate_strategy """
-        
-                """
-                @begin log_rejected_sample 
-                @param cassette_id 
-                @param rejected_sample
-                @out rejection_log @uri file:/run/rejected_samples.txt
-                """
-                if (rejected_sample is not None):
-                    run_log.write("Rejected sample {0}".format(rejected_sample))
+            if sample_quality >= sample_score_cutoff: 
+                accepted_sample = sample_name
+                rejected_sample = None
+                num_images = sample_quality + 2
+                energies = [10000, 11000, 12000, 13000, 14000][:sample_quality/sample_score_cutoff]
+            else:
+                accepted_sample = None
+                rejected_sample = sample_name            
+            """ @end calculate_strategy """
+    
+            """
+            @begin log_rejected_sample 
+            @param cassette_id 
+            @param rejected_sample
+            @out rejection_log @uri file:/run/rejected_samples.txt
+            """
+            if (rejected_sample is not None):
+                run_log.write("Rejected sample {0}".format(rejected_sample))
+                with open('run/rejected_samples.txt', 'at') as rejection_log:
                     rejection_log.write("Rejected sample {0} in cassette {1}\n"
                                         .format(rejected_sample, cassette_id))
-                    continue
-                """ @end log_rejected_sample """
+                continue
+            """ @end log_rejected_sample """
+
+            """ 
+            @begin collect_data_set
+            @param cassette_id 
+            @param accepted_sample 
+            @param num_images 
+            @param energies
+            @out sample_id 
+            @out energy 
+            @out frame_number
+            @out raw_image @uri file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw            
+            """
+            run_log.write("Collecting data set for sample {0}".format(accepted_sample))
+            sample_id = accepted_sample
+            for energy, frame_number, intensity in collect_next_frame(num_images, energies):
+
+                raw_image_directory = 'run/raw/{0}/{1}/e{2}/'.format(cassette_id, sample_id, energy)
+                raw_image_name = 'image_{0:03d}.raw'.format(frame_number)
+                run_log.write("Collecting image {0}".format(raw_image_name))
+                with new_image_file(raw_image_directory, raw_image_name) as raw_image:
+                    raw_image.write_values(10 * [intensity])
+                    """ @end collect_data_set """
     
-                """ 
-                @begin collect_data_set
-                @param cassette_id 
-                @param accepted_sample 
-                @param num_images 
-                @param energies
-                @out sample_id 
-                @out energy 
-                @out frame_number
-                @out raw_image @uri file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw            
                 """
-                run_log.write("Collecting data set for sample {0}".format(accepted_sample))
-                sample_id = accepted_sample
-                for energy, frame_number, intensity in collect_next_frame(num_images, energies):
+                @begin transform_image
+                @param sample_id 
+                @param energy 
+                @param frame_number
+                @in raw_image
+                @in calibration_image @uri file:calibration.img 
+                @out corrected_image  @uri file:data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img
+                @out corrected_image_name
+                @out total_intensity
+                @out pixel_count
+                """
+                corrected_image_directory = 'run/data/{0}'.format(sample_id)
+                corrected_image_name = '{0}_{1}eV_{2:03d}.img'.format(sample_id,energy, frame_number)
+                with open(raw_image_directory + "/" + raw_image_name, 'rt') as raw_image, \
+                     open("calibration.img", 'rt') as calibration_image, \
+                     new_image_file(corrected_image_directory, corrected_image_name) as corrected_image:
+                
+                    pixel_count = 0
+                    total_intensity = 0
+                    for line in raw_image:
+                        raw_value = int(line)
+                        correction = int(calibration_image.readline())
+                        adjusted_value = raw_value - correction
+                        corrected_value = adjusted_value if adjusted_value >= 0 else 0
+                        corrected_image.write(corrected_value)
+                        total_intensity += corrected_value
+                        pixel_count += 1
+                    run_log.write("Wrote transformed image {0}".format(corrected_image_name))
+                """ @end transform_image """
 
-                    raw_image_directory = 'run/raw/{0}/{1}/e{2}/'.format(cassette_id, sample_id, energy)
-                    raw_image_name = 'image_{0:03d}.raw'.format(frame_number)
-                    run_log.write("Collecting image {0}".format(raw_image_name))
-                    with new_image_file(raw_image_directory, raw_image_name) as raw_image:
-                        raw_image.write_values(10 * [intensity])
-                        """ @end collect_data_set """
-        
-                    """
-                    @begin transform_image
-                    @param sample_id 
-                    @param energy 
-                    @param frame_number
-                    @in raw_image
-                    @in calibration_image @uri file:calibration.img 
-                    @out corrected_image  @uri file:data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img
-                    @out corrected_image_name
-                    @out total_intensity
-                    @out pixel_count
-                    """
-                    corrected_image_directory = 'run/data/{0}'.format(sample_id)
-                    corrected_image_name = '{0}_{1}eV_{2:03d}.img'.format(sample_id,energy, frame_number)
-                    with open(raw_image_directory + "/" + raw_image_name, 'rt') as raw_image, \
-                         open("calibration.img", 'rt') as calibration_image, \
-                         new_image_file(corrected_image_directory, corrected_image_name) as corrected_image:
-                    
-                        pixel_count = 0
-                        total_intensity = 0
-                        for line in raw_image:
-                            raw_value = int(line)
-                            correction = int(calibration_image.readline())
-                            adjusted_value = raw_value - correction
-                            corrected_value = adjusted_value if adjusted_value >= 0 else 0
-                            corrected_image.write(corrected_value)
-                            total_intensity += corrected_value
-                            pixel_count += 1
-                        run_log.write("Wrote transformed image {0}".format(corrected_image_name))
-                    """ @end transform_image """
-
-                    """
-                    @begin log_average_image_intensity
-                    @param cassette_id 
-                    @param sample_id 
-                    @param frame_number
-                    @in total_intensity
-                    @in pixel_count
-                    @in corrected_image_name
-                    @out collection_log @uri file:run/collected_images.csv
-                    """
-                    average_intensity = total_intensity / pixel_count
+                """
+                @begin log_average_image_intensity
+                @param cassette_id 
+                @param sample_id 
+                @param frame_number
+                @in total_intensity
+                @in pixel_count
+                @in corrected_image_name
+                @out collection_log @uri file:run/collected_images.csv
+                """
+                average_intensity = total_intensity / pixel_count
+                with open('run/collected_images.csv', 'at') as collection_log_file:            
+                    collection_log = csv.writer(collection_log_file)
+                    #collection_log.writerow(['cassette', 'sample', 'energy', 'average intensity', 'file'])
                     collection_log.writerow([cassette_id, sample_id, energy, 
-                                            average_intensity, corrected_image_name ])
-                    """ @end log_average_image_intensity """
+                                        average_intensity, corrected_image_name ])
+                """ @end log_average_image_intensity """
     
     """
     @end simulate_data_collection    
