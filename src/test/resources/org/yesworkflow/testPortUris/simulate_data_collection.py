@@ -23,7 +23,9 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
     @begin initialize_run
     @out run_log  @uri file:run/run_log.txt
     """
-    os.makedirs('run')
+    if not os.path.exists('run'):
+        os.makedirs('run')
+
     with run_logger(log_file_name="run/run_log.txt") as run_log:
         run_log.write("Processing samples in cassette " + cassette_id)
         run_log.write("Sample quality cutoff:" + str(sample_score_cutoff))
@@ -143,7 +145,6 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                 average_intensity = total_intensity / pixel_count
                 with open('run/collected_images.csv', 'at') as collection_log_file:            
                     collection_log = csv.writer(collection_log_file)
-                    #collection_log.writerow(['cassette', 'sample', 'energy', 'average intensity', 'file'])
                     collection_log.writerow([cassette_id, sample_id, energy, 
                                         average_intensity, corrected_image_name ])
                 """ @end log_average_image_intensity """
