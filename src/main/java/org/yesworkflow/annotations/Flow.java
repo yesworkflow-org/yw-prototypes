@@ -2,10 +2,30 @@ package org.yesworkflow.annotations;
 
 public abstract class Flow extends AliasableAnnotation {
     	
+    protected Uri uri;
+    
     public Flow(String comment, String expectedTag) throws Exception {
     	super(comment, expectedTag);    	
     }
 	
+    @Override
+    public Flow qualifyWith(Qualification qualification) throws Exception {
+        
+        if (qualification instanceof Uri) {
+            this.uri = (Uri)qualification;
+            appendDescription(qualification.description);
+        } else {
+            super.qualifyWith(qualification);
+        }
+        
+        return this;
+    }
+
+    public Uri uri() {
+        return uri;
+    }
+
+    
     @Override
     public String toString() {
         

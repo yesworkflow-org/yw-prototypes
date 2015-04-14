@@ -25,7 +25,8 @@ public class YWKeywords {
         END,
         IN,
         OUT,
-        PARAM
+        PARAM,
+        URI
     }
     
     /** Definition of the standard keyword for the AS tag. */
@@ -46,6 +47,8 @@ public class YWKeywords {
     /** Definition of the standard keyword for the PARAM tag. */
     public static final String STANDARD_PARAM_KEYWORD           = "@param";
 
+    /** Definition of the standard keyword for the URI tag. */
+    public static final String STANDARD_URI_KEYWORD             = "@uri";
     
     /** Backing for one-to-one mapping from tag to standard keyword */
     private Map<Tag,String> standardkeywordForTag = new HashMap<Tag,String>();
@@ -61,6 +64,7 @@ public class YWKeywords {
         setStandardKeyword(    STANDARD_IN_KEYWORD,     Tag.IN      );
         setStandardKeyword(    STANDARD_OUT_KEYWORD,    Tag.OUT     );
         setStandardKeyword(    STANDARD_PARAM_KEYWORD,  Tag.PARAM   );
+        setStandardKeyword(    STANDARD_URI_KEYWORD,    Tag.URI     );
     }
 
     /** Constructor that assigns alternative keywords to one more tags in addition

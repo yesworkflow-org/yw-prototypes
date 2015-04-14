@@ -20,6 +20,7 @@ import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Param;
 import org.yesworkflow.annotations.Qualification;
+import org.yesworkflow.annotations.Uri;
 import org.yesworkflow.exceptions.YWToolUsageException;
 
 public class DefaultExtractor implements Extractor {
@@ -169,6 +170,7 @@ public class DefaultExtractor implements Extractor {
                 case OUT:   annotation = new Out(s);    break;
                 case AS:    annotation = new As(s);		break;
                 case PARAM: annotation = new Param(s);  break;
+                case URI:   annotation = new Uri(s);    break;
             }
 
             if (annotation instanceof Qualification) {
