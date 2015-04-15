@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.yesworkflow.annotations.Uri;
 import org.yesworkflow.model.Channel;
 import org.yesworkflow.model.Port;
 import org.yesworkflow.model.Program;
@@ -303,9 +304,14 @@ public class DotGrapher implements Grapher  {
         // draw a box for each channel in the workflow
         dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
         for (Channel c : topWorkflow.channels) {
-            String binding = c.sourcePort.flowAnnotation.binding(); 
+            String binding = c.sourcePort.flowAnnotation.binding();
             channelBindings.add(binding);
-            dot.node(binding);
+//            Uri uri = c.sourcePort.flowAnnotation.uri();
+//            if (uri == null) {
+                dot.node(binding);
+//            } else {
+//                dot.node(binding, binding + "\n" + uri);
+//            }
         }
 
         // draw an edge for each pairing of out port and in port for each program
@@ -315,20 +321,14 @@ public class DotGrapher implements Grapher  {
                 
                 String binding = out.flowAnnotation.binding();
                 if (channelBindings.contains(binding)) {
-                    dot.edge(
-                        p.beginAnnotation.name,
-                        binding
-                    );
+                    dot.edge( p.beginAnnotation.name, binding);
                 }
             }
 
             for (Port in : p.inPorts) {
                 String binding = in.flowAnnotation.binding();
                 if (channelBindings.contains(binding)) {
-                    dot.edge(
-                        binding,
-                        p.beginAnnotation.name
-                    );
+                    dot.edge(binding, p.beginAnnotation.name);
                 }
             }
         }
@@ -341,10 +341,7 @@ public class DotGrapher implements Grapher  {
             for (Port p : topWorkflow.inPorts) {
                 String binding = p.flowAnnotation.binding();
                 if (workflowHasChannelForBinding(topWorkflow, binding)) {
-                    dot.edge(
-                            binding + "_inport",
-                            binding
-                        );
+                    dot.edge(binding + "_inport", binding);
                 }
             }
             
@@ -352,10 +349,7 @@ public class DotGrapher implements Grapher  {
             for (Port p : topWorkflow.outPorts) {
                 String binding = p.flowAnnotation.binding();
                 if (workflowHasChannelForBinding(topWorkflow, binding)) {
-                    dot.edge(
-                            binding,
-                            binding + "_outport"
-                        );
+                    dot.edge(binding, binding + "_outport");
                 }
             }
         }
