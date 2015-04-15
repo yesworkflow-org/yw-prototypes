@@ -87,6 +87,21 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             stderrBuffer.toString());
     }
 
+    public void testYesWorkflowCLI_NoCommand() throws Exception {
+        String[] args = new String[]{"example.py"};
+        ExitCode returnValue = new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
+        assertEquals(ExitCode.CLI_USAGE_ERROR, returnValue);
+        assertEquals("", stdoutBuffer.toString());
+        assertEquals(
+            ""                                                                          + EOL +
+            "****************** YESWORKFLOW TOOL USAGE ERRORS ***********************"  + EOL +
+            ""                                                                          + EOL +
+            "ERROR: Unrecognized YW command: example.py"                                + EOL +
+            EXPECTED_HELP_OUTPUT,
+            stderrBuffer.toString());
+    }
+
+    
     public void testYesWorkflowCLI_Extract_DefaultExtractor_MissingSourceFile() throws Exception {
 
         String[] args = {"extract", "no_such_script.py"};

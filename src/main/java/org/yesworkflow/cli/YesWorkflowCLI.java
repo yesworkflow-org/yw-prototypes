@@ -188,9 +188,16 @@ public class YesWorkflowCLI {
             }
 
             // extract YesWorkflow command from arguments
-            String command = extractCommandFromFirstNonOptionArgument();
-            if (command == null) {
+            String commandString = extractCommandFromFirstNonOptionArgument();
+            if (commandString == null) {
                 throw new YWToolUsageException("ERROR: No command provided to YesWorkflow");
+            }
+            
+            YWCommand command = null;
+            try {
+                command = YWCommand.toYWCommand(commandString);
+            } catch(Exception e) {
+                throw new YWToolUsageException("ERROR: Unrecognized YW command: " + commandString);
             }
 
             List<String> sourceFiles = extractSourceFileNamesFromRemainingArguments();
@@ -201,20 +208,24 @@ public class YesWorkflowCLI {
                 }                
             }
             
-            // run just the extractor if extract command given
-            if (command.equals("extract")) {
-                extract(sourceFiles);
-                return ExitCode.SUCCESS;
+            switch(command) {
+            
+                case EXTRACT:
+                    extract(sourceFiles);
+                    return ExitCode.SUCCESS;
+    
+                case MODEL:
+                    extract(sourceFiles);
+                    model();
+                    return ExitCode.SUCCESS;
+                    
+                case GRAPH:
+                    extract(sourceFiles);
+                    model();
+                    graph();
+                    return ExitCode.SUCCESS;
             }
-
-            // run extractor, modeler, and grapher if extract command given
-            if (command.equals("graph")) {
-                extract(sourceFiles);
-                model();
-                graph();
-                return ExitCode.SUCCESS;
-            }
-
+            
         } catch (YWToolUsageException e) {
             printToolUsageErrors(e.getMessage());
             printCLIHelp(parser);
