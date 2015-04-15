@@ -84,7 +84,7 @@ If you will be building YesWorkflow yourself using Maven (see *Instructions for 
 
 Otherwise download the latest automatically built jar from the build server.  Navigate to the results for the [last successful build](https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW/latestSuccessful "last successful build") of YesWorkflow, click the *Artifacts* tab, then download the `executable jar`.  The file will be named `yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar`.
 
-Once you have obtained the YesWorkflow jar, save the file in a convenient location.   YesWorkflow can now be run using the `java -jar` command.  Test that the jar works correctly using the `--help` option to display the command line options for YesWorkflow:
+Once you have obtained the YesWorkflow jar, save the file in a convenient location.   YesWorkflow can now be run using the `java -jar` command.  Test that the jar works correctly using the `--help` option to display usage information and command line options for YesWorkflow:
 
     $ java -jar yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar --help
     

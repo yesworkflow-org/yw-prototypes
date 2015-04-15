@@ -19,6 +19,7 @@ public class DotGrapher implements Grapher  {
     public static WorkflowBoxMode DEFAULT_WORKFLOW_BOX_MODE = WorkflowBoxMode.SHOW;
     public static PortLayout DEFAULT_PORT_LAYOUT = PortLayout.GROUP;
     public static DataLabelMode DEFAULT_URI_DISPLAY_MODE = DataLabelMode.BOTH;
+    public static WorkflowTitleMode DEFAULT_WORKFLOW_TITLE_MODE = WorkflowTitleMode.SHOW;
     
     private Program topWorkflow = null;
     private GraphView graphView = DEFAULT_GRAPH_VIEW;
@@ -29,6 +30,7 @@ public class DotGrapher implements Grapher  {
     private WorkflowBoxMode workflowBoxMode = DEFAULT_WORKFLOW_BOX_MODE;
     private PortLayout portLayout = DEFAULT_PORT_LAYOUT;
     private DataLabelMode uriDisplayMode = DEFAULT_URI_DISPLAY_MODE;
+    private WorkflowTitleMode workflowTitleMode = DEFAULT_WORKFLOW_TITLE_MODE;
     private String graphText = null;
 
     @SuppressWarnings("unused")
@@ -76,6 +78,8 @@ public class DotGrapher implements Grapher  {
             portLayout = PortLayout.toPortLayout(value);
         } else if (key.equalsIgnoreCase("datalabel")) {
             uriDisplayMode = DataLabelMode.toUriDisplayMode(value);
+        } else if (key.equalsIgnoreCase("workflowtitle")) {
+            workflowTitleMode = WorkflowTitleMode.toWorkflowTitleMode(value);
         }
         
         return this;
@@ -163,8 +167,12 @@ public class DotGrapher implements Grapher  {
         }
         
         dot.comment("Start of cluster for drawing box around programs in workflow");
-        dot.beginSubgraph(workflow.toString());
-    
+        if (workflowTitleMode == WorkflowTitleMode.SHOW) {
+            dot.beginSubgraph(workflow.toString());
+        } else {
+            dot.beginSubgraph();
+        }
+        
         dot.comment("Set node style for programs in workflow");
         dot.shape("box3d").peripheries(1).fillcolor("#CCFFCC");      
         dot.flushNodeStyle();
@@ -190,14 +198,12 @@ public class DotGrapher implements Grapher  {
 
         dot.comment("End of cluster for drawing box around programs in workflow");
         dot.endSubgraph();
-
         
         dot.comment("Directed edges for each channel in workflow");
         for (Channel c : workflow.channels) {
             
             Program sourceProgram = c.sourceProgram;
             Program sinkProgram = c.sinkProgram;
-            
             
             // draw edges for channels between workflow in ports and programs in workflow
             if (sourceProgram == null) {
