@@ -10,9 +10,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-import org.yesworkflow.YWStage;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.exceptions.YWMarkupException;

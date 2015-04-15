@@ -88,16 +88,36 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
 
     $ java -jar yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar --help
     
-    ---------------------- YesWorkflow usage summary -----------------------
+    usage: yw <command> [source file(s)] [option(s)]
     
-    Option                    Description                      
-    ------                    -----------                      
-    -c, --config <key=value>  key-valued configuration value   
-                                assignment                     
-    -h, --help                display help                     
+    Command                    Function
+    -------                    --------
+    extract                    Identify YW comments in script source file(s)
+    model                      Build workflow model from YW comments in script
+    graph                      Graphically render workflow model of script
     
-    ------------------------------------------------------------------------
-    $
+    Option                     Description               
+    ------                     -----------               
+    -c, --config <name=value>  Assign configuration value
+    -h, --help                 Display this help         
+    
+    Configuration Name         Value
+    ------------------         -----
+    extract.comment            Single-line comment delimiter in source files
+    extract.language           Language used in source files
+    extract.listing            File for storing list of extracted comments
+    
+    graph.datalabel            Info to display in data nodes: NAME, URI, or BOTH
+    graph.dotcomments          SHOW or HIDE comments in dot files
+    graph.layout               Direction of graph layout: TB, LR, RL, or BT
+    graph.portlayout           Layout mode for workflow ports: HIDE, RELAX or GROUP
+    graph.view                 Workflow view to render: PROCESS, DATA or COMBINED
+    graph.workflowbox          SHOW or HIDE box around nodes internal to workflow
+    
+    Examples
+    --------
+    $ yw graph myscript.py -config graph.view=combined -config graph.datalabel=uri
+    $ yw extract myscript -c extract.comment='#' -c extract.listing=comments.txt
 
 #### 4.  Define a short command for running YesWorkflow at the prompt
 
