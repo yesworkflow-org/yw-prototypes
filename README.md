@@ -12,7 +12,7 @@ YesWorkflow aims to provide a number of the benefits of using a scientific workf
 
 The image below was produced by YesWorkflow using the YW comments added to a conventional (non-dataflow oriented) python script ([example.py](https://github.com/yesworkflow-org/yw-prototypes/blob/master/src/main/resources/example.py "example.py")):
 
-![example](https://cloud.githubusercontent.com/assets/3218259/5593909/93fc7f1c-91e3-11e4-8370-aebcf1341d36.png)
+![example](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.png))
 
 The green blocks represent stages in the computation performed by the script. The labels on arrows name the input, intermediate, and final data products of the script.
 
