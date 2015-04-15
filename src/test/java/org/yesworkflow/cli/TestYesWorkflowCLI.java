@@ -24,16 +24,16 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     static final String TEST_RESOURCE_DIR = "src/test/resources/org/yesworkflow/testYesWorkflowCLI/";
 
     private static String EXPECTED_HELP_OUTPUT =
-        ""                                                                          + EOL +
-        "---------------------- YesWorkflow usage summary -----------------------"  + EOL +
-        ""                                                                          + EOL +
-        "Option                    Description                   "                  + EOL +
-        "------                    -----------                   "                  + EOL +
-        "-c, --config <key=value>  key-valued configuration value"                  + EOL +
-        "                            assignment                  "                  + EOL +
-        "-h, --help                display help                  "                  + EOL +
-        ""                                                                          + EOL +
-        "------------------------------------------------------------------------"  + EOL;
+            ""                                                                      + EOL +
+            YesWorkflowCLI.YW_CLI_USAGE_HELP                                        + EOL +
+            YesWorkflowCLI.YW_CLI_COMMAND_HELP                                      + EOL +
+            "Option                     Description               "                 + EOL +
+            "------                     -----------               "                 + EOL +
+            "-c, --config <name=value>  Assign configuration value"                 + EOL +
+            "-h, --help                 Display this help         "                 + EOL +
+            ""                                                                      + EOL +
+             YesWorkflowCLI.YW_CLI_CONFIG_HELP                                      + EOL +
+             YesWorkflowCLI.YW_CLI_EXAMPLES_HELP                                    + EOL;
 
     @Override
     public void setUp() throws Exception {
@@ -46,10 +46,9 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
             ""                                                                          + EOL +
-            "****************** YESWORKFLOW TOOL USAGE ERRORS ***********************"  + EOL +
-            ""                                                                          + EOL +
             "ERROR: Command must be first non-option argument to YesWorkflow"           + EOL +
-            EXPECTED_HELP_OUTPUT,
+            ""                                                                          + EOL +
+            "Use the -h option to display help for the YW command-line interface."      + EOL,
             stderrBuffer.toString());
     }
 
@@ -80,10 +79,9 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
             ""                                                                          + EOL +
-            "****************** YESWORKFLOW TOOL USAGE ERRORS ***********************"  + EOL +
-            ""                                                                          + EOL +
             "ERROR: Command must be first non-option argument to YesWorkflow"           + EOL +
-            EXPECTED_HELP_OUTPUT,
+            ""                                                                          + EOL +
+            "Use the -h option to display help for the YW command-line interface."      + EOL,
             stderrBuffer.toString());
     }
 
@@ -94,10 +92,9 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
             ""                                                                          + EOL +
-            "****************** YESWORKFLOW TOOL USAGE ERRORS ***********************"  + EOL +
-            ""                                                                          + EOL +
             "ERROR: Unrecognized YW command: example.py"                                + EOL +
-            EXPECTED_HELP_OUTPUT,
+            ""                                                                          + EOL +
+            "Use the -h option to display help for the YW command-line interface."      + EOL,
             stderrBuffer.toString());
     }
 
@@ -108,11 +105,10 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         new YesWorkflowCLI(stdoutStream, stderrStream).runForArgs(args);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(
-                ""                                                                          + EOL +
-                "****************** YESWORKFLOW TOOL USAGE ERRORS ***********************"  + EOL +
-                ""                                                                          + EOL +
-                "ERROR: Input file not found: no_such_script.py"      + EOL +
-                EXPECTED_HELP_OUTPUT,
+                ""                                                                      + EOL +
+                "ERROR: Input file not found: no_such_script.py"                        + EOL +
+                ""                                                                      + EOL +
+                "Use the -h option to display help for the YW command-line interface."  + EOL,
                 stderrBuffer.toString());
     }
 

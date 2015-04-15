@@ -64,7 +64,7 @@ public class DotGrapher implements Grapher  {
     public DotGrapher configure(String key, Object value) throws Exception {
         if (key.equalsIgnoreCase("view")) { 
             graphView = GraphView.toGraphView(value);
-        } else if (key.equalsIgnoreCase("comments")) {
+        } else if (key.equalsIgnoreCase("dotcomments")) {
             commentView = CommentVisibility.toCommentVisibility(value);
         } else if (key.equalsIgnoreCase("params")) {
             paramVisibility = ParamVisibility.toParamVisibility(value);

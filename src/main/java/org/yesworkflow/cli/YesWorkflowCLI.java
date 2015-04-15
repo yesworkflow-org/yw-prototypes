@@ -10,7 +10,9 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import org.yesworkflow.YWStage;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.exceptions.YWMarkupException;
@@ -55,7 +57,8 @@ import joptsimple.OptionSet;
  * the output streams used by YesWorkflow to be assigned.</p>
  */
 public class YesWorkflowCLI {
-    
+
+    public static final String EOL = System.getProperty("line.separator");
     private static final String PROPERTY_FILE_NAME = "yw.properties";
     private static final String YAML_FILE_NAME = "yw.yaml";
        
@@ -228,7 +231,7 @@ public class YesWorkflowCLI {
             
         } catch (YWToolUsageException e) {
             printToolUsageErrors(e.getMessage());
-            printCLIHelp(parser);
+//            printCLIHelp(parser);
             return ExitCode.CLI_USAGE_ERROR;
         } catch (YWMarkupException e) {
             printMarkupErrors(e.getMessage());
@@ -239,9 +242,9 @@ public class YesWorkflowCLI {
     }
     
     private void printMarkupErrors(String message) {
-        errStream.println();
+//        errStream.println();
         errStream.println("******************* YESWORKFLOW MARKUP ERRORS **************************");
-        errStream.println();
+//        errStream.println();
         errStream.print(message);
         errStream.println();
         errStream.println("------------------------------------------------------------------------");
@@ -249,18 +252,49 @@ public class YesWorkflowCLI {
 
     private void printToolUsageErrors(String message) {
         errStream.println();
-        errStream.println("****************** YESWORKFLOW TOOL USAGE ERRORS ***********************");
-        errStream.println();
         errStream.println(message);
+        errStream.println();
+        errStream.println("Use the -h option to display help for the YW command-line interface.");
     }
+    
+    public static final String YW_CLI_USAGE_HELP = 
+            "usage: yw <command> [source file(s)] [option(s)]"                              + EOL;
+    
+    public static final String YW_CLI_COMMAND_HELP = 
+        "Command                    Function"                                               + EOL +
+        "-------                    --------"                                               + EOL +
+        "extract                    Identify YW comments in script source file(s)"          + EOL +
+        "model                      Build workflow model from YW comments in script"        + EOL +
+        "graph                      Graphically render workflow model of script"            + EOL;
+
+    public static final String YW_CLI_CONFIG_HELP = 
+        "Configuration Name         Value"                                                  + EOL +
+        "------------------         -----"                                                  + EOL +
+        "extract.comment            Single-line comment delimiter in source files"          + EOL +
+        "extract.language           Language used in source files"                          + EOL +
+        "extract.listing            File for storing list of extracted comments"            + EOL +
+        ""                                                                                  + EOL +
+        "graph.datalabel            Info to display in data nodes: NAME, URI, or BOTH"      + EOL +
+        "graph.dotcomments          SHOW or HIDE comments in dot files"                     + EOL +
+        "graph.layout               Direction of graph layout: TB, LR, RL, or BT"           + EOL +
+        "graph.portlayout           Layout mode for workflow ports: HIDE, RELAX or GROUP"   + EOL +
+        "graph.view                 Workflow view to render: PROCESS, DATA or COMBINED"     + EOL +
+        "graph.workflowbox          SHOW or HIDE box around nodes internal to workflow"     + EOL;
+    
+    public static final String YW_CLI_EXAMPLES_HELP = 
+        "Examples"                                                                          + EOL +
+        "--------"                                                                          + EOL +
+        "$ yw graph myscript.py -config graph.view=combined -config graph.datalabel=uri"    + EOL +
+        "$ yw extract myscript -c extract.comment='#' -c extract.listing=comments.txt"      + EOL;
     
     private void printCLIHelp(OptionParser parser) throws IOException {
         errStream.println();
-        errStream.println("---------------------- YesWorkflow usage summary -----------------------");
-        errStream.println();
+        errStream.println(YW_CLI_USAGE_HELP);
+        errStream.println(YW_CLI_COMMAND_HELP);
         parser.printHelpOn(errStream);
         errStream.println();
-        errStream.println("------------------------------------------------------------------------");
+        errStream.println(YW_CLI_CONFIG_HELP);
+        errStream.println(YW_CLI_EXAMPLES_HELP);
     }
     
     private String extractCommandFromFirstNonOptionArgument() throws YWToolUsageException {
@@ -284,13 +318,13 @@ public class YesWorkflowCLI {
 
         parser = new OptionParser() {{
 
-            acceptsAll(asList("c", "config"), "key-valued configuration value assignment")
+            acceptsAll(asList("c", "config"), "Assign configuration value")
                 .withRequiredArg()
                 .ofType(String.class)
                 .describedAs("configuration")
-                .describedAs("key=value");
+                .describedAs("name=value");
 
-            acceptsAll(asList("h", "help"), "display help");
+            acceptsAll(asList("h", "help"), "Display this help");
 
         }};
 
@@ -413,5 +447,5 @@ public class YesWorkflowCLI {
         if (stream != outStream) {
             stream.close();
         }
-    }    
+    }
 }
