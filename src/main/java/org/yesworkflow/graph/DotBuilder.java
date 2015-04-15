@@ -197,11 +197,34 @@ public class DotBuilder {
 		return this;
 	}
 
+    public DotBuilder recordNode(String name, String label1, String label2) {
+        
+        // TODO Investigate why this is needed
+        if (nodeNameToIdMap.get(name) != null) return this;
+        
+        if (newNodeStyle) {
+            flushNodeStyle();
+        }
+        
+        String id = "node" + ++nodeCount;
+        nodeNameToIdMap.put(name, id);
+        
+        _buffer.append(     id                  )
+               .append(     " [shape=record "   )
+               .append(     " rankdir=LR "      )
+               .append(     "label=\"{<f0> "    )
+               .append(     label1              )
+               .append(     "|<f1>"             )
+               .append(     label2              )
+               .append(     "}\"];"             )   
+               .append(     EOL                 );
+        
+        return this;
+    }
     
     public DotBuilder edge(String fromNode, String toNode) {
         return edge(fromNode, toNode, null);
     }
-
     
 	public DotBuilder edge(String fromNode, String toNode, String edgeLabel) {
 	    

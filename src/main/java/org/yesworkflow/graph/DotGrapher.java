@@ -18,6 +18,7 @@ public class DotGrapher implements Grapher  {
     public static LayoutDirection DEFAULT_LAYOUT_DIRECTION = LayoutDirection.LR;
     public static WorkflowBoxMode DEFAULT_WORKFLOW_BOX_MODE = WorkflowBoxMode.SHOW;
     public static PortLayout DEFAULT_PORT_LAYOUT = PortLayout.GROUP;
+    public static DataLabelMode DEFAULT_URI_DISPLAY_MODE = DataLabelMode.BOTH;
     
     private Program topWorkflow = null;
     private GraphView graphView = DEFAULT_GRAPH_VIEW;
@@ -27,6 +28,7 @@ public class DotGrapher implements Grapher  {
     private LayoutDirection layoutDirection = DEFAULT_LAYOUT_DIRECTION;
     private WorkflowBoxMode workflowBoxMode = DEFAULT_WORKFLOW_BOX_MODE;
     private PortLayout portLayout = DEFAULT_PORT_LAYOUT;
+    private DataLabelMode uriDisplayMode = DEFAULT_URI_DISPLAY_MODE;
     private String graphText = null;
 
     @SuppressWarnings("unused")
@@ -72,6 +74,8 @@ public class DotGrapher implements Grapher  {
             workflowBoxMode = WorkflowBoxMode.toWorkflowBoxMode(value);
         } else if (key.equalsIgnoreCase("portlayout")) {
             portLayout = PortLayout.toPortLayout(value);
+        } else if (key.equalsIgnoreCase("datalabel")) {
+            uriDisplayMode = DataLabelMode.toUriDisplayMode(value);
         }
         
         return this;
@@ -306,12 +310,25 @@ public class DotGrapher implements Grapher  {
         for (Channel c : topWorkflow.channels) {
             String binding = c.sourcePort.flowAnnotation.binding();
             channelBindings.add(binding);
-//            Uri uri = c.sourcePort.flowAnnotation.uri();
-//            if (uri == null) {
+            Uri uri = c.sourcePort.flowAnnotation.uri();
+            
+            if (uri == null) {
                 dot.node(binding);
-//            } else {
-//                dot.node(binding, binding + "\n" + uri);
-//            }
+            } else {
+                String uriLabel = uri.toString().replace("{", "\\{").replace("}", "\\}");
+                switch(uriDisplayMode) {
+                    case NAME: 
+                        dot.node(binding);
+                        break;
+                    case URI:
+                        dot.node(binding, uriLabel);
+                        break;
+                    case BOTH:
+                        dot.recordNode(binding, binding, uriLabel);
+                        break;
+                }
+                dot.node(binding);
+            }
         }
 
         // draw an edge for each pairing of out port and in port for each program
