@@ -40,7 +40,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
         
@@ -63,7 +63,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
         
@@ -85,7 +85,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("language", Language.JAVA)
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
         
@@ -112,7 +112,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
 
@@ -142,7 +142,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
 
@@ -174,7 +174,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
         		.extract()
                 .getAnnotations();
 
@@ -201,7 +201,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        
        List<Annotation> annotations = extractor
                 .configure("comment", "#")
-       		    .configure("reader", reader)
+                .reader(reader)
        		    .extract()
                 .getAnnotations();
 
@@ -240,7 +240,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
 
@@ -284,7 +284,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
 
@@ -330,7 +330,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
 
@@ -361,7 +361,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
 
@@ -392,7 +392,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
 
@@ -423,7 +423,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
 
@@ -479,7 +479,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
 
@@ -541,7 +541,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
 
@@ -602,7 +602,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                 .extract()
                 .getAnnotations();
 
@@ -662,7 +662,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
        List<Annotation> annotations = extractor
                .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                	.extract()
                	.getAnnotations();
        
@@ -695,7 +695,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        
        List<Annotation> annotations = extractor
                .configure("comment", "#")
-                .configure("reader", reader)
+                .reader(reader)
                	.extract()
                	.getAnnotations();
        

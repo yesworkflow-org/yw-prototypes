@@ -30,7 +30,7 @@ public class TestDefaultModer_ExtractTopPorts extends YesWorkflowTestCase {
         config.put("language", Language.MATLAB);
         List<Annotation> annotations = new DefaultExtractor()
                                            .configure(config)
-                                           .configure("reader", reader)
+                                           .reader(reader)
                                            .extract()
                                            .getAnnotations();
 

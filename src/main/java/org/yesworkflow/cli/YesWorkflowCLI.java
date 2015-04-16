@@ -2,11 +2,7 @@ package org.yesworkflow.cli;
 
 import static java.util.Arrays.asList;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,9 +59,10 @@ public class YesWorkflowCLI {
     private PrintStream errStream;
     private PrintStream outStream;    
     private OptionSet options = null;
-    private Extractor injectedExtractor = null;
+    private Extractor extractor = null;
     private Modeler modeler = null;
     private Grapher grapher = null;
+    private List<String> sourceFiles = null;
     private List<Annotation> annotations;
     private Workflow workflow = null;
     private YWConfiguration config = null;
@@ -124,7 +121,7 @@ public class YesWorkflowCLI {
      * @return This instance.
      */
     public YesWorkflowCLI extractor(Extractor extractor) {
-        this.injectedExtractor = extractor;
+        this.extractor = extractor;
         return this;
     }
 
@@ -201,7 +198,7 @@ public class YesWorkflowCLI {
                 throw new YWToolUsageException("ERROR: Unrecognized YW command: " + commandString);
             }
 
-            List<String> sourceFiles = extractSourceFileNamesFromRemainingArguments();
+            sourceFiles = extractSourceFileNamesFromRemainingArguments();
             if (sourceFiles.isEmpty()) {
                 String sourceFile = config.getConfigOptionValue("source.file");
                 if (sourceFile != null && !sourceFile.isEmpty()) {
@@ -212,16 +209,16 @@ public class YesWorkflowCLI {
             switch(command) {
             
                 case EXTRACT:
-                    extract(sourceFiles);
+                    extract();
                     return ExitCode.SUCCESS;
     
                 case MODEL:
-                    extract(sourceFiles);
+                    extract();
                     model();
                     return ExitCode.SUCCESS;
                     
                 case GRAPH:
-                    extract(sourceFiles);
+                    extract();
                     model();
                     graph();
                     return ExitCode.SUCCESS;
@@ -324,22 +321,15 @@ public class YesWorkflowCLI {
         return parser;
     }
 
-    private void extract(List<String> sourceFiles) throws Exception {
+    private void extract() throws Exception {
     	
-    	Extractor extractor = (injectedExtractor != null) ? injectedExtractor : new DefaultExtractor();
-    	extractor.configure(config.getSection("extract"))
-    	         .configure("sources", sourceFiles)
-                 .extract();
-
-        String commentListingPath = config.getConfigOptionValue("extract.listing");
-        if (commentListingPath != null) {
-            StringBuffer linesBuffer = new StringBuffer();
-            for (String line : extractor.getLines()) {
-                linesBuffer.append(line);
-                linesBuffer.append(System.getProperty("line.separator"));
-            }
-            writeTextToFileOrStdout(commentListingPath, linesBuffer.toString());
+        if (extractor == null) {
+            extractor =  new DefaultExtractor(this.outStream, this.errStream);
         }
+
+        extractor.configure(config.getSection("extract"))
+	         .configure("sources", sourceFiles)
+             .extract();
         
         @SuppressWarnings("unused")
         List<String> comments = extractor.getComments();

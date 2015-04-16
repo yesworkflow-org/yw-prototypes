@@ -81,7 +81,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
          
          List<Annotation> annotations = extractor
                  .configure("comment", "#")
-                 .configure("reader", reader)
+                 .reader(reader)
                  .extract()
                  .getAnnotations();
 

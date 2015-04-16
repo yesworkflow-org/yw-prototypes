@@ -24,6 +24,7 @@ import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Param;
 import org.yesworkflow.annotations.Qualification;
 import org.yesworkflow.annotations.Uri;
+import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.exceptions.YWToolUsageException;
 
 public class DefaultExtractor implements Extractor {
@@ -38,8 +39,7 @@ public class DefaultExtractor implements Extractor {
     private List<Annotation> annotations;
     private YWKeywords keywordMapping;
     private KeywordMatcher keywordMatcher;
-    
-    @SuppressWarnings("unused")
+    private String commentListingPath;    
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
 
@@ -56,8 +56,7 @@ public class DefaultExtractor implements Extractor {
         this.keywordMatcher = new KeywordMatcher(keywordMapping.getKeywords());
     }
 
-    @Override
-    public DefaultExtractor setLanguageBySource(String sourceFilePath) throws YWToolUsageException {
+    private DefaultExtractor setLanguageBySource(String sourceFilePath) throws YWToolUsageException {
     
         Language language = LanguageModel.languageForFileName(sourceFilePath);
         if (language != null) {
@@ -90,8 +89,6 @@ public class DefaultExtractor implements Extractor {
             } else {
                 throw new Exception("Value of graph.sources must be a list of strings");
             }
-        } else if (key.equalsIgnoreCase("reader")) {
-            this.sourceReader = new BufferedReader((Reader)value);
         } else if (key.equalsIgnoreCase("language")) {
             Language language = Language.toLanguage(value);
             languageModel = new LanguageModel(language);
@@ -100,6 +97,8 @@ public class DefaultExtractor implements Extractor {
         } else if (key.equalsIgnoreCase("comment")) {        
             languageModel = new LanguageModel();
             languageModel.singleDelimiter((String)value);
+        } else if (key.equalsIgnoreCase("listing")) {
+            commentListingPath = (String)value;
         }
         
         return this;
@@ -137,7 +136,7 @@ public class DefaultExtractor implements Extractor {
         } else {
             throw new Exception("No source files provided to extractor.");
         }
-
+        writeCommentListing();
         extractComments();
         extractAnnotations();
         
@@ -176,7 +175,7 @@ public class DefaultExtractor implements Extractor {
     private void extractLines(BufferedReader reader) throws IOException {
 
         if (this.languageModel == null) {
-            this.languageModel = new LanguageModel(this.DEFAULT_LANGUAGE);
+            this.languageModel = new LanguageModel(DEFAULT_LANGUAGE);
         }
 
         // extract all comments from script using the language model
@@ -186,6 +185,26 @@ public class DefaultExtractor implements Extractor {
         // select only the comments that contain YW keywords,
         // trimming characters preceding the first YW keyword in each
         lines = keywordMatcher.match(allCommentLines, true);
+    }
+
+    private void writeCommentListing() throws IOException {
+        if (commentListingPath != null) {
+            StringBuffer linesBuffer = new StringBuffer();
+            for (String line : lines) {
+                linesBuffer.append(line);
+                linesBuffer.append(System.getProperty("line.separator"));
+            }
+            writeTextToFileOrStdout(commentListingPath, linesBuffer.toString());
+        }
+    }
+
+    private void writeTextToFileOrStdout(String path, String text) throws IOException {        
+        PrintStream stream = (path == null || path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
+                             stdoutStream : new PrintStream(path);
+        stream.print(text);
+        if (stream != stdoutStream) {
+            stream.close();
+        }
     }
 
     private void extractComments() throws Exception {
@@ -230,7 +249,6 @@ public class DefaultExtractor implements Extractor {
             	primaryAnnotation = annotation;
                 annotations.add(annotation);
             }
-            
         }
     }
     
@@ -275,5 +293,11 @@ public class DefaultExtractor implements Extractor {
     	}
     	
     	return comments;
+    }
+
+    @Override
+    public DefaultExtractor reader(Reader reader) {
+        this.sourceReader = new BufferedReader(reader);
+        return this;
     }
 }
