@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class DefaultExtractor implements Extractor {
     
     private LanguageModel languageModel = new LanguageModel(DEFAULT_LANGUAGE);
     private BufferedReader sourceReader = null;
+    private List<String> sources;
     private List<String> lines;
     private List<String> comments;
     private List<Annotation> annotations;
@@ -74,10 +76,21 @@ public class DefaultExtractor implements Extractor {
         return this;
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public DefaultExtractor configure(String key, Object value) throws Exception {
-
-        if (key.equalsIgnoreCase("language")) {
+        if (key.equalsIgnoreCase("sources")) {
+            sources = new LinkedList<String>();
+            if (value instanceof String) {
+                sources.add((String)value);
+            } else if (value instanceof List) {
+                sources.addAll((List<? extends String>) value);
+            } else {
+                throw new Exception("Value of graph.sources must be a list of strings");
+            }
+        } else if (key.equalsIgnoreCase("reader")) {
+            this.sourceReader = new BufferedReader((Reader)value);
+        } else if (key.equalsIgnoreCase("language")) {
             Language language = Language.toLanguage(value);
             languageModel = new LanguageModel(language);
         } else if (key.equalsIgnoreCase("languageModel")) {
@@ -108,29 +121,36 @@ public class DefaultExtractor implements Extractor {
 	@Override
 	public List<Annotation> getAnnotations() {
 		return annotations;
-	}   
-
-    
-    public DefaultExtractor source(Reader reader) {
-        this.sourceReader = new BufferedReader(reader);
-        return this;
-    }
+	}
 
     @Override
     public DefaultExtractor extract() throws Exception {
 
-        extractLines();
+        if (sourceReader != null) {
+            extractLines(sourceReader);
+        } else if (sources != null && sources.size() > 0) {
+//            if (sources.size() == 1) {
+//                extractLines(sources.get(0));
+//            }
+        } else {
+            throw new Exception("No source files provided to extractor.");
+        }
+
         extractComments();
         extractAnnotations();
         
         if (comments.isEmpty()) {
             stderrStream.println("WARNING: No YW comments found in source code.");
-        }
+        }        
         
         return this;
     }
-
-    private void extractLines() throws IOException {
+    
+//    private void extractLines(String sourcePath) {
+//        
+//    }
+    
+    private void extractLines(BufferedReader reader) throws IOException {
 
         // extract all comments from script using the language model
         CommentMatcher commentMatcher = new CommentMatcher(languageModel);

@@ -403,7 +403,6 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
         public boolean extracted = false;
  
-        @Override public Extractor source(Reader reader) { return this; }
         @Override public List<String> getLines() { return null; }
         @Override public List<String> getComments() { return null; }
         @Override public Extractor extract() throws Exception { this.extracted = true; return null; }

@@ -229,7 +229,6 @@ public class YesWorkflowCLI {
             
         } catch (YWToolUsageException e) {
             printToolUsageErrors(e.getMessage());
-//            printCLIHelp(parser);
             return ExitCode.CLI_USAGE_ERROR;
         } catch (YWMarkupException e) {
             printMarkupErrors(e.getMessage());
@@ -240,9 +239,7 @@ public class YesWorkflowCLI {
     }
     
     private void printMarkupErrors(String message) {
-//        errStream.println();
         errStream.println("******************* YESWORKFLOW MARKUP ERRORS **************************");
-//        errStream.println();
         errStream.print(message);
         errStream.println();
         errStream.println("------------------------------------------------------------------------");
@@ -311,11 +308,10 @@ public class YesWorkflowCLI {
     }
     
     private OptionParser createOptionsParser() throws Exception {
-
+        
         OptionParser parser = null;
 
         parser = new OptionParser() {{
-
             acceptsAll(asList("c", "config"), "Assign configuration value")
                 .withRequiredArg()
                 .ofType(String.class)
@@ -323,7 +319,6 @@ public class YesWorkflowCLI {
                 .describedAs("name=value");
 
             acceptsAll(asList("h", "help"), "Display this help");
-
         }};
 
         return parser;
@@ -374,7 +369,7 @@ public class YesWorkflowCLI {
         annotations = extractor.getAnnotations();
     }
     
-    private Extractor getStdinExtractor() {
+    private Extractor getStdinExtractor() throws Exception {
     	
     	Extractor extractor;
         if (injectedExtractor != null) {
@@ -382,13 +377,14 @@ public class YesWorkflowCLI {
         } else {
            extractor = new DefaultExtractor(this.outStream, this.errStream);
         }
-    	extractor.source(new InputStreamReader(System.in));
+        
+    	extractor.configure("reader", new InputStreamReader(System.in));
     	
     	return extractor;
     }
     
 
-    private Extractor getSingleFileExtractor(String sourcePath) throws YWToolUsageException {
+    private Extractor getSingleFileExtractor(String sourcePath) throws Exception {
 
     	Extractor extractor;
         if (injectedExtractor != null) {
@@ -400,7 +396,7 @@ public class YesWorkflowCLI {
         extractor.setLanguageBySource(sourcePath);
 
     	BufferedReader reader = getFileReaderForPath(sourcePath);
-    	extractor.source(reader);
+    	extractor.configure("reader", reader);
     	
     	return extractor;
     }

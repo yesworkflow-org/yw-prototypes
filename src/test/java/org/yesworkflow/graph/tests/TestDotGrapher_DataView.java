@@ -61,7 +61,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-        		.source(reader)
+        		.configure("reader", reader)
                 .extract()
                 .getAnnotations();
 
@@ -106,7 +106,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .source(reader)
+                .configure("reader", reader)
                 .extract()
                 .getAnnotations();
 
@@ -150,7 +150,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
       
       List<Annotation> annotations = extractor
               .configure("comment", "#")
-    		  .source(reader)
+    		  .configure("reader", reader)
               .extract()
               .getAnnotations();
 
@@ -196,7 +196,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .source(reader)
+                .configure("reader", reader)
                 .extract()
                 .getAnnotations();
 
@@ -245,7 +245,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
       
       List<Annotation> annotations = extractor
               .configure("comment", "#")
-    		  .source(reader)
+    		  .configure("reader", reader)
               .extract()
               .getAnnotations();
 
@@ -294,7 +294,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
-                .source(reader)
+                .configure("reader", reader)
                 .extract()
                 .getAnnotations();
 
@@ -327,7 +327,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
          
          List<Annotation> annotations = extractor
                  .configure("comment", "#")
-        		 .source(new BufferedReader(new FileReader("src/main/resources/example.py")))
+        		 .configure("reader", new BufferedReader(new FileReader("src/main/resources/example.py")))
                  .extract()
                  .getAnnotations();
 
