@@ -328,11 +328,9 @@ public class YesWorkflowCLI {
         }
 
         extractor.configure(config.getSection("extract"))
-	         .configure("sources", sourceFiles)
-             .extract();
+	             .configure("sources", sourceFiles)
+                 .extract();
         
-        @SuppressWarnings("unused")
-        List<String> comments = extractor.getComments();
         annotations = extractor.getAnnotations();
     }
 
