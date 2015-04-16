@@ -1,11 +1,13 @@
 package org.yesworkflow.graph;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.yesworkflow.annotations.Uri;
+import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.model.Channel;
 import org.yesworkflow.model.Port;
 import org.yesworkflow.model.Program;
@@ -32,11 +34,7 @@ public class DotGrapher implements Grapher  {
     private DataLabelMode uriDisplayMode = DEFAULT_URI_DISPLAY_MODE;
     private WorkflowTitleMode workflowTitleMode = DEFAULT_WORKFLOW_TITLE_MODE;
     private String graphText = null;
-
-    @SuppressWarnings("unused")
-    private GraphFormat graphFormat = null;
-    
-    @SuppressWarnings("unused")
+    private String outputDotFile = null;
     private PrintStream stdoutStream = null;
     
     @SuppressWarnings("unused")
@@ -80,6 +78,8 @@ public class DotGrapher implements Grapher  {
             uriDisplayMode = DataLabelMode.toUriDisplayMode(value);
         } else if (key.equalsIgnoreCase("workflowtitle")) {
             workflowTitleMode = WorkflowTitleMode.toWorkflowTitleMode(value);
+        } else if (key.equalsIgnoreCase("dotfile")) {
+            outputDotFile = (String)value;
         }
         
         return this;
@@ -115,6 +115,8 @@ public class DotGrapher implements Grapher  {
                 break;
         }
         
+        writeTextToFileOrStdout(outputDotFile, this.graphText);
+
         return this;
     }
     
@@ -380,6 +382,15 @@ public class DotGrapher implements Grapher  {
         dot.endGraph();
         
         return dot.toString();
+    }
+    
+    private void writeTextToFileOrStdout(String path, String text) throws IOException {        
+        PrintStream stream = (path == null || path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
+                             this.stdoutStream : new PrintStream(path);
+        stream.print(text);
+        if (stream != this.stdoutStream) {
+            stream.close();
+        }
     }
 }
 

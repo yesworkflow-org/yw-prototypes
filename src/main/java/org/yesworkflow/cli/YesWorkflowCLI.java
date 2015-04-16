@@ -327,11 +327,10 @@ public class YesWorkflowCLI {
             extractor =  new DefaultExtractor(this.outStream, this.errStream);
         }
 
-        extractor.configure(config.getSection("extract"))
-	             .configure("sources", sourceFiles)
-                 .extract();
-        
-        annotations = extractor.getAnnotations();
+        annotations = extractor.configure(config.getSection("extract"))
+	                           .configure("sources", sourceFiles)
+	                           .extract()
+	                           .getAnnotations();
     }
 
     private void model() throws Exception {
@@ -352,26 +351,8 @@ public class YesWorkflowCLI {
             grapher = new DotGrapher(this.outStream, this.errStream);
          }
         
-        String graph = grapher.configure(config.getSection("graph"))
-                              .workflow(workflow)
-                              .graph()
-                              .toString();
-
-        writeTextToConfigNamedFile("graph.dotfile", graph);
-    }
-
-    private void writeTextToConfigNamedFile(String configuration, String text) throws IOException {        
-        String path = config.getConfigOptionValue(configuration);
-        writeTextToFileOrStdout(path, text);
-    }
-
-    
-    private void writeTextToFileOrStdout(String path, String text) throws IOException {        
-        PrintStream stream = (path == null || path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
-                             outStream : new PrintStream(path);
-        stream.print(text);
-        if (stream != outStream) {
-            stream.close();
-        }
+        grapher.configure(config.getSection("graph"))
+               .workflow(workflow)
+               .graph();
     }
 }

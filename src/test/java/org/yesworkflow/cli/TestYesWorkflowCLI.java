@@ -13,7 +13,6 @@ import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.cli.ExitCode;
 import org.yesworkflow.cli.YesWorkflowCLI;
 import org.yesworkflow.config.YWConfiguration;
-import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.YesWorkflowTestCase;
@@ -404,10 +403,10 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
  
         @Override public List<String> getLines() { return null; }
         @Override public List<String> getComments() { return null; }
-        @Override public Extractor extract() throws Exception { this.extracted = true; return null; }
+        @Override public Extractor extract() throws Exception { this.extracted = true; return this; }
         @Override public Language getLanguage() { return null; }
 		@Override public List<Annotation> getAnnotations() { return null; }
-        @Override public MockExtractor configure(Map<String, Object> config) throws Exception { return this; }
+        @Override public Extractor configure(Map<String, Object> config) throws Exception { return this; }
         @Override public Extractor configure(String key, Object value) throws Exception { return this; }
         @Override public Extractor reader(Reader reader) { return this; }
     }
