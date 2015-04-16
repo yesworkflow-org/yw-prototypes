@@ -83,11 +83,13 @@ public class DefaultExtractor implements Extractor {
         if (key.equalsIgnoreCase("sources")) {
             sources = new LinkedList<String>();
             if (value instanceof String) {
-                sources.add((String)value);
+                for (String token : ((String) value).split("\\s")) {
+                    sources.add(token);
+                }
             } else if (value instanceof List) {
                 sources.addAll((List<? extends String>) value);
             } else {
-                throw new Exception("Value of graph.sources must be a list of strings");
+                throw new Exception("Value of sources property must be one or more strings");
             }
         } else if (key.equalsIgnoreCase("language")) {
             Language language = Language.toLanguage(value);
@@ -127,15 +129,19 @@ public class DefaultExtractor implements Extractor {
     @Override
     public DefaultExtractor extract() throws Exception {
 
+        lines = new LinkedList<String>();
+        
         if (sourceReader != null) {
             extractLines(sourceReader);
-        } else if (sources != null && sources.size() > 0) {
-            if (sources.size() == 1) {
-                extractLines(sources.get(0));
-            }
+        } else if (sources == null || 
+                   sources.size() == 0 || 
+                   sources.size() == 1 && (sources.get(0).trim().isEmpty() || 
+                                           sources.get(0).trim().equals("-"))) {
+            extractLinesFromStdin();
         } else {
-            throw new Exception("No source files provided to extractor.");
+            extractLinesFromFiles(sources);
         }
+        
         writeCommentListing();
         extractComments();
         extractAnnotations();
@@ -147,18 +153,20 @@ public class DefaultExtractor implements Extractor {
         return this;
     }
     
-    private void extractLines(String sourcePath) throws IOException, YWToolUsageException {
-        
-        if (sourcePath.isEmpty() || sourcePath.trim().equals("-")) {
-            Reader reader = new InputStreamReader(System.in);
-            extractLines(new BufferedReader(reader));
-        } else {
+    private void extractLinesFromStdin() throws IOException, YWToolUsageException {
+        Reader reader = new InputStreamReader(System.in);
+        extractLines(new BufferedReader(reader));
+    }
+
+    private void extractLinesFromFiles(List<String> sourcePaths) throws IOException, YWToolUsageException {
+        for (String sourcePath : sourcePaths) {
             if (languageModel == null) {
                 setLanguageBySource(sourcePath);
             }
             extractLines(getFileReaderForPath(sourcePath));
         }
     }
+
     
     public BufferedReader getFileReaderForPath(String path) throws YWToolUsageException {
 
@@ -184,7 +192,7 @@ public class DefaultExtractor implements Extractor {
 
         // select only the comments that contain YW keywords,
         // trimming characters preceding the first YW keyword in each
-        lines = keywordMatcher.match(allCommentLines, true);
+        lines.addAll(keywordMatcher.match(allCommentLines, true));
     }
 
     private void writeCommentListing() throws IOException {

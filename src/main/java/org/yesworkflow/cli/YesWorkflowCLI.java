@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.config.YWConfiguration;
+import org.yesworkflow.exceptions.YWException;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.extract.DefaultExtractor;
@@ -319,6 +320,10 @@ public class YesWorkflowCLI {
     }
 
     private void model() throws Exception {
+        
+        if (annotations.size() == 0) {
+            throw new YWMarkupException("Cannot create workflow model from source with no YW comments.");
+        }
         
         if (modeler == null) {
             modeler = new DefaultModeler(this.outStream, this.errStream);
