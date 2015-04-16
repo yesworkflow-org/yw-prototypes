@@ -1,10 +1,12 @@
 package org.yesworkflow.extract;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Reader;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +30,7 @@ public class DefaultExtractor implements Extractor {
 
     static private Language DEFAULT_LANGUAGE = Language.GENERIC;
     
-    private LanguageModel languageModel = new LanguageModel(DEFAULT_LANGUAGE);
+    private LanguageModel languageModel = null;
     private BufferedReader sourceReader = null;
     private List<String> sources;
     private List<String> lines;
@@ -129,9 +131,9 @@ public class DefaultExtractor implements Extractor {
         if (sourceReader != null) {
             extractLines(sourceReader);
         } else if (sources != null && sources.size() > 0) {
-//            if (sources.size() == 1) {
-//                extractLines(sources.get(0));
-//            }
+            if (sources.size() == 1) {
+                extractLines(sources.get(0));
+            }
         } else {
             throw new Exception("No source files provided to extractor.");
         }
@@ -146,15 +148,40 @@ public class DefaultExtractor implements Extractor {
         return this;
     }
     
-//    private void extractLines(String sourcePath) {
-//        
-//    }
+    private void extractLines(String sourcePath) throws IOException, YWToolUsageException {
+        
+        if (sourcePath.isEmpty() || sourcePath.trim().equals("-")) {
+            Reader reader = new InputStreamReader(System.in);
+            extractLines(new BufferedReader(reader));
+        } else {
+            if (languageModel == null) {
+                setLanguageBySource(sourcePath);
+            }
+            extractLines(getFileReaderForPath(sourcePath));
+        }
+    }
+    
+    public BufferedReader getFileReaderForPath(String path) throws YWToolUsageException {
+
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(path));
+        } catch (FileNotFoundException e) {
+            throw new YWToolUsageException("ERROR: Input file not found: " + path);
+        }
+
+        return reader;
+    }
     
     private void extractLines(BufferedReader reader) throws IOException {
 
+        if (this.languageModel == null) {
+            this.languageModel = new LanguageModel(this.DEFAULT_LANGUAGE);
+        }
+
         // extract all comments from script using the language model
         CommentMatcher commentMatcher = new CommentMatcher(languageModel);
-        List<String> allCommentLines = commentMatcher.getCommentsAsLines(sourceReader);
+        List<String> allCommentLines = commentMatcher.getCommentsAsLines(reader);
 
         // select only the comments that contain YW keywords,
         // trimming characters preceding the first YW keyword in each

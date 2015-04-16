@@ -4,8 +4,6 @@ package org.yesworkflow.cli;
  * package as of 18Dec2014.
  */
 
-
-import java.io.Reader;
 import java.util.List;
 import java.util.Map;
 
@@ -408,8 +406,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         @Override public Extractor extract() throws Exception { this.extracted = true; return null; }
         @Override public Language getLanguage() { return null; }
 		@Override public List<Annotation> getAnnotations() { return null; }
-        @Override public MockExtractor configure(Map<String, Object> config) throws Exception { return null; }
-        @Override public Extractor configure(String key, Object value) throws Exception { return null; }
+        @Override public MockExtractor configure(Map<String, Object> config) throws Exception { return this; }
+        @Override public Extractor configure(String key, Object value) throws Exception { return this; }
         @Override public DefaultExtractor setLanguageBySource(String path) throws YWToolUsageException { return null; }
     }
 }

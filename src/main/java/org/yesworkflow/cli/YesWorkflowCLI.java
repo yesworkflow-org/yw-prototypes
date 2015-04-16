@@ -324,35 +324,12 @@ public class YesWorkflowCLI {
         return parser;
     }
 
-    private BufferedReader getFileReaderForPath(String path) throws YWToolUsageException {
-
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(path));
-        } catch (FileNotFoundException e) {
-            throw new YWToolUsageException("ERROR: Input file not found: " + path);
-        }
-
-        return reader;
-    }
-
-    
     private void extract(List<String> sourceFiles) throws Exception {
     	
-    	Extractor extractor = null;
-
-    	if (sourceFiles.size() == 0 || 
-    	        (sourceFiles.size() == 1 && sourceFiles.get(0).equals("-"))) {
-        	extractor = getStdinExtractor();
-        } else if (sourceFiles.size() == 1 ) {
-        	extractor = getSingleFileExtractor(sourceFiles.get(0));
-        } else {
-            throw new YWToolUsageException("YW does not support multiple input source files.");
-        }
-        
-        extractor.configure(config.getSection("extract"));
-                
-        extractor.extract();
+    	Extractor extractor = (injectedExtractor != null) ? injectedExtractor : new DefaultExtractor();
+    	extractor.configure(config.getSection("extract"))
+    	         .configure("sources", sourceFiles)
+                 .extract();
 
         String commentListingPath = config.getConfigOptionValue("extract.listing");
         if (commentListingPath != null) {
@@ -368,39 +345,6 @@ public class YesWorkflowCLI {
         List<String> comments = extractor.getComments();
         annotations = extractor.getAnnotations();
     }
-    
-    private Extractor getStdinExtractor() throws Exception {
-    	
-    	Extractor extractor;
-        if (injectedExtractor != null) {
-        	extractor = injectedExtractor;
-        } else {
-           extractor = new DefaultExtractor(this.outStream, this.errStream);
-        }
-        
-    	extractor.configure("reader", new InputStreamReader(System.in));
-    	
-    	return extractor;
-    }
-    
-
-    private Extractor getSingleFileExtractor(String sourcePath) throws Exception {
-
-    	Extractor extractor;
-        if (injectedExtractor != null) {
-        	extractor = injectedExtractor;
-        } else {
-           extractor = new DefaultExtractor(this.outStream, this.errStream);
-        }
-
-        extractor.setLanguageBySource(sourcePath);
-
-    	BufferedReader reader = getFileReaderForPath(sourcePath);
-    	extractor.configure("reader", reader);
-    	
-    	return extractor;
-    }
-    
 
     private void model() throws Exception {
         
