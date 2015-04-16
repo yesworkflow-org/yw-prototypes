@@ -1,5 +1,5 @@
 digraph Workflow {
-rankdir=LR
+rankdir=TB
 node[shape=circle style="filled" fillcolor="#FFFFFF" peripheries=1 label="" width=0.2]
 subgraph cluster0 { label="" color="white"
 subgraph cluster1 { label="" color="white"
@@ -34,12 +34,12 @@ node14 [label="transform_image"]
 node15 [label="log_average_image_intensity"]
 node[fontname=Helvetica]
 node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 label="" width=0.2]
-node16 [label="corrected_image"]
-node17 [label="run_log"]
-node18 [label="collection_log"]
-node19 [label="rejection_log"]
+node16 [shape=record  rankdir=LR label="{<f0> corrected_image|<f1>file:data/\{sample_id\}/\{sample_id\}_\{energy\}eV_\{frame_number\}.img}"];
+node17 [shape=record  rankdir=LR label="{<f0> run_log|<f1>file:run/run_log.txt}"];
+node18 [shape=record  rankdir=LR label="{<f0> collection_log|<f1>file:run/collected_images.csv}"];
+node19 [shape=record  rankdir=LR label="{<f0> rejection_log|<f1>file:/run/rejected_samples.txt}"];
 node20 [label="cassette_id"]
-node21 [label="sample_spreadsheet"]
+node21 [shape=record  rankdir=LR label="{<f0> sample_spreadsheet|<f1>file:cassette_\{cassette_id\}_spreadsheet.csv}"];
 node22 [label="sample_score_cutoff"]
 node23 [label="sample_name"]
 node24 [label="sample_quality"]
@@ -50,8 +50,8 @@ node28 [label="energies"]
 node29 [label="sample_id"]
 node30 [label="energy"]
 node31 [label="frame_number"]
-node32 [label="raw_image"]
-node33 [label="calibration_image"]
+node32 [shape=record  rankdir=LR label="{<f0> raw_image|<f1>file:run/raw/\{cassette_id\}/\{sample_id\}/e\{energy\}/image_\{frame_number\}.raw}"];
+node33 [shape=record  rankdir=LR label="{<f0> calibration_image|<f1>file:calibration.img}"];
 node34 [label="total_intensity"]
 node35 [label="pixel_count"]
 node36 [label="corrected_image_name"]
