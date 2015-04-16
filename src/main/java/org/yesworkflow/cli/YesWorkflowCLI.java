@@ -62,7 +62,6 @@ public class YesWorkflowCLI {
     private Extractor extractor = null;
     private Modeler modeler = null;
     private Grapher grapher = null;
-    private List<String> sourceFiles = null;
     private List<Annotation> annotations;
     private Workflow workflow = null;
     private YWConfiguration config = null;
@@ -185,25 +184,27 @@ public class YesWorkflowCLI {
                 return ExitCode.SUCCESS;
             }
 
-            // extract YesWorkflow command from arguments
-            String commandString = extractCommandFromFirstNonOptionArgument();
-            if (commandString == null) {
-                throw new YWToolUsageException("ERROR: No command provided to YesWorkflow");
-            }
-            
+            // make sure at least one non-option argument was given
+            List<?> nonOptionArguments = options.nonOptionArguments();            
+            if (options.nonOptionArguments().size() == 0) {
+                throw new YWToolUsageException("ERROR: Command must be first non-option argument to YesWorkflow");
+            }            
+
+            // extract YesWorkflow command from first non-option argument
             YWCommand command = null;
             try {
-                command = YWCommand.toYWCommand(commandString);
+                command = YWCommand.toYWCommand((String) nonOptionArguments.get(0));
             } catch(Exception e) {
-                throw new YWToolUsageException("ERROR: Unrecognized YW command: " + commandString);
+                throw new YWToolUsageException("ERROR: Unrecognized YW command: " + nonOptionArguments.get(0));
             }
 
-            sourceFiles = extractSourceFileNamesFromRemainingArguments();
-            if (sourceFiles.isEmpty()) {
-                String sourceFile = config.getConfigOptionValue("source.file");
-                if (sourceFile != null && !sourceFile.isEmpty()) {
-                    sourceFiles.add(sourceFile);
-                }                
+            // extract source file paths from remaining non-option arguments
+            if (nonOptionArguments.size() > 1) {
+                List<String> sourceFiles = new LinkedList<String>();
+                for (int i = 1; i < nonOptionArguments.size(); ++i) {
+                    sourceFiles.add((String) nonOptionArguments.get(i));
+                }
+                config.applyConfigOption("extract.sources", sourceFiles);
             }
             
             switch(command) {
@@ -288,22 +289,7 @@ public class YesWorkflowCLI {
         errStream.println(YW_CLI_CONFIG_HELP);
         errStream.println(YW_CLI_EXAMPLES_HELP);
     }
-    
-    private String extractCommandFromFirstNonOptionArgument() throws YWToolUsageException {
-        if (options.nonOptionArguments().size() == 0) {
-            throw new YWToolUsageException("ERROR: Command must be first non-option argument to YesWorkflow");
-        }
-        return (String) options.nonOptionArguments().get(0);
-    }
 
-    private List<String> extractSourceFileNamesFromRemainingArguments() throws YWToolUsageException {
-        List<String> sourceFilePaths = new LinkedList<String>();
-        for (int i = 1; i < options.nonOptionArguments().size(); ++i) {
-            sourceFilePaths.add((String) options.nonOptionArguments().get(i));
-        }
-        return sourceFilePaths;
-    }
-    
     private OptionParser createOptionsParser() throws Exception {
         
         OptionParser parser = null;
@@ -328,7 +314,6 @@ public class YesWorkflowCLI {
         }
 
         annotations = extractor.configure(config.getSection("extract"))
-	                           .configure("sources", sourceFiles)
 	                           .extract()
 	                           .getAnnotations();
     }

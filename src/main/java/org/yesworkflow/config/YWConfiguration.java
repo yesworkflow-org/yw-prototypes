@@ -53,7 +53,7 @@ public class YWConfiguration extends HashMap<String,Object> {
         }
     }
 
-    public void applyConfigOption(String name, String value) {
+    public void applyConfigOption(String name, Object value) {
         ConfigAddress address = configurationAddress(name, true);
         address.table.put(address.key, value);
     }
