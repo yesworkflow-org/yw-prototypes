@@ -25,10 +25,10 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             ""                                                                      + EOL +
             YesWorkflowCLI.YW_CLI_USAGE_HELP                                        + EOL +
             YesWorkflowCLI.YW_CLI_COMMAND_HELP                                      + EOL +
-            "Option                     Description               "                 + EOL +
-            "------                     -----------               "                 + EOL +
-            "-c, --config <name=value>  Assign configuration value"                 + EOL +
-            "-h, --help                 Display this help         "                 + EOL +
+            "Option                     Description                         "       + EOL +
+            "------                     -----------                         "       + EOL +
+            "-c, --config <name=value>  Assign value to configuration option"       + EOL +
+            "-h, --help                 Display this help                   "       + EOL +
             ""                                                                      + EOL +
              YesWorkflowCLI.YW_CLI_CONFIG_HELP                                      + EOL +
              YesWorkflowCLI.YW_CLI_EXAMPLES_HELP                                    + EOL;
@@ -112,7 +112,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_SingleConfigureOption_TopLevel() throws Exception {
 
-        String[] args = { "-h", "-c", "conf0=val0"};
+        String[] args = { "noop", "-c", "conf0=val0"};
         YWConfiguration config = new YWConfiguration();
         assertEquals(0, config.size());
         
@@ -128,7 +128,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     @SuppressWarnings("unchecked")
     public void testYesWorkflowCLI_SingleConfigureOption_TwoLevels() throws Exception {
 
-        String[] args = { "-h", "-c", "table1.conf1=val1"};
+        String[] args = { "noop", "-c", "table1.conf1=val1"};
         YWConfiguration config = new YWConfiguration();
         assertEquals(0, config.size());
         
@@ -147,7 +147,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     @SuppressWarnings("unchecked")
     public void testYesWorkflowCLI_SingleConfigureOption_ThreeLevels() throws Exception {
 
-        String[] args = { "-h", "-c", "table1.table2.conf2=val2"};
+        String[] args = { "noop", "-c", "table1.table2.conf2=val2"};
         YWConfiguration config = new YWConfiguration();
         assertEquals(0, config.size());
         
@@ -168,8 +168,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     @SuppressWarnings("unchecked")
     public void testYesWorkflowCLI_ThreeConfigureOptions() throws Exception {
 
-        String[] args = { 
-                "-h", 
+        String[] args = {
+                "noop",
                 "-c", "conf0=val0",
                 "-c", "table1.conf1=val1",
                 "-c", "table1.table2.conf2=val2"};

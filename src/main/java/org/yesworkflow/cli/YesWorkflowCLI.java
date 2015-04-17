@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.config.YWConfiguration;
-import org.yesworkflow.exceptions.YWException;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.extract.DefaultExtractor;
@@ -170,7 +169,13 @@ public class YesWorkflowCLI {
                 throw new YWToolUsageException("ERROR: " + exception.getMessage());
             }
 
-            // load the configuration file
+            // print help and exit if requested
+            if (options.has("h")) {
+                printCLIHelp(parser);
+                return ExitCode.SUCCESS;
+            }
+            
+            // load the configuration files
             if (config == null) {
                 config = YWConfiguration.fromYamlFile(YAML_FILE_NAME);
                 config.applyPropertyFile(PROPERTY_FILE_NAME);
@@ -178,12 +183,6 @@ public class YesWorkflowCLI {
             
             // apply command-line overrides of config file
             config.applyConfigOptions(options.valuesOf("c"));
-                    
-            // print help and exit if requested
-            if (options.has("h")) {
-                printCLIHelp(parser);
-                return ExitCode.SUCCESS;
-            }
 
             // make sure at least one non-option argument was given
             List<?> nonOptionArguments = options.nonOptionArguments();            
@@ -208,7 +207,11 @@ public class YesWorkflowCLI {
                 config.applyConfigOption("extract.sources", sourceFiles);
             }
             
+            // execute sequence of commands through the requested one
             switch(command) {
+
+                case NOOP:
+                    return ExitCode.SUCCESS;
             
                 case EXTRACT:
                     extract();
@@ -252,13 +255,13 @@ public class YesWorkflowCLI {
     }
     
     public static final String YW_CLI_USAGE_HELP = 
-            "usage: yw <command> [source file(s)] [option(s)]"                              + EOL;
+            "usage: yw <command> [source file(s)] [-c <name=value>]..."                     + EOL;
     
     public static final String YW_CLI_COMMAND_HELP = 
         "Command                    Function"                                               + EOL +
         "-------                    --------"                                               + EOL +
         "extract                    Identify YW comments in script source file(s)"          + EOL +
-        "model                      Build workflow model from YW comments in script"        + EOL +
+        "model                      Build workflow model from identified YW comments"       + EOL +
         "graph                      Graphically render workflow model of script"            + EOL;
 
     public static final String YW_CLI_CONFIG_HELP = 
@@ -267,6 +270,7 @@ public class YesWorkflowCLI {
         "extract.comment            Single-line comment delimiter in source files"          + EOL +
         "extract.language           Language used in source files"                          + EOL +
         "extract.listing            File for storing list of extracted comments"            + EOL +
+        "extract.sources            List of source files to analyze"                        + EOL +
         ""                                                                                  + EOL +
         "graph.datalabel            Info to display in data nodes: NAME, URI, or BOTH"      + EOL +
         "graph.dotcomments          SHOW or HIDE comments in dot files"                     + EOL +
@@ -278,8 +282,9 @@ public class YesWorkflowCLI {
     public static final String YW_CLI_EXAMPLES_HELP = 
         "Examples"                                                                          + EOL +
         "--------"                                                                          + EOL +
+        "$ yw extract myscript -c extract.comment='#' -c extract.listing=comments.txt"      + EOL +
         "$ yw graph myscript.py -config graph.view=combined -config graph.datalabel=uri"    + EOL +
-        "$ yw extract myscript -c extract.comment='#' -c extract.listing=comments.txt"      + EOL;
+        "$ yw graph scriptA.py scriptB.py > wf.gv; dot -Tpdf wf.gv -o wf.pdf; open wf.pdf"  + EOL;
     
     private void printCLIHelp(OptionParser parser) throws IOException {
         errStream.println();
@@ -296,7 +301,7 @@ public class YesWorkflowCLI {
         OptionParser parser = null;
 
         parser = new OptionParser() {{
-            acceptsAll(asList("c", "config"), "Assign configuration value")
+            acceptsAll(asList("c", "config"), "Assign value to configuration option")
                 .withRequiredArg()
                 .ofType(String.class)
                 .describedAs("configuration")

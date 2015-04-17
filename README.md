@@ -87,37 +87,39 @@ Otherwise download the latest automatically built jar from the build server.  Na
 Once you have obtained the YesWorkflow jar, save the file in a convenient location.   YesWorkflow can now be run using the `java -jar` command.  Test that the jar works correctly using the `--help` option to display usage information and command line options for YesWorkflow:
 
     $ java -jar yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar --help
-    
-    usage: yw <command> [source file(s)] [option(s)]
-    
+
+    usage: yw <command> [source file(s)] [-c <name=value>]...
+
     Command                    Function
     -------                    --------
     extract                    Identify YW comments in script source file(s)
-    model                      Build workflow model from YW comments in script
+    model                      Build workflow model from identified YW comments
     graph                      Graphically render workflow model of script
-    
-    Option                     Description               
-    ------                     -----------               
-    -c, --config <name=value>  Assign configuration value
-    -h, --help                 Display this help         
-    
+
+    Option                     Description
+    ------                     -----------
+    -c, --config <name=value>  Assign value to configuration option
+    -h, --help                 Display this help
+
     Configuration Name         Value
     ------------------         -----
     extract.comment            Single-line comment delimiter in source files
     extract.language           Language used in source files
     extract.listing            File for storing list of extracted comments
-    
+    extract.sources            List of source files to analyze
+
     graph.datalabel            Info to display in data nodes: NAME, URI, or BOTH
     graph.dotcomments          SHOW or HIDE comments in dot files
     graph.layout               Direction of graph layout: TB, LR, RL, or BT
     graph.portlayout           Layout mode for workflow ports: HIDE, RELAX or GROUP
     graph.view                 Workflow view to render: PROCESS, DATA or COMBINED
     graph.workflowbox          SHOW or HIDE box around nodes internal to workflow
-    
+
     Examples
     --------
-    $ yw graph myscript.py -config graph.view=combined -config graph.datalabel=uri
     $ yw extract myscript -c extract.comment='#' -c extract.listing=comments.txt
+    $ yw graph myscript.py -config graph.view=combined -config graph.datalabel=uri
+    $ yw graph scriptA.py scriptB.py > wf.gv; dot -Tpdf wf.gv -o wf.pdf; open wf.pdf
 
 #### 4.  Define a short command for running YesWorkflow at the prompt
 
