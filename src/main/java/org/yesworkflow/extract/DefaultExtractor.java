@@ -31,7 +31,8 @@ public class DefaultExtractor implements Extractor {
 
     static private Language DEFAULT_LANGUAGE = Language.GENERIC;
     
-    private LanguageModel languageModel = null;
+    private LanguageModel globalLanguageModel = null;
+    private Language lastLanguage = null;
     private BufferedReader sourceReader = null;
     private List<String> sources;
     private List<String> lines;
@@ -54,17 +55,6 @@ public class DefaultExtractor implements Extractor {
         this.stderrStream = stderrStream;
         this.keywordMapping = new YWKeywords();
         this.keywordMatcher = new KeywordMatcher(keywordMapping.getKeywords());
-    }
-
-    private DefaultExtractor setLanguageBySource(String sourceFilePath) throws YWToolUsageException {
-    
-        Language language = LanguageModel.languageForFileName(sourceFilePath);
-        if (language != null) {
-            languageModel = new LanguageModel(language);
-        } else {
-            throw new YWToolUsageException("Cannot identify language of source file.");
-        }
-        return this;
     }
 
     @Override
@@ -95,12 +85,12 @@ public class DefaultExtractor implements Extractor {
             }
         } else if (key.equalsIgnoreCase("language")) {
             Language language = Language.toLanguage(value);
-            languageModel = new LanguageModel(language);
+            globalLanguageModel = new LanguageModel(language);
         } else if (key.equalsIgnoreCase("languageModel")) {
-            languageModel = (LanguageModel)value;
+            globalLanguageModel = (LanguageModel)value;
         } else if (key.equalsIgnoreCase("comment")) {        
-            languageModel = new LanguageModel();
-            languageModel.singleDelimiter((String)value);
+            globalLanguageModel = new LanguageModel();
+            globalLanguageModel.singleDelimiter((String)value);
         } else if (key.equalsIgnoreCase("listing")) {
             commentListingPath = (String)value;
         }
@@ -110,7 +100,7 @@ public class DefaultExtractor implements Extractor {
     
     @Override
     public Language getLanguage() {
-        return languageModel.getLanguage();
+        return lastLanguage;
     }
 
     @Override
@@ -134,7 +124,7 @@ public class DefaultExtractor implements Extractor {
         lines = new LinkedList<String>();
         
         if (sourceReader != null) {
-            extractLines(sourceReader);
+            extractLines(sourceReader, globalLanguageModel);
         } else if (sources == null || 
                    sources.size() == 0 || 
                    sources.size() == 1 && (sources.get(0).trim().isEmpty() || 
@@ -157,15 +147,21 @@ public class DefaultExtractor implements Extractor {
     
     private void extractLinesFromStdin() throws IOException, YWToolUsageException {
         Reader reader = new InputStreamReader(System.in);
-        extractLines(new BufferedReader(reader));
+        extractLines(new BufferedReader(reader), globalLanguageModel);
     }
 
     private void extractLinesFromFiles(List<String> sourcePaths) throws IOException, YWToolUsageException {
         for (String sourcePath : sourcePaths) {
-            if (languageModel == null) {
-                setLanguageBySource(sourcePath);
+            LanguageModel languageModel = null;
+            if (globalLanguageModel != null) {
+                languageModel = globalLanguageModel;
+            } else {
+                Language language = LanguageModel.languageForFileName(sourcePath);
+                if (language != null) {
+                    languageModel = new LanguageModel(language);
+                }
             }
-            extractLines(getFileReaderForPath(sourcePath));
+            extractLines(getFileReaderForPath(sourcePath), languageModel);
         }
     }
 
@@ -181,12 +177,14 @@ public class DefaultExtractor implements Extractor {
         return reader;
     }
     
-    private void extractLines(BufferedReader reader) throws IOException {
+    private void extractLines(BufferedReader reader, LanguageModel languageModel) throws IOException {
 
-        if (this.languageModel == null) {
-            this.languageModel = new LanguageModel(DEFAULT_LANGUAGE);
+        if (languageModel == null) {
+            languageModel = new LanguageModel(DEFAULT_LANGUAGE);
         }
 
+        lastLanguage = languageModel.getLanguage();
+        
         // extract all comments from script using the language model
         CommentMatcher commentMatcher = new CommentMatcher(languageModel);
         List<String> allCommentLines = commentMatcher.getCommentsAsLines(reader);
@@ -207,7 +205,7 @@ public class DefaultExtractor implements Extractor {
         }
     }
 
-    private void writeTextToFileOrStdout(String path, String text) throws IOException {        
+    private void writeTextToFileOrStdout(String path, String text) throws IOException {
         PrintStream stream = (path == null || path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
                              stdoutStream : new PrintStream(path);
         stream.print(text);
