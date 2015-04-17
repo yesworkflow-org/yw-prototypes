@@ -84,7 +84,9 @@ public class DefaultExtractor implements Extractor {
             sources = new LinkedList<String>();
             if (value instanceof String) {
                 for (String token : ((String) value).split("\\s")) {
-                    sources.add(token);
+                    if (!token.trim().isEmpty()) {
+                        sources.add(token);
+                    }
                 }
             } else if (value instanceof List) {
                 sources.addAll((List<? extends String>) value);
@@ -167,7 +169,6 @@ public class DefaultExtractor implements Extractor {
         }
     }
 
-    
     public BufferedReader getFileReaderForPath(String path) throws YWToolUsageException {
 
         BufferedReader reader = null;
