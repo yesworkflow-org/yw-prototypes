@@ -87,6 +87,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
 
             """ 
             @begin collect_data_set
+            @call collect_next_image
             @param cassette_id
             @param accepted_sample
             @param num_images
@@ -109,6 +110,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
     
                 """
                 @begin transform_images
+                @call transform_image
                 @param sample_id 
                 @param energy 
                 @param frame_number

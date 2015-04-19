@@ -30,7 +30,7 @@ node10 [label="load_screening_results"]
 node11 [label="calculate_strategy"]
 node12 [label="log_rejected_sample"]
 node13 [label="collect_data_set"]
-node14 [label="transform_image"]
+node14 [label="transform_images"]
 node15 [label="log_average_image_intensity"]
 node[fontname=Helvetica]
 node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 label="" width=0.2]
@@ -54,7 +54,7 @@ node32 [shape=record  rankdir=LR label="{<f0> raw_image|<f1>file:run/raw/\{casse
 node33 [shape=record  rankdir=LR label="{<f0> calibration_image|<f1>file:calibration.img}"];
 node34 [label="total_intensity"]
 node35 [label="pixel_count"]
-node36 [label="corrected_image_name"]
+node36 [label="corrected_image_path"]
 node9 -> node17
 node10 -> node23
 node10 -> node24
