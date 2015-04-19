@@ -1,6 +1,7 @@
 package org.yesworkflow.model;
 
 import java.io.PrintStream;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -15,7 +16,7 @@ import org.yesworkflow.exceptions.YWMarkupException;
 public class DefaultModeler implements Modeler {
 
     private List<Annotation> annotations;
-    private Workflow model;
+    private Model model;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
     
@@ -51,25 +52,28 @@ public class DefaultModeler implements Modeler {
 
     @Override
     public Modeler model() throws Exception {	
-    	buildWorkflow();
+    	buildModel();
     	return this;
     }
     
     @Override
-    public Workflow getModel() {
-        return getWorkflow();
+    public Model getModel() {
+        return this.model;
     }
 
     @Override
     public Workflow getWorkflow() {
-        return this.model;
+        return this.model.workflow;
     }
     
-    private void buildWorkflow() throws Exception {
+    private void buildModel() throws Exception {
 
-        Workflow.Builder workflowBuilder = null;
-        Workflow.Builder parentBuilder = null;
-        Stack<Workflow.Builder> parentWorkflowBuilders = new Stack<Workflow.Builder>();
+        WorkflowBuilder workflowBuilder = null;
+        WorkflowBuilder topWorkflowBuilder = null;
+        Workflow topWorkflow = null;
+        WorkflowBuilder parentBuilder = null;
+        Stack<WorkflowBuilder> parentWorkflowBuilders = new Stack<WorkflowBuilder>();
+        List<Function> functions = new LinkedList<Function>();
 
         for (Annotation annotation : annotations) {
 
@@ -80,8 +84,12 @@ public class DefaultModeler implements Modeler {
                     parentBuilder = workflowBuilder;
                 }
 
-                workflowBuilder = new Workflow.Builder(this.stdoutStream, this.stderrStream)
+                workflowBuilder = new WorkflowBuilder(this.stdoutStream, this.stderrStream)
                     .begin((Begin)annotation);
+                
+                if (topWorkflowBuilder == null) {
+                    topWorkflowBuilder = workflowBuilder;
+                }
 
             } else if (annotation instanceof Out) {
                 Port outPort = workflowBuilder.outPort((Out)annotation);
@@ -98,32 +106,44 @@ public class DefaultModeler implements Modeler {
             } else if (annotation instanceof End) {
 
                 workflowBuilder.end((End)annotation);
-
-                Program program = workflowBuilder.build();
-
+                    
                 if (parentWorkflowBuilders.isEmpty()) {
-                    this.model = new Workflow(program);
-                    return;
+                    
+                    if (workflowBuilder == topWorkflowBuilder) {
+                        topWorkflow = workflowBuilder.buildWorkflow();
+                    } else {
+                        functions.add(workflowBuilder.buildFunction());
+                    }
+
+                    workflowBuilder = null;
+                    
+                } else {
+
+                    Program program = (workflowBuilder.hasNestedPrograms()) ?
+                        workflowBuilder.buildWorkflow() : workflowBuilder.buildProgram();
+                    workflowBuilder = parentWorkflowBuilders.pop();
+                    workflowBuilder.nestedProgram(program);
                 }
-
-                workflowBuilder = parentWorkflowBuilders.pop();
-                workflowBuilder.nestedProgram(program);
-
+                
                 if (!parentWorkflowBuilders.isEmpty()) {
                     parentBuilder = parentWorkflowBuilders.peek();
                 }
             }
         }
         
-        // throw exception if missing any paired end comments
-        StringBuilder messageBuilder = new StringBuilder();
-        do {
-            messageBuilder.append("ERROR: No @end comment paired with '@begin ");
-            messageBuilder.append(workflowBuilder.getProgramName());
-            messageBuilder.append("'");
-            messageBuilder.append(EOL);
-            workflowBuilder = parentWorkflowBuilders.isEmpty() ? null : parentWorkflowBuilders.pop();
-        } while (workflowBuilder != null);        
-        throw new YWMarkupException(messageBuilder.toString());
+        if (workflowBuilder != null) {
+            // throw exception if missing any paired end comments
+            StringBuilder messageBuilder = new StringBuilder();
+            do {
+                messageBuilder.append("ERROR: No @end comment paired with '@begin ");
+                messageBuilder.append(workflowBuilder.getProgramName());
+                messageBuilder.append("'");
+                messageBuilder.append(EOL);
+                workflowBuilder = parentWorkflowBuilders.isEmpty() ? null : parentWorkflowBuilders.pop();
+            } while (workflowBuilder != null);        
+            throw new YWMarkupException(messageBuilder.toString());
+        }
+        
+        model = new Model(topWorkflow, functions);
     }
 }

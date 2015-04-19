@@ -16,14 +16,16 @@ public class Program {
     public final Port[] outPorts;
     public final Program[] programs;
     public final Channel[] channels;
-    
+    public final Function[] functions;
+
     public Program(
             Begin beginAnnotation, 
             End endAnnotation, 
             Port[] inPorts, 
             Port[] outPorts, 
             Program[] programs,
-            Channel[] channels
+            Channel[] channels,
+            Function[] functions
     ) {
         this.beginAnnotation = beginAnnotation;
         this.endAnnotation = endAnnotation;
@@ -31,6 +33,7 @@ public class Program {
         this.outPorts = outPorts;
         this.programs = programs;
         this.channels = channels;
+        this.functions = functions;
     }
     
 	public Program(
@@ -41,10 +44,11 @@ public class Program {
     ) {
 	    this(beginAnnotation,  
 	         endAnnotation, 
-	         inPorts.toArray(new Port[inPorts.size()]), 
+	         inPorts.toArray(new Port[inPorts.size()]),
 	         outPorts.toArray(new Port[outPorts.size()]),
 	         EMPTY_PROGRAM_ARRAY,
-	         EMPTY_CHANNEL_ARRAY);
+	         EMPTY_CHANNEL_ARRAY,
+	         null);
 	}
 
     public boolean isWorkflow() {
