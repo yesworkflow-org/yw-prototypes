@@ -11,6 +11,6 @@ public interface Modeler extends YWStage {
     public DefaultModeler configure(String key, Object value) throws Exception;
     Modeler configure(Map<String, Object> config) throws Exception;
     Modeler model() throws Exception;
-    Workflow getModel();
+    Model getModel();
     Workflow getWorkflow();
 }
