@@ -22,11 +22,14 @@ public class YWKeywords {
     public enum Tag {
         AS,
         BEGIN,
+        CALL,
         END,
         IN,
         OUT,
         PARAM,
+        RETURN,
         URI
+        
     }
     
     /** Definition of the standard keyword for the AS tag. */
@@ -35,6 +38,9 @@ public class YWKeywords {
     /** Definition of the standard keyword for the BEGIN tag. */
     public static final String STANDARD_BEGIN_KEYWORD           = "@begin";
     
+    /** Definition of the standard keyword for the CALL tag. */
+    public static final String STANDARD_CALL_KEYWORD            = "@call";
+
     /** Definition of the standard keyword for the END tag. */
     public static final String STANDARD_END_KEYWORD             = "@end";
     
@@ -46,6 +52,9 @@ public class YWKeywords {
 
     /** Definition of the standard keyword for the PARAM tag. */
     public static final String STANDARD_PARAM_KEYWORD           = "@param";
+
+    /** Definition of the standard keyword for the RETURN tag. */
+    public static final String STANDARD_RETURN_KEYWORD          = "@return";
 
     /** Definition of the standard keyword for the URI tag. */
     public static final String STANDARD_URI_KEYWORD             = "@uri";
@@ -60,10 +69,12 @@ public class YWKeywords {
     public YWKeywords() {
         setStandardKeyword(    STANDARD_AS_KEYWORD,     Tag.AS      );
         setStandardKeyword(    STANDARD_BEGIN_KEYWORD,  Tag.BEGIN   );
+        setStandardKeyword(    STANDARD_CALL_KEYWORD,   Tag.CALL    );
         setStandardKeyword(    STANDARD_END_KEYWORD,    Tag.END     );
         setStandardKeyword(    STANDARD_IN_KEYWORD,     Tag.IN      );
         setStandardKeyword(    STANDARD_OUT_KEYWORD,    Tag.OUT     );
         setStandardKeyword(    STANDARD_PARAM_KEYWORD,  Tag.PARAM   );
+        setStandardKeyword(    STANDARD_RETURN_KEYWORD, Tag.RETURN  );
         setStandardKeyword(    STANDARD_URI_KEYWORD,    Tag.URI     );
     }
 
