@@ -272,8 +272,11 @@ public class YesWorkflowCLI {
         "extract.listing            File for storing list of extracted comments"            + EOL +
         "extract.sources            List of source files to analyze"                        + EOL +
         ""                                                                                  + EOL +
+        "model.workflow             Name of top-level workflow in model"                    + EOL +
+        ""                                                                                  + EOL +
         "graph.datalabel            Info to display in data nodes: NAME, URI, or BOTH"      + EOL +
         "graph.dotcomments          SHOW or HIDE comments in dot files"                     + EOL +
+        "graph.dotfile              Name of GraphViz DOT file to  write graph to"           + EOL +
         "graph.layout               Direction of graph layout: TB, LR, RL, or BT"           + EOL +
         "graph.portlayout           Layout mode for workflow ports: HIDE, RELAX or GROUP"   + EOL +
         "graph.view                 Workflow view to render: PROCESS, DATA or COMBINED"     + EOL +

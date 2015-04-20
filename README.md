@@ -108,8 +108,11 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
     extract.listing            File for storing list of extracted comments
     extract.sources            List of source files to analyze
 
+    model.workflow             Name of top-level workflow in model
+
     graph.datalabel            Info to display in data nodes: NAME, URI, or BOTH
     graph.dotcomments          SHOW or HIDE comments in dot files
+    graph.dotfile              Name of GraphViz DOT file to  write graph to
     graph.layout               Direction of graph layout: TB, LR, RL, or BT
     graph.portlayout           Layout mode for workflow ports: HIDE, RELAX or GROUP
     graph.view                 Workflow view to render: PROCESS, DATA or COMBINED
