@@ -16,8 +16,8 @@ import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.graph.DotGrapher;
 import org.yesworkflow.graph.Grapher;
 import org.yesworkflow.model.DefaultModeler;
+import org.yesworkflow.model.Model;
 import org.yesworkflow.model.Modeler;
-import org.yesworkflow.model.Workflow;
 
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
@@ -63,7 +63,7 @@ public class YesWorkflowCLI {
     private Modeler modeler = null;
     private Grapher grapher = null;
     private List<Annotation> annotations;
-    private Workflow workflow = null;
+    private Model model = null;
     private YWConfiguration config = null;
     
     /** Method invoked first when the YesWorkflow CLI is run from the 
@@ -334,10 +334,10 @@ public class YesWorkflowCLI {
             modeler = new DefaultModeler(this.outStream, this.errStream);
          }
 
-        workflow =  modeler.configure(config.getSection("model"))
+        model =  modeler.configure(config.getSection("model"))
                            .annotations(annotations)
                            .model()
-                           .getWorkflow();
+                           .getModel();
     }
 
     private void graph() throws Exception {
@@ -347,7 +347,7 @@ public class YesWorkflowCLI {
          }
         
         grapher.configure(config.getSection("graph"))
-               .workflow(workflow)
+               .model(model)
                .graph();
     }
 }

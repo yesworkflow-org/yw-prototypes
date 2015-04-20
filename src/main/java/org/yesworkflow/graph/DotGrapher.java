@@ -8,7 +8,9 @@ import java.util.Map;
 
 import org.yesworkflow.annotations.Uri;
 import org.yesworkflow.config.YWConfiguration;
+import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.model.Channel;
+import org.yesworkflow.model.Model;
 import org.yesworkflow.model.Port;
 import org.yesworkflow.model.Program;
 
@@ -24,6 +26,7 @@ public class DotGrapher implements Grapher  {
     public static WorkflowTitleMode DEFAULT_WORKFLOW_TITLE_MODE = WorkflowTitleMode.SHOW;
     
     private Program topWorkflow = null;
+    private Model model = null;
     private GraphView graphView = DEFAULT_GRAPH_VIEW;
     @SuppressWarnings("unused")
     private ParamVisibility paramVisibility = DEFAULT_PARAM_VISIBILITY;
@@ -44,7 +47,13 @@ public class DotGrapher implements Grapher  {
         this.stdoutStream = stdoutStream;
         this.stderrStream = stderrStream;
     }
-    
+
+    @Override
+    public DotGrapher model(Model model) {
+        this.model = model;
+        return this;
+    }
+
     @Override
     public DotGrapher workflow(Program workflow) {
         this.topWorkflow = workflow;
@@ -92,6 +101,14 @@ public class DotGrapher implements Grapher  {
     
     @Override
     public DotGrapher graph() throws Exception {
+        
+        if (topWorkflow == null) {
+            if (model != null & model.workflow != null) {
+                topWorkflow = model.workflow;
+            } else {
+                throw new YWToolUsageException("Top workflow not identified to grapher.");
+            }
+        }
 
         DotBuilder dotBuilder = new DotBuilder();
         

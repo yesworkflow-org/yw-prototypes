@@ -32,6 +32,7 @@ public class WorkflowBuilder {
         @SuppressWarnings("unused")
         private PrintStream stdoutStream = null;
         
+        @SuppressWarnings("unused")
         private PrintStream stderrStream = null;
 
         public WorkflowBuilder(PrintStream stdoutStream, PrintStream stderrStream) {
