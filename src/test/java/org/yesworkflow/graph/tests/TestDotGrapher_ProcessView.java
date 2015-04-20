@@ -81,17 +81,11 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
     public void test_OneProgram_TwoInOneOut_ExtraIn() throws Exception {      
         String src = "oneProgram_TwoInOneOut_ExtraIn";
         assertEquals(expectedGraph(src), actualGraph(src));
-        assertEquals(
-            "WARNING: No nested @in port and no workflow @out port for nested @out 'y' in workflow 'script'" + EOL, 
-            stderrBuffer.toString());
     }
   
     public void test_OneProgram_TwoChannels_OneInOneOut_ExtraOut() throws Exception {
         String src = "oneProgram_TwoChannels_OneInOneOut_ExtraOut";
         assertEquals(expectedGraph(src), actualGraph(src));      
-        assertEquals(
-            "WARNING: No nested @out port and no workflow @in port for nested @in 'c' on 'script'" + EOL,
-            stderrBuffer.toString());
     }
   
      public void test_ThreePrograms_TwoChannels() throws Exception {

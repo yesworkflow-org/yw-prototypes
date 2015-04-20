@@ -135,6 +135,9 @@ public class WorkflowBuilder {
 		}
 		
 		public Function buildFunction() throws Exception {	            
+            pruneUnusedNestedProgramInPorts();
+            pruneUnusedNestedProgramOutPorts();
+            buildNestedChannels();
 		    return new Function(
 		            beginAnnotation,
                     endAnnotation,
@@ -180,14 +183,6 @@ public class WorkflowBuilder {
             for (Map.Entry<String, List<Port>> entry : nestedProgramInPorts.entrySet()) {
                 String binding = entry.getKey();
                 if (!workflowInPorts.contains(binding) && !nestedProgramOutPorts.containsKey(binding)) {
-                    
-                    stderrStream.println(
-                            "WARNING: No nested @out port and no workflow @in port for nested @in '"    +
-                            binding                                                                     +
-                            "' on '"                                                                    +
-                            beginAnnotation.name                                                        +
-                            "'"
-                    );
                     unmatchedInBindings.add(binding);
                 }
             }
@@ -201,14 +196,6 @@ public class WorkflowBuilder {
             for (Entry<String, Port> entry : nestedProgramOutPorts.entrySet()) {
                 String binding = entry.getKey();
                 if (!workflowOutPorts.contains(binding) && !nestedProgramInPorts.containsKey(binding)) {
-                    
-                    stderrStream.println(
-                            "WARNING: No nested @in port and no workflow @out port for nested @out '"   +
-                            binding                                                                     +
-                            "' in workflow '"                                                           +
-                            beginAnnotation.name                                                        +
-                            "'"
-                    );
                     unmatchedOutBindings.add(binding);
                 }
             }
