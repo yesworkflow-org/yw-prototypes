@@ -17,6 +17,7 @@ public class DefaultModeler implements Modeler {
 
     private List<Annotation> annotations;
     private Model model;
+    private String topWorkflowName;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
     
@@ -41,6 +42,9 @@ public class DefaultModeler implements Modeler {
 
     @Override
     public DefaultModeler configure(String key, Object value) throws Exception {
+        if (key.equalsIgnoreCase("workflow")) {
+            topWorkflowName = (String)value;
+        }
         return this;
     }  
     
@@ -87,8 +91,11 @@ public class DefaultModeler implements Modeler {
                 workflowBuilder = new WorkflowBuilder(this.stdoutStream, this.stderrStream)
                     .begin((Begin)annotation);
                 
-                if (topWorkflowBuilder == null) {
-                    topWorkflowBuilder = workflowBuilder;
+                if (topWorkflowBuilder == null) { 
+                    String blockName = ((Begin)annotation).name;
+                    if (topWorkflowName == null || topWorkflowName.equals(blockName)) {
+                        topWorkflowBuilder = workflowBuilder;
+                    }
                 }
 
             } else if (annotation instanceof Out) {

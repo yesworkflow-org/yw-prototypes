@@ -7,7 +7,6 @@ import java.util.List;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
-import org.yesworkflow.model.Program;
 import org.yesworkflow.model.Workflow;
 import org.yesworkflow.YesWorkflowTestCase;
 
@@ -51,12 +50,15 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
         assertEquals("script", model.workflow.endAnnotation.name);
         assertEquals(0, model.workflow.inPorts.length);
         assertEquals(0, model.workflow.outPorts.length);
+        assertEquals(0, model.workflow.channels.length);
+
         assertEquals(1, model.functions.length);
         assertEquals("function", model.functions[0].beginAnnotation.name);
         assertEquals("function", model.functions[0].endAnnotation.name);
+        assertEquals(0, model.functions[0].channels.length);
     }
 
-    public void testExtract_GetModel_WorkflowWithOneProgram_OneFunction() throws Exception {
+    public void testExtract_GetModel_WorkflowOneProgram_FunctionOneProgram() throws Exception {
         
         String source = 
                 "# @begin workflow"		+ EOL +
@@ -84,154 +86,192 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
         assertEquals("workflow", model.workflow.endAnnotation.name);
         assertEquals(0, model.workflow.inPorts.length);
         assertEquals(0, model.workflow.outPorts.length);
-        assertEquals(1, model.workflow.programs.length);
         assertEquals(0, model.workflow.channels.length);
         
-        Program program = model.workflow.programs[0];
-        assertFalse(program instanceof Workflow);
-        assertEquals("program1", program.beginAnnotation.name);
+        assertEquals(1, model.workflow.programs.length);
+        assertFalse(model.workflow.programs[0] instanceof Workflow);
+        assertEquals("program1", model.workflow.programs[0].beginAnnotation.name);
         
         assertEquals(1, model.functions.length);
         assertEquals("function", model.functions[0].beginAnnotation.name);
         assertEquals(1, model.functions[0].programs.length);
         assertEquals("program2", model.functions[0].programs[0].beginAnnotation.name);
+        assertEquals(0, model.functions[0].channels.length);
     }
 
-//    public void testExtract_GetModel_WorkflowWithOneProgram_TwoLines() throws Exception {
-//        
-//        String source = 
-//                "# @begin script @begin program"	+ EOL +
-//                "# @end program  @end script"		+ EOL;
-//
-//        BufferedReader reader = new BufferedReader(new StringReader(source));
-//        
-//        List<Annotation> annotations = extractor
-//                .reader(reader)
-//                .extract()
-//                .getAnnotations();
-//
-//        Workflow workflow = (Workflow)modeler.annotations(annotations)
-//                                             .model()
-//                                             .getWorkflow();
-//
-//        assertEquals("script", workflow.beginAnnotation.name);
-//        assertEquals("script", workflow.endAnnotation.name);
-//        assertEquals(0, workflow.inPorts.length);
-//        assertEquals(0, workflow.outPorts.length);
-//        assertEquals(1, workflow.programs.length);
-//        assertEquals(0, workflow.channels.length);
-//        
-//        Program program = workflow.programs[0];
-//        assertFalse(program instanceof Workflow);
-//        assertEquals("program", program.beginAnnotation.name);
-//    }
-//
-//    
-//   public void testExtract_GetModel_WorkflowWithOneProgram_MissingFinalEnd() throws Exception {
-//        
-//        String source = 
-//                "# @begin script"       + EOL +
-//                "#   @begin program"    + EOL +
-//                "#   @end program"      + EOL;
-//
-//        BufferedReader reader = new BufferedReader(new StringReader(source));
-//        
-//        List<Annotation> annotations = extractor
-//                .reader(reader)
-//        		.extract()
-//                .getAnnotations();
-//
-//        Exception caughtException = null;
-//        try {
-//            modeler.annotations(annotations)
-//                   .model()
-//                   .getWorkflow();
-//        } catch (YWMarkupException e) {
-//            caughtException = e;
-//        }
-//
-//        assertNotNull(caughtException);
-//        assertEquals("ERROR: No @end comment paired with '@begin script'" + EOL, caughtException.getMessage());
-//    }
-//   
-//   public void testExtract_GetModel_WorkflowWithOneProgram_MissingBothEnds() throws Exception {
-//       
-//       String source = 
-//               "# @begin script"       + EOL +
-//               "#   @begin program"    + EOL;
-//
-//       BufferedReader reader = new BufferedReader(new StringReader(source));
-//       
-//       List<Annotation> annotations = extractor
-//                .reader(reader)
-//       		    .extract()
-//                .getAnnotations();
-//
-//       
-//       Exception caughtException = null;
-//       try {
-//       
-//           modeler.annotations(annotations)
-//                  .model()
-//                  .getWorkflow();
-//       
-//       } catch (YWMarkupException e) {
-//           caughtException = e;
-//       }
-//
-//       assertNotNull(caughtException);
-//       assertEquals(
-//               "ERROR: No @end comment paired with '@begin program'"  + EOL +
-//               "ERROR: No @end comment paired with '@begin script'"   + EOL, 
-//               caughtException.getMessage()
-//       );
-//   }   
-//   
-//    
-//    public void testExtract_GetModel_WorkflowWithTwoPrograms() throws Exception {
-//        
-//        String source = 
-//                "# @begin script"		+ EOL +
-//                "#   @begin program0"	+ EOL +
-//                "#   @end program0"		+ EOL +
-//                "#   @begin program1"	+ EOL +
-//                "#   @end program1"		+ EOL +
-//                "# @end script"			+ EOL;
-//
-//        BufferedReader reader = new BufferedReader(new StringReader(source));
-//        
-//        List<Annotation> annotations = extractor
-//                .reader(reader)
-//                .extract()
-//                .getAnnotations();
-//
-//        Workflow workflow = (Workflow)modeler.annotations(annotations)
-//                                             .model()
-//                                             .getWorkflow();
-//        
-//        assertEquals("script", workflow.beginAnnotation.name);
-//        assertEquals("script", workflow.endAnnotation.name);
-//        assertEquals(0, workflow.inPorts.length);
-//        assertEquals(0, workflow.outPorts.length);
-//        assertEquals(2, workflow.programs.length);
-//        assertEquals(0, workflow.channels.length);
-//
-//        Program program0 = workflow.programs[0];
-//        assertFalse(program0 instanceof Workflow);
-//        assertEquals("program0", program0.beginAnnotation.name);        
-//        assertEquals("program0", program0.endAnnotation.name);
-//        assertEquals(0, program0.inPorts.length);
-//        assertEquals(0, program0.outPorts.length);
-//
-//        Program program1 = workflow.programs[1];
-//        assertFalse(program1 instanceof Workflow);
-//        assertEquals("program1", program1.beginAnnotation.name);        
-//        assertEquals("program1", program1.endAnnotation.name);
-//        assertEquals(0, program1.inPorts.length);
-//        assertEquals(0, program1.outPorts.length);
-//    }
-//
-//    public void testExtract_GetModel_WorkflowWithSubworkflow() throws Exception {
+    public void testExtract_GetModel_WorkflowOneProgram_FunctionTwoPrograms() throws Exception {
+        
+        String source = 
+                "# @begin workflow"     + EOL +
+                "#   @begin program1"   + EOL +
+                "#   @end program1"     + EOL +
+                "# @end workflow"       + EOL +
+                "#"                     + EOL +
+                "# @begin function"     + EOL +
+                "#   @begin program2"   + EOL +
+                "#   @out channel1"     + EOL +
+                "#   @end program2"     + EOL +
+                "#   @begin program3"   + EOL +
+                "#   @in channel1"      + EOL +
+                "#   @end program3"     + EOL +
+                "# @end function"       + EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor
+                .reader(reader)
+                .extract()
+                .getAnnotations();
+
+        Model model = modeler.annotations(annotations)
+                             .model()
+                             .getModel();
+
+        assertEquals("workflow", model.workflow.beginAnnotation.name);
+        assertEquals("workflow", model.workflow.endAnnotation.name);
+        assertEquals(0, model.workflow.inPorts.length);
+        assertEquals(0, model.workflow.outPorts.length);
+        assertEquals(0, model.workflow.channels.length);
+        
+        assertEquals(1, model.workflow.programs.length);
+        assertFalse(model.workflow.programs[0] instanceof Workflow);
+        assertEquals("program1", model.workflow.programs[0].beginAnnotation.name);
+        
+        assertEquals(1, model.functions.length);
+        assertEquals("function", model.functions[0].beginAnnotation.name);
+        assertEquals(2, model.functions[0].programs.length);
+        assertEquals("program2", model.functions[0].programs[0].beginAnnotation.name);
+        assertEquals("program3", model.functions[0].programs[1].beginAnnotation.name);
+        assertEquals(1, model.functions[0].channels.length);
+        assertEquals("channel1", model.functions[0].channels[0].sourcePort.flowAnnotation.binding());        
+    }
+
+    public void testExtract_GetModel_WorkflowOneProgram_TwoFunctions_BothAfterWorkflow() throws Exception {
+        
+        String source = 
+                "# @begin workflow"     + EOL +
+                "#   @begin program1"   + EOL +
+                "#   @end program1"     + EOL +
+                "# @end workflow"       + EOL +
+                "#"                     + EOL +
+                "# @begin function1"    + EOL +
+                "# @end function1"      + EOL +
+                "#"                     + EOL +
+                "# @begin function2"    + EOL +
+                "# @end function2"      + EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor
+                .reader(reader)
+                .extract()
+                .getAnnotations();
+
+        Model model = modeler.annotations(annotations)
+                             .model()
+                             .getModel();
+
+        assertEquals("workflow", model.workflow.beginAnnotation.name);
+        assertEquals("workflow", model.workflow.endAnnotation.name);
+        assertEquals(0, model.workflow.inPorts.length);
+        assertEquals(0, model.workflow.outPorts.length);
+        assertEquals(0, model.workflow.channels.length);
+        
+        assertEquals(1, model.workflow.programs.length);
+        assertFalse(model.workflow.programs[0] instanceof Workflow);
+        assertEquals("program1", model.workflow.programs[0].beginAnnotation.name);
+
+        assertEquals(2, model.functions.length);
+        assertEquals("function1", model.functions[0].beginAnnotation.name);
+        assertEquals(0, model.functions[0].programs.length);
+        assertEquals(0, model.functions[0].channels.length);
+
+        assertEquals("function2", model.functions[1].beginAnnotation.name);
+        assertEquals(0, model.functions[1].programs.length);
+        assertEquals(0, model.functions[1].channels.length);
+    }
+
+
+    public void testExtract_GetModel_WorkflowOneProgram_TwoFunctions_BeforeAndAfterWorkflow() throws Exception {
+        
+        String source = 
+                "# @begin function1"    + EOL +
+                "# @end function1"      + EOL +
+                "#"                     + EOL +
+                "# @begin workflow"     + EOL +
+                "#   @begin program1"   + EOL +
+                "#   @end program1"     + EOL +
+                "# @end workflow"       + EOL +
+                "#"                     + EOL +
+                "# @begin function2"    + EOL +
+                "# @end function2"      + EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor
+                .reader(reader)
+                .extract()
+                .getAnnotations();
+
+        Model model = modeler.annotations(annotations)
+                             .configure("workflow", "workflow")
+                             .model()
+                             .getModel();
+
+        assertEquals("workflow", model.workflow.beginAnnotation.name);
+        assertEquals("workflow", model.workflow.endAnnotation.name);
+        assertEquals(0, model.workflow.inPorts.length);
+        assertEquals(0, model.workflow.outPorts.length);
+        assertEquals(0, model.workflow.channels.length);
+        
+        assertEquals(1, model.workflow.programs.length);
+        assertFalse(model.workflow.programs[0] instanceof Workflow);
+        assertEquals("program1", model.workflow.programs[0].beginAnnotation.name);
+
+        assertEquals(2, model.functions.length);
+        assertEquals("function1", model.functions[0].beginAnnotation.name);
+        assertEquals(0, model.functions[0].programs.length);
+        assertEquals(0, model.functions[0].channels.length);
+
+        assertEquals("function2", model.functions[1].beginAnnotation.name);
+        assertEquals(0, model.functions[1].programs.length);
+        assertEquals(0, model.functions[1].channels.length);
+    }
+
+    public void testExtract_GetModel_NoWorkflow_TwoFunctions() throws Exception {
+        
+        String source = 
+                "# @begin function1"    + EOL +
+                "# @end function1"      + EOL +
+                "#"                     + EOL +
+                "# @begin function2"    + EOL +
+                "# @end function2"      + EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor
+                .reader(reader)
+                .extract()
+                .getAnnotations();
+
+        Model model = modeler.annotations(annotations)
+                             .configure("workflow", "workflow")
+                             .model()
+                             .getModel();
+
+        assertNull(model.workflow);
+        
+        assertEquals(2, model.functions.length);
+        assertEquals("function1", model.functions[0].beginAnnotation.name);
+        assertEquals(0, model.functions[0].programs.length);
+        assertEquals(0, model.functions[0].channels.length);
+
+        assertEquals("function2", model.functions[1].beginAnnotation.name);
+        assertEquals(0, model.functions[1].programs.length);
+        assertEquals(0, model.functions[1].channels.length);
+    }
+    
+ //    public void testExtract_GetModel_WorkflowWithSubworkflow() throws Exception {
 //        
 //        String source = 
 //                "# @begin workflow"			+ EOL +
