@@ -8,7 +8,7 @@ Overview
 
 YesWorkflow aims to provide a number of the benefits of using a scientific workflow management system without having to rewrite scripts and other scientific software.  Rather than reimplementing code so that it can be executed and managed by a workflow engine, a YesWorkflow user simply adds special YesWorkflow (YW) comments to existing scripts.  These comments declare how data is used and results produced, step by step, by the script.  The YesWorkflow tools interpret the YW comments and produce graphical output that reveals the stages of computation and the flow of data in the script.
 
-#### Example YesWorkflow output
+### Example YesWorkflow output
 
 The image below was produced by YesWorkflow using the YW comments added to a conventional (non-dataflow oriented) python script ([example.py](https://github.com/yesworkflow-org/yw-prototypes/blob/master/src/main/resources/example.py "example.py")):
 
@@ -59,7 +59,7 @@ Instructions for users
 These instruction explain how to set up an environment for running the YesWorkflow prototype on a script that has been marked up with YW comments.
 
 
-#### 1. Check installed version of Java
+### 1. Check installed version of Java
 
 YesWorkflow requires Java (JRE) version 1.7 or higher. To determine the version of java installed on your computer use the -version option to the java command. For example,
 
@@ -72,11 +72,11 @@ YesWorkflow requires Java (JRE) version 1.7 or higher. To determine the version 
 
  Instructions for installing Java may be found at [http://docs.oracle.com/javase/7/docs/webnotes/install/](http://docs.oracle.com/javase/7/docs/webnotes/install/).  If you plan to develop with YesWorkflow be sure that you install the JDK.
 
-#### 2.  Install Graphviz visualization software
+### 2.  Install Graphviz visualization software
 
 YesWorkflow produces graphical representations that is rendered using Graphviz or other software capable of processing DOT graph files.  You can find instructions for installing Graphviz at [http://graphviz.org/Download.php](http://graphviz.org/Download.php "http://graphviz.org/Download.php").  Make sure that the `dot` command is in your path following installation.
 
-#### 3. Download the YesWorkflow jar file
+### 3. Download the YesWorkflow jar file
 
 The YesWorkflow prototype is distributed as a jar (Java archive) file that can be executed using the `java -jar` command.
 
@@ -124,7 +124,7 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
     $ yw graph myscript.py -config graph.view=combined -config graph.datalabel=uri
     $ yw graph scriptA.py scriptB.py > wf.gv; dot -Tpdf wf.gv -o wf.pdf; open wf.pdf
 
-#### 4.  Define a short command for running YesWorkflow at the prompt
+### 4.  Define a short command for running YesWorkflow at the prompt
 
 If you are running YesWorkflow on an Apple OSX or Linux system (or use Git Bash or Cygwin on Windows), you may define a bash alias to simplify running YesWorkflow at the command line.  On Windows platforms you similarly may define a macro for running YesWorkflow at the prompt.
 
@@ -141,11 +141,11 @@ The command to display YesWorkflow command line options is now simply:
     $ yw --help
 
 
-#### 5. Run YesWorkflow on the example python script
+### 5. Run YesWorkflow on the example python script
 
 The [`example.py`](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.py "example.py") script  is useful for demonstrating YesWorkflow capabilities. You can download it to your computer [here](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.py "example.py"). (If you have cloned the `yw-prototypes` repository, the script is in the `src/main/resources` directory.)  In the examples below it is assumed that `example.py` is in your current working directory.
 
-##### Extracting YW comment lines
+#### Extracting YW comment lines
 
 First, use the YesWorkflow `extract` command and `-c extract.listing` option to list the YW commands found in the script:
 
@@ -176,7 +176,7 @@ First, use the YesWorkflow `extract` command and `-c extract.listing` option to 
 
 This command is useful for confirming that YesWorkflow is finding the comments that you have added to a script and is not confused by other comments and code in the script.
 
-##### Creating a workflow graph for a script
+#### Creating a workflow graph for a script
 
 Next, use the `graph` command to produce a graphical representations of the script based on the YW comments it contains.  YesWorkflow natively outputs GraphViz's DOT format (file extension `.gv`).  If you don't provide a file name for storing the DOT output it will be sent to the terminal:
 
@@ -231,11 +231,11 @@ And on Windows platforms:
 
     $ yw graph example.py | dot -Tpng -o example.png && start example.png
 
-#### 6. Mark up and analyze your own script
+### 6. Mark up and analyze your own script
 
 You should now be able to add YW comments to your own data processing script and analyze your script using the YesWorkflow prototype.
 
-##### Delimit your script with `@begin` and `@end` comments
+#### Delimit your script with `@begin` and `@end` comments
 
 The YesWorkflow prototype assumes that the code for the entire script to be analyzed is bracketed by a pair of `@begin` and `@end` comments.  The YW comments may appear anywhere comments are allowed by the scripting language you are using.   For example, a script written in a language that uses the # character to start comments might look like the following
 
@@ -253,7 +253,7 @@ Note that comments that do not contain YW keywords are ignored by YesWorkflow.
 
 `@begin` and `@end` keywords both should be followed by the name of the block of code they bracket (in this case, the script as a whole), and these names should match for each `@begin` and `@end` pair.  This convention makes it easier to identify incorrectly paired `@begin` and `@end` keywords in the script.
 
-##### Use `@in` and `@out` comments to declare the data consumed and produced in the script
+#### Use `@in` and `@out` comments to declare the data consumed and produced in the script
 
 The next step in marking up a script with YW comments is to declare the inputs and outputs of the script.  These do not need to be actual command-line options to your script or files read from or output to disk by the script.  The comments you add simply declare that the script accepts these inputs in some way, and produces the indicated outputs somehow.  
 
@@ -303,7 +303,7 @@ Because variable names are often kept relatively short in scripts, YesWorkflow a
 
 Analysis performed by YesWorkflow and the outputs it produces use these aliases if present, and the unaliased names otherwise.
 
-##### Declare computational code blocks within your script
+#### Declare computational code blocks within your script
 
 The YesWorkflow prototype assumes that a script has a single, top-level block of code delimited by the `@begin` and `@end` statements described above, and additionally one or more marked up computational blocks nested within this top-level block.  You can use these nested blocks to describe the computational steps in your script in dataflow terms.  For example, we can declare two computational code blocks within MyScript:
 
@@ -345,7 +345,7 @@ The YesWorkflow prototype assumes that a script has a single, top-level block of
 
 The `@begin`, `@end`, `@in`, `@out`, and `@as` keywords have the same meaning for computational blocks within the script as for the script as a whole.
 
-##### Analyze your script with YesWorkflow tool
+#### Analyze your script with YesWorkflow tool
 
 At this point you may analyze your script and render it graphically, just as we did above for `example.py`.  If your script is called `MyScript.py` then the command (for Unix platforms):
 
@@ -366,7 +366,7 @@ Similarly, the circle on the far right corresponds to the script `@out` comment,
 
 The remaining arrows are drawn between blocks and represent flow of data between computational blocks. They result from matching aliases from `@out` comments on upstream blocks with aliases for `@in` comments on downstream blocks.
 
-##### Override the comment character used in your script
+#### Override the comment character used in your script
 
 YesWorkflow infers the programming language employed in a script by inspecting the source file extension.  Currently the following file extensions and associated comment syntaxes are recognized.  Block comments may span multiple consecutive lines.
 
@@ -388,6 +388,32 @@ Support for single-line comments started with a `#` character is assumed if the 
 And on Windows:
 
     yw graph -c extract.comment='%' < myprogram.m > myprogram.gv
+
+#### Store command-line options in a yw.properties file
+
+Configutration options for YesWorkflow may be stored in a file named `yw.properties` in the directory in which you run `yw`.  Specify one option per line using a `name = value` syntax similar that used on the command line (in configuration files, spaces and tabs are allowed on either side of the `=` sign).  To try this out, create a `yw.properties` file with the following content in the directory containing `MyScript.py`:
+
+    # extract configuration
+    extract.sources     = MyScript.py
+    extract.listing     = listing.txt
+    extract.comment     = #
+
+    # graph configuration
+    graph.view          = combined
+    graph.layout        = tb
+    graph.dotfile       = combined.gv
+    graph.workflowbox   = show
+    graph.portlayout    = relax
+
+You may now create the graph rendering of your script using the above options simply by typing:
+
+    $ yw graph
+
+From top to bottom, the options specified in this `yw.properties` file cause YesWorkflow to (1) extract YW comments from `MyScript.py`, (2) leave the list of extracted comments in `listing.txt`, (3) interpret the `#` as the source code comment delimiter (this causes YesWorkflow to ignore comments in Python docstrings in this case), (4) render a view of the workflow graph that combines the process and data views in single graph (see figure below), (5) arrange the nodes in the graph from top to bottom, (6) write the DOT output to `combined.gv`, (7) draw a box around the nodes in the workflow, and (8) allow Graphviz to place the input and output nodes in locations that minimize the complexity of the graph.  The graph resulting from running YesWorkflow with these options looks like this:
+
+![](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/MyScript_combined.png)
+
+Type `yw --help` to see available options and valid values for each.
 
 Instructions for developers
 ---------------------------
