@@ -27,7 +27,9 @@ public class WorkflowBuilder {
         private List<Function> nestedFunctions = new LinkedList<Function>();
 		private Map<String,List<Port>> nestedProgramInPorts = new LinkedHashMap<String,List<Port>>();
 		private Map<String,Port> nestedProgramOutPorts = new  LinkedHashMap<String,Port>();
+        private Map<String,Port> nestedProgramReturnPorts = new  LinkedHashMap<String,Port>();
         private Map<String,Program> programForName = new HashMap<String,Program>();
+        private Map<String,Function> functionForName = new HashMap<String,Function>();
         
         @SuppressWarnings("unused")
         private PrintStream stdoutStream = null;
@@ -59,6 +61,13 @@ public class WorkflowBuilder {
 			return this;
 		}
 
+	      public WorkflowBuilder nestedFunction(Function function) {
+	            this.nestedFunctions.add(function);
+	            this.functionForName.put(function.beginAnnotation.name, function);
+	            return this;
+	        }
+
+		
         public Port inPort(In inAnnotation) throws Exception {
             
             // model the outward facing in port
@@ -89,7 +98,7 @@ public class WorkflowBuilder {
 
         public Port returnPort(Return returnAnnotation) {
 
-            // model the outward facing out port
+            // model the return port
             Port returnPort = new Port(returnAnnotation, beginAnnotation);
             workflowReturnPorts.add(returnPort);
             
@@ -131,6 +140,24 @@ public class WorkflowBuilder {
 			return this;
 		}
 
+        public WorkflowBuilder nestedReturnPort(Port returnPort) throws Exception {
+            String binding = returnPort.flowAnnotation.binding();
+            
+            // ensure no other writers to this @out binding
+            if (nestedProgramOutPorts.containsKey(binding)) {
+                throw new Exception("Multiple outputs bound to " + binding);
+            }
+            
+            // store the @out comment
+            this.nestedProgramReturnPorts.put(binding, returnPort);
+
+            return this;
+        }
+
+		public boolean hasReturnPort() {
+		    return this.workflowReturnPorts.size() > 0;
+		}
+        
 		public boolean hasNestedPrograms() {
 		    return this.nestedPrograms.size() > 0;
 		}

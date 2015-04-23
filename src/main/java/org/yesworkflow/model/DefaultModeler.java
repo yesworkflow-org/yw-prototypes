@@ -11,6 +11,7 @@ import org.yesworkflow.annotations.Begin;
 import org.yesworkflow.annotations.End;
 import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
+import org.yesworkflow.annotations.Return;
 import org.yesworkflow.exceptions.YWMarkupException;
 
 public class DefaultModeler implements Modeler {
@@ -98,13 +99,19 @@ public class DefaultModeler implements Modeler {
                     }
                 }
 
+            } else if (annotation instanceof Return) {
+                
+                Port returnPort = workflowBuilder.returnPort((Return)annotation);
+
             } else if (annotation instanceof Out) {
+                
                 Port outPort = workflowBuilder.outPort((Out)annotation);
                 if (parentBuilder != null) {
                     parentBuilder.nestedOutPort(outPort);
                 }
 
             } else if (annotation instanceof In) {
+                
                 Port inPort = workflowBuilder.inPort((In)annotation);
                 if (parentBuilder != null) {
                     parentBuilder.nestedInPort(inPort);
@@ -117,7 +124,11 @@ public class DefaultModeler implements Modeler {
                 if (parentWorkflowBuilders.isEmpty()) {
                     
                     if (workflowBuilder == topWorkflowBuilder) {
-                        topWorkflow = workflowBuilder.buildWorkflow();
+                        if (workflowBuilder.hasReturnPort()) {
+                            topWorkflow = workflowBuilder.buildFunction();
+                        } else {
+                            topWorkflow = workflowBuilder.buildWorkflow();
+                        }
                     } else {
                         functions.add(workflowBuilder.buildFunction());
                     }
@@ -126,10 +137,18 @@ public class DefaultModeler implements Modeler {
                     
                 } else {
 
-                    Program program = (workflowBuilder.hasNestedPrograms()) ?
-                        workflowBuilder.buildWorkflow() : workflowBuilder.buildProgram();
+                    if (workflowBuilder.hasReturnPort()) {
+                        Function function = workflowBuilder.buildFunction();
+                        parentBuilder.nestedFunction(function);
+                    } else if (workflowBuilder.hasNestedPrograms()) {
+                        Workflow workflow = workflowBuilder.buildWorkflow();
+                        parentBuilder.nestedProgram(workflow);
+                  } else {
+                        Program program = workflowBuilder.buildProgram();
+                        parentBuilder.nestedProgram(program);
+                    }
+                    
                     workflowBuilder = parentWorkflowBuilders.pop();
-                    workflowBuilder.nestedProgram(program);
                 }
                 
                 if (!parentWorkflowBuilders.isEmpty()) {

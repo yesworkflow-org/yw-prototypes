@@ -18,11 +18,13 @@ import org.yesworkflow.YWKeywords.Tag;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.annotations.As;
 import org.yesworkflow.annotations.Begin;
+import org.yesworkflow.annotations.Call;
 import org.yesworkflow.annotations.End;
 import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Param;
 import org.yesworkflow.annotations.Qualification;
+import org.yesworkflow.annotations.Return;
 import org.yesworkflow.annotations.Uri;
 import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.exceptions.YWToolUsageException;
@@ -237,13 +239,15 @@ public class DefaultExtractor implements Extractor {
             
             Annotation annotation = null;
             switch(tag) {
-                case BEGIN: annotation = new Begin(s);  break;
-                case END:   annotation = new End(s);    break;
-                case IN:    annotation = new In(s);     break;
-                case OUT:   annotation = new Out(s);    break;
-                case AS:    annotation = new As(s);		break;
-                case PARAM: annotation = new Param(s);  break;
-                case URI:   annotation = new Uri(s);    break;
+                case BEGIN:  annotation = new Begin(s);  break;
+                case CALL:   annotation = new Call(s);    break;
+                case END:    annotation = new End(s);    break;
+                case IN:     annotation = new In(s);     break;
+                case OUT:    annotation = new Out(s);    break;
+                case AS:     annotation = new As(s);     break;
+                case PARAM:  annotation = new Param(s);  break;
+                case RETURN: annotation = new Return(s); break;
+                case URI:    annotation = new Uri(s);    break;   
             }
 
             if (annotation instanceof Qualification) {
