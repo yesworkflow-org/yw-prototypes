@@ -1,4 +1,4 @@
-package org.yesworkflow.model;
+package org.yesworkflow.query;
 
 public class FactsBuilder {
 	

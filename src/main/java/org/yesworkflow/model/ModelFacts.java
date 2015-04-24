@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.yesworkflow.annotations.Uri;
+import org.yesworkflow.query.FactsBuilder;
 
 public class ModelFacts {
 
