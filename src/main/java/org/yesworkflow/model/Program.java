@@ -8,6 +8,7 @@ import org.yesworkflow.annotations.End;
 public class Program {
 
     static final Program[] EMPTY_PROGRAM_ARRAY = new Program[]{};
+    static final Function[] EMPTY_FUNCTION_ARRAY = new Function[]{};
     static final Channel[] EMPTY_CHANNEL_ARRAY = new Channel[]{};
 
     public final Begin beginAnnotation;
@@ -48,7 +49,7 @@ public class Program {
 	         outPorts.toArray(new Port[outPorts.size()]),
 	         EMPTY_PROGRAM_ARRAY,
 	         EMPTY_CHANNEL_ARRAY,
-	         null);
+	         EMPTY_FUNCTION_ARRAY);
 	}
 
     public boolean isWorkflow() {
@@ -59,4 +60,8 @@ public class Program {
 	public String toString() {
 	    return this.beginAnnotation.name;
 	}
+
+    public String type() {
+        return "program";
+    }
 }
