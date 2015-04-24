@@ -28,9 +28,5 @@ public class Workflow extends Program {
     public boolean isWorkflow() {
         return true;
     }
-    
-    public String type() {
-        return "workflow";
-    }
 }
 

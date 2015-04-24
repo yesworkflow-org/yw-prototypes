@@ -26,8 +26,4 @@ public class Function extends Workflow {
         
         this.returnPorts = returnPorts.toArray(new Port[returnPorts.size()]);
     }
-
-    public String type() {
-        return "function";
-    }
 }

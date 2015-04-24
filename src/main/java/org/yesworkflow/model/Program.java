@@ -60,8 +60,4 @@ public class Program {
 	public String toString() {
 	    return this.beginAnnotation.name;
 	}
-
-    public String type() {
-        return "program";
-    }
 }

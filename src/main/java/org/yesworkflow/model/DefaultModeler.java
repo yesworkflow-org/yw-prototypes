@@ -138,9 +138,11 @@ public class DefaultModeler implements Modeler {
         Integer blockId = blockFacts.nextId();
         blockFacts.fact(blockId.toString(), sq(blockName));
         
-        if (block.type().equals("workflow")) {
+        if (block.channels.length > 0) {
             modelFacts.workflows.fact(blockId.toString());
-        } else if (block.type().equals("function")) {            
+        }
+        
+        if (block instanceof Function) {            
             modelFacts.functions.fact(blockId.toString());
         }
         
