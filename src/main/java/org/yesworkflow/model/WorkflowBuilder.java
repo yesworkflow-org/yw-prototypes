@@ -162,10 +162,30 @@ public class WorkflowBuilder {
 		    return this.nestedPrograms.size() > 0;
 		}
 		
-		public Function buildFunction() throws Exception {	            
+		public WorkflowBuilder buildChannels() throws Exception {
             pruneUnusedNestedProgramInPorts();
             pruneUnusedNestedProgramOutPorts();
             buildNestedChannels();
+            return this;
+		}
+		
+		public Program build() throws Exception {	
+          
+		    if (hasReturnPort()) {
+                return buildFunction();
+            } 
+            
+            buildChannels();
+            
+            if (nestedChannels.size() > 0) {
+                return buildWorkflow();
+            } else {
+                return buildProgram();
+            }
+		}
+		
+		public Function buildFunction() throws Exception {
+            buildChannels();
 		    return new Function(
 		            beginAnnotation,
                     endAnnotation,
@@ -177,23 +197,19 @@ public class WorkflowBuilder {
                     nestedFunctions
 		            );
         }
-
 		
-        public Program buildProgram() throws Exception {
+        private Program buildProgram() throws Exception {
             return new Program(
                     beginAnnotation, 
                     endAnnotation, 
                     workflowInPorts, 
-                    workflowOutPorts
+                    workflowOutPorts,
+                    nestedPrograms,
+                    nestedFunctions
                     );
         }
 	            
-        public Workflow buildWorkflow() throws Exception {
-			
-			pruneUnusedNestedProgramInPorts();
-			pruneUnusedNestedProgramOutPorts();
-			buildNestedChannels();
-			
+        private Workflow buildWorkflow() throws Exception {
 			return new Workflow(
                     beginAnnotation,
                     endAnnotation,

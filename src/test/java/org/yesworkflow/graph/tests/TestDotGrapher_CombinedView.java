@@ -85,9 +85,9 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
                  .extract()
                  .getAnnotations();
 
-         Workflow workflow = modeler.annotations(annotations)
+         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                     .model()
-                                    .getWorkflow();
+                                    .getModel().program;
 
          grapher.workflow(workflow)
                 .configure("portlayout", "relax")

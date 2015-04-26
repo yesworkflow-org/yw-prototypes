@@ -6,24 +6,24 @@ public class Model {
 
     static final Function[] EMPTY_FUNCTION_ARRAY = new Function[]{};
     
-    public final Workflow workflow;
+    public final Program program;
     public final Function[] functions;
 
-    public Model(Workflow workflow, Function[] functions) {
-        this.workflow = workflow;
+    public Model(Program program, Function[] functions) {
+        this.program = program;
         this.functions = functions;
     }
     
-	public Model(Workflow workflow, List<Function> functions) {
-	    this(workflow, functions.toArray(new Function[functions.size()]));
+	public Model(Program program, List<Function> functions) {
+	    this(program, functions.toArray(new Function[functions.size()]));
 	}
 
-	public Model(Workflow workflow) {
-	    this(workflow, EMPTY_FUNCTION_ARRAY);
+	public Model(Program program) {
+	    this(program, EMPTY_FUNCTION_ARRAY);
     }
 	
 	@Override
 	public String toString() {
-	    return "Model(workflow=" + workflow.beginAnnotation.name + ")";
+	    return "Model(program=" + program.beginAnnotation.name + ")";
 	}
 }

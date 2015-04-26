@@ -77,11 +77,6 @@ public class DefaultModeler implements Modeler {
     }
 
     @Override
-    public Workflow getWorkflow() {
-        return this.model.workflow;
-    }
-
-    @Override
     public String getFacts() {
         if (modelFacts == null) {
             modelFacts = new ModelFacts(model).build().toString();
@@ -102,7 +97,7 @@ public class DefaultModeler implements Modeler {
 
         WorkflowBuilder workflowBuilder = null;
         WorkflowBuilder topWorkflowBuilder = null;
-        Workflow topWorkflow = null;
+        Program topProgram = null;
         WorkflowBuilder parentBuilder = null;
         Stack<WorkflowBuilder> parentWorkflowBuilders = new Stack<WorkflowBuilder>();
         List<Function> functions = new LinkedList<Function>();
@@ -146,16 +141,12 @@ public class DefaultModeler implements Modeler {
 
             } else if (annotation instanceof End) {
 
-                workflowBuilder.end((End)annotation);
-                    
+                workflowBuilder.end((End)annotation);                
+                
                 if (parentWorkflowBuilders.isEmpty()) {
                     
                     if (workflowBuilder == topWorkflowBuilder) {
-                        if (workflowBuilder.hasReturnPort()) {
-                            topWorkflow = workflowBuilder.buildFunction();
-                        } else {
-                            topWorkflow = workflowBuilder.buildWorkflow();
-                        }
+                        topProgram = workflowBuilder.build();
                     } else {
                         functions.add(workflowBuilder.buildFunction());
                     }
@@ -164,14 +155,11 @@ public class DefaultModeler implements Modeler {
                     
                 } else {
 
-                    if (workflowBuilder.hasReturnPort()) {
-                        Function function = workflowBuilder.buildFunction();
-                        parentBuilder.nestedFunction(function);
-                    } else if (workflowBuilder.hasNestedPrograms()) {
-                        Workflow workflow = workflowBuilder.buildWorkflow();
-                        parentBuilder.nestedProgram(workflow);
-                  } else {
-                        Program program = workflowBuilder.buildProgram();
+                    Program program = workflowBuilder.build();
+
+                    if (program instanceof Function) {
+                        parentBuilder.nestedFunction((Function)program);
+                    } else {
                         parentBuilder.nestedProgram(program);
                     }
                     
@@ -197,6 +185,6 @@ public class DefaultModeler implements Modeler {
             throw new YWMarkupException(messageBuilder.toString());
         }
         
-        model = new Model(topWorkflow, functions);
+        model = new Model(topProgram, functions);
     }
 }

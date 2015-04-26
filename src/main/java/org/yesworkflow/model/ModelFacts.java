@@ -21,7 +21,7 @@ public class ModelFacts {
     public ModelFacts build() {
         
         FactsBuilders modelFacts = new FactsBuilders();
-        buildFactsForCodeBlockAndChildren(modelFacts, modelFacts.programs, model.workflow, null);
+        buildFactsForCodeBlockAndChildren(modelFacts, modelFacts.programs, model.program, null);
         for (Function function : model.functions) {
             buildFactsForCodeBlockAndChildren(modelFacts, modelFacts.programs, function, null);            
         }

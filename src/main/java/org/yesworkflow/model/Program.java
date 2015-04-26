@@ -41,15 +41,18 @@ public class Program {
 	        Begin beginAnnotation, 
 	        End endAnnotation, 
 	        List<Port> inPorts, 
-	        List<Port> outPorts
+	        List<Port> outPorts,
+	        List<Program> subprograms,
+            List<Function> functions
+	        
     ) {
 	    this(beginAnnotation,  
 	         endAnnotation, 
 	         inPorts.toArray(new Port[inPorts.size()]),
 	         outPorts.toArray(new Port[outPorts.size()]),
-	         EMPTY_PROGRAM_ARRAY,
+	         subprograms.toArray(new Program[subprograms.size()]),
 	         EMPTY_CHANNEL_ARRAY,
-	         EMPTY_FUNCTION_ARRAY);
+	         functions.toArray(new Function[functions.size()]));
 	}
 
     public boolean isWorkflow() {

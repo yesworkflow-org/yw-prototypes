@@ -65,9 +65,10 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                 .extract()
                 .getAnnotations();
 
-        Workflow workflow = modeler.annotations(annotations)
-                                   .model()
-                                   .getWorkflow();
+        Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                             .model()
+                                             .getModel()
+                                             .program;
 
         grapher.workflow(workflow)
                .graph();
@@ -110,9 +111,10 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                 .extract()
                 .getAnnotations();
 
-        Workflow workflow = modeler.annotations(annotations)
-                                   .model()
-                                   .getWorkflow();
+        Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                             .model()
+                                             .getModel()
+                                             .program;
 
         grapher.workflow(workflow)
                .graph();
@@ -154,9 +156,10 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
               .extract()
               .getAnnotations();
 
-      Workflow workflow = modeler.annotations(annotations)
-                                 .model()
-                                 .getWorkflow();
+      Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                           .model()
+                                           .getModel()
+                                           .program;
 
       grapher.workflow(workflow)
              .graph();
@@ -200,9 +203,10 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                 .extract()
                 .getAnnotations();
 
-        Workflow workflow = modeler.annotations(annotations)
-                                   .model()
-                                   .getWorkflow();
+        Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                             .model()
+                                             .getModel()
+                                             .program;
         
         grapher.workflow(workflow)
                .graph();
@@ -249,10 +253,11 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
               .extract()
               .getAnnotations();
 
-      Workflow workflow = modeler.annotations(annotations)
-                                 .model()
-                                 .getWorkflow();
-
+      Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                           .model()
+                                           .getModel()
+                                           .program;
+      
       grapher.workflow(workflow)
              .graph();
       
@@ -298,10 +303,11 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                 .extract()
                 .getAnnotations();
 
-        Workflow workflow = modeler.annotations(annotations)
-                                   .model()
-                                   .getWorkflow();
-
+        Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                             .model()
+                                             .getModel()
+                                             .program;
+        
         grapher.workflow(workflow)
                .graph();
         
@@ -331,10 +337,11 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                  .extract()
                  .getAnnotations();
 
-         Workflow workflow = modeler.annotations(annotations)
-                                    .model()
-                                    .getWorkflow();
-    
+         Workflow workflow = (Workflow)modeler.annotations(annotations)
+                                              .model()
+                                              .getModel()
+                                              .program;
+         
          grapher.workflow(workflow)
                 .graph();
          

@@ -103,8 +103,8 @@ public class DotGrapher implements Grapher  {
     public DotGrapher graph() throws Exception {
         
         if (topWorkflow == null) {
-            if (model != null & model.workflow != null) {
-                topWorkflow = model.workflow;
+            if (model != null & model.program != null) {
+                topWorkflow = model.program;
             } else {
                 throw new YWToolUsageException("Top workflow not identified to grapher.");
             }
