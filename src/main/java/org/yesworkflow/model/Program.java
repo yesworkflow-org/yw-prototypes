@@ -60,10 +60,6 @@ public class Program {
 	         functions.toArray(new Function[functions.size()]));
 	}
 
-	public Integer getId() {
-	    return id;
-	}
-	
     public boolean isWorkflow() {
 	    return false;
 	}
