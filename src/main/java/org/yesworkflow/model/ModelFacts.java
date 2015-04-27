@@ -59,29 +59,26 @@ public class ModelFacts {
         return factsString;
     }
 
-    private void buildFactsForCodeBlockAndChildren(FactsBuilder blockFacts, Program block, Integer parentId) {
+    private void buildFactsForCodeBlockAndChildren(FactsBuilder blockFacts, Program program, Integer parentId) {
         
-        String blockName = block.beginAnnotation.name;
-
-        Integer blockId = blockFacts.nextId();
-        blockFacts.fact(blockId.toString(), sq(blockName));
+        blockFacts.fact(program.id.toString(), sq(program.beginAnnotation.name));
         
-        if (block.channels.length > 0) {
-            workflows.fact(blockId.toString());
+        if (program.channels.length > 0) {
+            workflows.fact(program.id.toString());
         }
         
-        if (block instanceof Function) {            
-            functions.fact(blockId.toString());
+        if (program instanceof Function) {            
+            functions.fact(program.id.toString());
         }
         
         if (parentId != null) {
-            subprograms.fact(parentId.toString(), blockId.toString());
+            subprograms.fact(parentId.toString(), program.id.toString());
         }
         
-        buildPortFacts(block.inPorts, block, blockId);
-        buildPortFacts(block.outPorts, block, blockId);
+        buildPortFacts(program.inPorts, program, program.id);
+        buildPortFacts(program.outPorts, program, program.id);
         
-        for (Channel channel : block.channels) {
+        for (Channel channel : program.channels) {
             Integer channelId = channels.nextId();
             String binding = channel.sourcePort.flowAnnotation.binding();
             Integer sourcePortId = getIdForPort(channel.sourcePort);
@@ -91,12 +88,12 @@ public class ModelFacts {
             portConnections.fact(sinkPortId.toString(), channelId.toString());
         }
         
-        for (Program childProgram : block.programs) {
-            buildFactsForCodeBlockAndChildren(programs, childProgram, blockId);
+        for (Program childProgram : program.programs) {
+            buildFactsForCodeBlockAndChildren(programs, childProgram, program.id);
         }
         
-        for (Program childFunction : block.functions) {
-            buildFactsForCodeBlockAndChildren(programs, childFunction, blockId);
+        for (Program childFunction : program.functions) {
+            buildFactsForCodeBlockAndChildren(programs, childFunction, program.id);
         }
     }
 

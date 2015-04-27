@@ -101,6 +101,8 @@ public class DefaultModeler implements Modeler {
         WorkflowBuilder parentBuilder = null;
         Stack<WorkflowBuilder> parentWorkflowBuilders = new Stack<WorkflowBuilder>();
         List<Function> functions = new LinkedList<Function>();
+        
+        Integer nextProgramId = 1;
 
         for (Annotation annotation : annotations) {
 
@@ -111,7 +113,7 @@ public class DefaultModeler implements Modeler {
                     parentBuilder = workflowBuilder;
                 }
 
-                workflowBuilder = new WorkflowBuilder(this.stdoutStream, this.stderrStream)
+                workflowBuilder = new WorkflowBuilder(nextProgramId++, this.stdoutStream, this.stderrStream)
                     .begin((Begin)annotation);
                 
                 if (topWorkflowBuilder == null) { 

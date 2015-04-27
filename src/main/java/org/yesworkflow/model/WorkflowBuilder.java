@@ -16,6 +16,7 @@ import org.yesworkflow.annotations.Return;
 
 public class WorkflowBuilder {
 		
+        private final Integer programId;
         private Begin beginAnnotation;
         private End endAnnotation;
         private List<Port> workflowInPorts = new LinkedList<Port>();
@@ -37,7 +38,8 @@ public class WorkflowBuilder {
         @SuppressWarnings("unused")
         private PrintStream stderrStream = null;
 
-        public WorkflowBuilder(PrintStream stdoutStream, PrintStream stderrStream) {
+        public WorkflowBuilder(Integer id, PrintStream stdoutStream, PrintStream stderrStream) {
+            this.programId = id;
             this.stdoutStream = stdoutStream;
             this.stderrStream = stderrStream;
         }
@@ -187,6 +189,7 @@ public class WorkflowBuilder {
 		public Function buildFunction() throws Exception {
             buildChannels();
 		    return new Function(
+		            programId,
 		            beginAnnotation,
                     endAnnotation,
                     workflowInPorts,
@@ -200,6 +203,7 @@ public class WorkflowBuilder {
 		
         private Program buildProgram() throws Exception {
             return new Program(
+                    programId,
                     beginAnnotation, 
                     endAnnotation, 
                     workflowInPorts, 
@@ -211,6 +215,7 @@ public class WorkflowBuilder {
 	            
         private Workflow buildWorkflow() throws Exception {
 			return new Workflow(
+			        programId,
                     beginAnnotation,
                     endAnnotation,
                     workflowInPorts,

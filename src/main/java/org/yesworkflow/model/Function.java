@@ -11,6 +11,7 @@ public class Function extends Workflow {
     public final Port[] returnPorts;
     
     public Function(
+            Integer id,
             Begin beginAnnotation, 
             End endAnnotation,
             List<Port> inPorts,
@@ -20,7 +21,7 @@ public class Function extends Workflow {
             List<Channel> channels,
             List<Function> functions
     ) {
-        super(beginAnnotation, endAnnotation,
+        super(id, beginAnnotation, endAnnotation,
                 inPorts, outPorts, programs,
                 channels, functions);
         

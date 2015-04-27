@@ -8,6 +8,7 @@ import org.yesworkflow.annotations.End;
 public class Workflow extends Program {
 
     public Workflow(
+           Integer id,
            Begin beginAnnotation,
            End endAnnotation,
            List<Port> inPorts,
@@ -16,7 +17,7 @@ public class Workflow extends Program {
            List<Channel> channels,
            List<Function> functions
     ) {
-        super(beginAnnotation, endAnnotation, 
+        super(id, beginAnnotation, endAnnotation, 
              inPorts.toArray(new Port[inPorts.size()]),
              outPorts.toArray(new Port[outPorts.size()]),
              programs.toArray(new Program[programs.size()]),

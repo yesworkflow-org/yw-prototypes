@@ -11,6 +11,7 @@ public class Program {
     static final Function[] EMPTY_FUNCTION_ARRAY = new Function[]{};
     static final Channel[] EMPTY_CHANNEL_ARRAY = new Channel[]{};
 
+    public final Integer id;
     public final Begin beginAnnotation;
     public final End endAnnotation;
     public final Port[] inPorts;
@@ -20,6 +21,7 @@ public class Program {
     public final Function[] functions;
 
     public Program(
+            Integer id,
             Begin beginAnnotation, 
             End endAnnotation, 
             Port[] inPorts, 
@@ -28,6 +30,7 @@ public class Program {
             Channel[] channels,
             Function[] functions
     ) {
+        this.id = id;
         this.beginAnnotation = beginAnnotation;
         this.endAnnotation = endAnnotation;
         this.inPorts = inPorts;
@@ -38,6 +41,7 @@ public class Program {
     }
     
 	public Program(
+	        Integer id,
 	        Begin beginAnnotation, 
 	        End endAnnotation, 
 	        List<Port> inPorts, 
@@ -46,7 +50,8 @@ public class Program {
             List<Function> functions
 	        
     ) {
-	    this(beginAnnotation,  
+	    this(id,
+	         beginAnnotation,  
 	         endAnnotation, 
 	         inPorts.toArray(new Port[inPorts.size()]),
 	         outPorts.toArray(new Port[outPorts.size()]),
@@ -55,6 +60,10 @@ public class Program {
 	         functions.toArray(new Function[functions.size()]));
 	}
 
+	public Integer getId() {
+	    return id;
+	}
+	
     public boolean isWorkflow() {
 	    return false;
 	}
