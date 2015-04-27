@@ -8,17 +8,17 @@ public class ModelFacts {
     private final Model model;
     private String factsString = null;
     
-    private FactsBuilder programs  = new FactsBuilder("program", "program_id", "program_name");
-    private FactsBuilder workflows = new FactsBuilder("workflow", "program_id");
-    private FactsBuilder functions = new FactsBuilder("function", "program_id");
-    private FactsBuilder subprograms = new FactsBuilder("has_sub_program", "program_id", "subprogram_id");
-    private FactsBuilder ports = new FactsBuilder("port", "port_id", "port_type", "variable_name");
-    private FactsBuilder portAliases = new FactsBuilder("port_alias", "port_id", "alias");
-    private FactsBuilder portUris = new FactsBuilder("port_uri", "port_id", "uri");
-    private FactsBuilder hasInPort = new FactsBuilder("has_in_port", "block_id", "port_id");
-    private FactsBuilder hasOutPort = new FactsBuilder("has_out_port", "block_id", "port_id");
-    private FactsBuilder channels = new FactsBuilder("channel", "channel_id", "binding");
-    private FactsBuilder portConnections = new FactsBuilder("port_connects_to_channel", "port_id", "channel_id");
+    private FactsBuilder programFacts  = new FactsBuilder("program", "program_id", "program_name");
+    private FactsBuilder workflowFacts = new FactsBuilder("workflow", "program_id");
+    private FactsBuilder functionFacts = new FactsBuilder("function", "program_id");
+    private FactsBuilder subprogramFacts = new FactsBuilder("has_sub_program", "program_id", "subprogram_id");
+    private FactsBuilder portFacts = new FactsBuilder("port", "port_id", "port_type", "variable_name");
+    private FactsBuilder portAliasFacts = new FactsBuilder("port_alias", "port_id", "alias");
+    private FactsBuilder portUriFacts = new FactsBuilder("port_uri", "port_id", "uri");
+    private FactsBuilder hasInPortFacts = new FactsBuilder("has_in_port", "block_id", "port_id");
+    private FactsBuilder hasOutPortFacts = new FactsBuilder("has_out_port", "block_id", "port_id");
+    private FactsBuilder channelFacts = new FactsBuilder("channel", "channel_id", "binding");
+    private FactsBuilder portConnectionFacts = new FactsBuilder("port_connects_to_channel", "port_id", "channel_id");
 
     public ModelFacts(Model model) {
         this.model = model;
@@ -26,47 +26,44 @@ public class ModelFacts {
 
     public ModelFacts build() {
         
-        buildFactsForCodeBlockAndChildren(programs, model.program, null);
+        buildProgramFactsRecursively(model.program, null);
+        
         for (Function function : model.functions) {
-            buildFactsForCodeBlockAndChildren(programs, function, null);            
+            buildProgramFactsRecursively(function, null);            
         }
         
         StringBuilder sb = new StringBuilder();
-        sb.append(programs)
-          .append(workflows)
-          .append(functions)
-          .append(subprograms)
-          .append(ports)
-          .append(portAliases)
-          .append(portUris)
-          .append(hasInPort)
-          .append(hasOutPort)
-          .append(channels)
-          .append(portConnections);
+        sb.append(programFacts)
+          .append(workflowFacts)
+          .append(functionFacts)
+          .append(subprogramFacts)
+          .append(portFacts)
+          .append(portAliasFacts)
+          .append(portUriFacts)
+          .append(hasInPortFacts)
+          .append(hasOutPortFacts)
+          .append(channelFacts)
+          .append(portConnectionFacts);
 
         factsString = sb.toString();
         
         return this;
     }
-    
-    public String toString() {
-        return factsString;
-    }
 
-    private void buildFactsForCodeBlockAndChildren(FactsBuilder blockFacts, Program program, Integer parentId) {
+    private void buildProgramFactsRecursively(Program program, Integer parentId) {
         
-        blockFacts.fact(program.id.toString(), sq(program.beginAnnotation.name));
+        programFacts.add(program.id, program.beginAnnotation.name);
         
         if (program.channels.length > 0) {
-            workflows.fact(program.id.toString());
+            workflowFacts.add(program.id);
         }
         
         if (program instanceof Function) {            
-            functions.fact(program.id.toString());
+            functionFacts.add(program.id);
         }
         
         if (parentId != null) {
-            subprograms.fact(parentId.toString(), program.id.toString());
+            subprogramFacts.add(parentId, program.id);
         }
         
         buildPortFacts(program.inPorts, program, program.id);
@@ -74,47 +71,47 @@ public class ModelFacts {
         
         for (Channel channel : program.channels) {
             String binding = channel.sourcePort.flowAnnotation.binding();
-            channels.fact(channel.id.toString(), sq(binding));
-            portConnections.fact(channel.sourcePort.id.toString(), channel.id.toString());
-            portConnections.fact(channel.sinkPort.id.toString(), channel.id.toString());
+            channelFacts.add(channel.id, binding);
+            portConnectionFacts.add(channel.sourcePort.id, channel.id);
+            portConnectionFacts.add(channel.sinkPort.id, channel.id);
         }
         
         for (Program childProgram : program.programs) {
-            buildFactsForCodeBlockAndChildren(programs, childProgram, program.id);
+            buildProgramFactsRecursively(childProgram, program.id);
         }
         
         for (Program childFunction : program.functions) {
-            buildFactsForCodeBlockAndChildren(programs, childFunction, program.id);
+            buildProgramFactsRecursively(childFunction, program.id);
         }
     }
 
-    private void buildPortFacts(Port[] portss, Program block, Integer blockId) {
+    private void buildPortFacts(Port[] ports, Program block, Integer blockId) {
 
-        for (Port port : portss) {
+        for (Port port : ports) {
 
             String variableName = port.flowAnnotation.name;
             String portType = port.flowAnnotation.tag.substring(1);            
-            ports.fact(port.id.toString(), sq(portType), sq(variableName));
+            portFacts.add(port.id, portType, variableName);
 
             String portAlias = port.flowAnnotation.alias();
             if (portAlias != null) {
-                portAliases.fact(port.id.toString(), sq(portAlias));
+                portAliasFacts.add(port.id, portAlias);
             }
             
             Uri portUri = port.flowAnnotation.uri();
             if (portUri != null) {
-                portUris.fact(port.id.toString(), sq(portUri.toString()));
+                portUriFacts.add(port.id, portUri);
             }
             
             if (portType.equals("in") || portType.equals("param")) {
-                hasInPort.fact(blockId.toString(), port.id.toString());
+                hasInPortFacts.add(blockId, port.id);
             } else {
-                hasOutPort.fact(blockId.toString(), port.id.toString());
+                hasOutPortFacts.add(blockId, port.id);
             }
         }
     }
-
-    private String sq(String text) {
-        return "'" + text + "'";
-    }    
+        
+    public String toString() {
+        return factsString;
+    }
 }

@@ -31,15 +31,15 @@ public class FactsBuilder {
 	    this.comment(signature.toString());
 	}
 	
-	public void fact(String... values) {
+	public void add(Object... values) {
 	    
-	    _buffer.append(    name        )
-	           .append(    "("         )
-	           .append(    values[0]   );
+	    _buffer.append(    name            )
+	           .append(    "("             )
+	           .append(    q(values[0])    );
 	    
 	    for (int i = 1; i < fieldCount; ++i) {
-	        _buffer.append(    ", "           )
-                   .append(    values[i]      );
+	        _buffer.append(    ", "            )
+                   .append(    q(values[i])    );
 	    }
 
 	    _buffer.append(    ")."    )
@@ -55,6 +55,14 @@ public class FactsBuilder {
         
         return this;
     }
+
+    private String q(Object value) {
+        if (value instanceof Integer) {
+            return value.toString();
+        } else {
+            return "'" + value.toString() + "'";
+        }
+    }  
     
 	public String toString() {
 		return _buffer.toString();
