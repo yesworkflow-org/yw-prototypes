@@ -2,14 +2,17 @@ package org.yesworkflow.model;
 
 public class Channel {
 
-	public final Program sourceProgram;
+    public final Integer id;
+
+    public final Program sourceProgram;
 	public final Port sourcePort;
 	
 	public final Program sinkProgram;
 	public final Port sinkPort;
 	
-	public Channel(Program sourceProgram, Port sourcePort, Program sinkProgram, Port sinkPort) {
-		this.sourceProgram = sourceProgram;
+	public Channel(Integer id, Program sourceProgram, Port sourcePort, Program sinkProgram, Port sinkPort) {
+	    this.id = id;
+	    this.sourceProgram = sourceProgram;
 		this.sourcePort = sourcePort;
 		this.sinkProgram = sinkProgram;
 		this.sinkPort = sinkPort;

@@ -1,17 +1,11 @@
 package org.yesworkflow.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.yesworkflow.annotations.Uri;
 import org.yesworkflow.query.FactsBuilder;
 
 public class ModelFacts {
 
-    private static Integer nextPortId = 1;
-
     private final Model model;
-    private Map<String,Integer> idForPort = new HashMap<String,Integer>();
     private String factsString = null;
     
     private FactsBuilder programs  = new FactsBuilder("program", "program_id", "program_name");
@@ -79,13 +73,10 @@ public class ModelFacts {
         buildPortFacts(program.outPorts, program, program.id);
         
         for (Channel channel : program.channels) {
-            Integer channelId = channels.nextId();
             String binding = channel.sourcePort.flowAnnotation.binding();
-            Integer sourcePortId = getIdForPort(channel.sourcePort);
-            Integer sinkPortId = getIdForPort(channel.sinkPort);
-            channels.fact(channelId.toString(), sq(binding));
-            portConnections.fact(sourcePortId.toString(), channelId.toString());
-            portConnections.fact(sinkPortId.toString(), channelId.toString());
+            channels.fact(channel.id.toString(), sq(binding));
+            portConnections.fact(channel.sourcePort.id.toString(), channel.id.toString());
+            portConnections.fact(channel.sinkPort.id.toString(), channel.id.toString());
         }
         
         for (Program childProgram : program.programs) {
@@ -101,39 +92,26 @@ public class ModelFacts {
 
         for (Port port : portss) {
 
-            Integer portId = getIdForPort(port);
             String variableName = port.flowAnnotation.name;
             String portType = port.flowAnnotation.tag.substring(1);            
-            ports.fact(portId.toString(), sq(portType), sq(variableName));
+            ports.fact(port.id.toString(), sq(portType), sq(variableName));
 
             String portAlias = port.flowAnnotation.alias();
             if (portAlias != null) {
-                portAliases.fact(portId.toString(), sq(portAlias));
+                portAliases.fact(port.id.toString(), sq(portAlias));
             }
             
             Uri portUri = port.flowAnnotation.uri();
             if (portUri != null) {
-                portUris.fact(portId.toString(), sq(portUri.toString()));
+                portUris.fact(port.id.toString(), sq(portUri.toString()));
             }
             
             if (portType.equals("in") || portType.equals("param")) {
-                hasInPort.fact(blockId.toString(), portId.toString());
+                hasInPort.fact(blockId.toString(), port.id.toString());
             } else {
-                hasOutPort.fact(blockId.toString(), portId.toString());
+                hasOutPort.fact(blockId.toString(), port.id.toString());
             }
         }
-    }
-    
-    private Integer getIdForPort(Port port) {        
-        String portName = port.beginAnnotation.name;
-        portName += "_" + port.flowAnnotation.tag + "_";
-        portName += port.flowAnnotation.binding();
-        Integer id = idForPort.get(portName);
-        if (id == null) {
-            id = nextPortId++;
-            idForPort.put(portName, id);
-        }
-        return id;
     }
 
     private String sq(String text) {

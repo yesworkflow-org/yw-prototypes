@@ -10,9 +10,6 @@ import java.util.Map.Entry;
 
 import org.yesworkflow.annotations.Begin;
 import org.yesworkflow.annotations.End;
-import org.yesworkflow.annotations.In;
-import org.yesworkflow.annotations.Out;
-import org.yesworkflow.annotations.Return;
 
 public class WorkflowBuilder {
 		
@@ -31,6 +28,8 @@ public class WorkflowBuilder {
         private Map<String,Port> nestedProgramReturnPorts = new  LinkedHashMap<String,Port>();
         private Map<String,Program> programForName = new HashMap<String,Program>();
         private Map<String,Function> functionForName = new HashMap<String,Function>();
+        
+        private Integer nextChannelId = 1;
         
         @SuppressWarnings("unused")
         private PrintStream stdoutStream = null;
@@ -57,59 +56,44 @@ public class WorkflowBuilder {
 			return beginAnnotation.name;
 		}
 		
+		public Begin getBeginAnnotation() {
+		    return beginAnnotation;
+		}
+		
 		public WorkflowBuilder nestedProgram(Program program) {
 			this.nestedPrograms.add(program);
 			this.programForName.put(program.beginAnnotation.name, program);
 			return this;
 		}
 
-	      public WorkflowBuilder nestedFunction(Function function) {
-	            this.nestedFunctions.add(function);
-	            this.functionForName.put(function.beginAnnotation.name, function);
-	            return this;
-	        }
-
+        public WorkflowBuilder nestedFunction(Function function) {
+            this.nestedFunctions.add(function);
+            this.functionForName.put(function.beginAnnotation.name, function);
+            return this;
+        }
 		
-        public Port inPort(In inAnnotation) throws Exception {
+        public Port inPort(Port inPort) throws Exception {
             
             // model the outward facing in port
-            Port inPort = new Port(inAnnotation, beginAnnotation);
             workflowInPorts.add(inPort);
             
             // model a corresponding, inward-facing out port
-            Port outPort = new Port(inAnnotation, beginAnnotation);
-            nestedOutPort(outPort);
+            nestedOutPort(inPort);
 
             // return the outward facing port
             return inPort;
         }
         
-        public Port outPort(Out outAnnotation) {
-
-            // model the outward facing out port
-            Port outPort = new Port(outAnnotation, beginAnnotation);
+        public WorkflowBuilder outPort(Port outPort) {
             workflowOutPorts.add(outPort);
-            
-            // model a corresponding, inward-facing in port
-            Port inPort = new Port(outAnnotation, beginAnnotation);
-            nestedInPort(inPort);
-            
-            // return the outward facing port
-            return outPort;
+            nestedInPort(outPort);
+            return this;
         }
 
-        public Port returnPort(Return returnAnnotation) {
-
-            // model the return port
-            Port returnPort = new Port(returnAnnotation, beginAnnotation);
+        public WorkflowBuilder returnPort(Port returnPort) {
             workflowReturnPorts.add(returnPort);
-            
-            // model a corresponding, inward-facing in port
-            Port inPort = new Port(returnAnnotation, beginAnnotation);
-            nestedInPort(inPort);
-            
-            // return the outward facing port
-            return returnPort;
+            nestedInPort(returnPort);
+            return this;
         }
         
 		public WorkflowBuilder nestedInPort(Port inPort) {
@@ -275,7 +259,7 @@ public class WorkflowBuilder {
                     Program inProgram = programForName.get(inProgramName);
     
                     // store the new channel
-                    Channel channel = new Channel(outProgram, boundOutPort, inProgram, inPort);
+                    Channel channel = new Channel(nextChannelId++, outProgram, boundOutPort, inProgram, inPort);
                     nestedChannels.add(channel);
                 }   
             }

@@ -7,7 +7,6 @@ public class FactsBuilder {
     private StringBuilder _buffer = new StringBuilder();
     private final String name;
     private final int fieldCount;
-    private int nextId = 1;
     
 	public FactsBuilder(String name, String... fields) {
 	    
@@ -30,11 +29,6 @@ public class FactsBuilder {
 	    signature.append(  ")."    );
 
 	    this.comment(signature.toString());
-	}
-	
-	public Integer nextId() {
-	       Integer id = nextId++;
-	       return id;
 	}
 	
 	public void fact(String... values) {

@@ -103,6 +103,7 @@ public class DefaultModeler implements Modeler {
         List<Function> functions = new LinkedList<Function>();
         
         Integer nextProgramId = 1;
+        Integer nextPortId = 1;
 
         for (Annotation annotation : annotations) {
 
@@ -125,20 +126,21 @@ public class DefaultModeler implements Modeler {
 
             } else if (annotation instanceof Return) {
                 
-                workflowBuilder.returnPort((Return)annotation);
+                Port returnPort = new Port(nextPortId++, (Return)annotation, workflowBuilder.getBeginAnnotation());
+                workflowBuilder.returnPort(returnPort);
 
             } else if (annotation instanceof Out) {
-                
-                Port outPort = workflowBuilder.outPort((Out)annotation);
+                Port outPort = new Port(nextPortId++, (Out)annotation, workflowBuilder.getBeginAnnotation());
+                workflowBuilder.outPort(outPort);
                 if (parentBuilder != null) {
                     parentBuilder.nestedOutPort(outPort);
                 }
 
             } else if (annotation instanceof In) {
-                
-                Port inPort = workflowBuilder.inPort((In)annotation);
+                Port port = new Port(nextPortId++, (In)annotation, workflowBuilder.getBeginAnnotation());                
+                workflowBuilder.inPort(port);
                 if (parentBuilder != null) {
-                    parentBuilder.nestedInPort(inPort);
+                    parentBuilder.nestedInPort(port);
                 }
 
             } else if (annotation instanceof End) {
