@@ -105,9 +105,10 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
     ------------------         -----
     extract.comment            Single-line comment delimiter in source files
     extract.language           Language used in source files
-    extract.listing            File for storing list of extracted comments
+    extract.listfile           File for storing list of extracted comments
     extract.sources            List of source files to analyze
 
+    model.factsfile            File for storing prolog facts describing model
     model.workflow             Name of top-level workflow in model
 
     graph.datalabel            Info to display in data nodes: NAME, URI, or BOTH
@@ -120,7 +121,7 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
 
     Examples
     --------
-    $ yw extract myscript -c extract.comment='#' -c extract.listing=comments.txt
+    $ yw extract myscript -c extract.comment='#' -c extract.listfile=comments.txt
     $ yw graph myscript.py -config graph.view=combined -config graph.datalabel=uri
     $ yw graph scriptA.py scriptB.py > wf.gv; dot -Tpdf wf.gv -o wf.pdf; open wf.pdf
 
@@ -147,9 +148,9 @@ The [`example.py`](https://raw.githubusercontent.com/yesworkflow-org/yw-prototyp
 
 #### Extracting YW comment lines
 
-First, use the YesWorkflow `extract` command and `-c extract.listing` option to list the YW commands found in the script:
+First, use the YesWorkflow `extract` command and `-c extract.listfile` option to list the YW commands found in the script:
 
-    $ yw extract example.py -c extract.listing
+    $ yw extract example.py -c extract.listfile
     @begin main
     @in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file
     @in NEE_first_year.nc @as input_data_file
@@ -362,7 +363,7 @@ will render your script as a dataflow program and illustrate how data flows from
 
 Notice that the `@in` and `@out` comments for MyScript (the script as a whole) correspond to the small, empty circles at the left and right sides of the figure, respectively.  The circles on the left are connected by arrows  to the SquareCoordinates block.  These arrows indicate dataflow into the script and are labeled with the aliases for the script `@in` comments, which in turn match the `@in` aliases for the SquareCoordinates block.
 
-Similarly, the circle on the far right corresponds to the script `@out` comment, and is connected by an incoming arrow from the TakeSquareRoot block because the MyScript `@out` comment and TakeSquareRoot `@out` comment have matching aliases. This right-most arrow represents flow of data out of the script. 
+Similarly, the circle on the far right corresponds to the script `@out` comment, and is connected by an incoming arrow from the TakeSquareRoot block because the MyScript `@out` comment and TakeSquareRoot `@out` comment have matching aliases. This right-most arrow represents flow of data out of the script.
 
 The remaining arrows are drawn between blocks and represent flow of data between computational blocks. They result from matching aliases from `@out` comments on upstream blocks with aliases for `@in` comments on downstream blocks.
 
@@ -395,7 +396,7 @@ Configutration options for YesWorkflow may be stored in a file named `yw.propert
 
     # extract configuration
     extract.sources     = MyScript.py
-    extract.listing     = listing.txt
+    extract.listfile    = listing.txt
     extract.comment     = #
 
     # graph configuration

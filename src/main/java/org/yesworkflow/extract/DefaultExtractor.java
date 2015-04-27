@@ -93,7 +93,7 @@ public class DefaultExtractor implements Extractor {
         } else if (key.equalsIgnoreCase("comment")) {        
             globalLanguageModel = new LanguageModel();
             globalLanguageModel.singleDelimiter((String)value);
-        } else if (key.equalsIgnoreCase("listing")) {
+        } else if (key.equalsIgnoreCase("listfile")) {
             commentListingPath = (String)value;
         }
         
