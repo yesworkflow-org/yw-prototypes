@@ -2,14 +2,19 @@ package org.yesworkflow.annotations;
 
 import java.util.StringTokenizer;
 
+import org.yesworkflow.extract.SourceLine;
+
 public abstract class Annotation {
 
+    public final SourceLine line;
     public final String tag;
     public final String name;
     
     protected String description = null;
     
-    public Annotation(String comment, String expectedTag) throws Exception {
+    public Annotation(SourceLine line, String comment, String expectedTag) throws Exception {
+
+        this.line = line;
         
         StringTokenizer commentTokens = new StringTokenizer(comment);
         

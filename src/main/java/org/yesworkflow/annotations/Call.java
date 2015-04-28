@@ -1,15 +1,16 @@
 package org.yesworkflow.annotations;
 
 import org.yesworkflow.YWKeywords;
+import org.yesworkflow.extract.SourceLine;
 
 public class Call extends Annotation {
 
-    public Call(String comment, String expectedTag) throws Exception {
-    	super(comment, expectedTag);    	
+    public Call(SourceLine line, String comment, String expectedTag) throws Exception {
+    	super(line, comment, expectedTag);    	
     }
 
-    public Call(String comment) throws Exception {
-        super(comment, YWKeywords.STANDARD_CALL_KEYWORD);
+    public Call(SourceLine line, String comment) throws Exception {
+        super(line, comment, YWKeywords.STANDARD_CALL_KEYWORD);
     }
 
     @Override

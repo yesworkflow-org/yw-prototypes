@@ -150,7 +150,6 @@ public class DefaultExtractor implements Extractor {
         }
         
         writeCommentListing();
-        extractComments();
         extractAnnotations();
         
         if (comments.isEmpty()) {
@@ -233,49 +232,42 @@ public class DefaultExtractor implements Extractor {
         }
     }
     
-    private void extractComments() throws Exception {
-    	
-    	comments = new LinkedList<String>();
-
-        for (SourceLine commentLine : lines) {
-        	List<String> commentsOnLine = findCommentsOnLine(commentLine.text, keywordMatcher);
-        	for (String comment : commentsOnLine) {
-        		comments.add(comment);
-        	}
-        }
-    }
-    
     private void extractAnnotations() throws Exception {
     	
-    	annotations = new LinkedList<Annotation>();
+    	comments = new LinkedList<String>();
+        annotations = new LinkedList<Annotation>();
+        Annotation primaryAnnotation = null;
 
-    	Annotation primaryAnnotation = null;
-    	for (String s : comments) {
-    		
-            Tag tag = KeywordMatcher.extractInitialKeyword(s, keywordMapping);
+        for (SourceLine sourceLine : lines) {
+        	List<String> commentsOnLine = findCommentsOnLine(sourceLine.text, keywordMatcher);
+        	for (String comment : commentsOnLine) {
+        		comments.add(comment);
+
+        		Tag tag = KeywordMatcher.extractInitialKeyword(comment, keywordMapping);
             
-            Annotation annotation = null;
-            switch(tag) {
-                case BEGIN:  annotation = new Begin(s);  break;
-                case CALL:   annotation = new Call(s);    break;
-                case END:    annotation = new End(s);    break;
-                case IN:     annotation = new In(s);     break;
-                case OUT:    annotation = new Out(s);    break;
-                case AS:     annotation = new As(s);     break;
-                case PARAM:  annotation = new Param(s);  break;
-                case RETURN: annotation = new Return(s); break;
-                case URI:    annotation = new Uri(s);    break;   
-            }
-
-            if (annotation instanceof Qualification) {
-            	if (primaryAnnotation != null) {
-                	primaryAnnotation.qualifyWith((Qualification)annotation);
-            	} else {
-            		throw new Exception("Qualification annotation found before primary annotation.");
-            	}
-            } else {
-            	primaryAnnotation = annotation;
-                annotations.add(annotation);
+                Annotation annotation = null;
+                switch(tag) {
+                    case BEGIN:  annotation = new Begin(sourceLine, comment);  break;
+                    case CALL:   annotation = new Call(sourceLine, comment);   break;
+                    case END:    annotation = new End(sourceLine, comment);    break;
+                    case IN:     annotation = new In(sourceLine, comment);     break;
+                    case OUT:    annotation = new Out(sourceLine, comment);    break;
+                    case AS:     annotation = new As(sourceLine, comment);     break;
+                    case PARAM:  annotation = new Param(sourceLine, comment);  break;
+                    case RETURN: annotation = new Return(sourceLine, comment); break;
+                    case URI:    annotation = new Uri(sourceLine, comment);    break;   
+                }
+    
+                if (annotation instanceof Qualification) {
+                	if (primaryAnnotation != null) {
+                    	primaryAnnotation.qualifyWith((Qualification)annotation);
+                	} else {
+                		throw new Exception("Qualification annotation found before primary annotation.");
+                	}
+                } else {
+                	primaryAnnotation = annotation;
+                    annotations.add(annotation);
+                }
             }
         }
     }

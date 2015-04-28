@@ -1,10 +1,11 @@
 package org.yesworkflow.annotations;
 
 import org.yesworkflow.YWKeywords;
+import org.yesworkflow.extract.SourceLine;
 
 public class Return extends Out {
     
-    public Return(String comment) throws Exception {        
-        super(comment, YWKeywords.STANDARD_RETURN_KEYWORD);
+    public Return(SourceLine line, String comment) throws Exception {        
+        super(line, comment, YWKeywords.STANDARD_RETURN_KEYWORD);
     }  
 }

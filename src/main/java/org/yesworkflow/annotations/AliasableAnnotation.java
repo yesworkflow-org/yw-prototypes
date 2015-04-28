@@ -1,11 +1,13 @@
 package org.yesworkflow.annotations;
 
+import org.yesworkflow.extract.SourceLine;
+
 public abstract class AliasableAnnotation extends Annotation {
 
 	protected Qualification as;
 	
-    public AliasableAnnotation(String comment, String expectedTag) throws Exception {
-        super(comment, expectedTag);
+    public AliasableAnnotation(SourceLine line, String comment, String expectedTag) throws Exception {
+        super(line, comment, expectedTag);
     }
 
 	public AliasableAnnotation qualifyWith(Qualification qualification) throws Exception {
