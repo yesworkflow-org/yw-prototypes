@@ -44,7 +44,7 @@ public class CommentMatcher {
      * @return  A List of Strings representing the comments in the source code.
      * @throws IOException 
      */
-    public List<String> getCommentsAsLines(String source) throws IOException {    
+    public List<SourceLine> getCommentsAsLines(String source) throws IOException {    
         BufferedReader reader = new BufferedReader(new StringReader(source));
         return getCommentsAsLines(reader);
     }
@@ -58,25 +58,25 @@ public class CommentMatcher {
      * @return  A List of Strings representing the comments in the source code.
      * @throws IOException 
      */
-    public List<String> getCommentsAsLines(BufferedReader reader) throws IOException {
+    public List<SourceLine> getCommentsAsLines(BufferedReader reader) throws IOException {
 
         String line;
-        List<String> commentLines = new LinkedList<String>();
+        List<SourceLine> commentLines = new LinkedList<SourceLine>();
         lastFullMatch = null;
         
         while ((line = reader.readLine()) != null) {
-            StringBuffer commentLine = new StringBuffer();            
+            StringBuffer commentLineText = new StringBuffer();            
             for (int i = 0; i < line.length(); ++i) {
                 int c = line.charAt(i);
                 String newCommentChars = processNextChar((char)c);
-                commentLine.append(newCommentChars);
+                commentLineText.append(newCommentChars);
                 if (newCommentChars.equals(EOL)) {
-                    addCommentLineToResult(commentLine.toString(), commentLines);
-                    commentLine = new StringBuffer();            
+                    addCommentLineToResult(commentLineText.toString(), commentLines);
+                    commentLineText = new StringBuffer();            
                 }
             }
-            commentLine.append(processNextChar('\n'));
-            addCommentLineToResult(commentLine.toString(), commentLines);
+            commentLineText.append(processNextChar('\n'));
+            addCommentLineToResult(commentLineText.toString(), commentLines);
         }
         
         return commentLines;
@@ -94,8 +94,8 @@ public class CommentMatcher {
     public String getCommentsAsString(String source) throws IOException {
         
         StringBuffer comments = new StringBuffer();
-        for (String cl : getCommentsAsLines(source)) {
-            comments.append(cl);
+        for (SourceLine cl : getCommentsAsLines(source)) {
+            comments.append(cl.text);
             comments.append(EOL);
         }
         
@@ -103,10 +103,11 @@ public class CommentMatcher {
     }
     
     /** Helper method for accumulating non-blank comment lines. */
-    private void addCommentLineToResult(String line, List<String> accumulatedLines) {
+    private void addCommentLineToResult(String line, List<SourceLine> accumulatedLines) {
         String trimmedCommentLine = line.toString().trim();
         if (trimmedCommentLine.length() > 0) {
-            accumulatedLines.add(trimmedCommentLine);
+            SourceLine commentLine = new SourceLine(null, null, null, trimmedCommentLine);
+            accumulatedLines.add(commentLine);
         }
     }
     

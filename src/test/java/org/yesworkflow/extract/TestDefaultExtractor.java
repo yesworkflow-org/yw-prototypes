@@ -36,7 +36,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<String> commentLines = extractor.getLines();
+        List<SourceLine> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
@@ -51,7 +51,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<String> commentLines = extractor.getLines();
+        List<SourceLine> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
@@ -66,7 +66,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<String> commentLines = extractor.getLines();
+        List<SourceLine> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
@@ -82,7 +82,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<String> commentLines = extractor.getLines();
+        List<SourceLine> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
@@ -97,7 +97,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<String> commentLines = extractor.getLines();
+        List<SourceLine> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
@@ -121,12 +121,12 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<String> commentLines = extractor.getLines();
+        List<SourceLine> commentLines = extractor.getLines();
         assertEquals(4,commentLines.size());
-        assertEquals("@begin step", commentLines.get(0));
-        assertEquals("@in x", commentLines.get(1));
-        assertEquals("@out y", commentLines.get(2));
-        assertEquals("@end step", commentLines.get(3));
+        assertEquals("@begin step", commentLines.get(0).text);
+        assertEquals("@in x", commentLines.get(1).text);
+        assertEquals("@out y", commentLines.get(2).text);
+        assertEquals("@end step", commentLines.get(3).text);
     }
 
     public void testExtract_GetCommentLines_MultipleComments_Slash() throws Exception {
@@ -150,12 +150,12 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<String> commentLines = extractor.getLines();
+        List<SourceLine> commentLines = extractor.getLines();
         assertEquals(4, commentLines.size());
-        assertEquals("@begin step", commentLines.get(0));
-        assertEquals("@in x", commentLines.get(1));
-        assertEquals("@out y", commentLines.get(2));
-        assertEquals("@end step", commentLines.get(3));
+        assertEquals("@begin step", commentLines.get(0).text);
+        assertEquals("@in x", commentLines.get(1).text);
+        assertEquals("@out y", commentLines.get(2).text);
+        assertEquals("@end step", commentLines.get(3).text);
     }
 
     public void testExtract_GetComments_MultipleComments() throws Exception {

@@ -37,12 +37,14 @@ public class DefaultExtractor implements Extractor {
     private Language lastLanguage = null;
     private BufferedReader sourceReader = null;
     private List<String> sources;
-    private List<String> lines;
+    private List<SourceLine> lines;
     private List<String> comments;
     private List<Annotation> annotations;
     private YWKeywords keywordMapping;
     private KeywordMatcher keywordMatcher;
     private String commentListingPath;    
+    private String factsFile = null;
+    private String sourceFacts = null;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
 
@@ -95,6 +97,8 @@ public class DefaultExtractor implements Extractor {
             globalLanguageModel.singleDelimiter((String)value);
         } else if (key.equalsIgnoreCase("listfile")) {
             commentListingPath = (String)value;
+        } else if (key.equalsIgnoreCase("factsfile")) {
+            factsFile = (String)value;
         }
         
         return this;
@@ -106,7 +110,7 @@ public class DefaultExtractor implements Extractor {
     }
 
     @Override
-    public List<String> getLines() {
+    public List<SourceLine> getLines() {
         return lines;
     }
 
@@ -119,11 +123,20 @@ public class DefaultExtractor implements Extractor {
 	public List<Annotation> getAnnotations() {
 		return annotations;
 	}
-
+    
+	@Override
+    public String getFacts() {
+        if (sourceFacts == null) {
+            sourceFacts = new SourceFacts(annotations).build().toString();
+        }
+        return sourceFacts;
+    }
+	
+	
     @Override
     public DefaultExtractor extract() throws Exception {
 
-        lines = new LinkedList<String>();
+        lines = new LinkedList<SourceLine>();
         
         if (sourceReader != null) {
             extractLines(sourceReader, globalLanguageModel);
@@ -143,6 +156,10 @@ public class DefaultExtractor implements Extractor {
         if (comments.isEmpty()) {
             stderrStream.println("WARNING: No YW comments found in source code.");
         }        
+
+        if (factsFile != null) {
+            writeTextToFileOrStdout(factsFile, getFacts());
+        }
         
         return this;
     }
@@ -189,7 +206,7 @@ public class DefaultExtractor implements Extractor {
         
         // extract all comments from script using the language model
         CommentMatcher commentMatcher = new CommentMatcher(languageModel);
-        List<String> allCommentLines = commentMatcher.getCommentsAsLines(reader);
+        List<SourceLine> allCommentLines = commentMatcher.getCommentsAsLines(reader);
 
         // select only the comments that contain YW keywords,
         // trimming characters preceding the first YW keyword in each
@@ -199,29 +216,29 @@ public class DefaultExtractor implements Extractor {
     private void writeCommentListing() throws IOException {
         if (commentListingPath != null) {
             StringBuffer linesBuffer = new StringBuffer();
-            for (String line : lines) {
-                linesBuffer.append(line);
+            for (SourceLine line : lines) {
+                linesBuffer.append(line.text);
                 linesBuffer.append(System.getProperty("line.separator"));
             }
             writeTextToFileOrStdout(commentListingPath, linesBuffer.toString());
         }
     }
-
-    private void writeTextToFileOrStdout(String path, String text) throws IOException {
-        PrintStream stream = (path == null || path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
-                             stdoutStream : new PrintStream(path);
+    
+    private void writeTextToFileOrStdout(String path, String text) throws IOException {  
+        PrintStream stream = (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
+                             this.stdoutStream : new PrintStream(path);
         stream.print(text);
-        if (stream != stdoutStream) {
+        if (stream != this.stdoutStream) {
             stream.close();
         }
     }
-
+    
     private void extractComments() throws Exception {
     	
     	comments = new LinkedList<String>();
 
-        for (String commentLine : lines) {
-        	List<String> commentsOnLine = findCommentsOnLine(commentLine, keywordMatcher);
+        for (SourceLine commentLine : lines) {
+        	List<String> commentsOnLine = findCommentsOnLine(commentLine.text, keywordMatcher);
         	for (String comment : commentsOnLine) {
         		comments.add(comment);
         	}

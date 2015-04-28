@@ -12,6 +12,7 @@ import org.yesworkflow.annotations.Param;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
+import org.yesworkflow.extract.SourceLine;
 import org.yesworkflow.model.Channel;
 import org.yesworkflow.model.Program;
 import org.yesworkflow.model.Workflow;
@@ -690,9 +691,9 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        assertNotNull(caughtException);
        assertEquals("ERROR: No @end comment paired with '@begin main'" + EOL, caughtException.getMessage());
        
-       List<String> commentLines = extractor.getLines();
+       List<SourceLine> commentLines = extractor.getLines();
        assertEquals(1,commentLines.size());
-       assertEquals("@begin main", commentLines.get(0));
+       assertEquals("@begin main", commentLines.get(0).text);
        assertEquals("", super.stdoutBuffer.toString());
        assertEquals("", super.stderrBuffer.toString());
    }
