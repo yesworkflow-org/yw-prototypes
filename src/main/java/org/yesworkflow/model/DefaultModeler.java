@@ -65,8 +65,7 @@ public class DefaultModeler implements Modeler {
     public Modeler model() throws Exception {	
     	buildModel();
     	if (factsFile != null) {
-    	    modelFacts = getFacts();
-    	    writeTextToFileOrStdout(factsFile, modelFacts);
+    	    writeTextToFileOrStdout(factsFile, getFacts());
     	}
     	return this;
     }

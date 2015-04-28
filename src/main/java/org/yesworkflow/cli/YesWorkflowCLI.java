@@ -268,6 +268,7 @@ public class YesWorkflowCLI {
         "Configuration Name         Value"                                                  + EOL +
         "------------------         -----"                                                  + EOL +
         "extract.comment            Single-line comment delimiter in source files"          + EOL +
+        "extract.factsfile          File for storing prolog facts about scripts"            + EOL +
         "extract.language           Language used in source files"                          + EOL +
         "extract.listfile           File for storing list of extracted comments"            + EOL +
         "extract.sources            List of source files to analyze"                        + EOL +
