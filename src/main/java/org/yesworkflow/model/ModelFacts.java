@@ -8,11 +8,11 @@ public class ModelFacts {
     private final Model model;
     private String factsString = null;
     
-    private FactsBuilder programFacts  = new FactsBuilder("program", "program_id", "program_name");
+    private FactsBuilder programFacts  = new FactsBuilder("program", "program_id", "program_name", "begin_annotation_id", "end_annotation_id");
     private FactsBuilder workflowFacts = new FactsBuilder("workflow", "program_id");
     private FactsBuilder functionFacts = new FactsBuilder("function", "program_id");
     private FactsBuilder subprogramFacts = new FactsBuilder("has_sub_program", "program_id", "subprogram_id");
-    private FactsBuilder portFacts = new FactsBuilder("port", "port_id", "port_type", "variable_name");
+    private FactsBuilder portFacts = new FactsBuilder("port", "port_id", "port_type", "variable_name", "port_annotation_id");
     private FactsBuilder portAliasFacts = new FactsBuilder("port_alias", "port_id", "alias");
     private FactsBuilder portUriFacts = new FactsBuilder("port_uri", "port_id", "uri");
     private FactsBuilder hasInPortFacts = new FactsBuilder("has_in_port", "block_id", "port_id");
@@ -52,7 +52,7 @@ public class ModelFacts {
 
     private void buildProgramFactsRecursively(Program program, Integer parentId) {
         
-        programFacts.add(program.id, program.beginAnnotation.name);
+        programFacts.add(program.id, program.beginAnnotation.name, program.beginAnnotation.id, program.endAnnotation.id);
         
         if (program.channels.length > 0) {
             workflowFacts.add(program.id);
@@ -91,7 +91,7 @@ public class ModelFacts {
 
             String variableName = port.flowAnnotation.name;
             String portType = port.flowAnnotation.tag.substring(1);            
-            portFacts.add(port.id, portType, variableName);
+            portFacts.add(port.id, portType, variableName, port.flowAnnotation.id);
 
             String portAlias = port.flowAnnotation.alias();
             if (portAlias != null) {
