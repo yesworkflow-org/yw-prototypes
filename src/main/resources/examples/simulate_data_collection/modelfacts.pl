@@ -1,15 +1,15 @@
 
-% FACT: program(program_id, program_name).
-program(1, 'simulate_data_collection').
-program(2, 'initialize_run').
-program(3, 'load_screening_results').
-program(4, 'calculate_strategy').
-program(5, 'log_rejected_sample').
-program(6, 'collect_data_set').
-program(7, 'transform_images').
-program(8, 'log_average_image_intensity').
-program(9, 'collect_next_image').
-program(10, 'transform_image').
+% FACT: program(program_id, program_name, begin_annotation_id, end_annotation_id).
+program(1, 'simulate_data_collection', 1, 80).
+program(2, 'initialize_run', 16, 19).
+program(3, 'load_screening_results', 20, 26).
+program(4, 'calculate_strategy', 27, 35).
+program(5, 'log_rejected_sample', 36, 41).
+program(6, 'collect_data_set', 42, 54).
+program(7, 'transform_images', 55, 69).
+program(8, 'log_average_image_intensity', 70, 79).
+program(9, 'collect_next_image', 81, 91).
+program(10, 'transform_image', 92, 98).
 
 % FACT: workflow(program_id).
 workflow(1).
@@ -27,62 +27,62 @@ has_sub_program(1, 6).
 has_sub_program(1, 7).
 has_sub_program(1, 8).
 
-% FACT: port(port_id, port_type, variable_name).
-port(1, 'param', 'cassette_id').
-port(2, 'param', 'sample_score_cutoff').
-port(3, 'in', 'sample_spreadsheet').
-port(4, 'in', 'calibration_image').
-port(5, 'out', 'corrected_image').
-port(6, 'out', 'run_log').
-port(7, 'out', 'collection_log').
-port(8, 'out', 'rejection_log').
-port(9, 'out', 'run_log').
-port(10, 'param', 'cassette_id').
-port(11, 'in', 'sample_spreadsheet').
-port(12, 'out', 'sample_name').
-port(13, 'out', 'sample_quality').
-port(14, 'param', 'sample_score_cutoff').
-port(15, 'in', 'sample_name').
-port(16, 'in', 'sample_quality').
-port(17, 'out', 'accepted_sample').
-port(18, 'out', 'rejected_sample').
-port(19, 'out', 'num_images').
-port(20, 'out', 'energies').
-port(21, 'param', 'cassette_id').
-port(22, 'param', 'rejected_sample').
-port(23, 'out', 'rejection_log').
-port(24, 'param', 'cassette_id').
-port(25, 'param', 'accepted_sample').
-port(26, 'param', 'num_images').
-port(27, 'param', 'energies').
-port(28, 'out', 'sample_id').
-port(29, 'out', 'energy').
-port(30, 'out', 'frame_number').
-port(31, 'out', 'raw_image_path').
-port(32, 'param', 'sample_id').
-port(33, 'param', 'energy').
-port(34, 'param', 'frame_number').
-port(35, 'in', 'raw_image_path').
-port(36, 'in', 'calibration_image').
-port(37, 'out', 'corrected_image').
-port(38, 'out', 'corrected_image_path').
-port(39, 'out', 'total_intensity').
-port(40, 'out', 'pixel_count').
-port(41, 'param', 'cassette_id').
-port(42, 'param', 'sample_id').
-port(43, 'param', 'frame_number').
-port(44, 'in', 'total_intensity').
-port(45, 'in', 'pixel_count').
-port(46, 'in', 'corrected_image_path').
-port(47, 'out', 'collection_log').
-port(48, 'param', 'cassette_id').
-port(49, 'param', 'sample_id').
-port(50, 'param', 'num_images').
-port(51, 'param', 'energies').
-port(52, 'param', 'image_path_template').
-port(57, 'param', 'raw_image_path').
-port(58, 'param', 'corrected_image_path').
-port(59, 'param', 'calibration_image_path').
+% FACT: port(port_id, port_type, variable_name, port_annotation_id).
+port(1, 'param', 'cassette_id', 2).
+port(2, 'param', 'sample_score_cutoff', 3).
+port(3, 'in', 'sample_spreadsheet', 4).
+port(4, 'in', 'calibration_image', 6).
+port(5, 'out', 'corrected_image', 8).
+port(6, 'out', 'run_log', 10).
+port(7, 'out', 'collection_log', 12).
+port(8, 'out', 'rejection_log', 14).
+port(9, 'out', 'run_log', 17).
+port(10, 'param', 'cassette_id', 21).
+port(11, 'in', 'sample_spreadsheet', 22).
+port(12, 'out', 'sample_name', 24).
+port(13, 'out', 'sample_quality', 25).
+port(14, 'param', 'sample_score_cutoff', 28).
+port(15, 'in', 'sample_name', 29).
+port(16, 'in', 'sample_quality', 30).
+port(17, 'out', 'accepted_sample', 31).
+port(18, 'out', 'rejected_sample', 32).
+port(19, 'out', 'num_images', 33).
+port(20, 'out', 'energies', 34).
+port(21, 'param', 'cassette_id', 37).
+port(22, 'param', 'rejected_sample', 38).
+port(23, 'out', 'rejection_log', 39).
+port(24, 'param', 'cassette_id', 44).
+port(25, 'param', 'accepted_sample', 45).
+port(26, 'param', 'num_images', 46).
+port(27, 'param', 'energies', 47).
+port(28, 'out', 'sample_id', 48).
+port(29, 'out', 'energy', 49).
+port(30, 'out', 'frame_number', 50).
+port(31, 'out', 'raw_image_path', 51).
+port(32, 'param', 'sample_id', 57).
+port(33, 'param', 'energy', 58).
+port(34, 'param', 'frame_number', 59).
+port(35, 'in', 'raw_image_path', 60).
+port(36, 'in', 'calibration_image', 62).
+port(37, 'out', 'corrected_image', 64).
+port(38, 'out', 'corrected_image_path', 66).
+port(39, 'out', 'total_intensity', 67).
+port(40, 'out', 'pixel_count', 68).
+port(41, 'param', 'cassette_id', 71).
+port(42, 'param', 'sample_id', 72).
+port(43, 'param', 'frame_number', 73).
+port(44, 'in', 'total_intensity', 74).
+port(45, 'in', 'pixel_count', 75).
+port(46, 'in', 'corrected_image_path', 76).
+port(47, 'out', 'collection_log', 77).
+port(48, 'param', 'cassette_id', 82).
+port(49, 'param', 'sample_id', 83).
+port(50, 'param', 'num_images', 84).
+port(51, 'param', 'energies', 85).
+port(52, 'param', 'image_path_template', 86).
+port(57, 'param', 'raw_image_path', 93).
+port(58, 'param', 'corrected_image_path', 94).
+port(59, 'param', 'calibration_image_path', 95).
 
 % FACT: port_alias(port_id, alias).
 port_alias(31, 'raw_image').
@@ -243,3 +243,15 @@ port_connects_to_channel(40, 25).
 port_connects_to_channel(45, 25).
 port_connects_to_channel(38, 26).
 port_connects_to_channel(46, 26).
+
+% FACT: uri_variable(uri_variable_id, variable_name, port_id).
+uri_variable(1, 'cassette_id', 3).
+uri_variable(2, 'cassette_id', 11).
+uri_variable(3, 'cassette_id', 31).
+uri_variable(4, 'sample_id', 31).
+uri_variable(5, 'energy', 31).
+uri_variable(6, 'frame_number', 31).
+uri_variable(7, 'sample_id', 37).
+uri_variable(8, 'sample_id', 37).
+uri_variable(9, 'energy', 37).
+uri_variable(10, 'frame_number', 37).
