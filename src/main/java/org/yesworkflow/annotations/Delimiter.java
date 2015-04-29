@@ -4,8 +4,8 @@ import org.yesworkflow.extract.SourceLine;
 
 public abstract class Delimiter extends Annotation {
 
-    public Delimiter(SourceLine line, String comment, String expectedTag) throws Exception {
-    	super(line, comment, expectedTag);    	
+    public Delimiter(Integer id, SourceLine line, String comment, String expectedTag) throws Exception {
+    	super(id, line, comment, expectedTag);    	
     }
     
     @Override

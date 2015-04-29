@@ -6,8 +6,8 @@ public abstract class Flow extends AliasableAnnotation {
     	
     protected Uri uri;
     
-    public Flow(SourceLine line, String comment, String expectedTag) throws Exception {
-    	super(line, comment, expectedTag);    	
+    public Flow(Integer id, SourceLine line, String comment, String expectedTag) throws Exception {
+    	super(id, line, comment, expectedTag);    	
     }
 	
     @Override

@@ -5,7 +5,7 @@ import org.yesworkflow.extract.SourceLine;
 
 public class Return extends Out {
     
-    public Return(SourceLine line, String comment) throws Exception {        
-        super(line, comment, YWKeywords.STANDARD_RETURN_KEYWORD);
+    public Return(Integer id, SourceLine line, String comment) throws Exception {        
+        super(id, line, comment, YWKeywords.STANDARD_RETURN_KEYWORD);
     }  
 }

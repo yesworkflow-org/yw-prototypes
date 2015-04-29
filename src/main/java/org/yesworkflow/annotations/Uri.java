@@ -5,8 +5,8 @@ import org.yesworkflow.extract.SourceLine;
 
 public class Uri extends Qualification {
     
-    public Uri(SourceLine line, String comment) throws Exception {
-        super(line, comment, YWKeywords.STANDARD_URI_KEYWORD);
+    public Uri(Integer id, SourceLine line, String comment, Annotation primaryAnnotation) throws Exception {
+        super(id, line, comment, YWKeywords.STANDARD_URI_KEYWORD, primaryAnnotation);
     }
     
     public String toString() {

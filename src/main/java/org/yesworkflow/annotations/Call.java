@@ -5,12 +5,12 @@ import org.yesworkflow.extract.SourceLine;
 
 public class Call extends Annotation {
 
-    public Call(SourceLine line, String comment, String expectedTag) throws Exception {
-    	super(line, comment, expectedTag);    	
+    public Call(Integer id, SourceLine line, String comment, String expectedTag) throws Exception {
+    	super(id, line, comment, expectedTag);    	
     }
 
-    public Call(SourceLine line, String comment) throws Exception {
-        super(line, comment, YWKeywords.STANDARD_CALL_KEYWORD);
+    public Call(Integer id, SourceLine line, String comment) throws Exception {
+        super(id, line, comment, YWKeywords.STANDARD_CALL_KEYWORD);
     }
 
     @Override

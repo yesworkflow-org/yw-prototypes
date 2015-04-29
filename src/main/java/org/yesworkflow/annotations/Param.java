@@ -5,7 +5,7 @@ import org.yesworkflow.extract.SourceLine;
 
 public class Param extends In {
 
-    public Param(SourceLine line, String comment) throws Exception {        
-        super(line, comment, YWKeywords.STANDARD_PARAM_KEYWORD);
+    public Param(Integer id, SourceLine line, String comment) throws Exception {        
+        super(id, line, comment, YWKeywords.STANDARD_PARAM_KEYWORD);
     }
 }

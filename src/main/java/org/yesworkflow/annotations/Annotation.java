@@ -6,14 +6,16 @@ import org.yesworkflow.extract.SourceLine;
 
 public abstract class Annotation {
 
+    public final Integer id;
     public final SourceLine line;
     public final String tag;
     public final String name;
     
     protected String description = null;
     
-    public Annotation(SourceLine line, String comment, String expectedTag) throws Exception {
+    public Annotation(Integer id, SourceLine line, String comment, String expectedTag) throws Exception {
 
+        this.id = id;
         this.line = line;
         
         StringTokenizer commentTokens = new StringTokenizer(comment);

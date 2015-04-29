@@ -6,8 +6,8 @@ public abstract class AliasableAnnotation extends Annotation {
 
 	protected Qualification as;
 	
-    public AliasableAnnotation(SourceLine line, String comment, String expectedTag) throws Exception {
-        super(line, comment, expectedTag);
+    public AliasableAnnotation(Integer id, SourceLine line, String comment, String expectedTag) throws Exception {
+        super(id, line, comment, expectedTag);
     }
 
 	public AliasableAnnotation qualifyWith(Qualification qualification) throws Exception {

@@ -13,19 +13,19 @@ public class TestBegin extends YesWorkflowTestCase {
     }
 
     public void testBeginComment_NameOnly() throws Exception {
-        Begin begin = new Begin(line, "@begin main");
+        Begin begin = new Begin(1, line, "@begin main");
         assertEquals("main", begin.name);
         assertNull(begin.description);
     }
 
     public void testBeginComment_NameAndOneWordDescription() throws Exception {
-        Begin begin = new Begin(line, "@begin main myprogram");
+        Begin begin = new Begin(1, line, "@begin main myprogram");
         assertEquals("main", begin.name);
         assertEquals("myprogram", begin.description);
     }
 
     public void testBeginComment_NameAndTwoWordDescription() throws Exception {
-        Begin begin = new Begin(line, "@begin main my program");
+        Begin begin = new Begin(1, line, "@begin main my program");
         assertEquals("main", begin.name);
         assertEquals("my program", begin.description);
     }
