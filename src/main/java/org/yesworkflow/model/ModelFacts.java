@@ -1,12 +1,12 @@
 package org.yesworkflow.model;
 
-import org.yesworkflow.annotations.Uri;
 import org.yesworkflow.query.FactsBuilder;
 
 public class ModelFacts {
 
     private final Model model;
     private String factsString = null;
+    private Integer nextUriVariableId = 1;
     
     private FactsBuilder programFacts  = new FactsBuilder("program", "program_id", "program_name", "begin_annotation_id", "end_annotation_id");
     private FactsBuilder workflowFacts = new FactsBuilder("workflow", "program_id");
@@ -19,6 +19,7 @@ public class ModelFacts {
     private FactsBuilder hasOutPortFacts = new FactsBuilder("has_out_port", "block_id", "port_id");
     private FactsBuilder channelFacts = new FactsBuilder("channel", "channel_id", "binding");
     private FactsBuilder portConnectionFacts = new FactsBuilder("port_connects_to_channel", "port_id", "channel_id");
+    private FactsBuilder portUriVariableFacts = new FactsBuilder("uri_variable", "uri_variable_id", "variable_name", "port_id");
 
     public ModelFacts(Model model) {
         this.model = model;
@@ -43,7 +44,8 @@ public class ModelFacts {
           .append(hasInPortFacts)
           .append(hasOutPortFacts)
           .append(channelFacts)
-          .append(portConnectionFacts);
+          .append(portConnectionFacts)
+          .append(portUriVariableFacts);
 
         factsString = sb.toString();
         
@@ -98,9 +100,13 @@ public class ModelFacts {
                 portAliasFacts.add(port.id, portAlias);
             }
             
-            Uri portUri = port.flowAnnotation.uri();
-            if (portUri != null) {
-                portUriFacts.add(port.id, portUri);
+            if (port.uriTemplate != null) {
+                portUriFacts.add(port.id, port.uriTemplate.toString());
+                for (String uriVariableName : port.uriTemplate.getVariableNames()) {
+                    if (! uriVariableName.trim().isEmpty()) {
+                        portUriVariableFacts.add(nextUriVariableId++, uriVariableName, port.id);
+                    }
+                }
             }
             
             if (portType.equals("in") || portType.equals("param")) {
