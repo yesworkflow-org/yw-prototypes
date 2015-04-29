@@ -3,9 +3,9 @@ package org.yesworkflow.annotations;
 import org.yesworkflow.YWKeywords;
 import org.yesworkflow.extract.SourceLine;
 
-public class Uri extends Qualification {
+public class UriAnnotation extends Qualification {
     
-    public Uri(Integer id, SourceLine line, String comment, Annotation primaryAnnotation) throws Exception {
+    public UriAnnotation(Integer id, SourceLine line, String comment, Annotation primaryAnnotation) throws Exception {
         super(id, line, comment, YWKeywords.STANDARD_URI_KEYWORD, primaryAnnotation);
     }
     

@@ -16,35 +16,35 @@ public class TestInWithUri extends YesWorkflowTestCase {
     public void testInComment_NoUri() throws Exception {
         In in = (In) new In(1, line, "@in x ");
         assertEquals("x", in.name);
-        assertNull(in.uri());
+        assertNull(in.uriAnnotation());
         assertNull(in.description);
     }
 
     public void testInComment_WithUri() throws Exception {
         In in = (In) new In(1, line, "@in x ");
-        new Uri(2, line, "@uri longitude.txt", in);
+        new UriAnnotation(2, line, "@uri longitude.txt", in);
         assertEquals("x", in.name);
-        assertEquals("longitude.txt", in.uri().toString());
+        assertEquals("longitude.txt", in.uriAnnotation().toString());
         assertNull(in.description);
     }
 
     public void testInComment_AliasThenUri() throws Exception {
         In in = (In) new In(1, line, "@in x ");
         new As(2, line, "@as longitude", in);
-        new Uri(3, line, "@uri longitude.txt", in);
+        new UriAnnotation(3, line, "@uri longitude.txt", in);
         assertEquals("x", in.name);
         assertEquals("longitude", in.binding());
-        assertEquals("longitude.txt", in.uri().toString());
+        assertEquals("longitude.txt", in.uriAnnotation().toString());
         assertNull(in.description);
     }
 
     public void testInComment_UriThenAlias() throws Exception {
         In in = (In) new In(1, line, "@in x ");
-        new Uri(2, line, "@uri longitude.txt", in);
+        new UriAnnotation(2, line, "@uri longitude.txt", in);
         new As(3, line, "@as longitude", in);
         assertEquals("x", in.name);
         assertEquals("longitude", in.binding());
-        assertEquals("longitude.txt", in.uri().toString());
+        assertEquals("longitude.txt", in.uriAnnotation().toString());
         assertNull(in.description);
     }    
 }

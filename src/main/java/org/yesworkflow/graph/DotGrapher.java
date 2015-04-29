@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.yesworkflow.annotations.Uri;
 import org.yesworkflow.config.YWConfiguration;
+import org.yesworkflow.data.UriTemplate;
 import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.model.Channel;
 import org.yesworkflow.model.Model;
@@ -335,7 +335,7 @@ public class DotGrapher implements Grapher  {
         for (Channel c : topWorkflow.channels) {
             String binding = c.sourcePort.flowAnnotation.binding();
             channelBindings.add(binding);
-            Uri uri = c.sourcePort.flowAnnotation.uri();
+            UriTemplate uri = c.sourcePort.uriTemplate;
             
             if (uri == null) {
                 dot.node(binding);

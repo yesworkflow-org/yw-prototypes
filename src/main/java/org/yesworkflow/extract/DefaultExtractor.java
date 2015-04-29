@@ -25,7 +25,7 @@ import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Param;
 import org.yesworkflow.annotations.Qualification;
 import org.yesworkflow.annotations.Return;
-import org.yesworkflow.annotations.Uri;
+import org.yesworkflow.annotations.UriAnnotation;
 import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.exceptions.YWToolUsageException;
 
@@ -268,7 +268,7 @@ public class DefaultExtractor implements Extractor {
                     case AS:     annotation = new As(id, sourceLine, comment, primaryAnnotation);   break;
                     case PARAM:  annotation = new Param(id, sourceLine, comment);                   break;
                     case RETURN: annotation = new Return(id, sourceLine, comment);                  break;
-                    case URI:    annotation = new Uri(id, sourceLine, comment, primaryAnnotation);  break;   
+                    case URI:    annotation = new UriAnnotation(id, sourceLine, comment, primaryAnnotation);  break;   
                 }
                 
                 allAnnotations.add(annotation);

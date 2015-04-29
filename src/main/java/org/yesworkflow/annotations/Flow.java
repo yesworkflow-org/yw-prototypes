@@ -4,7 +4,7 @@ import org.yesworkflow.extract.SourceLine;
 
 public abstract class Flow extends AliasableAnnotation {
     	
-    protected Uri uri;
+    protected UriAnnotation uriAnnotation;
     
     public Flow(Integer id, SourceLine line, String comment, String expectedTag) throws Exception {
     	super(id, line, comment, expectedTag);    	
@@ -13,8 +13,8 @@ public abstract class Flow extends AliasableAnnotation {
     @Override
     public Flow qualifyWith(Qualification qualification) throws Exception {
         
-        if (qualification instanceof Uri) {
-            this.uri = (Uri)qualification;
+        if (qualification instanceof UriAnnotation) {
+            this.uriAnnotation = (UriAnnotation)qualification;
             appendDescription(qualification.description);
         } else {
             super.qualifyWith(qualification);
@@ -23,8 +23,8 @@ public abstract class Flow extends AliasableAnnotation {
         return this;
     }
 
-    public Uri uri() {
-        return uri;
+    public UriAnnotation uriAnnotation() {
+        return uriAnnotation;
     }
 
     
