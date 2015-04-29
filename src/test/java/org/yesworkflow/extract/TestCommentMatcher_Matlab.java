@@ -14,7 +14,8 @@ public class TestCommentMatcher_Matlab extends YesWorkflowTestCase {
     public void setUp() throws Exception {
         super.setUp();
         LanguageModel lm = new LanguageModel(Language.MATLAB);
-        matcher = new CommentMatcher(lm);
+        Source source = new Source(1, "__reader__");
+        matcher = new CommentMatcher(source, lm);
     }
 
     public void test_Matlab_EmptySource()  throws IOException {

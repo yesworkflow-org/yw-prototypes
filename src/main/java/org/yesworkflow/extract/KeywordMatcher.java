@@ -109,5 +109,4 @@ public class KeywordMatcher {
         String firstToken = new StringTokenizer(s).nextToken();
         return keywords.getTag(firstToken);
     }
-    
 }

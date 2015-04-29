@@ -17,7 +17,9 @@ import org.yesworkflow.LanguageModel;
 public class CommentMatcher {
 
     private static final String EOL = System.getProperty("line.separator");
+    private static Integer nextLineId = 1;
     
+    private Source source;
     private LanguageModel languageModel;
     private State currentState;
     private String commentStartToken;
@@ -27,13 +29,14 @@ public class CommentMatcher {
     
     /**
      * Constructs a CommentMatcher for the given programming language model.
-     * @param lm The programming language model for the source code to be analyzed.
+     * @param languageModel The programming language model for the source code to be analyzed.
      */
-    public CommentMatcher(LanguageModel lm) {
-        languageModel = lm;
-        currentState = State.IN_CODE;
-        commentStartToken = null;
-        buffer = new StringBuffer();
+    public CommentMatcher(Source source, LanguageModel languageModel) {
+        this.source = source;
+        this.languageModel = languageModel;
+        this.currentState = State.IN_CODE;
+        this.commentStartToken = null;
+        this.buffer = new StringBuffer();
     }
     
     /** Extracts the contents of all comments found in the provided source code,
@@ -61,6 +64,7 @@ public class CommentMatcher {
     public List<SourceLine> getCommentsAsLines(BufferedReader reader) throws IOException {
 
         String line;
+        int nextLineNumber = 1;
         List<SourceLine> commentLines = new LinkedList<SourceLine>();
         lastFullMatch = null;
         
@@ -71,12 +75,12 @@ public class CommentMatcher {
                 String newCommentChars = processNextChar((char)c);
                 commentLineText.append(newCommentChars);
                 if (newCommentChars.equals(EOL)) {
-                    addCommentLineToResult(commentLineText.toString(), commentLines);
+                    addCommentLineToResult(commentLineText.toString(), nextLineNumber, commentLines);
                     commentLineText = new StringBuffer();            
                 }
             }
             commentLineText.append(processNextChar('\n'));
-            addCommentLineToResult(commentLineText.toString(), commentLines);
+            addCommentLineToResult(commentLineText.toString(), nextLineNumber++, commentLines);
         }
         
         return commentLines;
@@ -103,10 +107,10 @@ public class CommentMatcher {
     }
     
     /** Helper method for accumulating non-blank comment lines. */
-    private void addCommentLineToResult(String line, List<SourceLine> accumulatedLines) {
+    private void addCommentLineToResult(String line, int sourceLineNumber, List<SourceLine> accumulatedLines) {
         String trimmedCommentLine = line.toString().trim();
         if (trimmedCommentLine.length() > 0) {
-            SourceLine commentLine = new SourceLine(null, null, null, trimmedCommentLine);
+            SourceLine commentLine = new SourceLine(nextLineId++, source.id, sourceLineNumber, trimmedCommentLine);
             accumulatedLines.add(commentLine);
         }
     }

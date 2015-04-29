@@ -14,7 +14,8 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
     public void setUp() throws Exception {
         super.setUp();
         LanguageModel lm = new LanguageModel(Language.BASH);
-        matcher = new CommentMatcher(lm);
+        Source source = new Source(1, "__reader__");
+        matcher = new CommentMatcher(source, lm);
     }
     
     public void test_Bash_EmptySource()  throws IOException {

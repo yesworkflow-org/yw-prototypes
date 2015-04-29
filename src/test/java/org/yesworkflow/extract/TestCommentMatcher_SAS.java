@@ -14,7 +14,8 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
     public void setUp() throws Exception {
         super.setUp();
         LanguageModel lm = new LanguageModel(Language.SAS);
-        matcher = new CommentMatcher(lm);
+        Source source = new Source(1, "__reader__");
+        matcher = new CommentMatcher(source, lm);
     }
 
     public void test_SAS_EmptySource()  throws IOException {

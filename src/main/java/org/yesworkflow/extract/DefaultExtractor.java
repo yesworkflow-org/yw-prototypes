@@ -39,15 +39,19 @@ public class DefaultExtractor implements Extractor {
     private List<String> sources;
     private List<SourceLine> lines;
     private List<String> comments;
-    private List<Annotation> annotations;
+    private List<Annotation> allAnnotations;
+    private List<Annotation> primaryAnnotations;
     private YWKeywords keywordMapping;
     private KeywordMatcher keywordMatcher;
     private String commentListingPath;    
     private String factsFile = null;
-    private String sourceFacts = null;
+    private String extractFacts = null;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
 
+    private Integer nextSourceId = 1;
+    private Integer nextAnnotationId = 1;
+    
     public DefaultExtractor() {
         this(System.out, System.err);
         this.keywordMapping = new YWKeywords();
@@ -121,15 +125,15 @@ public class DefaultExtractor implements Extractor {
 
 	@Override
 	public List<Annotation> getAnnotations() {
-		return annotations;
+		return primaryAnnotations;
 	}
     
 	@Override
     public String getFacts() {
-        if (sourceFacts == null) {
-            sourceFacts = new SourceFacts(annotations).build().toString();
+        if (extractFacts == null) {
+            extractFacts = new ExtractFacts(sources, allAnnotations).build().toString();
         }
-        return sourceFacts;
+        return extractFacts;
     }
 	
 	
@@ -139,11 +143,16 @@ public class DefaultExtractor implements Extractor {
         lines = new LinkedList<SourceLine>();
         
         if (sourceReader != null) {
-            extractLines(sourceReader, globalLanguageModel);
+            Source source = new Source(nextSourceId++, "__reader__");
+            extractLines(source, sourceReader, globalLanguageModel);
+            sources = new LinkedList<String>();
+            sources.add("_reader__");
         } else if (sources == null || 
                    sources.size() == 0 || 
                    sources.size() == 1 && (sources.get(0).trim().isEmpty() || 
                                            sources.get(0).trim().equals("-"))) {
+            sources = new LinkedList<String>();
+            sources.add("__stdin__");
             extractLinesFromStdin();
         } else {
             extractLinesFromFiles(sources);
@@ -154,7 +163,7 @@ public class DefaultExtractor implements Extractor {
         
         if (comments.isEmpty()) {
             stderrStream.println("WARNING: No YW comments found in source code.");
-        }        
+        }
 
         if (factsFile != null) {
             writeTextToFileOrStdout(factsFile, getFacts());
@@ -165,11 +174,13 @@ public class DefaultExtractor implements Extractor {
     
     private void extractLinesFromStdin() throws IOException, YWToolUsageException {
         Reader reader = new InputStreamReader(System.in);
-        extractLines(new BufferedReader(reader), globalLanguageModel);
+        Source source = new Source(nextSourceId++, "__stdin__");
+        extractLines(source, new BufferedReader(reader), globalLanguageModel);
     }
 
     private void extractLinesFromFiles(List<String> sourcePaths) throws IOException, YWToolUsageException {
         for (String sourcePath : sourcePaths) {
+            Source source = new Source(nextSourceId++, sourcePath);
             LanguageModel languageModel = null;
             if (globalLanguageModel != null) {
                 languageModel = globalLanguageModel;
@@ -179,7 +190,7 @@ public class DefaultExtractor implements Extractor {
                     languageModel = new LanguageModel(language);
                 }
             }
-            extractLines(getFileReaderForPath(sourcePath), languageModel);
+            extractLines(source, getFileReaderForPath(sourcePath), languageModel);
         }
     }
 
@@ -195,7 +206,7 @@ public class DefaultExtractor implements Extractor {
         return reader;
     }
     
-    private void extractLines(BufferedReader reader, LanguageModel languageModel) throws IOException {
+    private void extractLines(Source source, BufferedReader reader, LanguageModel languageModel) throws IOException {
 
         if (languageModel == null) {
             languageModel = new LanguageModel(DEFAULT_LANGUAGE);
@@ -204,7 +215,7 @@ public class DefaultExtractor implements Extractor {
         lastLanguage = languageModel.getLanguage();
         
         // extract all comments from script using the language model
-        CommentMatcher commentMatcher = new CommentMatcher(languageModel);
+        CommentMatcher commentMatcher = new CommentMatcher(source, languageModel);
         List<SourceLine> allCommentLines = commentMatcher.getCommentsAsLines(reader);
 
         // select only the comments that contain YW keywords,
@@ -235,7 +246,8 @@ public class DefaultExtractor implements Extractor {
     private void extractAnnotations() throws Exception {
     	
     	comments = new LinkedList<String>();
-        annotations = new LinkedList<Annotation>();
+    	allAnnotations = new LinkedList<Annotation>();
+        primaryAnnotations = new LinkedList<Annotation>();
         Annotation primaryAnnotation = null;
 
         for (SourceLine sourceLine : lines) {
@@ -246,27 +258,24 @@ public class DefaultExtractor implements Extractor {
         		Tag tag = KeywordMatcher.extractInitialKeyword(comment, keywordMapping);
             
                 Annotation annotation = null;
+                Integer id = nextAnnotationId++;
                 switch(tag) {
-                    case BEGIN:  annotation = new Begin(sourceLine, comment);  break;
-                    case CALL:   annotation = new Call(sourceLine, comment);   break;
-                    case END:    annotation = new End(sourceLine, comment);    break;
-                    case IN:     annotation = new In(sourceLine, comment);     break;
-                    case OUT:    annotation = new Out(sourceLine, comment);    break;
-                    case AS:     annotation = new As(sourceLine, comment);     break;
-                    case PARAM:  annotation = new Param(sourceLine, comment);  break;
-                    case RETURN: annotation = new Return(sourceLine, comment); break;
-                    case URI:    annotation = new Uri(sourceLine, comment);    break;   
+                    case BEGIN:  annotation = new Begin(id, sourceLine, comment);                   break;
+                    case CALL:   annotation = new Call(id, sourceLine, comment);                    break;
+                    case END:    annotation = new End(id, sourceLine, comment);                     break;
+                    case IN:     annotation = new In(id, sourceLine, comment);                      break;
+                    case OUT:    annotation = new Out(id, sourceLine, comment);                     break;
+                    case AS:     annotation = new As(id, sourceLine, comment, primaryAnnotation);   break;
+                    case PARAM:  annotation = new Param(id, sourceLine, comment);                   break;
+                    case RETURN: annotation = new Return(id, sourceLine, comment);                  break;
+                    case URI:    annotation = new Uri(id, sourceLine, comment, primaryAnnotation);  break;   
                 }
+                
+                allAnnotations.add(annotation);
     
-                if (annotation instanceof Qualification) {
-                	if (primaryAnnotation != null) {
-                    	primaryAnnotation.qualifyWith((Qualification)annotation);
-                	} else {
-                		throw new Exception("Qualification annotation found before primary annotation.");
-                	}
-                } else {
+                if (! (annotation instanceof Qualification)) {
                 	primaryAnnotation = annotation;
-                    annotations.add(annotation);
+                    primaryAnnotations.add(annotation);
                 }
             }
         }

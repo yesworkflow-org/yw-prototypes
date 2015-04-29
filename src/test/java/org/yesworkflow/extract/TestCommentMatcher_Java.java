@@ -14,7 +14,8 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
     public void setUp() throws Exception {
         super.setUp();
         LanguageModel lm = new LanguageModel(Language.JAVA);
-        matcher = new CommentMatcher(lm);
+        Source source = new Source(1, "__reader__");
+        matcher = new CommentMatcher(source, lm);
     }
 
     public void test_Java_EmptySource()  throws IOException {
