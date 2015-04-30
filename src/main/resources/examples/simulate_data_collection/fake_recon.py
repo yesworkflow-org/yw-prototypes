@@ -29,6 +29,10 @@ def resource_channel_facts(file_id_first, file_id_last, channel_id):
 def variable_value_fact(resource_id, variable_id, variable_value):
     print "uri_variable_value({0}, {1}, '{2}').".format(resource_id, variable_id, variable_value)
 
+def variable_value_facts(resource_id_first, resource_id_last, variable_id, variable_value):
+    for resource_id in range(resource_id_first, resource_id_last + 1):
+        variable_value_fact(resource_id, variable_id, variable_value)
+
 if __name__ == '__main__':
 
     print '\n% FACT: resource(resource_id, resource_uri).'
@@ -46,4 +50,17 @@ if __name__ == '__main__':
     resource_channel_facts(140, 273, 22)
 
     print '\n% FACT: uri_variable_value(resource_id, variable_id, variable_value).'
-    
+
+    variable_value_facts(140, 213, 5, 'DRT240')  
+    variable_value_facts(214, 273, 5, 'DRT322')
+    variable_value_facts(140, 176, 6, '10000')
+    variable_value_facts(177, 213, 6, '11000')
+    variable_value_facts(214, 243, 6, '10000')
+    variable_value_facts(244, 273, 6, '11000')
+
+    variable_value_facts(6, 79, 8, 'DRT240')  
+    variable_value_facts(80, 139, 8, 'DRT322')
+    variable_value_facts(8, 42, 9, '10000')
+    variable_value_facts(43, 79, 9, '11000')
+    variable_value_facts(80, 109, 9, '10000')
+    variable_value_facts(110, 139, 9, '11000')
