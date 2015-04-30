@@ -1,5 +1,8 @@
 package org.yesworkflow.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.yesworkflow.query.FactsBuilder;
 
 public class ModelFacts {
@@ -9,10 +12,11 @@ public class ModelFacts {
     private Integer nextUriVariableId = 1;
     
     private FactsBuilder programFacts  = new FactsBuilder("program", "program_id", "program_name", "begin_annotation_id", "end_annotation_id");
+//    private FactsBuilder qualifiedProgramNameFacts  = new FactsBuilder("qualified_program_name", "program_id", "qualified_program_name");
     private FactsBuilder workflowFacts = new FactsBuilder("workflow", "program_id");
     private FactsBuilder functionFacts = new FactsBuilder("function", "program_id");
     private FactsBuilder subprogramFacts = new FactsBuilder("has_sub_program", "program_id", "subprogram_id");
-    private FactsBuilder portFacts = new FactsBuilder("port", "port_id", "port_type", "variable_name", "port_annotation_id");
+    private FactsBuilder portFacts = new FactsBuilder("port", "port_id", "port_type", "port_name", "port_annotation_id");
     private FactsBuilder portAliasFacts = new FactsBuilder("port_alias", "port_id", "alias");
     private FactsBuilder portUriFacts = new FactsBuilder("port_uri", "port_id", "uri");
     private FactsBuilder hasInPortFacts = new FactsBuilder("has_in_port", "block_id", "port_id");
@@ -102,7 +106,11 @@ public class ModelFacts {
             
             if (port.uriTemplate != null) {
                 portUriFacts.add(port.id, port.uriTemplate.toString());
-                for (String uriVariableName : port.uriTemplate.getVariableNames()) {
+                Set<String> uniqueVariableNames = new HashSet<String>();
+                for (String name : port.uriTemplate.getVariableNames()) {
+                    uniqueVariableNames.add(name);
+                }
+                for (String uriVariableName : uniqueVariableNames) {
                     if (! uriVariableName.trim().isEmpty()) {
                         portUriVariableFacts.add(nextUriVariableId++, uriVariableName, port.id);
                     }
