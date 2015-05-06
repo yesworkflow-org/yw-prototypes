@@ -124,10 +124,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                 corrected_image_path = 'run/data/{0}/{0}_{1}eV_{2:03d}.img'.format(
                                         sample_id, energy, frame_number)
                 (total_intensity, pixel_count) = transform_image(
-                    raw_image_path=raw_image_path,
-                    corrected_image_path=corrected_image_path,
-                    calibration_image_path='calibration.img'
-                )
+                                                    raw_image_path, corrected_image_path, 'calibration.img')
                 run_log.write("Wrote transformed image {0}".format(corrected_image_path))
                 """ 
                 @end transform_images
