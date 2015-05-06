@@ -33,6 +33,12 @@ def variable_value_facts(resource_id_first, resource_id_last, variable_id, varia
     for resource_id in range(resource_id_first, resource_id_last + 1):
         variable_value_fact(resource_id, variable_id, variable_value)
 
+def variable_incrementing_values_facts(resource_id_first, resource_id_last, variable_id, variable_value_first):
+    variable_value = variable_value_first;
+    for resource_id in range(resource_id_first, resource_id_last + 1):
+        variable_value_fact(resource_id, variable_id, variable_value)
+        variable_value += 1
+
 if __name__ == '__main__':
 
     print '\n% FACT: resource(resource_id, resource_uri).'
@@ -51,16 +57,31 @@ if __name__ == '__main__':
 
     print '\n% FACT: uri_variable_value(resource_id, variable_id, variable_value).'
 
+    # values for raw image sample_id uri variables
     variable_value_facts(140, 213, 5, 'DRT240')  
     variable_value_facts(214, 273, 5, 'DRT322')
+
+    # values for raw image energy uri variables
     variable_value_facts(140, 176, 6, '10000')
     variable_value_facts(177, 213, 6, '11000')
     variable_value_facts(214, 243, 6, '10000')
     variable_value_facts(244, 273, 6, '11000')
 
+    # values for raw image frame number uri variables
+    variable_incrementing_values_facts(6, 42, 7, 1)
+    variable_incrementing_values_facts(43, 79, 7, 1)
+    variable_incrementing_values_facts(80, 109, 7, 1)
+    variable_incrementing_values_facts(110, 139, 7, 1)
+    
+    # values for corrected image sample_id uri variables
     variable_value_facts(6, 79, 8, 'DRT240')  
     variable_value_facts(80, 139, 8, 'DRT322')
+    
+    # values for corrected image energy uri variables
     variable_value_facts(8, 42, 9, '10000')
     variable_value_facts(43, 79, 9, '11000')
     variable_value_facts(80, 109, 9, '10000')
     variable_value_facts(110, 139, 9, '11000')
+    
+    # values for corrected image frame number uri variables
+    variable_incrementing_values_facts(6, 42, 7, 1)

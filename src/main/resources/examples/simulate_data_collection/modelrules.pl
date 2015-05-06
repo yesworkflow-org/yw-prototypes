@@ -82,3 +82,24 @@ variable_values_for_uris_with_other_variable_value(ProgramName, ConstantName, Co
             variable_value_for_uris_with_other_variable_value(ProgramName, ConstantName, ConstantValue, VariableName, VariableValue), 
             ValueList),
     sort(ValueList, UniqueValues).
+
+variable_values_for_resource(ResourceUri, VariableName, VariableValue) :-
+    resource(ResourceId, ResourceUri),
+    uri_variable_value(ResourceId, VariableId, VariableValue),
+    uri_variable(VariableId, VariableName, _).
+
+% RULE: resource_with_matching_uri_variable_values
+% Used to return a resource URI that shares URI template variables with the given resource URI but is associated
+% with a port on a different program.
+resource_with_matching_uri_variable_values(GivenResourceUri, ProgramName, PortName, MatchingResourceUri) :-
+    variable_values_for_resource(GivenResourceUri, GivenVariableName, GivenVariableValue),
+    program(ProgramId, ProgramName, _, _),
+    port(PortId, _, PortName, _),
+    has_port(ProgramId, PortId),
+    uri_variable(MatchingVariableId, MatchingVariableName, PortId),
+    uri_variable_value(MatchingResourceId, MatchingVariableId, MatchingVariableValue),
+    MatchingVariableName == GivenVariableName,
+    MatchingVariableValue == GivenVariableValue,
+    resource(MatchingResourceId, MatchingResourceUri).
+        
+    
