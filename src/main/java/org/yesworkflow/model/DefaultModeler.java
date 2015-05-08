@@ -15,8 +15,12 @@ import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Return;
 import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.exceptions.YWMarkupException;
+import org.yesworkflow.query.LogicLanguage;
+import org.yesworkflow.query.LogicLanguageModel;
 
 public class DefaultModeler implements Modeler {
+
+    static private LogicLanguage DEFAULT_LOGIC_LANGUAGE = LogicLanguage.PROLOG;
 
     private List<Annotation> annotations;
     private Model model;
@@ -25,6 +29,7 @@ public class DefaultModeler implements Modeler {
     private PrintStream stderrStream = null;
     private String factsFile = null;
     private String modelFacts = null;
+    private LogicLanguage logicLanguage = DEFAULT_LOGIC_LANGUAGE;
     
     public DefaultModeler() {
         this(System.out, System.err);
@@ -51,6 +56,8 @@ public class DefaultModeler implements Modeler {
             topWorkflowName = (String)value;
         } else if (key.equalsIgnoreCase("factsfile")) {
            factsFile = (String)value;
+        } else if (key.equalsIgnoreCase("logic")) {
+            logicLanguage = LogicLanguage.toLogicLanguage((String)value);
         }
         return this;
     }  
@@ -78,7 +85,7 @@ public class DefaultModeler implements Modeler {
     @Override
     public String getFacts() {
         if (modelFacts == null) {
-            modelFacts = new ModelFacts(model).build().toString();
+            modelFacts = new ModelFacts(logicLanguage, model).build().toString();
         }
         return modelFacts;
     }

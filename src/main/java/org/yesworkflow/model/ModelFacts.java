@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.yesworkflow.query.FactsBuilder;
+import org.yesworkflow.query.LogicLanguage;
+import org.yesworkflow.query.LogicLanguageModel;
 
 public class ModelFacts {
 
@@ -11,22 +13,39 @@ public class ModelFacts {
     private String factsString = null;
     private Integer nextUriVariableId = 1;
     
-    private FactsBuilder programFacts  = new FactsBuilder("program", "program_id", "program_name", "begin_annotation_id", "end_annotation_id");
-//    private FactsBuilder qualifiedProgramNameFacts  = new FactsBuilder("qualified_program_name", "program_id", "qualified_program_name");
-    private FactsBuilder workflowFacts = new FactsBuilder("workflow", "program_id");
-    private FactsBuilder functionFacts = new FactsBuilder("function", "program_id");
-    private FactsBuilder subprogramFacts = new FactsBuilder("has_sub_program", "program_id", "subprogram_id");
-    private FactsBuilder portFacts = new FactsBuilder("port", "port_id", "port_type", "port_name", "port_annotation_id");
-    private FactsBuilder portAliasFacts = new FactsBuilder("port_alias", "port_id", "alias");
-    private FactsBuilder portUriFacts = new FactsBuilder("port_uri", "port_id", "uri");
-    private FactsBuilder hasInPortFacts = new FactsBuilder("has_in_port", "block_id", "port_id");
-    private FactsBuilder hasOutPortFacts = new FactsBuilder("has_out_port", "block_id", "port_id");
-    private FactsBuilder channelFacts = new FactsBuilder("channel", "channel_id", "binding");
-    private FactsBuilder portConnectionFacts = new FactsBuilder("port_connects_to_channel", "port_id", "channel_id");
-    private FactsBuilder portUriVariableFacts = new FactsBuilder("uri_variable", "uri_variable_id", "variable_name", "port_id");
+    private FactsBuilder programFacts ;
+//    private FactsBuilder qualifiedProgramNameFacts;
+    private FactsBuilder workflowFacts;
+    private FactsBuilder functionFacts;
+    private FactsBuilder subprogramFacts;
+    private FactsBuilder portFacts;
+    private FactsBuilder portAliasFacts;
+    private FactsBuilder portUriFacts;
+    private FactsBuilder hasInPortFacts;
+    private FactsBuilder hasOutPortFacts;
+    private FactsBuilder channelFacts;
+    private FactsBuilder portConnectionFacts;
+    private FactsBuilder portUriVariableFacts;
 
-    public ModelFacts(Model model) {
+    public ModelFacts(LogicLanguage logicLanguage, Model model) {
         this.model = model;
+
+        LogicLanguageModel logicLanguageModel = new LogicLanguageModel(logicLanguage);
+
+        this.programFacts  = new FactsBuilder(logicLanguageModel, "program", "program_id", "program_name", "begin_annotation_id", "end_annotation_id");
+        //this.qualifiedProgramNameFacts  = new FactsBuilder("qualified_program_name", "program_id", "qualified_program_name");
+        this.workflowFacts = new FactsBuilder(logicLanguageModel, "workflow", "program_id");
+        this.functionFacts = new FactsBuilder(logicLanguageModel, "function", "program_id");
+        this.subprogramFacts = new FactsBuilder(logicLanguageModel, "has_sub_program", "program_id", "subprogram_id");
+        this.portFacts = new FactsBuilder(logicLanguageModel, "port", "port_id", "port_type", "port_name", "port_annotation_id");
+        this.portAliasFacts = new FactsBuilder(logicLanguageModel, "port_alias", "port_id", "alias");
+        this.portUriFacts = new FactsBuilder(logicLanguageModel, "port_uri", "port_id", "uri");
+        this.hasInPortFacts = new FactsBuilder(logicLanguageModel, "has_in_port", "block_id", "port_id");
+        this.hasOutPortFacts = new FactsBuilder(logicLanguageModel, "has_out_port", "block_id", "port_id");
+        this.channelFacts = new FactsBuilder(logicLanguageModel, "channel", "channel_id", "binding");
+        this.portConnectionFacts = new FactsBuilder(logicLanguageModel, "port_connects_to_channel", "port_id", "channel_id");
+        this.portUriVariableFacts = new FactsBuilder(logicLanguageModel, "uri_variable", "uri_variable_id", "variable_name", "port_id");
+
     }
 
     public ModelFacts build() {

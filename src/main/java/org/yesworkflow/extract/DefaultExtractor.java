@@ -28,13 +28,16 @@ import org.yesworkflow.annotations.Return;
 import org.yesworkflow.annotations.UriAnnotation;
 import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.exceptions.YWToolUsageException;
+import org.yesworkflow.query.LogicLanguage;
 
 public class DefaultExtractor implements Extractor {
 
     static private Language DEFAULT_LANGUAGE = Language.GENERIC;
+    static private LogicLanguage DEFAULT_LOGIC_LANGUAGE = LogicLanguage.PROLOG;
     
     private LanguageModel globalLanguageModel = null;
     private Language lastLanguage = null;
+    private LogicLanguage logicLanguage = DEFAULT_LOGIC_LANGUAGE;
     private BufferedReader sourceReader = null;
     private List<String> sources;
     private List<SourceLine> lines;
@@ -43,7 +46,7 @@ public class DefaultExtractor implements Extractor {
     private List<Annotation> primaryAnnotations;
     private YWKeywords keywordMapping;
     private KeywordMatcher keywordMatcher;
-    private String commentListingPath;    
+    private String commentListingPath;
     private String factsFile = null;
     private String extractFacts = null;
     private PrintStream stdoutStream = null;
@@ -51,6 +54,7 @@ public class DefaultExtractor implements Extractor {
 
     private Integer nextSourceId = 1;
     private Integer nextAnnotationId = 1;
+
     
     public DefaultExtractor() {
         this(System.out, System.err);
@@ -96,13 +100,15 @@ public class DefaultExtractor implements Extractor {
             globalLanguageModel = new LanguageModel(language);
         } else if (key.equalsIgnoreCase("languageModel")) {
             globalLanguageModel = (LanguageModel)value;
-        } else if (key.equalsIgnoreCase("comment")) {        
+        } else if (key.equalsIgnoreCase("comment")) {
             globalLanguageModel = new LanguageModel();
             globalLanguageModel.singleDelimiter((String)value);
         } else if (key.equalsIgnoreCase("listfile")) {
             commentListingPath = (String)value;
         } else if (key.equalsIgnoreCase("factsfile")) {
             factsFile = (String)value;
+        } else if (key.equalsIgnoreCase("logic")) {
+            logicLanguage = LogicLanguage.toLogicLanguage((String)value);
         }
         
         return this;
@@ -131,7 +137,7 @@ public class DefaultExtractor implements Extractor {
 	@Override
     public String getFacts() {
         if (extractFacts == null) {
-            extractFacts = new ExtractFacts(sources, allAnnotations).build().toString();
+            extractFacts = new ExtractFacts(logicLanguage, sources, allAnnotations).build().toString();
         }
         return extractFacts;
     }
