@@ -3,13 +3,15 @@ package org.yesworkflow.query;
 public class FactsBuilder {
 	
     public static final String EOL = System.getProperty("line.separator");
+    public final String name;
+    public final int fieldCount;
+    public final LogicLanguageModel logicLanguageModel;
 
     private StringBuilder _buffer = new StringBuilder();
-    private final String name;
-    private final int fieldCount;
     
-	public FactsBuilder(String name, String... fields) {
+	public FactsBuilder(LogicLanguageModel logicLanguageModel, String name, String... fields) {
 	    
+        this.logicLanguageModel = logicLanguageModel;
 	    this.name = name;
 	    this.fieldCount = fields.length;
 	    
@@ -33,13 +35,13 @@ public class FactsBuilder {
 	
 	public void add(Object... values) {
 	    
-	    _buffer.append(    name            )
-	           .append(    "("             )
-	           .append(    q(values[0])    );
+	    _buffer.append(    name                )
+	           .append(    "("                 )
+	           .append(    quote(values[0])    );
 	    
 	    for (int i = 1; i < fieldCount; ++i) {
-	        _buffer.append(    ", "            )
-                   .append(    q(values[i])    );
+	        _buffer.append(    ", "                )
+                   .append(    quote(values[i])    );
 	    }
 
 	    _buffer.append(    ")."    )
@@ -47,20 +49,20 @@ public class FactsBuilder {
 	}
 	
     public FactsBuilder comment(String c) {
-        
-        _buffer.append(     EOL     )
-               .append(     "% "    )
-               .append(     c       )
-               .append(     EOL     );
-        
+        if (logicLanguageModel.showComments) {
+            _buffer.append(     EOL                             )
+                   .append(     logicLanguageModel.commentStart )
+                   .append(     c                               )
+                   .append(     EOL                             );
+        }        
         return this;
     }
 
-    private String q(Object value) {
+    private String quote(Object value) {
         if (value instanceof Integer) {
             return value.toString();
         } else {
-            return "'" + value.toString() + "'";
+            return logicLanguageModel.quote + value.toString() + logicLanguageModel.quote;
         }
     }  
     
