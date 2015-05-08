@@ -207,6 +207,12 @@ public class YesWorkflowCLI {
                 config.applyConfigOption("extract.sources", sourceFiles);
             }
             
+            String queryLogicLanguage = (String) config.getConfigOptionValue("query.logic");
+            if (queryLogicLanguage != null) {
+                if (config.getConfigOptionValue("extract.logic") == null) config.applyConfigOption("extract.logic", queryLogicLanguage);
+                if (config.getConfigOptionValue("model.logic") == null) config.applyConfigOption("model.logic", queryLogicLanguage);
+            }
+            
             // execute sequence of commands through the requested one
             switch(command) {
 
