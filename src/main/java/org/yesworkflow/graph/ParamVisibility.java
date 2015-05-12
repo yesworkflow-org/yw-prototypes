@@ -2,9 +2,9 @@ package org.yesworkflow.graph;
 
 public enum ParamVisibility {
     
-    HIDDEN,
-    LOW,
-    SAME;
+    HIDE,
+    REDUCE,
+    SHOW;
     
     public static ParamVisibility toParamVisibility(Object pv) throws Exception {
                 
@@ -12,9 +12,9 @@ public enum ParamVisibility {
         
         if (pv instanceof String) {
             String pvstring = (String)pv; 
-            if (pvstring.equalsIgnoreCase("hidden")) return ParamVisibility.HIDDEN;
-            if (pvstring.equalsIgnoreCase("low")) return ParamVisibility.LOW;
-            if (pvstring.equalsIgnoreCase("same")) return ParamVisibility.SAME;
+            if (pvstring.equalsIgnoreCase("hide")) return ParamVisibility.HIDE;
+            if (pvstring.equalsIgnoreCase("reduce")) return ParamVisibility.REDUCE;
+            if (pvstring.equalsIgnoreCase("show")) return ParamVisibility.SHOW;
         }
         
         throw new Exception("Unrecognized ParamVisibility: " + pv);
