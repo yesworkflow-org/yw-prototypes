@@ -30,16 +30,17 @@ node15 [label="rejected_sample"]
 node16 [label="accepted_sample"]
 node17 [label="num_images"]
 node18 [label="energies"]
-node19 [shape=record  rankdir=LR label="{<f0> raw_image|<f1>file:run/raw/\{cassette_id\}/\{sample_id\}/e\{energy\}/image_\{frame_number\}.raw}"];
-node20 [shape=record  rankdir=LR label="{<f0> calibration_image|<f1>file:calibration.img}"];
-node21 [label="total_intensity"]
-node22 [label="pixel_count"]
-node23 [label="cassette_id"]
-node24 [label="sample_score_cutoff"]
-node25 [label="sample_id"]
-node26 [label="energy"]
-node27 [label="frame_number"]
-node28 [label="corrected_image_path"]
+node19 [label="sample_id"]
+node20 [label="energy"]
+node21 [label="frame_number"]
+node22 [shape=record  rankdir=LR label="{<f0> raw_image|<f1>file:run/raw/\{cassette_id\}/\{sample_id\}/e\{energy\}/image_\{frame_number\}.raw}"];
+node23 [shape=record  rankdir=LR label="{<f0> calibration_image|<f1>file:calibration.img}"];
+node24 [label="corrected_image_path"]
+node25 [label="total_intensity"]
+node26 [label="pixel_count"]
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 label=""]
+node27 [label="cassette_id"]
+node28 [label="sample_score_cutoff"]
 }}
 node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 label="" width=0.2]
 subgraph cluster2 { label="" color="white"
@@ -59,46 +60,46 @@ node36
 node1 -> node9
 node2 -> node13
 node2 -> node14
-node23 -> node2
+node27 -> node2
 node12 -> node2
 node3 -> node16
 node3 -> node15
 node3 -> node17
 node3 -> node18
-node24 -> node3
+node28 -> node3
 node13 -> node3
 node14 -> node3
 node4 -> node11
-node23 -> node4
+node27 -> node4
 node15 -> node4
-node5 -> node25
-node5 -> node26
-node5 -> node27
 node5 -> node19
-node23 -> node5
+node5 -> node20
+node5 -> node21
+node5 -> node22
+node27 -> node5
 node16 -> node5
 node17 -> node5
 node18 -> node5
 node6 -> node8
-node6 -> node28
-node6 -> node21
-node6 -> node22
-node25 -> node6
-node26 -> node6
-node27 -> node6
+node6 -> node24
+node6 -> node25
+node6 -> node26
 node19 -> node6
 node20 -> node6
+node21 -> node6
+node22 -> node6
+node23 -> node6
 node7 -> node10
-node23 -> node7
-node25 -> node7
 node27 -> node7
-node28 -> node7
+node19 -> node7
 node21 -> node7
-node22 -> node7
-node29 -> node23
-node30 -> node24
+node24 -> node7
+node25 -> node7
+node26 -> node7
+node29 -> node27
+node30 -> node28
 node31 -> node12
-node32 -> node20
+node32 -> node23
 node8 -> node33
 node9 -> node34
 node10 -> node35

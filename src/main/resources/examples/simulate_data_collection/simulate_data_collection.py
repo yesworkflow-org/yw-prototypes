@@ -111,9 +111,9 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                 """
                 @begin transform_images
                 @call transform_image
-                @param sample_id 
-                @param energy 
-                @param frame_number
+                @in sample_id 
+                @in energy 
+                @in frame_number
                 @in raw_image_path @as raw_image
                 @in calibration_image @uri file:calibration.img
                 @out corrected_image  @uri file:data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img
@@ -135,7 +135,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                 @param cassette_id 
                 @param sample_id 
                 @param frame_number
-                @param corrected_image_path
+                @in corrected_image_path
                 @in total_intensity
                 @in pixel_count
                 @out collection_log @uri file:run/collected_images.csv

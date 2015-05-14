@@ -59,9 +59,9 @@ annotation(53, 1, 99, '@uri', 'file:run/raw/{cassette_id}/{sample_id}/e{energy}/
 annotation(54, 1, 108, '@end', 'collect_data_set').
 annotation(55, 1, 112, '@begin', 'transform_images').
 annotation(56, 1, 113, '@call', 'transform_image').
-annotation(57, 1, 114, '@param', 'sample_id').
-annotation(58, 1, 115, '@param', 'energy').
-annotation(59, 1, 116, '@param', 'frame_number').
+annotation(57, 1, 114, '@in', 'sample_id').
+annotation(58, 1, 115, '@in', 'energy').
+annotation(59, 1, 116, '@in', 'frame_number').
 annotation(60, 1, 117, '@in', 'raw_image_path').
 annotation(61, 1, 117, '@as', 'raw_image').
 annotation(62, 1, 118, '@in', 'calibration_image').
@@ -76,7 +76,7 @@ annotation(70, 1, 134, '@begin', 'log_average_image_intensity').
 annotation(71, 1, 135, '@param', 'cassette_id').
 annotation(72, 1, 136, '@param', 'sample_id').
 annotation(73, 1, 137, '@param', 'frame_number').
-annotation(74, 1, 138, '@param', 'corrected_image_path').
+annotation(74, 1, 138, '@in', 'corrected_image_path').
 annotation(75, 1, 139, '@in', 'total_intensity').
 annotation(76, 1, 140, '@in', 'pixel_count').
 annotation(77, 1, 141, '@out', 'collection_log').

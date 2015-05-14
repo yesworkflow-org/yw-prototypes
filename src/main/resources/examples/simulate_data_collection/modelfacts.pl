@@ -59,9 +59,9 @@ port(28, 'out', 'sample_id', 48).
 port(29, 'out', 'energy', 49).
 port(30, 'out', 'frame_number', 50).
 port(31, 'out', 'raw_image_path', 51).
-port(32, 'param', 'sample_id', 57).
-port(33, 'param', 'energy', 58).
-port(34, 'param', 'frame_number', 59).
+port(32, 'in', 'sample_id', 57).
+port(33, 'in', 'energy', 58).
+port(34, 'in', 'frame_number', 59).
 port(35, 'in', 'raw_image_path', 60).
 port(36, 'in', 'calibration_image', 62).
 port(37, 'out', 'corrected_image', 64).
@@ -71,7 +71,7 @@ port(40, 'out', 'pixel_count', 68).
 port(41, 'param', 'cassette_id', 71).
 port(42, 'param', 'sample_id', 72).
 port(43, 'param', 'frame_number', 73).
-port(44, 'param', 'corrected_image_path', 74).
+port(44, 'in', 'corrected_image_path', 74).
 port(45, 'in', 'total_intensity', 75).
 port(46, 'in', 'pixel_count', 76).
 port(47, 'out', 'collection_log', 77).
