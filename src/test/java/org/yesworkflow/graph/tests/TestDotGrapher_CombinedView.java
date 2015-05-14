@@ -12,6 +12,7 @@ import org.yesworkflow.graph.CommentVisibility;
 import org.yesworkflow.graph.DotGrapher;
 import org.yesworkflow.graph.GraphView;
 import org.yesworkflow.graph.Grapher;
+import org.yesworkflow.graph.ParamVisibility;
 import org.yesworkflow.model.DefaultModeler;
 import org.yesworkflow.model.Modeler;
 import org.yesworkflow.model.Workflow;
@@ -35,7 +36,8 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
         
         grapher.configure("view", GraphView.COMBINED_VIEW)
-               .configure("comments", CommentVisibility.HIDE);
+               .configure("comments", CommentVisibility.HIDE)
+               .configure("params", ParamVisibility.SHOW);
     }
     
     public void testDotGrapher_CombinedView_TwoProgramsOneChannel_InOut() throws Exception {
@@ -62,12 +64,19 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
         assertEquals("", stderrBuffer.toString());  
       }
 
-  public void testDotGrapher_CombinedView_TwoChannels_OneProgram_OneInOneParamOneOut() throws Exception {
-      String src = "twoChannels_OneProgram_OneInOneParamOneOut";
-      assertEquals(expectedGraph(src), actualGraph(src));
-      assertEquals("", stderrBuffer.toString());  
-      }
+    public void testDotGrapher_CombinedView_TwoChannels_OneProgram_OneInOneParamOneOut() throws Exception {
+        String src = "twoChannels_OneProgram_OneInOneParamOneOut";
+        assertEquals(expectedGraph(src), actualGraph(src));
+        assertEquals("", stderrBuffer.toString());  
+    }
 
+    public void testDotGrapher_CombinedView_TwoChannels_OneProgram_OneInOneParamOneOut_HideParams() throws Exception {
+        grapher.configure("params", ParamVisibility.HIDE);
+        String src = "twoChannels_OneProgram_OneInOneParamOneOut";
+        assertEquals(expectedGraph(src + "_HideParams"), actualGraph(src));
+        assertEquals("", stderrBuffer.toString());  
+    }
+    
      public void testDotGrapher_CombinedView_SamplePyScript() throws Exception {
          String src = "examplePyScript";
          assertEquals(expectedGraph(src), actualGraph(src));  

@@ -3,28 +3,28 @@ rankdir=LR
 graph[fontname=Courier]
 edge[fontname=Helvetica]
 node[fontname=Courier]
-node[shape=circle style="filled" fillcolor="#FFFFFF" peripheries=1 label="" width=0.2]
-subgraph cluster0 { label="" color="white"
-subgraph cluster1 { label="" color="white"
-node1
-node2
-}}
-subgraph cluster2 { label="" color="white"
-subgraph cluster3 { label="" color="white"
-node3
-}}
-subgraph cluster4 {
+subgraph cluster0 {
 label="script"
 penwidth=2
 fontsize=18
-subgraph cluster5 {
+subgraph cluster1 {
 label=""
 color="white"
-node[shape=box3d style="filled" fillcolor="#CCFFCC" peripheries=1 label="" width=0.2]
-node4 [label="program"]
-node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=2 label="" width=0.2]
+node[shape=box3d style="filled" fillcolor="#CCFFCC" peripheries=1 label=""]
+node1 [label="program"]
+node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=2 label=""]
 }}
-node4 -> node3 [label="d"]
-node1 -> node4 [label="x"]
-node2 -> node4 [label="y"]
+node[shape=circle style="filled" fillcolor="#FFFFFF" peripheries=1 label="" width=0.2]
+subgraph cluster2 { label="" color="white"
+subgraph cluster3 { label="" color="white"
+node2
+node3
+}}
+subgraph cluster4 { label="" color="white"
+subgraph cluster5 { label="" color="white"
+node4
+}}
+node1 -> node4 [label="d"]
+node2 -> node1 [label="x"]
+node3 -> node1 [label="y"]
 }

@@ -14,6 +14,7 @@ import org.yesworkflow.graph.DotGrapher;
 import org.yesworkflow.graph.GraphView;
 import org.yesworkflow.graph.Grapher;
 import org.yesworkflow.graph.LayoutDirection;
+import org.yesworkflow.graph.ParamVisibility;
 import org.yesworkflow.model.DefaultModeler;
 import org.yesworkflow.model.Modeler;
 import org.yesworkflow.model.Workflow;
@@ -38,7 +39,8 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
 
         grapher.configure("view", GraphView.PROCESS_CENTRIC_VIEW)
-               .configure("comments", CommentVisibility.HIDE);
+               .configure("comments", CommentVisibility.HIDE)
+               .configure("params", ParamVisibility.SHOW);
     }
     
     public void test_TwoProgramsOneChannel_In() throws Exception {
@@ -55,8 +57,15 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
 
     public void test_OneProgram_TwoChannels_OneInOneOut_VerticalLayout() throws Exception {  
         grapher.configure("layout", LayoutDirection.TB);
-        String src = "oneProgram_TwoChannels_OneInOneOut";
-        assertEquals(expectedGraph("oneProgram_TwoChannels_OneInOneOut_VerticalLayout"), actualGraph(src));
+        assertEquals(expectedGraph("oneProgram_TwoChannels_OneInOneOut_VerticalLayout"), 
+                     actualGraph("oneProgram_TwoChannels_OneInOneOut"));
+        assertEquals("", stderrBuffer.toString());
+    }
+
+    public void test_OneProgram_TwoChannels_OneInOneOut_HideParams() throws Exception {  
+        grapher.configure("params", ParamVisibility.HIDE);
+        assertEquals(expectedGraph("oneProgram_TwoChannels_OneInOneOut_HideParams"), 
+                     actualGraph("oneProgram_TwoChannels_OneInOneOut"));
         assertEquals("", stderrBuffer.toString());
     }
     
@@ -65,7 +74,14 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
         assertEquals(expectedGraph(src), actualGraph(src));
         assertEquals("", stderrBuffer.toString());
     }
-  
+
+    public void test_OneProgram_TwoChannels_OneParamOneOut_HideParams() throws Exception {
+        grapher.configure("params", ParamVisibility.HIDE);
+        assertEquals(expectedGraph("oneProgram_TwoChannels_OneParamOneOut_HideParams"), 
+                     actualGraph("oneProgram_TwoChannels_OneParamOneOut"));
+        assertEquals("", stderrBuffer.toString());
+    }
+    
     public void test_OneProgram_ThreeChannels_TwoInOneOut() throws Exception {
         String src = "oneProgram_ThreeChannels_TwoInOneOut";
         assertEquals(expectedGraph(src), actualGraph(src));
@@ -75,6 +91,13 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
     public void test_OneProgram_TwoChannels_OneParamOneInOneOut() throws Exception {
         String src = "oneProgram_TwoChannels_OneParamOneInOneOut";
         assertEquals(expectedGraph(src), actualGraph(src));
+        assertEquals("", stderrBuffer.toString());
+    }
+
+    public void test_OneProgram_TwoChannels_OneParamOneInOneOut_HideParams() throws Exception {
+        grapher.configure("params", ParamVisibility.HIDE);
+        assertEquals(expectedGraph("oneProgram_TwoChannels_OneParamOneInOneOut_HideParams"), 
+                     actualGraph("oneProgram_TwoChannels_OneParamOneInOneOut"));
         assertEquals("", stderrBuffer.toString());
     }
     
@@ -125,7 +148,6 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
           
           return grapher.toString();
      }
-      
      
      private String expectedGraph(String name) throws IOException {
          return readTextFile(TEST_RESOURCE_DIR + name + ".gv");
