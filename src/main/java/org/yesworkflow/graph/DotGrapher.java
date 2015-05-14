@@ -28,7 +28,8 @@ public class DotGrapher implements Grapher  {
     private Program topWorkflow = null;
     private Model model = null;
     private GraphView graphView = DEFAULT_GRAPH_VIEW;
-
+    private DotBuilder dot;
+    
     private ParamVisibility paramVisibility = DEFAULT_PARAM_VISIBILITY;
     private CommentVisibility commentView = DEFAULT_COMMENT_VISIBILITY;
     private LayoutDirection layoutDirection = DEFAULT_LAYOUT_DIRECTION;
@@ -112,9 +113,9 @@ public class DotGrapher implements Grapher  {
             }
         }
 
-        DotBuilder dotBuilder = new DotBuilder();
+        dot = new DotBuilder();
         
-        dotBuilder.beginGraph()
+        dot.beginGraph()
                   .rankDir(layoutDirection.toString())
                   .enableComments(commentView == CommentVisibility.SHOW)
                   .showClusterBox(workflowBoxMode == WorkflowBoxMode.SHOW);
@@ -122,15 +123,15 @@ public class DotGrapher implements Grapher  {
         switch(graphView) {
         
             case PROCESS_CENTRIC_VIEW:
-                this.graphText = renderProcessCentricView(dotBuilder);
+                this.graphText = renderProcessCentricView();
                 break;
             
             case DATA_CENTRIC_VIEW:
-                this.graphText = renderDataCentricView(dotBuilder);
+                this.graphText = renderDataCentricView();
                 break;
             
             case COMBINED_VIEW:
-                this.graphText = renderCombinedView(dotBuilder);
+                this.graphText = renderCombinedView();
                 break;
         }
         
@@ -139,22 +140,21 @@ public class DotGrapher implements Grapher  {
         return this;
     }
     
-    private String renderProcessCentricView(DotBuilder dot) {
+    private String renderProcessCentricView() {
 		
         dot.comment("Use serif font for process labels and sans serif font for data labels");
 		dot.graphFont("Courier")
            .edgeFont("Helvetica")
            .nodeFont("Courier");
 		
-		renderWorkflowAsProcess(this.topWorkflow, dot, 1);
+		renderWorkflowAsProcess(this.topWorkflow, 1);
 		
 		dot.endGraph();
 		
 		return dot.toString();
 	}
     
-    
-    private void renderInputAndOutputPorts(Program workflow, DotBuilder dot) {
+    private void renderInputAndOutputPorts(Program workflow) {
         
         // draw a small circle for each outward facing in and out port
         dot.shape("circle").peripheries(1).width(0.2).fillcolor("#FFFFFF");
@@ -181,7 +181,7 @@ public class DotGrapher implements Grapher  {
         if (portLayout == PortLayout.GROUP) dot.endSubgraph();
     }
     
-    private void renderWorkflowAsProcess(Program workflow, DotBuilder dot, int depth) {
+    private void renderWorkflowAsProcess(Program workflow, int depth) {
 
         dot.comment("Start of cluster for drawing box around programs in workflow");
         if (workflowTitleMode == WorkflowTitleMode.SHOW) {
@@ -227,7 +227,7 @@ public class DotGrapher implements Grapher  {
         dot.endSubgraph();
         
         if (portLayout != PortLayout.HIDE) {
-            renderInputAndOutputPorts(workflow, dot);
+            renderInputAndOutputPorts(workflow);
         }
         
         dot.comment("Directed edges for each channel in workflow");
@@ -264,17 +264,16 @@ public class DotGrapher implements Grapher  {
                          c.sourcePort.flowAnnotation.binding());
             }
         }
-        
 
         // render subworkflows
         for (Program p : workflow.programs) {
             if (p.isWorkflow()) {
-                renderWorkflowAsProcess(p, dot, depth + 1);
+                renderWorkflowAsProcess(p, depth + 1);
             }
         }
     }
 
-    private String renderDataCentricView(DotBuilder dot) {
+    private String renderDataCentricView() {
 
         dot.comment("Use serif font for process labels and sans serif font for data labels");
         dot.graphFont("Courier")
@@ -313,7 +312,7 @@ public class DotGrapher implements Grapher  {
         return dot.toString();
     }
     
-    private String renderCombinedView(DotBuilder dot) {
+    private String renderCombinedView() {
         
         dot.comment("Start of cluster for drawing box around programs in workflow");
         dot.beginSubgraph();
@@ -330,41 +329,33 @@ public class DotGrapher implements Grapher  {
         dot.nodeFont("Helvetica");
 
         // draw a box for each channel in the workflow
-        dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
-        List<Channel> visibleChannels = new LinkedList<Channel>(topWorkflow.innerDataChannels());
-        if (paramVisibility != ParamVisibility.HIDE) {
-            visibleChannels.addAll(topWorkflow.innerParamChannels());
-        }
-        for (Channel c : visibleChannels) {
-
-            String binding = c.sourcePort.flowAnnotation.binding();
-            channelBindings.add(binding);
-            UriTemplate uri = c.sourcePort.uriTemplate;
-            
-            if (uri == null) {
-                dot.node(binding);
-            } else {
-                String uriLabel = uri.toString().replace("{", "\\{").replace("}", "\\}");
-                switch(uriDisplayMode) {
-                    case NAME: 
-                        dot.node(binding);
-                        break;
-                    case URI:
-                        dot.node(binding, uriLabel);
-                        break;
-                    case BOTH:
-                        dot.recordNode(binding, binding, uriLabel);
-                        break;
+        switch(paramVisibility) {
+            case SHOW:
+                dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
+                for (Channel c : topWorkflow.innerChannels()) {
+                    drawChannelNode(c);
+                }        
+            case REDUCE:
+                dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
+                for (Channel c : topWorkflow.innerDataChannels()) {
+                    drawChannelNode(c);
                 }
-                dot.node(binding);
-            }
-        }        
+                dot.shape("box").fillcolor("#FCFCFC").style("rounded,filled");
+                for (Channel c : topWorkflow.innerParamChannels()) {
+                    drawChannelNode(c);
+                }
+            case HIDE:
+                dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
+                for (Channel c : topWorkflow.innerDataChannels()) {
+                    drawChannelNode(c);
+                }
+        }
         
         dot.comment("End of cluster for drawing box around programs in workflow");
         dot.endSubgraph();
 
         if (portLayout != PortLayout.HIDE) {
-            renderInputAndOutputPorts(topWorkflow, dot);
+            renderInputAndOutputPorts(topWorkflow);
         }
         
         // draw an edge for each pairing of out port and in port for each program
@@ -408,6 +399,31 @@ public class DotGrapher implements Grapher  {
         dot.endGraph();
         
         return dot.toString();
+    }
+
+    private void drawChannelNode(Channel c) {
+        
+        String binding = c.sourcePort.flowAnnotation.binding();
+        channelBindings.add(binding);
+        UriTemplate uri = c.sourcePort.uriTemplate;
+        
+        if (uri == null) {
+            dot.node(binding);
+        } else {
+            String uriLabel = uri.toString().replace("{", "\\{").replace("}", "\\}");
+            switch(uriDisplayMode) {
+                case NAME: 
+                    dot.node(binding);
+                    break;
+                case URI:
+                    dot.node(binding, uriLabel);
+                    break;
+                case BOTH:
+                    dot.recordNode(binding, binding, uriLabel);
+                    break;
+            }
+            dot.node(binding);
+        }
     }
     
     private void writeTextToFileOrStdout(String path, String text) throws IOException {        

@@ -66,15 +66,6 @@ public class Program {
 	    return false;
 	}
     
-    public List<Channel> innerDataChannels() {
-        List<Channel> dc = new LinkedList<Channel>();
-        for (Channel c : channels) {
-            if (! c.isParam) {
-                dc.add(c);
-            }
-        }
-        return dc;
-    }
 
     public List<String> outerParamBindings() {
         List<String> bindings = new LinkedList<String>();
@@ -109,7 +100,7 @@ public class Program {
         }
         return bindings;
     }
-    
+        
     public List<Channel> innerParamChannels() {
         List<Channel> pc = new LinkedList<Channel>();
         for (Channel c : channels) {
@@ -119,6 +110,25 @@ public class Program {
         }
         return pc;
     }
+ 
+    public List<Channel> innerDataChannels() {
+        List<Channel> dc = new LinkedList<Channel>();
+        for (Channel c : channels) {
+            if (! c.isParam) {
+                dc.add(c);
+            }
+        }
+        return dc;
+    }
+    
+    public List<Channel> innerChannels() {
+        List<Channel> ch = new LinkedList<Channel>();
+        for (Channel c : channels) {
+            ch.add(c);
+        }
+        return ch;
+    }
+ 
     
     public boolean hasChannelForBinding(String binding) {
         for (Channel c : channels) {
