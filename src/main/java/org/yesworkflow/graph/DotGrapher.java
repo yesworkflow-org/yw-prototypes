@@ -28,7 +28,7 @@ public class DotGrapher implements Grapher  {
     private Program topWorkflow = null;
     private Model model = null;
     private GraphView graphView = DEFAULT_GRAPH_VIEW;
-    @SuppressWarnings("unused")
+
     private ParamVisibility paramVisibility = DEFAULT_PARAM_VISIBILITY;
     private CommentVisibility commentView = DEFAULT_COMMENT_VISIBILITY;
     private LayoutDirection layoutDirection = DEFAULT_LAYOUT_DIRECTION;
@@ -39,6 +39,8 @@ public class DotGrapher implements Grapher  {
     private String graphText = null;
     private String outputDotFile = null;
     private PrintStream stdoutStream = null;
+    List<String> channelBindings = new LinkedList<String>();
+    
     
     @SuppressWarnings("unused")
     private PrintStream stderrStream = null;
@@ -162,7 +164,7 @@ public class DotGrapher implements Grapher  {
         dot.comment("Nodes representing workflow input ports");
         for (Port p : workflow.inPorts) {
             String binding = p.flowAnnotation.binding();
-            if (workflowHasChannelForBinding(workflow, binding)) {
+            if (channelBindings.contains(binding)) {
                 dot.node(binding + "_inport", "");
             }
         }
@@ -172,7 +174,7 @@ public class DotGrapher implements Grapher  {
         dot.comment("Nodes representing workflow output ports");
         for (Port p : workflow.outPorts) {
             String binding = p.flowAnnotation.binding();
-            if (workflowHasChannelForBinding(workflow, binding)) {
+            if (channelBindings.contains(binding)) {
                 dot.node(binding + "_outport", "");
             }
         }
@@ -181,10 +183,6 @@ public class DotGrapher implements Grapher  {
     
     private void renderWorkflowAsProcess(Program workflow, DotBuilder dot, int depth) {
 
-        if (portLayout != PortLayout.HIDE) {
-            renderInputAndOutputPorts(workflow, dot);
-        }
-        
         dot.comment("Start of cluster for drawing box around programs in workflow");
         if (workflowTitleMode == WorkflowTitleMode.SHOW) {
             dot.beginSubgraph(workflow.toString());
@@ -200,6 +198,11 @@ public class DotGrapher implements Grapher  {
         for (Program p : workflow.programs) {
             if (! (p.isWorkflow())) {
                 dot.node(p.beginAnnotation.name);
+                if (paramVisibility == ParamVisibility.SHOW) {
+                    channelBindings.addAll(p.outerBindings());
+                } else {
+                    channelBindings.addAll(p.outerDataBindings());
+                }
             }
         }
 
@@ -212,14 +215,25 @@ public class DotGrapher implements Grapher  {
         for (Program p : workflow.programs) {
             if (p.isWorkflow()) {
                 dot.node(p.beginAnnotation.name);
+                if (paramVisibility == ParamVisibility.SHOW) {
+                    channelBindings.addAll(p.outerBindings());
+                } else {
+                    channelBindings.addAll(p.outerDataBindings());
+                }
             }
         }
 
         dot.comment("End of cluster for drawing box around programs in workflow");
         dot.endSubgraph();
         
+        if (portLayout != PortLayout.HIDE) {
+            renderInputAndOutputPorts(workflow, dot);
+        }
+        
         dot.comment("Directed edges for each channel in workflow");
         for (Channel c : workflow.channels) {
+            
+            if (c.isParam && paramVisibility == ParamVisibility.HIDE) continue;
             
             Program sourceProgram = c.sourceProgram;
             Program sinkProgram = c.sinkProgram;
@@ -258,15 +272,6 @@ public class DotGrapher implements Grapher  {
                 renderWorkflowAsProcess(p, dot, depth + 1);
             }
         }
-    }
-
-    private boolean workflowHasChannelForBinding(Program workflow, String binding) {
-        for (Channel c : workflow.channels) {
-            if (binding.equals(c.sourcePort.flowAnnotation.binding())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private String renderDataCentricView(DotBuilder dot) {
@@ -310,10 +315,6 @@ public class DotGrapher implements Grapher  {
     
     private String renderCombinedView(DotBuilder dot) {
         
-        if (portLayout != PortLayout.HIDE) {
-            renderInputAndOutputPorts(topWorkflow, dot);
-        }
-        
         dot.comment("Start of cluster for drawing box around programs in workflow");
         dot.beginSubgraph();
 
@@ -325,14 +326,17 @@ public class DotGrapher implements Grapher  {
         dot.shape("box3d").fillcolor("#CCFFCC");
         for (Program p : topWorkflow.programs) dot.node(p.beginAnnotation.name);
         
-        List<String> channelBindings = new LinkedList<String>();
-        
         dot.comment("Use sans serif font for data labels");
         dot.nodeFont("Helvetica");
 
         // draw a box for each channel in the workflow
         dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
-        for (Channel c : topWorkflow.channels) {
+        List<Channel> visibleChannels = new LinkedList<Channel>(topWorkflow.innerDataChannels());
+        if (paramVisibility != ParamVisibility.HIDE) {
+            visibleChannels.addAll(topWorkflow.innerParamChannels());
+        }
+        for (Channel c : visibleChannels) {
+
             String binding = c.sourcePort.flowAnnotation.binding();
             channelBindings.add(binding);
             UriTemplate uri = c.sourcePort.uriTemplate;
@@ -354,8 +358,15 @@ public class DotGrapher implements Grapher  {
                 }
                 dot.node(binding);
             }
-        }
+        }        
+        
+        dot.comment("End of cluster for drawing box around programs in workflow");
+        dot.endSubgraph();
 
+        if (portLayout != PortLayout.HIDE) {
+            renderInputAndOutputPorts(topWorkflow, dot);
+        }
+        
         // draw an edge for each pairing of out port and in port for each program
         for (Program p : topWorkflow.programs) {
 
@@ -363,7 +374,7 @@ public class DotGrapher implements Grapher  {
                 
                 String binding = out.flowAnnotation.binding();
                 if (channelBindings.contains(binding)) {
-                    dot.edge( p.beginAnnotation.name, binding);
+                    dot.edge(p.beginAnnotation.name, binding);
                 }
             }
 
@@ -374,15 +385,13 @@ public class DotGrapher implements Grapher  {
                 }
             }
         }
-        
-        dot.comment("End of cluster for drawing box around programs in workflow");
-        dot.endSubgraph();
 
         if (portLayout != PortLayout.HIDE) {
+            
             // draw an edge from each workflow input to the corresponding channel node
             for (Port p : topWorkflow.inPorts) {
                 String binding = p.flowAnnotation.binding();
-                if (workflowHasChannelForBinding(topWorkflow, binding)) {
+                if (channelBindings.contains(binding)) {
                     dot.edge(binding + "_inport", binding);
                 }
             }
@@ -390,7 +399,7 @@ public class DotGrapher implements Grapher  {
             // draw an edge from each workflow output to the corresponding channel node
             for (Port p : topWorkflow.outPorts) {
                 String binding = p.flowAnnotation.binding();
-                if (workflowHasChannelForBinding(topWorkflow, binding)) {
+                if (topWorkflow.hasChannelForBinding(binding)) {
                     dot.edge(binding, binding + "_outport");
                 }
             }

@@ -1,9 +1,13 @@
 package org.yesworkflow.model;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.yesworkflow.annotations.Begin;
 import org.yesworkflow.annotations.End;
+import org.yesworkflow.annotations.In;
+import org.yesworkflow.annotations.Param;
+import org.yesworkflow.graph.ParamVisibility;
 
 public class Program {
 
@@ -63,7 +67,70 @@ public class Program {
     public boolean isWorkflow() {
 	    return false;
 	}
-	
+    
+    public List<Channel> innerDataChannels() {
+        List<Channel> dc = new LinkedList<Channel>();
+        for (Channel c : channels) {
+            if (! c.isParam) {
+                dc.add(c);
+            }
+        }
+        return dc;
+    }
+
+    public List<String> outerParamBindings() {
+        List<String> bindings = new LinkedList<String>();
+        for (Port p : inPorts) {
+            if (p.flowAnnotation instanceof Param) {
+                bindings.add(p.flowAnnotation.binding());
+            }
+        }
+        return bindings;
+    }
+
+    public List<String> outerDataBindings() {
+        List<String> bindings = new LinkedList<String>();
+        for (Port p : inPorts) {
+            if (! (p.flowAnnotation instanceof Param)) {
+                bindings.add(p.flowAnnotation.binding());
+            }
+        }
+        for (Port p : outPorts) {
+            bindings.add(p.flowAnnotation.binding());
+        }
+        return bindings;
+    }
+
+    public List<String> outerBindings() {
+        List<String> bindings = new LinkedList<String>();
+        for (Port p : inPorts) {
+            bindings.add(p.flowAnnotation.binding());
+        }
+        for (Port p : outPorts) {
+            bindings.add(p.flowAnnotation.binding());
+        }
+        return bindings;
+    }
+    
+    public List<Channel> innerParamChannels() {
+        List<Channel> pc = new LinkedList<Channel>();
+        for (Channel c : channels) {
+            if (c.isParam) {
+                pc.add(c);
+            }
+        }
+        return pc;
+    }
+    
+    public boolean hasChannelForBinding(String binding) {
+        for (Channel c : channels) {
+            if (binding.equals(c.sourcePort.flowAnnotation.binding())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
 	@Override
 	public String toString() {
 	    return this.beginAnnotation.name;

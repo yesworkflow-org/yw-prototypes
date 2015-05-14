@@ -1,5 +1,7 @@
 package org.yesworkflow.model;
 
+import org.yesworkflow.annotations.Param;
+
 public class Channel {
 
     public final Integer id;
@@ -9,13 +11,16 @@ public class Channel {
 	
 	public final Program sinkProgram;
 	public final Port sinkPort;
+
+    public final boolean isParam;
 	
 	public Channel(Integer id, Program sourceProgram, Port sourcePort, Program sinkProgram, Port sinkPort) {
 	    this.id = id;
 	    this.sourceProgram = sourceProgram;
 		this.sourcePort = sourcePort;
 		this.sinkProgram = sinkProgram;
-		this.sinkPort = sinkPort;
+		this.sinkPort = sinkPort;		
+		this.isParam =  (sinkPort.flowAnnotation instanceof Param);
 	}
 	
    @Override
