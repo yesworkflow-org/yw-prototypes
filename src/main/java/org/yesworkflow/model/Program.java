@@ -5,9 +5,7 @@ import java.util.List;
 
 import org.yesworkflow.annotations.Begin;
 import org.yesworkflow.annotations.End;
-import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Param;
-import org.yesworkflow.graph.ParamVisibility;
 
 public class Program {
 

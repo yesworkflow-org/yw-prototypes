@@ -16,7 +16,6 @@ import org.yesworkflow.annotations.Return;
 import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.query.LogicLanguage;
-import org.yesworkflow.query.LogicLanguageModel;
 
 public class DefaultModeler implements Modeler {
 
