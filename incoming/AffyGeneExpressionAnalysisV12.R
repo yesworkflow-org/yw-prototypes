@@ -45,9 +45,9 @@ library(GOstats) # Required for Gene Ontology Analysis.
 
 ## @begin AffyGeneExpressionAnalysis
 # @in inputDirectory @as CEL_and_covdesc_Directory
-# @in minFC @as minimum_fold_change_for_DEG
-# @in ttestPVal @as cutoff_p_value_for_DEG
-# @in hgCutoff @as GO_stats_p_value_cutoff
+# @param minFC @as minimum_fold_change_for_DEG
+# @param ttestPVal @as cutoff_p_value_for_DEG
+# @param hgCutoff @as GO_stats_p_value_cutoff
 # @out exprset @as normalized_data_only_values
 # @out exprsetlinkedtogenes @as DEG_list_full_info
 # @out idrlinkedtogenes @as DEG_list_summary
@@ -106,8 +106,8 @@ write.table(exprset, file=normalizedDataName, row.names=FALSE, quote=FALSE,sep="
 
 ## @begin SelectDEGs
 # @in dataSet @as normalized_data
-# @in minFC @as minimum_fold_change_for_DEG
-# @in ttestPVal @as cutoff_p_value_for_DEG
+# @param minFC @as minimum_fold_change_for_DEG
+# @param ttestPVal @as cutoff_p_value_for_DEG
 # @out exprsetlinkedtogenes @as DEG_list_full_info
 # @out idrlinkedtogenes @as DEG_list_summary
 # @out higheridrlinkedtogenes @as DEG_list_higher_in_test_condition
@@ -186,7 +186,7 @@ gc()
 
 
 ## @begin GO_Analysis
-# @in hgCutoff @as GO_stats_p_value_cutoff
+# @param hgCutoff @as GO_stats_p_value_cutoff
 # @in higheridrlinkedtogenes @as DEG_list_higher_in_test_condition
 # @in loweridrlinkedtogenes @as DEG_list_lower_in_test_condition
 # @out gostatshigher @as GO_stats_gene_list_higher_in_test_condition

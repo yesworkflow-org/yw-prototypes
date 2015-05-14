@@ -49,12 +49,12 @@ port(18, 'out', 'rejected_sample', 32).
 port(19, 'out', 'num_images', 33).
 port(20, 'out', 'energies', 34).
 port(21, 'param', 'cassette_id', 37).
-port(22, 'param', 'rejected_sample', 38).
+port(22, 'in', 'rejected_sample', 38).
 port(23, 'out', 'rejection_log', 39).
 port(24, 'param', 'cassette_id', 44).
-port(25, 'param', 'accepted_sample', 45).
-port(26, 'param', 'num_images', 46).
-port(27, 'param', 'energies', 47).
+port(25, 'in', 'accepted_sample', 45).
+port(26, 'in', 'num_images', 46).
+port(27, 'in', 'energies', 47).
 port(28, 'out', 'sample_id', 48).
 port(29, 'out', 'energy', 49).
 port(30, 'out', 'frame_number', 50).
@@ -71,9 +71,9 @@ port(40, 'out', 'pixel_count', 68).
 port(41, 'param', 'cassette_id', 71).
 port(42, 'param', 'sample_id', 72).
 port(43, 'param', 'frame_number', 73).
-port(44, 'in', 'total_intensity', 74).
-port(45, 'in', 'pixel_count', 75).
-port(46, 'in', 'corrected_image_path', 76).
+port(44, 'param', 'corrected_image_path', 74).
+port(45, 'in', 'total_intensity', 75).
+port(46, 'in', 'pixel_count', 76).
 port(47, 'out', 'collection_log', 77).
 port(48, 'param', 'cassette_id', 82).
 port(49, 'param', 'sample_id', 83).
@@ -186,9 +186,9 @@ channel(20, 'frame_number').
 channel(21, 'frame_number').
 channel(22, 'raw_image').
 channel(23, 'calibration_image').
-channel(24, 'total_intensity').
-channel(25, 'pixel_count').
-channel(26, 'corrected_image_path').
+channel(24, 'corrected_image_path').
+channel(25, 'total_intensity').
+channel(26, 'pixel_count').
 
 % FACT: port_connects_to_channel(port_id, channel_id).
 port_connects_to_channel(37, 1).
@@ -237,11 +237,11 @@ port_connects_to_channel(31, 22).
 port_connects_to_channel(35, 22).
 port_connects_to_channel(4, 23).
 port_connects_to_channel(36, 23).
-port_connects_to_channel(39, 24).
+port_connects_to_channel(38, 24).
 port_connects_to_channel(44, 24).
-port_connects_to_channel(40, 25).
+port_connects_to_channel(39, 25).
 port_connects_to_channel(45, 25).
-port_connects_to_channel(38, 26).
+port_connects_to_channel(40, 26).
 port_connects_to_channel(46, 26).
 
 % FACT: uri_variable(uri_variable_id, variable_name, port_id).

@@ -72,7 +72,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
             """
             @begin log_rejected_sample 
             @param cassette_id 
-            @param rejected_sample
+            @in rejected_sample
             @out rejection_log @uri file:/run/rejected_samples.txt
             """
             if (rejected_sample is not None):
@@ -89,9 +89,9 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
             @begin collect_data_set
             @call collect_next_image
             @param cassette_id
-            @param accepted_sample
-            @param num_images
-            @param energies
+            @in accepted_sample
+            @in num_images
+            @in energies
             @out sample_id
             @out energy 
             @out frame_number
@@ -135,9 +135,9 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                 @param cassette_id 
                 @param sample_id 
                 @param frame_number
+                @param corrected_image_path
                 @in total_intensity
                 @in pixel_count
-                @in corrected_image_path
                 @out collection_log @uri file:run/collected_images.csv
                 """
                 average_intensity = total_intensity / pixel_count

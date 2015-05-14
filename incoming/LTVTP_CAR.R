@@ -1,8 +1,8 @@
 ## @begin CAR_Recon
 # @in MASTER.DATA @as master_data_directory
 # @in PRISM @as prism_directory
-# @in calibration.years @as calibration_years
-# @in retrodiction.years @as retrodiction_years
+# @param calibration.years @as calibration_years
+# @param retrodiction.years @as retrodiction_years
 # @in ITRDB.data @as tree_ring_data
 # @out ZuniCibola_PRISM_grow_prcp_ols_loocv_union_recons.tif @as ZuniCibola_PRISM_grow_prcp_ols_loocv_union_recons.tif
 # @out ZuniCibola_PRISM_grow_prcp_ols_loocv_union_errors.tif @as ZuniCibola_PRISM_grow_prcp_ols_loocv_union_errors.tif
@@ -88,8 +88,8 @@ names(ZuniCibola.PRISM.grow.prcp.test) <- calibration.years
 ## @begin SubsetAllData
 # @in ZuniCibola.PRISM.grow.prcp @as PRISM_annual_growing_season_precipitation
 # @in ITRDB.data @as tree_ring_data
-# @in calibration.years @as calibration_years
-# @in retrodiction.years @as retrodiction_years
+# @param calibration.years @as calibration_years
+# @param retrodiction.years @as retrodiction_years
 # @out training.series @as dendro_series_for_calibration
 # @out recon.series @as dendro_series_for_reconstruction
 # @out predlist @as list_of_predictor_series_through_time
