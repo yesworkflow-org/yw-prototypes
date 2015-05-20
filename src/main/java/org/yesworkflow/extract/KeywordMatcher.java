@@ -56,12 +56,12 @@ public class KeywordMatcher {
     
     public MatchExtent matchesKeyword(String s) {
         
-        int length = s.length();
+        String sl = s.toLowerCase();
         
         // look for a match with single-line comment start delimiter
         for (String keyword : keywords) {
-            if (keyword.startsWith(s)) {
-                return (length == keyword.length()) ? MatchExtent.FULL_MATCH : MatchExtent.PREFIX_MATCH;
+            if (keyword.startsWith(sl)) {
+                return (s.length() == keyword.length()) ? MatchExtent.FULL_MATCH : MatchExtent.PREFIX_MATCH;
             }
         }
         return MatchExtent.NO_MATCH;
@@ -94,9 +94,10 @@ public class KeywordMatcher {
      *  @return The start index of the first keyword found, or -1 if no keyword is found. 
      */
     public int findKeyword(String line) {
+        String lineLowerCase = line.toLowerCase();
         int firstKeywordStart = -1;
         for (String keyword : keywords) {
-            int start = line.indexOf(keyword);
+            int start = lineLowerCase.indexOf(keyword);
             if (start == -1) continue;
             if (firstKeywordStart == -1 || start < firstKeywordStart) {
                 firstKeywordStart = start;
