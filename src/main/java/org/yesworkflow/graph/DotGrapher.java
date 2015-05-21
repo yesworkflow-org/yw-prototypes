@@ -23,6 +23,7 @@ public class DotGrapher implements Grapher  {
     public static WorkflowBoxMode DEFAULT_WORKFLOW_BOX_MODE = WorkflowBoxMode.SHOW;
     public static PortLayout DEFAULT_PORT_LAYOUT = PortLayout.GROUP;
     public static DataLabelMode DEFAULT_URI_DISPLAY_MODE = DataLabelMode.BOTH;
+    public static EdgeLabelMode DEFAULT_EDGE_LABEL_MODE = EdgeLabelMode.SHOW;
     public static WorkflowTitleMode DEFAULT_WORKFLOW_TITLE_MODE = WorkflowTitleMode.SHOW;
     
     private Program topWorkflow = null;
@@ -36,6 +37,7 @@ public class DotGrapher implements Grapher  {
     private WorkflowBoxMode workflowBoxMode = DEFAULT_WORKFLOW_BOX_MODE;
     private PortLayout portLayout = DEFAULT_PORT_LAYOUT;
     private DataLabelMode uriDisplayMode = DEFAULT_URI_DISPLAY_MODE;
+    private EdgeLabelMode edgeLabelMode = DEFAULT_EDGE_LABEL_MODE;
     private WorkflowTitleMode workflowTitleMode = DEFAULT_WORKFLOW_TITLE_MODE;
     private String graphText = null;
     private String outputDotFile = null;
@@ -88,6 +90,8 @@ public class DotGrapher implements Grapher  {
             portLayout = PortLayout.toPortLayout(value);
         } else if (key.equalsIgnoreCase("datalabel")) {
             uriDisplayMode = DataLabelMode.toUriDisplayMode(value);
+        } else if (key.equalsIgnoreCase("edgelabels")) {
+            edgeLabelMode = EdgeLabelMode.toEdgeLabelMode(value);
         } else if (key.equalsIgnoreCase("workflowtitle")) {
             workflowTitleMode = WorkflowTitleMode.toWorkflowTitleMode(value);
         } else if (key.equalsIgnoreCase("dotfile")) {
@@ -244,7 +248,7 @@ public class DotGrapher implements Grapher  {
                 
                     dot.edge(c.sinkPort.flowAnnotation.binding() + "_inport",
                              c.sinkProgram.beginAnnotation.name,
-                             c.sinkPort.flowAnnotation.binding());
+                             edgeLabel(c.sinkPort.flowAnnotation.binding()));
                 }
                 
             // draw edges for channels between programs in workflow and workflow out ports
@@ -253,15 +257,15 @@ public class DotGrapher implements Grapher  {
 
                     dot.edge(c.sourceProgram.beginAnnotation.name,
                          c.sourcePort.flowAnnotation.binding() + "_outport",
-                         c.sourcePort.flowAnnotation.binding());
+                         edgeLabel(c.sourcePort.flowAnnotation.binding()));
                 }
                 
             // draw edges for channels between programs within workflow
             } else {
-            
+
                 dot.edge(c.sourceProgram.beginAnnotation.name,
                          c.sinkProgram.beginAnnotation.name,
-                         c.sourcePort.flowAnnotation.binding());
+                         edgeLabel(c.sourcePort.flowAnnotation.binding()));
             }
         }
 
@@ -273,6 +277,10 @@ public class DotGrapher implements Grapher  {
         }
     }
 
+    private String edgeLabel(String label) {
+        return (edgeLabelMode == EdgeLabelMode.SHOW) ? label : "";
+    }
+    
     private String renderDataCentricView() {
 
         dot.comment("Use serif font for process labels and sans serif font for data labels");
@@ -300,7 +308,7 @@ public class DotGrapher implements Grapher  {
                         dot.edge(
                             in.flowAnnotation.binding(), 
                             out.flowAnnotation.binding(), 
-                            p.beginAnnotation.name
+                            edgeLabel(p.beginAnnotation.name)
                         );
                     }
                 }
