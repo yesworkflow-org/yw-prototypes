@@ -5,7 +5,9 @@ package org.yesworkflow.graph;
  */
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class DotBuilder {
 	
@@ -23,6 +25,7 @@ public class DotBuilder {
     private Double width = null;
     private boolean commentsEnabled = true;
     private boolean showClusterBox = true;
+    Map<String,Map<String,Set<String>>> uniqueEdges = new HashMap<String,Map<String,Set<String>>>();
     
 	public DotBuilder beginGraph() {
 		_buffer.append(	"digraph Workflow {" + EOL );
@@ -234,19 +237,44 @@ public class DotBuilder {
 		String toId = nodeNameToIdMap.get(toNode);
         if (toId == null) System.err.println("WARNING: No graph edge to-node with name '" + toNode + "'");
 		
-		_buffer .append(	fromId			)
-				.append(	" -> "			)
-				.append(	toId			);
-		
-		if (edgeLabel != null) {
-		 _buffer.append(	" [label="		)
-				.append(	dq(edgeLabel)	)
-				.append(	"]"             );
-		}
-		
-		_buffer.append(        EOL		);
-		
+        if (edgeIsUnique(fromId, toId, edgeLabel)) {
+        
+    		_buffer .append(	fromId			)
+    				.append(	" -> "			)
+    				.append(	toId			);
+    		
+    		if (edgeLabel != null) {
+    		 _buffer.append(	" [label="		)
+    				.append(	dq(edgeLabel)	)
+    				.append(	"]"             );
+    		}
+    		
+    		_buffer.append(        EOL		);
+        }
+        
 		return this;
+	}
+
+	boolean edgeIsUnique(String from, String to, String label) {
+	    
+	    Map<String,Set<String>> labelsForEdgesFromFirstNode = uniqueEdges.get(from);
+	    if (labelsForEdgesFromFirstNode == null) {
+	        labelsForEdgesFromFirstNode = new HashMap<String,Set<String>>();
+	        uniqueEdges.put(from, labelsForEdgesFromFirstNode);
+	    }
+	    
+	    Set<String> labels = labelsForEdgesFromFirstNode.get(to);
+	    if (labels == null) {
+	        labels = new HashSet<String>();
+	        labelsForEdgesFromFirstNode.put(to, labels);
+	    }
+
+	    if (labels.contains(label)) {
+	        return false;
+	    } else {
+	        labels.add(label);
+	        return true;
+	    }
 	}
 	
 	public DotBuilder graphFont(String font) {
@@ -258,7 +286,7 @@ public class DotBuilder {
 
 	    return this;
 	}
-
+	
     public DotBuilder nodeFont(String font) {
         
         _buffer.append(    "node[fontname="    )

@@ -43,8 +43,7 @@ public class DotGrapher implements Grapher  {
     private String outputDotFile = null;
     private PrintStream stdoutStream = null;
     List<String> channelBindings = new LinkedList<String>();
-    
-    
+        
     @SuppressWarnings("unused")
     private PrintStream stderrStream = null;
     
@@ -290,8 +289,6 @@ public class DotGrapher implements Grapher  {
         
         // draw a box for each channel in the workflow
         dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
-
-        List<String> channelBindings = new LinkedList<String>();
 
         for (Channel c : topWorkflow.channels) {
             String binding = c.sourcePort.flowAnnotation.binding();
