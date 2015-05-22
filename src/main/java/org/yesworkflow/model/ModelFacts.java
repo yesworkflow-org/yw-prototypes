@@ -29,9 +29,9 @@ public class ModelFacts {
 
     public ModelFacts(LogicLanguage logicLanguage, Model model) {
 
-        if (logicLanguage == null) throw new IllegalArgumentException("Null logicLanguage argument passed to constructor");
-        if (model == null) throw new IllegalArgumentException("Null model argument passed to constructor");
-        if (model.program == null) throw new IllegalArgumentException("Null program field in model argument passed to constructor");
+        if (logicLanguage == null) throw new IllegalArgumentException("Null logicLanguage argument passed to ModelFacts constructor.");
+        if (model == null) throw new IllegalArgumentException("Null model argument passed to ModelFacts constructor.");
+        if (model.program == null) throw new IllegalArgumentException("Null program field in model argument passed to ModelFacts constructor.");
         
         this.model = model;
 

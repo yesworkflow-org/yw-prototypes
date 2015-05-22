@@ -10,12 +10,21 @@ public class Model {
     public final Function[] functions;
 
     public Model(Program program, Function[] functions) {
+        
+        if (program == null) throw new IllegalArgumentException("Null program argument passed to Model contructor.");
+        if (functions == null) throw new IllegalArgumentException("Null functions argument passed to Model contructor.");
+        
         this.program = program;
         this.functions = functions;
     }
     
 	public Model(Program program, List<Function> functions) {
-	    this(program, functions.toArray(new Function[functions.size()]));
+        this(program, functionListToArray(functions));
+	}
+	
+	private static Function[] functionListToArray(List<Function> functions) {
+        if (functions == null) throw new IllegalArgumentException("Null functions argument passed to Model contructor.");	    
+	    return functions.toArray(new Function[functions.size()]);
 	}
 
 	public Model(Program program) {
