@@ -284,8 +284,10 @@ public class YesWorkflowCLI {
         ""                                                                                  + EOL +
         "graph.datalabel            Info to display in data nodes: NAME, URI, or BOTH"      + EOL +
         "graph.dotcomments          SHOW or HIDE comments in dot files"                     + EOL +
-        "graph.dotfile              Name of GraphViz DOT file to  write graph to"           + EOL +
+        "graph.dotfile              Name of GraphViz DOT file to write graph to"            + EOL +
+        "graph.edgelabels           SHOW or HIDE labels on edges in process and data views" + EOL +
         "graph.layout               Direction of graph layout: TB, LR, RL, or BT"           + EOL +
+        "graph.params               SHOW, HIDE, or REDUCE visibility of parameters"         + EOL +
         "graph.portlayout           Layout mode for workflow ports: HIDE, RELAX or GROUP"   + EOL +
         "graph.view                 Workflow view to render: PROCESS, DATA or COMBINED"     + EOL +
         "graph.workflowbox          SHOW or HIDE box around nodes internal to workflow"     + EOL;

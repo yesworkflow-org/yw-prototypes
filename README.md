@@ -1,7 +1,7 @@
 YesWorkflow Prototypes
 ======================
 
-The yw-prototypes repository contains early implementations of YesWorkflow, an approach to modeling conventional scripts and programs as scientific workflows.  The software is described in the paper, [YesWorkflow: A User-Oriented, Language-Independent Tool for Recovering Workflow Information from Scripts](http://arxiv.org/abs/1502.02403).
+The yw-prototypes repository contains early implementations of YesWorkflow, an approach to modeling conventional scripts and programs as scientific workflows.  The software is described in the paper, [YesWorkflow: A User-Oriented, Language-Independent Tool for Recovering Workflow Information from Scripts](http://ijdc.net/index.php/ijdc/article/view/10.1.298).
 
 Overview
 --------
@@ -104,6 +104,7 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
     Configuration Name         Value
     ------------------         -----
     extract.comment            Single-line comment delimiter in source files
+    extract.factsfile          File for storing prolog facts about scripts
     extract.language           Language used in source files
     extract.listfile           File for storing list of extracted comments
     extract.sources            List of source files to analyze
@@ -113,8 +114,10 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
 
     graph.datalabel            Info to display in data nodes: NAME, URI, or BOTH
     graph.dotcomments          SHOW or HIDE comments in dot files
-    graph.dotfile              Name of GraphViz DOT file to  write graph to
+    graph.dotfile              Name of GraphViz DOT file to write graph to
+    graph.edgelabels           SHOW or HIDE labels on edges in process and data views
     graph.layout               Direction of graph layout: TB, LR, RL, or BT
+    graph.params               SHOW, HIDE, or REDUCE visibility of parameters
     graph.portlayout           Layout mode for workflow ports: HIDE, RELAX or GROUP
     graph.view                 Workflow view to render: PROCESS, DATA or COMBINED
     graph.workflowbox          SHOW or HIDE box around nodes internal to workflow
