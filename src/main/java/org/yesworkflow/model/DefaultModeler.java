@@ -23,7 +23,7 @@ public class DefaultModeler implements Modeler {
 
     private List<Annotation> annotations;
     private Model model;
-    private String topWorkflowName;
+    private String topWorkflowName = null;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
     private String factsFile = null;
@@ -192,6 +192,11 @@ public class DefaultModeler implements Modeler {
                 workflowBuilder = parentWorkflowBuilders.isEmpty() ? null : parentWorkflowBuilders.pop();
             } while (workflowBuilder != null);        
             throw new YWMarkupException(messageBuilder.toString());
+        }
+        
+        if (topProgram == null) {
+            if (topWorkflowName != null) throw new Exception("No workflow named '" + topWorkflowName + "' found in source.");
+            if (functions.size() == 0) throw new Exception("No program or functions found in script.");
         }
         
         model = new Model(topProgram, functions);

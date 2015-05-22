@@ -236,7 +236,35 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
         assertEquals(0, model.functions[1].channels.length);
     }
 
-    public void testExtract_NoWorkflow_TwoTopFunctions() throws Exception {
+    public void testExtract_MissingNamedWorkflow_TwoTopFunctions() throws Exception {
+        
+        String source = 
+                "# @begin function1"    + EOL +
+                "# @end function1"      + EOL +
+                "#"                     + EOL +
+                "# @begin function2"    + EOL +
+                "# @end function2"      + EOL;
+
+        BufferedReader reader = new BufferedReader(new StringReader(source));
+        
+        List<Annotation> annotations = extractor.reader(reader)
+                                                .extract()
+                                                .getAnnotations();
+    
+        Exception caught = null;
+        try {
+            modeler.annotations(annotations)
+                  .configure("workflow", "workflow")
+                  .model()
+                  .getModel();
+        } catch(Exception e) {
+            caught = e;
+        }
+        assertNotNull(caught);
+        assertEquals("No workflow named 'workflow' found in source.", caught.getMessage());
+    }    
+    
+    public void testExtract_NoWorkflowNamed_TwoTopFunctions() throws Exception {
         
         String source = 
                 "# @begin function1"    + EOL +
@@ -252,20 +280,17 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
                                                 .getAnnotations();
 
         Model model = modeler.annotations(annotations)
-                             .configure("workflow", "workflow")
                              .model()
                              .getModel();
 
-        assertNull(model.program);
-        
-        assertEquals(2, model.functions.length);
-        assertEquals("function1", model.functions[0].beginAnnotation.name);
+        assertEquals("function1", model.program.beginAnnotation.name);
+        assertEquals(0, model.program.programs.length);
+        assertEquals(0, model.program.channels.length);
+
+        assertEquals(1, model.functions.length);
+        assertEquals("function2", model.functions[0].beginAnnotation.name);
         assertEquals(0, model.functions[0].programs.length);
         assertEquals(0, model.functions[0].channels.length);
-
-        assertEquals("function2", model.functions[1].beginAnnotation.name);
-        assertEquals(0, model.functions[1].programs.length);
-        assertEquals(0, model.functions[1].channels.length);
     }
 
     public void testExtract_TopWorkflowWithReturn() throws Exception {
