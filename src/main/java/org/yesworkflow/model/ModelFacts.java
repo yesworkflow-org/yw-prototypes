@@ -28,6 +28,11 @@ public class ModelFacts {
     private FactsBuilder portUriVariableFacts;
 
     public ModelFacts(LogicLanguage logicLanguage, Model model) {
+
+        if (logicLanguage == null) throw new IllegalArgumentException("Null logicLanguage argument passed to constructor");
+        if (model == null) throw new IllegalArgumentException("Null model argument passed to constructor");
+        if (model.program == null) throw new IllegalArgumentException("Null program field in model argument passed to constructor");
+        
         this.model = model;
 
         LogicLanguageModel logicLanguageModel = new LogicLanguageModel(logicLanguage);
@@ -50,6 +55,9 @@ public class ModelFacts {
 
     public ModelFacts build() {
         
+        if (model.program == null) throw new NullPointerException("Null program field in ModelFacts.model.");
+        if (model.functions == null) throw new NullPointerException("Null functions field in ModelFacts.model.");
+
         buildProgramFactsRecursively(model.program, null);
         
         for (Function function : model.functions) {
@@ -77,6 +85,11 @@ public class ModelFacts {
 
     private void buildProgramFactsRecursively(Program program, Integer parentId) {
         
+        if (program == null) throw new IllegalArgumentException("Null program argument.");
+        if (program.channels == null) throw new IllegalArgumentException("Null channels field in program argument.");
+        if (program.programs == null) throw new IllegalArgumentException("Null programs field in program argument.");
+        if (program.functions == null) throw new IllegalArgumentException("Null functions field in program argument.");
+        
         programFacts.add(program.id, program.beginAnnotation.name, program.beginAnnotation.id, program.endAnnotation.id);
         
         if (program.channels.length > 0) {
@@ -95,6 +108,11 @@ public class ModelFacts {
         buildPortFacts(program.outPorts, program, program.id);
         
         for (Channel channel : program.channels) {
+            
+            if (channel.sourcePort == null) throw new NullPointerException("Null sourcePort field in channel.");
+            if (channel.sinkPort == null) throw new NullPointerException("Null sinkPort field in channel.");
+            if (channel.sourcePort.flowAnnotation == null) throw new NullPointerException("Null flowAnnotation field in sourcePort.");
+            
             String binding = channel.sourcePort.flowAnnotation.binding();
             channelFacts.add(channel.id, binding);
             portConnectionFacts.add(channel.sourcePort.id, channel.id);
@@ -111,9 +129,16 @@ public class ModelFacts {
     }
 
     private void buildPortFacts(Port[] ports, Program block, Integer blockId) {
+        
+        if (ports == null) throw new IllegalArgumentException("Null ports argument.");
+        if (block == null) throw new IllegalArgumentException("Null block argument.");
+        if (blockId == null) throw new IllegalArgumentException("Null blockId argument.");
 
         for (Port port : ports) {
 
+            if (port.flowAnnotation == null) throw new NullPointerException("Null flowAnnotation field in port.");
+            if (port.flowAnnotation.tag == null) throw new NullPointerException("Null tag field in port.flowAnnotation.");
+            
             String variableName = port.flowAnnotation.name;
             String portType = port.flowAnnotation.tag.substring(1);            
             portFacts.add(port.id, portType, variableName, port.flowAnnotation.id);
