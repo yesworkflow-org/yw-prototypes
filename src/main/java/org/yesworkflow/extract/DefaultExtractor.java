@@ -20,6 +20,7 @@ import org.yesworkflow.annotations.As;
 import org.yesworkflow.annotations.Begin;
 import org.yesworkflow.annotations.Call;
 import org.yesworkflow.annotations.End;
+import org.yesworkflow.annotations.FileUri;
 import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Param;
@@ -266,15 +267,27 @@ public class DefaultExtractor implements Extractor {
                 Annotation annotation = null;
                 Integer id = nextAnnotationId++;
                 switch(tag) {
-                    case BEGIN:  annotation = new Begin(id, sourceLine, comment);                   break;
-                    case CALL:   annotation = new Call(id, sourceLine, comment);                    break;
-                    case END:    annotation = new End(id, sourceLine, comment);                     break;
-                    case IN:     annotation = new In(id, sourceLine, comment);                      break;
-                    case OUT:    annotation = new Out(id, sourceLine, comment);                     break;
-                    case AS:     annotation = new As(id, sourceLine, comment, primaryAnnotation);   break;
-                    case PARAM:  annotation = new Param(id, sourceLine, comment);                   break;
-                    case RETURN: annotation = new Return(id, sourceLine, comment);                  break;
-                    case URI:    annotation = new UriAnnotation(id, sourceLine, comment, primaryAnnotation);  break;   
+                
+                    case BEGIN:     annotation = new Begin(id, sourceLine, comment);
+                                    break;
+                    case CALL:      annotation = new Call(id, sourceLine, comment);
+                                    break;
+                    case END:       annotation = new End(id, sourceLine, comment);
+                                    break;
+                    case FILE:      annotation = new FileUri(id, sourceLine, comment, primaryAnnotation);
+                                    break;
+                    case IN:        annotation = new In(id, sourceLine, comment);
+                                    break;
+                    case OUT:       annotation = new Out(id, sourceLine, comment);
+                                    break;
+                    case AS:        annotation = new As(id, sourceLine, comment, primaryAnnotation);
+                                    break;
+                    case PARAM:     annotation = new Param(id, sourceLine, comment);
+                                    break;
+                    case RETURN:    annotation = new Return(id, sourceLine, comment);
+                                    break;
+                    case URI:       annotation = new UriAnnotation(id, sourceLine, comment, primaryAnnotation);
+                                    break;   
                 }
                 
                 allAnnotations.add(annotation);

@@ -24,6 +24,7 @@ public class YWKeywords {
         BEGIN,
         CALL,
         END,
+        FILE,
         IN,
         OUT,
         PARAM,
@@ -44,6 +45,9 @@ public class YWKeywords {
     /** Definition of the standard keyword for the END tag. */
     public static final String STANDARD_END_KEYWORD             = "@end";
     
+    /** Definition of the standard keyword for the FILE tag. */
+    public static final String STANDARD_FILE_KEYWORD            = "@file";
+
     /** Definition of the standard keyword for the IN tag. */
     public static final String STANDARD_IN_KEYWORD              = "@in";
     
@@ -71,6 +75,7 @@ public class YWKeywords {
         setStandardKeyword(    STANDARD_BEGIN_KEYWORD,  Tag.BEGIN   );
         setStandardKeyword(    STANDARD_CALL_KEYWORD,   Tag.CALL    );
         setStandardKeyword(    STANDARD_END_KEYWORD,    Tag.END     );
+        setStandardKeyword(    STANDARD_FILE_KEYWORD,   Tag.FILE    );
         setStandardKeyword(    STANDARD_IN_KEYWORD,     Tag.IN      );
         setStandardKeyword(    STANDARD_OUT_KEYWORD,    Tag.OUT     );
         setStandardKeyword(    STANDARD_PARAM_KEYWORD,  Tag.PARAM   );
