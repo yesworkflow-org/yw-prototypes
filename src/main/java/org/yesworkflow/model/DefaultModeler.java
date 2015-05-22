@@ -195,7 +195,7 @@ public class DefaultModeler implements Modeler {
         }
         
         if (topProgram == null) {
-            if (topWorkflowName != null) throw new Exception("No workflow named '" + topWorkflowName + "' found in source.");
+            if (topWorkflowName != null) throw new YWMarkupException("No workflow named '" + topWorkflowName + "' found in source.");
             if (functions.size() == 0) throw new Exception("No program or functions found in script.");
         }
         
