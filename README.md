@@ -107,6 +107,7 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
     extract.factsfile          File for storing prolog facts about scripts
     extract.language           Language used in source files
     extract.listfile           File for storing list of extracted comments
+    extract.skeletonfile       File for storing YW-markup skeleton of source files
     extract.sources            List of source files to analyze
 
     model.factsfile            File for storing prolog facts describing model
