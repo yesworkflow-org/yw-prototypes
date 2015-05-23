@@ -10,6 +10,7 @@ public abstract class Annotation {
     public final SourceLine line;
     public final String tag;
     public final String name;
+    public final String comment;
     
     protected String description = null;
     
@@ -17,6 +18,7 @@ public abstract class Annotation {
 
         this.id = id;
         this.line = line;
+        this.comment = comment;
         
         StringTokenizer commentTokens = new StringTokenizer(comment);
         
