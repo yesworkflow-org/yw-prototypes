@@ -50,9 +50,8 @@ public class DefaultExtractor implements Extractor {
     private String commentListingPath;
     private String factsFile = null;
     private String skeletonFile = null;
-    private StringBuilder skeleton = new StringBuilder();
-    private String skeletonIndent = "";
-    private boolean lastAnnotationWasEnd = false;
+    private SkeletonBuilder skeletonBuilder;
+    private String skeleton = null;
     private String extractFacts = null;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
@@ -143,7 +142,7 @@ public class DefaultExtractor implements Extractor {
 
 	@Override
     public String getSkeleton() {
-        return skeleton.toString();
+        return skeletonBuilder.toString();
     }
 	
 	@Override
@@ -273,6 +272,10 @@ public class DefaultExtractor implements Extractor {
     	allAnnotations = new LinkedList<Annotation>();
         primaryAnnotations = new LinkedList<Annotation>();
         Annotation primaryAnnotation = null;
+        
+        String skeletonCommentDelimiter = getSkeletonCommentDelimiter();
+        
+        skeletonBuilder = new SkeletonBuilder(skeletonCommentDelimiter);
 
         for (SourceLine sourceLine : lines) {
         	List<String> commentsOnLine = findCommentsOnLine(sourceLine.text, keywordMatcher);
@@ -314,7 +317,7 @@ public class DefaultExtractor implements Extractor {
                     primaryAnnotations.add(annotation);
                 }
                 
-                if (skeletonFile != null) addToSkeleton(annotation, comment);
+                if (skeletonFile != null) skeletonBuilder.add(annotation, comment);
             }
         }
     }
@@ -368,35 +371,13 @@ public class DefaultExtractor implements Extractor {
         return this;
     }
     
-    private void addToSkeleton(Annotation annotation, String comment) {
-        
-        if (skeleton.length() > 0) {
-            if (annotation instanceof Qualification) {
-                skeleton.append("  ");
-            } else {
-                skeleton.append(EOL);
-                if (annotation instanceof Begin) skeleton.append(EOL);
-            }
+    private String getSkeletonCommentDelimiter() {        
+        LanguageModel skeletonLanguageModel = (globalLanguageModel != null) ? 
+                globalLanguageModel : new LanguageModel(lastLanguage);
+        if (skeletonLanguageModel.getSingleCommentDelimiters().size() > 0) {
+            return skeletonLanguageModel.getSingleCommentDelimiters().get(0) + " ";
+        } else {
+            return "# ";
         }
-        
-        if (annotation instanceof End && lastAnnotationWasEnd) {
-            skeleton.append(EOL);
-        }
-        
-        if (annotation instanceof Begin && skeleton.length() > 0) {
-            skeletonIndent += "    ";
-        }
-
-        if (!(annotation instanceof Qualification)) {
-            skeleton.append(skeletonIndent); 
-        }        
-        
-        skeleton.append(comment);
-        
-        if (annotation instanceof End && skeletonIndent.length() >= 4) {
-            skeletonIndent = skeletonIndent.substring(4);
-        }
-        
-        lastAnnotationWasEnd = annotation instanceof End;
     }
 }
