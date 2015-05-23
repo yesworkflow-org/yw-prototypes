@@ -50,7 +50,7 @@ public class DefaultExtractor implements Extractor {
     private String commentListingPath;
     private String factsFile = null;
     private String skeletonFile = null;
-    private SkeletonBuilder skeletonBuilder;
+    private String skeleton = null;
     private String extractFacts = null;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
@@ -141,7 +141,17 @@ public class DefaultExtractor implements Extractor {
 
 	@Override
     public String getSkeleton() {
-        return skeletonBuilder.toString();
+	    
+	    if (skeleton == null) {
+            SkeletonBuilder sb = new SkeletonBuilder( getSkeletonCommentDelimiter() + " ");
+            for (Annotation annotation : allAnnotations) {
+                sb.add(annotation);
+            }
+            sb.end();
+            skeleton = sb.toString(); 
+ 	    }
+	    
+        return skeleton;
     }
 	
 	@Override
@@ -272,8 +282,6 @@ public class DefaultExtractor implements Extractor {
         primaryAnnotations = new LinkedList<Annotation>();
         Annotation primaryAnnotation = null;
         
-        skeletonBuilder = new SkeletonBuilder( getSkeletonCommentDelimiter() + " ");
-
         for (SourceLine sourceLine : lines) {
         	List<String> commentsOnLine = findCommentsOnLine(sourceLine.text, keywordMatcher);
         	for (String comment : commentsOnLine) {
@@ -313,8 +321,6 @@ public class DefaultExtractor implements Extractor {
                 	primaryAnnotation = annotation;
                     primaryAnnotations.add(annotation);
                 }
-                
-                if (skeletonFile != null) skeletonBuilder.add(annotation, comment);
             }
         }
     }

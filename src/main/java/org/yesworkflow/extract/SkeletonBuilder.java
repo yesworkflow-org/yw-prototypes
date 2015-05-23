@@ -17,7 +17,7 @@ public class SkeletonBuilder {
         this.indent = commentDelimiter;
     }
     
-    public void add(Annotation annotation, String comment) {
+    public void add(Annotation annotation) {
         
         // separate consecutive annotations by two spaces if on 
         // the same line, by two new lines if this annotation starts
@@ -47,7 +47,7 @@ public class SkeletonBuilder {
         }
         
         // insert the comment source for the annotation
-        sb.append(comment);
+        sb.append(annotation.comment);
         
         // un-indent after each block ends
         if (annotation instanceof End && indent.length() >= 4) {
@@ -57,8 +57,12 @@ public class SkeletonBuilder {
         lastAnnotationWasEnd = annotation instanceof End;
     }
     
-    public String toString() {
-        return sb.toString() + EOL;
+    public void end() {
+        if (sb.length() > 0) sb.append(EOL);
+    }
+    
+    public String toString() {       
+        return sb.toString();
     }
 
 }
