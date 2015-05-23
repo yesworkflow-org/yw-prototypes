@@ -51,7 +51,6 @@ public class DefaultExtractor implements Extractor {
     private String factsFile = null;
     private String skeletonFile = null;
     private SkeletonBuilder skeletonBuilder;
-    private String skeleton = null;
     private String extractFacts = null;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
@@ -273,9 +272,7 @@ public class DefaultExtractor implements Extractor {
         primaryAnnotations = new LinkedList<Annotation>();
         Annotation primaryAnnotation = null;
         
-        String skeletonCommentDelimiter = getSkeletonCommentDelimiter();
-        
-        skeletonBuilder = new SkeletonBuilder(skeletonCommentDelimiter);
+        skeletonBuilder = new SkeletonBuilder( getSkeletonCommentDelimiter() + " ");
 
         for (SourceLine sourceLine : lines) {
         	List<String> commentsOnLine = findCommentsOnLine(sourceLine.text, keywordMatcher);
@@ -371,13 +368,35 @@ public class DefaultExtractor implements Extractor {
         return this;
     }
     
-    private String getSkeletonCommentDelimiter() {        
-        LanguageModel skeletonLanguageModel = (globalLanguageModel != null) ? 
-                globalLanguageModel : new LanguageModel(lastLanguage);
-        if (skeletonLanguageModel.getSingleCommentDelimiters().size() > 0) {
-            return skeletonLanguageModel.getSingleCommentDelimiters().get(0) + " ";
-        } else {
-            return "# ";
+    private String getSkeletonCommentDelimiter() {
+        
+        // try to infer language from skeleton file name and return the
+        // the single-line comment delimiter if successful
+        if (skeletonFile != null) {
+            Language language = LanguageModel.languageForFileName(skeletonFile);
+            if (language != null) {
+                LanguageModel languageModel = new LanguageModel(language);
+                if (languageModel.getSingleCommentDelimiters().size() > 0) {
+                    return languageModel.getSingleCommentDelimiters().get(0);
+                }
+            }
         }
+        
+        // otherwise if a global language was set for the Extractor or a
+        // single-line comment delimiter was defined for Extrator, use it
+        if (globalLanguageModel != null) {
+            if (globalLanguageModel.getSingleCommentDelimiters().size() > 0) {
+                return globalLanguageModel.getSingleCommentDelimiters().get(0);
+            }
+        }
+        
+        // next fallback to delimiter defined for last language used in extraction
+        LanguageModel lastLanguageModel = new LanguageModel(lastLanguage);
+        if (lastLanguageModel.getSingleCommentDelimiters().size() > 0) {
+            return lastLanguageModel.getSingleCommentDelimiters().get(0) ;
+        }
+        
+        // if all else fails use the default comment delimiter
+        return "#";
     }
 }

@@ -19,7 +19,9 @@ public class SkeletonBuilder {
     
     public void add(Annotation annotation, String comment) {
         
-        
+        // separate consecutive annotations by two spaces if on 
+        // the same line, by two new lines if this annotation starts
+        // a new block, or by one new line otherwise
         if (sb.length() > 0) {
             if (annotation instanceof Qualification) {
                 sb.append("  ");
@@ -29,20 +31,25 @@ public class SkeletonBuilder {
             }
         }
         
+        // insert a blank line between consecutive End comments
         if (annotation instanceof End && lastAnnotationWasEnd) {
             sb.append(EOL);
         }
         
+        // indent further at the start of each non-initial block
         if (annotation instanceof Begin && sb.length() > 0) {
             indent += "    ";
         }
 
+        // insert the current indentation unless annotation is on the same line as previous
         if (!(annotation instanceof Qualification)) {
             sb.append(indent); 
-        }        
+        }
         
+        // insert the comment source for the annotation
         sb.append(comment);
         
+        // un-indent after each block ends
         if (annotation instanceof End && indent.length() >= 4) {
             indent = indent.substring(0, indent.length() - 4);
         }
@@ -51,7 +58,7 @@ public class SkeletonBuilder {
     }
     
     public String toString() {
-        return sb.toString();
+        return sb.toString() + EOL;
     }
 
 }
