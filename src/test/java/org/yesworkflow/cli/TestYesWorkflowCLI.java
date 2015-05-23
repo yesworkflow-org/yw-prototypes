@@ -411,5 +411,6 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         @Override public Extractor configure(String key, Object value) throws Exception { return this; }
         @Override public Extractor reader(Reader reader) { return this; }
         @Override public String getFacts() { return null; }
+        @Override public String getSkeleton() { return null; }
     }
 }
