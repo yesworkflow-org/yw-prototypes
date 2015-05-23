@@ -49,6 +49,10 @@ public class DefaultExtractor implements Extractor {
     private KeywordMatcher keywordMatcher;
     private String commentListingPath;
     private String factsFile = null;
+    private String skeletonFile = null;
+    private StringBuilder skeleton = new StringBuilder();
+    private String skeletonIndent = "";
+    private boolean lastAnnotationWasEnd = false;
     private String extractFacts = null;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
@@ -108,6 +112,8 @@ public class DefaultExtractor implements Extractor {
             commentListingPath = (String)value;
         } else if (key.equalsIgnoreCase("factsfile")) {
             factsFile = (String)value;
+        } else if (key.equalsIgnoreCase("skeletonfile")) {
+            skeletonFile = (String)value;
         } else if (key.equalsIgnoreCase("logic")) {
             logicLanguage = LogicLanguage.toLogicLanguage((String)value);
         }
@@ -134,15 +140,19 @@ public class DefaultExtractor implements Extractor {
 	public List<Annotation> getAnnotations() {
 		return primaryAnnotations;
 	}
-    
+
+	@Override
+    public String getSkeleton() {
+        return skeleton.toString();
+    }
+	
 	@Override
     public String getFacts() {
         if (extractFacts == null) {
             extractFacts = new ExtractFacts(logicLanguage, sources, allAnnotations).build().toString();
         }
         return extractFacts;
-    }
-	
+    }	
 	
     @Override
     public DefaultExtractor extract() throws Exception {
@@ -167,6 +177,7 @@ public class DefaultExtractor implements Extractor {
         
         writeCommentListing();
         extractAnnotations();
+        writeSkeletonFile();
         
         if (comments.isEmpty()) {
             stderrStream.println("WARNING: No YW comments found in source code.");
@@ -240,7 +251,13 @@ public class DefaultExtractor implements Extractor {
             writeTextToFileOrStdout(commentListingPath, linesBuffer.toString());
         }
     }
-    
+
+    private void writeSkeletonFile() throws IOException {
+        if (skeletonFile != null) {
+            writeTextToFileOrStdout(skeletonFile, this.getSkeleton());
+        }
+    }
+
     private void writeTextToFileOrStdout(String path, String text) throws IOException {  
         PrintStream stream = (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
                              this.stdoutStream : new PrintStream(path);
@@ -296,6 +313,8 @@ public class DefaultExtractor implements Extractor {
                 	primaryAnnotation = annotation;
                     primaryAnnotations.add(annotation);
                 }
+                
+                if (skeletonFile != null) addToSkeleton(annotation, comment);
             }
         }
     }
@@ -347,5 +366,37 @@ public class DefaultExtractor implements Extractor {
     public DefaultExtractor reader(Reader reader) {
         this.sourceReader = new BufferedReader(reader);
         return this;
+    }
+    
+    private void addToSkeleton(Annotation annotation, String comment) {
+        
+        if (skeleton.length() > 0) {
+            if (annotation instanceof Qualification) {
+                skeleton.append("  ");
+            } else {
+                skeleton.append(EOL);
+                if (annotation instanceof Begin) skeleton.append(EOL);
+            }
+        }
+        
+        if (annotation instanceof End && lastAnnotationWasEnd) {
+            skeleton.append(EOL);
+        }
+        
+        if (annotation instanceof Begin && skeleton.length() > 0) {
+            skeletonIndent += "    ";
+        }
+
+        if (!(annotation instanceof Qualification)) {
+            skeleton.append(skeletonIndent); 
+        }        
+        
+        skeleton.append(comment);
+        
+        if (annotation instanceof End && skeletonIndent.length() >= 4) {
+            skeletonIndent = skeletonIndent.substring(4);
+        }
+        
+        lastAnnotationWasEnd = annotation instanceof End;
     }
 }

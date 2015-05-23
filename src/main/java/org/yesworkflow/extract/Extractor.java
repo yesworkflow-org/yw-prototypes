@@ -16,6 +16,7 @@ public interface Extractor extends YWStage {
     Language getLanguage();
     List<SourceLine> getLines();
     List<String> getComments();
+    String getSkeleton();
     List<Annotation> getAnnotations();
     String getFacts();
 }

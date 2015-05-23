@@ -276,8 +276,9 @@ public class YesWorkflowCLI {
         "extract.comment            Single-line comment delimiter in source files"          + EOL +
         "extract.factsfile          File for storing prolog facts about scripts"            + EOL +
         "extract.language           Language used in source files"                          + EOL +
-        "extract.listfile           File for storing list of extracted comments"            + EOL +
-        "extract.sources            List of source files to analyze"                        + EOL +
+        "extract.listfile           File for storing flat list of extracted YW markup"      + EOL +
+        "extract.skeletonfile       File for storing YW-markup skeleton of source files"    + EOL +  
+        "extract.sources            List of source files to analyze"                        + EOL +        
         ""                                                                                  + EOL +
         "model.factsfile            File for storing prolog facts describing model"         + EOL +
         "model.workflow             Name of top-level workflow in model"                    + EOL +
