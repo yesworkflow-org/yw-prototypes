@@ -16,7 +16,7 @@ def main(db_pth = '.', fmodel = 'clm'):
 
     # @BEGIN fetch_mask
     # @PARAM db_pth
-    # @IN g  @AS input_mask_file  @URI file:LandWaterMask_Global_CRUNCEP.nc
+    # @IN g  @AS input_mask_file  @URI file:{db_pth}/land_water_mask/LandWaterMask_Global_CRUNCEP.nc
     # @OUT mask  @AS land_water_mask
     g = netCDF4.Dataset(db_pth+'/land_water_mask/LandWaterMask_Global_CRUNCEP.nc', 'r')
     mask = g.variables['land_water_mask']
