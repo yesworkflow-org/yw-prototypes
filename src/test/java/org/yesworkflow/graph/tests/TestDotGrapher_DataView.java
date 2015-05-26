@@ -328,44 +328,4 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
             "}"                                                                                       + EOL,
             dotString);
     }
-
-    public void testDotGrapher_DataView_SamplePyScript() throws Exception {
-         
-         List<Annotation> annotations = extractor
-                 .configure("comment", "#")
-        		 .reader(new FileReader("src/main/resources/example.py"))
-                 .extract()
-                 .getAnnotations();
-
-         Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                              .model()
-                                              .getModel()
-                                              .program;
-         
-         grapher.workflow(workflow)
-                .graph();
-         
-         String dotString = grapher.toString();
-    
-         assertEquals(
-                 "digraph Workflow {"                                                                       + EOL +
-                 "rankdir=LR"                                                                               + EOL +
-                 "graph[fontname=Courier]"                                                                  + EOL +
-                 "edge[fontname=Courier]"                                                                   + EOL +
-                 "node[fontname=Helvetica]"                                                                 + EOL +
-                 "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]"  + EOL +
-                 "node1 [label=\"result_NEE_pdf\"]"                                                         + EOL +
-                 "node2 [label=\"input_mask_file\"]"                                                        + EOL +
-                 "node3 [label=\"input_data_file\"]"                                                        + EOL +
-                 "node4 [label=\"NEE_data\"]"                                                               + EOL +
-                 "node5 [label=\"land_water_mask\"]"                                                        + EOL +
-                 "node6 [label=\"standardized_NEE_data\"]"                                                  + EOL +
-                 "node2 -> node5 [label=\"fetch_mask\"]"                                                    + EOL +
-                 "node3 -> node4 [label=\"load_data\"]"                                                     + EOL +
-                 "node4 -> node6 [label=\"standardize_with_mask\"]"                                         + EOL +
-                 "node5 -> node6 [label=\"standardize_with_mask\"]"                                         + EOL +
-                 "node6 -> node1 [label=\"simple_diagnose\"]"                                               + EOL +
-                 "}"                                                                                        + EOL,
-             dotString);
-     }
 }

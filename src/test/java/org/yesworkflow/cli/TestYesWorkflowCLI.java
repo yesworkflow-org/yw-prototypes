@@ -329,28 +329,33 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         cli.runForArgs(args);
 
         assertEquals(
-            "@begin main"                                                   + EOL +
-            "@in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file"       + EOL +
-            "@in NEE_first_year.nc @as input_data_file"                     + EOL +
-            "@out result_simple.pdf @as result_NEE_pdf"                     + EOL +
-            "@begin fetch_mask"                                             + EOL +
-            "@in \"LandWaterMask_Global_CRUNCEP.nc\" @as input_mask_file"   + EOL +
-            "@out mask @as land_water_mask"                                 + EOL +
-            "@end fetch_mask"                                               + EOL +
-            "@begin load_data"                                              + EOL +
-            "@in \"CLM4_BG1_V1_Monthly_NEE.nc4\" @as input_data_file"       + EOL +
-            "@out data @as NEE_data"                                        + EOL +
-            "@end load_data"                                                + EOL +
-            "@begin standardize_with_mask"                                  + EOL +
-            "@in data @as NEE_data"                                         + EOL +
-            "@in mask @as land_water_mask"                                  + EOL +
-            "@out data @as standardized_NEE_data"                           + EOL +
-            "@end standardize_mask"                                         + EOL +
-            "@begin simple_diagnose"                                        + EOL +
-            "@in np @as standardized_NEE_data"                              + EOL +
-            "@out pp @as result_NEE_pdf"                                    + EOL +
-            "@end simple_diagnose"                                          + EOL +
-            "@end main"                                                     + EOL,
+                "@BEGIN main"                                                                               + EOL +
+                "@PARAM db_pth"                                                                             + EOL +
+                "@PARAM fmodel"                                                                             + EOL +
+                "@IN input_mask_file  @URI file:{db_pth}/land_water_mask/LandWaterMask_Global_CRUNCEP.nc"   + EOL +
+                "@IN input_data_file  @URI file:{db_pth}/NEE_first_year.nc"                                 + EOL +
+                "@OUT result_NEE_pdf  @URI file:result_NEE.pdf"                                             + EOL +
+                "@BEGIN fetch_mask"                                                                         + EOL +
+                "@PARAM db_pth"                                                                             + EOL +
+                "@IN g  @AS input_mask_file  @URI file:LandWaterMask_Global_CRUNCEP.nc"                     + EOL +
+                "@OUT mask  @AS land_water_mask"                                                            + EOL +
+                "@END fetch_mask"                                                                           + EOL +
+                "@BEGIN load_data"                                                                          + EOL +
+                "@PARAM db_pth"                                                                             + EOL +
+                "@IN input_data_file  @URI file:{db_pth}/NEE_first_year.nc"                                 + EOL +
+                "@OUT data  @AS NEE_data"                                                                   + EOL +
+                "@END load_data"                                                                            + EOL +
+                "@BEGIN standardize_with_mask"                                                              + EOL +
+                "@IN data @AS NEE_data"                                                                     + EOL +
+                "@IN mask @AS land_water_mask"                                                              + EOL +
+                "@OUT data @AS standardized_NEE_data"                                                       + EOL +
+                "@END standardize_with_mask"                                                                + EOL +
+                "@BEGIN simple_diagnose"                                                                    + EOL +
+                "@PARAM fmodel"                                                                             + EOL +
+                "@IN data @AS standardized_NEE_data"                                                        + EOL +
+                "@OUT pp  @AS result_NEE_pdf  @URI file:result_NEE.pdf"                                     + EOL +
+                "@END simple_diagnose"                                                                      + EOL +
+                "@END main"                                                                                 + EOL,
             stdoutBuffer.toString());
     }
 
@@ -361,34 +366,39 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         cli.runForArgs(args);
 
         assertEquals(
-            "@begin main"                                                   + EOL +
-            "@in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file"       + EOL +
-            "@in NEE_first_year.nc @as input_data_file"                     + EOL +
-            "@out result_simple.pdf @as result_NEE_pdf"                     + EOL +
-            "@begin fetch_mask"                                             + EOL +
-            "@in \"LandWaterMask_Global_CRUNCEP.nc\" @as input_mask_file"   + EOL +
-            "@out mask @as land_water_mask"                                 + EOL +
-            "@end fetch_mask"                                               + EOL +
-            "@begin load_data"                                              + EOL +
-            "@in \"CLM4_BG1_V1_Monthly_NEE.nc4\" @as input_data_file"       + EOL +
-            "@out data @as NEE_data"                                        + EOL +
-            "@end load_data"                                                + EOL +
-            "@begin standardize_with_mask"                                  + EOL +
-            "@in data @as NEE_data"                                         + EOL +
-            "@in mask @as land_water_mask"                                  + EOL +
-            "@out data @as standardized_NEE_data"                           + EOL +
-            "@end standardize_mask"                                         + EOL +
-            "@begin simple_diagnose"                                        + EOL +
-            "@in np @as standardized_NEE_data"                              + EOL +
-            "@out pp @as result_NEE_pdf"                                    + EOL +
-            "@end simple_diagnose"                                          + EOL +
-            "@end main"                                                     + EOL,
+            "@BEGIN main"                                                                               + EOL +
+            "@PARAM db_pth"                                                                             + EOL +
+            "@PARAM fmodel"                                                                             + EOL +
+            "@IN input_mask_file  @URI file:{db_pth}/land_water_mask/LandWaterMask_Global_CRUNCEP.nc"   + EOL +
+            "@IN input_data_file  @URI file:{db_pth}/NEE_first_year.nc"                                 + EOL +
+            "@OUT result_NEE_pdf  @URI file:result_NEE.pdf"                                             + EOL +
+            "@BEGIN fetch_mask"                                                                         + EOL +
+            "@PARAM db_pth"                                                                             + EOL +
+            "@IN g  @AS input_mask_file  @URI file:LandWaterMask_Global_CRUNCEP.nc"                     + EOL +
+            "@OUT mask  @AS land_water_mask"                                                            + EOL +
+            "@END fetch_mask"                                                                           + EOL +
+            "@BEGIN load_data"                                                                          + EOL +
+            "@PARAM db_pth"                                                                             + EOL +
+            "@IN input_data_file  @URI file:{db_pth}/NEE_first_year.nc"                                 + EOL +
+            "@OUT data  @AS NEE_data"                                                                   + EOL +
+            "@END load_data"                                                                            + EOL +
+            "@BEGIN standardize_with_mask"                                                              + EOL +
+            "@IN data @AS NEE_data"                                                                     + EOL +
+            "@IN mask @AS land_water_mask"                                                              + EOL +
+            "@OUT data @AS standardized_NEE_data"                                                       + EOL +
+            "@END standardize_with_mask"                                                                + EOL +
+            "@BEGIN simple_diagnose"                                                                    + EOL +
+            "@PARAM fmodel"                                                                             + EOL +
+            "@IN data @AS standardized_NEE_data"                                                        + EOL +
+            "@OUT pp  @AS result_NEE_pdf  @URI file:result_NEE.pdf"                                     + EOL +
+            "@END simple_diagnose"                                                                      + EOL +
+            "@END main"                                                                                 + EOL,
             stdoutBuffer.toString());
     }
 
     public void testYesWorkflowCLI_Graph_ExamplePy_ProcessGraph() throws Exception {
 
-        String[] args = {"graph", "src/main/resources/example.py"};
+        String[] args = {"graph", "src/main/resources/example.py", "-c", "graph.params=hide"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args);
 
