@@ -201,7 +201,7 @@ public class DotGrapher implements Grapher  {
         for (Program p : workflow.programs) {
             if (! (p.isWorkflow())) {
                 dot.node(p.beginAnnotation.name);
-                if (paramVisibility == ParamVisibility.SHOW) {
+                if (paramVisibility != ParamVisibility.HIDE) {
                     channelBindings.addAll(p.outerBindings());
                 } else {
                     channelBindings.addAll(p.outerDataBindings());
