@@ -12,7 +12,7 @@ YesWorkflow aims to provide a number of the benefits of using a scientific workf
 
 The image below was produced by YesWorkflow using the YW comments added to a conventional (non-dataflow oriented) python script ([example.py](https://github.com/yesworkflow-org/yw-prototypes/blob/master/src/main/resources/example.py "example.py")):
 
-![example](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.png)
+![example](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example_process.png)
 
 The green blocks represent stages in the computation performed by the script. The labels on arrows name the input, intermediate, and final data products of the script.
 
@@ -20,34 +20,40 @@ The green blocks represent stages in the computation performed by the script. Th
 
 The [example.py](https://github.com/yesworkflow-org/yw-prototypes/blob/master/src/main/resources/example.py "example.py") script includes YesWorkflow comments that precede the `main` function and declare the inputs and outputs of the script as a whole:
 
-    ## @begin main
-    #  @in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file
-    #  @in NEE_first_year.nc @as input_data_file
-    #  @out result_simple.pdf @as result_NEE_pdf
+    # @BEGIN main
+    # @PARAM db_pth
+    # @PARAM fmodel
+    # @IN input_mask_file  @URI file:{db_pth}/land_water_mask/LandWaterMask_Global_CRUNCEP.nc
+    # @IN input_data_file  @URI file:{db_pth}/NEE_first_year.nc
+    # @OUT result_NEE_pdf  @URI file:result_NEE.pdf
 
-Each YesWorkflow (YW) comment is identified by a keyword that begins with the '`@`' symbol.  A `@begin` comment declares the beginning of the script or of a block of computation within the script.  Each `@begin` tag is paired with an `@end` later in the script, and together these tags delimit the code annotated by other YW comments found in that block.  The script `example.py` ends with this YW comment:
+Each YesWorkflow (YW) comment is identified by a keyword that begins with the '`@`' symbol.  A `@BEGIN` comment declares the beginning of the script or of a block of computation within the script. (Because YW keywords are case-insensitive, `@BEGIN`, `@begin` and `@Begin` all work equally well.)  Each `@BEGIN` tag is paired with an `@END` later in the script, and together these tags delimit the code annotated by other YW comments found in that block.  The script `example.py` ends with this YW comment:
 
-    ## @end main
+    # @END main
 
-The script inputs (`input_data_file` and `input_mask_file`) and outputs (`result_NEE_pdf`) appear in the diagram produced by YesWorkflow because they are declared using the `@in` and `@out` comments shown above.  The text following the `@as` keyword in each of these comments provides an *alias* for the actual value or variable (the term immediately following the `@in` or `@out` keyword) that represents that input or output in the script.  It is the alias that is displayed in YesWorkflow results and that is used to infer how data flows through the script.
+The script inputs (`input_data_file` and `input_mask_file`) and outputs (`result_NEE_pdf`) appear in the diagram produced by YesWorkflow because they are declared using the `@IN` and `@OUT` comments shown above.  The text following the first two `@URI` keywords indicate that the inputs are read from files at the indicated locations; the `{db_pth}` portion of these file paths indicate that the locations of these files are configurable, with the value of the `db_pth` (an parameter to the script) forming part of the path to the files.
 
-For example, `example.py` includes YW comments annotating a block of code performing the `fetch_mask` operation (represented as a green box in the diagram above):
 
-    ## @begin fetch_mask
-    #  @in "LandWaterMask_Global_CRUNCEP.nc" @as input_mask_file
-    #  @out mask @as land_water_mask
+Between the `BEGIN` and `END` comments fro the main block, `example.py` includes four blocks of code also annotated with YW comments.  The block of code performing the `fetch_mask` operation (represented as a green box in the diagram above):
 
-    g = netCDF4.Dataset(db_pth+'land_water_mask/LandWaterMask_Global_CRUNCEP.nc', 'r')
-    mask=g.variables['land_water_mask']
+    # @BEGIN fetch_mask
+    # @PARAM db_pth
+    # @IN g @AS input_mask_file @URI file:LandWaterMask_Global_CRUNCEP.nc
+    # @OUT mask @AS land_water_mask
+    g = netCDF4.Dataset(db_pth+'/land_water_mask/LandWaterMask_Global_CRUNCEP.nc', 'r')
+    mask = g.variables['land_water_mask']
     mask = mask[:].swapaxes(0,1)
+    # @END fetch_mask
 
-    ## @end fetch_mask
+The text following the (optional) `@AS` keyword in an `@IN` or `@OUT` comment provides an *alias* for the actual value or variable (the term immediately following the `@OUT` or `@OUT` keyword) that represents that input or output in the script.  It is the alias that is displayed in YesWorkflow results and that is used to infer how data flows through the script.  Note that in the diagram the arrow labeled `input_mask_file` is connected to the `fetch_mask` block because the alias for the `@IN` comment for `fetch_mask` matches the `@IN` comment on the encompassing `main` block.  
 
-Note that in the diagram the arrow labeled `input_mask_file` is connected to the `fetch_mask` block because the alias for the `@in` comment for `fetch_mask` matches the alias for an `@in` comment on the encompassing `main` block.  The alias in both cases is `input_mask_file`.  
+Note as well that the `@OUT` comment for `fetch_mask` declares the  name of the variable (`mask`) used to store the mask in the code.  It also provides an alias (`land_water_mask`) that is displayed in the graphical output of YesWorkflow. This alias matches the alias on an `@IN` comment on the downstream `standardize_with_mask` block, and YesWorkflow draws an arrow in the diagram accordingly.
 
-Note as well that the `@out` comment for `fetch_mask` declares the  name of the variable (`mask`) used to store the mask in the code.  It also provides an alias ('`land_water_mask`') that is displayed in the graphical output of YesWorkflow. This alias matches the alias on an `@in` comment on the downstream `standardize_with_mask` block, and YesWorkflow draws an arrow in the diagram accordingly.
+YesWorkflow comments of the kind discussed here can be added to any script to highlight how data is processed by that script.  YesWorkflow tools discover these comments in the script and produce graphical representations of the script that highlight its workflow-like structure. YesWorkflow can render a number of different views of the workflow structure of a script, including a *process* view (shown above), a *data* view, and a *combined* (*data* + *process*) view.  The combined view of our example scripts is shown below.
 
-YesWorkflow comments of the kind discussed here can be added to any script to highlight how data is processed by that script.  YesWorkflow tools discover these comments in the script and produce graphical representations of the script that highlight its workflow-like structure.
+
+![example](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example_combined.png)
+
 
 #### Getting started with YesWorkflow
 
