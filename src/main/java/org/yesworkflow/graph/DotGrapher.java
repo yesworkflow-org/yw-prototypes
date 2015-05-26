@@ -18,7 +18,7 @@ public class DotGrapher implements Grapher  {
 
     public static GraphView DEFAULT_GRAPH_VIEW = GraphView.PROCESS_CENTRIC_VIEW;
     public static CommentVisibility DEFAULT_COMMENT_VISIBILITY = CommentVisibility.HIDE;
-    public static ParamVisibility DEFAULT_PARAM_VISIBILITY = ParamVisibility.REDUCE;
+    public static ParamVisibility DEFAULT_PARAM_VISIBILITY = ParamVisibility.HIDE;
     public static LayoutDirection DEFAULT_LAYOUT_DIRECTION = LayoutDirection.LR;
     public static WorkflowBoxMode DEFAULT_WORKFLOW_BOX_MODE = WorkflowBoxMode.SHOW;
     public static PortLayout DEFAULT_PORT_LAYOUT = PortLayout.GROUP;
