@@ -1,0 +1,58 @@
+digraph Workflow {
+rankdir=TB
+subgraph cluster0 {
+label=""
+penwidth=2
+fontsize=18
+subgraph cluster1 {
+label=""
+color="white"
+graph[fontname=Courier]
+node[fontname=Courier]
+node[shape=box3d style="filled" fillcolor="#CCFFCC" peripheries=1 label=""]
+node1 [label="fetch_mask"]
+node2 [label="load_data"]
+node3 [label="standardize_with_mask"]
+node4 [label="simple_diagnose"]
+node[fontname=Helvetica]
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 label=""]
+node5 [shape=record  rankdir=LR label="{<f0> result_NEE_pdf|<f1>file:result_NEE.pdf}"];
+node6 [shape=record  rankdir=LR label="{<f0> input_mask_file|<f1>file:\{db_pth\}/land_water_mask/LandWaterMask_Global_CRUNCEP.nc}"];
+node7 [shape=record  rankdir=LR label="{<f0> input_data_file|<f1>file:\{db_pth\}/NEE_first_year.nc}"];
+node8 [label="NEE_data"]
+node9 [label="land_water_mask"]
+node10 [label="standardized_NEE_data"]
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 label=""]
+node11 [label="db_pth"]
+node12 [label="fmodel"]
+}}
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 label="" width=0.2]
+subgraph cluster2 { label="" color="white"
+subgraph cluster3 { label="" color="white"
+node13
+node14
+node15
+node16
+}}
+subgraph cluster4 { label="" color="white"
+subgraph cluster5 { label="" color="white"
+node17
+}}
+node1 -> node9
+node11 -> node1
+node6 -> node1
+node2 -> node8
+node11 -> node2
+node7 -> node2
+node3 -> node10
+node8 -> node3
+node9 -> node3
+node4 -> node5
+node12 -> node4
+node10 -> node4
+node13 -> node11
+node14 -> node12
+node15 -> node6
+node16 -> node7
+node5 -> node17
+}
