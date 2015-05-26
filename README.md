@@ -169,7 +169,7 @@ First, use the YesWorkflow `extract` command and `-c extract.listfile` option to
     @OUT result_NEE_pdf  @URI file:result_NEE.pdf
     @BEGIN fetch_mask
     @PARAM db_pth
-    @IN g  @AS input_mask_file  @URI file:LandWaterMask_Global_CRUNCEP.nc
+    @IN g  @AS input_mask_file  @URI file:{db_pth}/land_water_mask/LandWaterMask_Global_CRUNCEP.nc
     @OUT mask  @AS land_water_mask
     @END fetch_mask
     @BEGIN load_data
