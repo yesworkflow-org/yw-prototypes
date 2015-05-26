@@ -6,7 +6,7 @@ The yw-prototypes repository contains early implementations of YesWorkflow, an a
 Overview
 --------
 
-YesWorkflow aims to provide a number of the benefits of using a scientific workflow management system without having to rewrite scripts and other scientific software.  Rather than reimplementing code so that it can be executed and managed by a workflow engine, a YesWorkflow user simply adds special YesWorkflow (YW) comments to existing scripts.  These comments declare how data is used and results produced, step by step, by the script.  The YesWorkflow tools interpret the YW comments and produce graphical output that reveals the stages of computation and the flow of data in the script.
+YesWorkflow aims to provide a number of the benefits of using a scientific workflow management system without having to rewrite scripts and other scientific software.  Rather than reimplement code so that it can be executed and managed by a workflow engine, a YesWorkflow user simply adds special YesWorkflow (YW) comments to existing scripts.  These comments declare how data is used and results produced, step by step, by the script.  The YesWorkflow tools interpret the YW comments and produce graphical output that reveals the stages of computation and the flow of data in the script.
 
 ### Example YesWorkflow output
 
@@ -31,10 +31,10 @@ Each YesWorkflow (YW) comment is identified by a keyword that begins with the '`
 
     # @END main
 
-The script inputs (`input_data_file` and `input_mask_file`) and outputs (`result_NEE_pdf`) appear in the diagram produced by YesWorkflow because they are declared using the `@IN` and `@OUT` comments shown above.  The text following the first two `@URI` keywords indicate that the inputs are read from files at the indicated locations; the `{db_pth}` portion of these file paths indicate that the locations of these files are configurable, with the value of the `db_pth` (an parameter to the script) forming part of the path to the files.
+The script inputs (`input_data_file` and `input_mask_file`) and outputs (`result_NEE_pdf`) appear in the diagram produced by YesWorkflow because they are declared using the `@IN` and `@OUT` comments shown above.  The text following the first two `@URI` keywords indicate that the inputs are read from files at the indicated locations; the `{db_pth}` portion of these file paths indicate that the locations of these files are configurable, with the value of the `db_pth` (a parameter to the script) forming part of the path to the files.
 
 
-Between the `BEGIN` and `END` comments fro the main block, `example.py` includes four blocks of code also annotated with YW comments.  The block of code performing the `fetch_mask` operation (represented as a green box in the diagram above):
+Between the `@BEGIN` and `@END` comments for the main block, `example.py` includes four blocks of code also annotated with YW comments.  The block of code performing the `fetch_mask` operation (represented as a green box in the diagram above) is:
 
     # @BEGIN fetch_mask
     # @PARAM db_pth
@@ -49,7 +49,7 @@ The text following the (optional) `@AS` keyword in an `@IN` or `@OUT` comment pr
 
 Note as well that the `@OUT` comment for `fetch_mask` declares the  name of the variable (`mask`) used to store the mask in the code.  It also provides an alias (`land_water_mask`) that is displayed in the graphical output of YesWorkflow. This alias matches the alias on an `@IN` comment on the downstream `standardize_with_mask` block, and YesWorkflow draws an arrow in the diagram accordingly.
 
-YesWorkflow comments of the kind discussed here can be added to any script to highlight how data is processed by that script.  YesWorkflow tools discover these comments in the script and produce graphical representations of the script that highlight its workflow-like structure. YesWorkflow can render a number of different views of the workflow structure of a script, including a *process* view (shown above), a *data* view, and a *combined* (*data* + *process*) view.  The combined view of our example scripts is shown below.
+YesWorkflow comments of the kind discussed here can be added to any script to highlight how data is processed by that script.  YesWorkflow tools discover these comments in the script and produce graphical representations of the script that highlight its workflow-like structure. YesWorkflow can render a number of different views of the workflow structure of a script, including a *process* view (shown above), a *data* view, and a *combined* (*data* + *process*) view.  The combined view of the example script is shown below.
 
 
 ![example](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example_combined.png)
