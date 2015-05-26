@@ -161,28 +161,33 @@ The [`example.py`](https://raw.githubusercontent.com/yesworkflow-org/yw-prototyp
 First, use the YesWorkflow `extract` command and `-c extract.listfile` option to list the YW commands found in the script:
 
     $ yw extract example.py -c extract.listfile
-    @begin main
-    @in LandWaterMask_Global_CRUNCEP.nc @as input_mask_file
-    @in NEE_first_year.nc @as input_data_file
-    @out result_simple.pdf @as result_NEE_pdf
-    @begin fetch_mask
-    @in "LandWaterMask_Global_CRUNCEP.nc" @as input_mask_file
-    @out mask @as land_water_mask
-    @end fetch_mask
-    @begin load_data
-    @in "CLM4_BG1_V1_Monthly_NEE.nc4" @as input_data_file
-    @out data @as NEE_data
-    @end load_data
-    @begin standardize_with_mask
-    @in data @as NEE_data
-    @in mask @as land_water_mask
-    @out data @as standardized_NEE_data
-    @end standardize_mask
-    @begin simple_diagnose
-    @in np @as standardized_NEE_data
-    @out pp @as result_NEE_pdf
-    @end simple_diagnose
-    @end main
+    @BEGIN main
+    @PARAM db_pth
+    @PARAM fmodel
+    @IN input_mask_file  @URI file:{db_pth}/land_water_mask/LandWaterMask_Global_CRUNCEP.nc
+    @IN input_data_file  @URI file:{db_pth}/NEE_first_year.nc
+    @OUT result_NEE_pdf  @URI file:result_NEE.pdf
+    @BEGIN fetch_mask
+    @PARAM db_pth
+    @IN g  @AS input_mask_file  @URI file:LandWaterMask_Global_CRUNCEP.nc
+    @OUT mask  @AS land_water_mask
+    @END fetch_mask
+    @BEGIN load_data
+    @PARAM db_pth
+    @IN input_data_file  @URI file:{db_pth}/NEE_first_year.nc
+    @OUT data  @AS NEE_data
+    @END load_data
+    @BEGIN standardize_with_mask
+    @IN data @AS NEE_data
+    @IN mask @AS land_water_mask
+    @OUT data @AS standardized_NEE_data
+    @END standardize_with_mask
+    @BEGIN simple_diagnose
+    @PARAM fmodel
+    @IN data @AS standardized_NEE_data
+    @OUT pp  @AS result_NEE_pdf  @URI file:result_NEE.pdf
+    @END simple_diagnose
+    @END main
     $
 
 This command is useful for confirming that YesWorkflow is finding the comments that you have added to a script and is not confused by other comments and code in the script.
