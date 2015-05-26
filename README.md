@@ -45,7 +45,7 @@ Between the `@BEGIN` and `@END` comments for the main block, `example.py` includ
     mask = mask[:].swapaxes(0,1)
     # @END fetch_mask
 
-The text following the (optional) `@AS` keyword in an `@IN` or `@OUT` comment provides an *alias* for the actual value or variable (the term immediately following the `@OUT` or `@OUT` keyword) that represents that input or output in the script.  It is the alias that is displayed in YesWorkflow results and that is used to infer how data flows through the script.  Note that in the diagram the arrow labeled `input_mask_file` is connected to the `fetch_mask` block because the alias for the `@IN` comment for `fetch_mask` matches the `@IN` comment on the encompassing `main` block.  
+The text following the (optional) `@AS` keyword in an `@IN` or `@OUT` comment provides an *alias* for the actual value or variable (the term immediately following the `@IN` or `@OUT` keyword) that represents that input or output in the script.  It is the alias that is displayed in YesWorkflow results and that is used to infer how data flows through the script.  Note that in the diagram the arrow labeled `input_mask_file` is connected to the `fetch_mask` block because the alias for the `@IN` comment for `fetch_mask` matches the `@IN` comment on the encompassing `main` block.  
 
 Note as well that the `@OUT` comment for `fetch_mask` declares the  name of the variable (`mask`) used to store the mask in the code.  It also provides an alias (`land_water_mask`) that is displayed in the graphical output of YesWorkflow. This alias matches the alias on an `@IN` comment on the downstream `standardize_with_mask` block, and YesWorkflow draws an arrow in the diagram accordingly.
 
