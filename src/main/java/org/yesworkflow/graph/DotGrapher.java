@@ -340,9 +340,7 @@ public class DotGrapher implements Grapher  {
             dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
 
             for (Channel c : topWorkflow.channels) {
-                String binding = c.sourcePort.flowAnnotation.binding();
-                channelBindings.add(binding);
-                dot.node(binding);
+                drawChannelNode(c);
             }
 
             // draw an edge for each pairing of out port and in port for each program
