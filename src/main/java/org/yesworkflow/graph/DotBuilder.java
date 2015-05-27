@@ -25,6 +25,7 @@ public class DotBuilder {
     private Double width = null;
     private boolean commentsEnabled = true;
     private boolean showClusterBox = true;
+    private boolean horizontalLayout = true;
     Map<String,Map<String,Set<String>>> uniqueEdges = new HashMap<String,Map<String,Set<String>>>();
     
 	public DotBuilder beginGraph() {
@@ -33,7 +34,8 @@ public class DotBuilder {
 	}
 
 	public DotBuilder rankDir(String rankdir) {
-        _buffer.append( "rankdir=" + rankdir + EOL );
+        _buffer.append( "rankdir=" + rankdir + EOL );        
+        horizontalLayout = (rankdir.equalsIgnoreCase("LR") || rankdir.equalsIgnoreCase("RL")); 
 	    return this;
 	}
 	
@@ -215,12 +217,23 @@ public class DotBuilder {
         _buffer.append(     id                  )
                .append(     " [shape=record "   )
                .append(     " rankdir=LR "      )
-               .append(     "label=\"{<f0> "    )
+               .append(     "label=\"{"         );
+
+        if (horizontalLayout) {
+            _buffer.append( "{"                 );
+        }
+        
+        _buffer.append(     "<f0> "             )
                .append(     label1              )
                .append(     "|<f1>"             )
-               .append(     label2              )
-               .append(     "}\"];"             )   
+               .append(     label2              );
+               
+        if (horizontalLayout) {
+            _buffer.append( "}"                 );
+        }
+        _buffer.append(     "}\"];"             )   
                .append(     EOL                 );
+        
         
         return this;
     }
