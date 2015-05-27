@@ -193,6 +193,32 @@ public class DotGrapher implements Grapher  {
             if (portLayout == PortLayout.GROUP) dot.endSubgraph();
         }        
 
+        protected void drawChannelNodes() {
+
+            switch(paramVisibility) {
+
+            case SHOW:
+                dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
+                for (Channel c : topWorkflow.innerChannels()) {
+                    drawChannelNode(c);
+                }        
+            case REDUCE:
+                dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
+                for (Channel c : topWorkflow.innerDataChannels()) {
+                    drawChannelNode(c);
+                }
+                dot.shape("box").fillcolor("#FCFCFC").style("rounded,filled");
+                for (Channel c : topWorkflow.innerParamChannels()) {
+                    drawChannelNode(c);
+                }
+            case HIDE:
+                dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
+                for (Channel c : topWorkflow.innerDataChannels()) {
+                    drawChannelNode(c);
+                }
+            }
+        }
+        
         protected void drawChannelNode(Channel c) {
             
             String binding = c.sourcePort.flowAnnotation.binding();
@@ -339,9 +365,7 @@ public class DotGrapher implements Grapher  {
             // draw a box for each channel in the workflow
             dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
 
-            for (Channel c : topWorkflow.channels) {
-                drawChannelNode(c);
-            }
+            drawChannelNodes();
 
             // draw an edge for each pairing of out port and in port for each program
             for (Program p : topWorkflow.programs) {
@@ -381,28 +405,7 @@ public class DotGrapher implements Grapher  {
             dot.comment("Use sans serif font for data labels");
             dot.nodeFont("Helvetica");
 
-            // draw a box for each channel in the workflow
-            switch(paramVisibility) {
-                case SHOW:
-                    dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
-                    for (Channel c : topWorkflow.innerChannels()) {
-                        drawChannelNode(c);
-                    }        
-                case REDUCE:
-                    dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
-                    for (Channel c : topWorkflow.innerDataChannels()) {
-                        drawChannelNode(c);
-                    }
-                    dot.shape("box").fillcolor("#FCFCFC").style("rounded,filled");
-                    for (Channel c : topWorkflow.innerParamChannels()) {
-                        drawChannelNode(c);
-                    }
-                case HIDE:
-                    dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
-                    for (Channel c : topWorkflow.innerDataChannels()) {
-                        drawChannelNode(c);
-                    }
-            }
+            drawChannelNodes();
             
             dot.comment("End of cluster for drawing box around programs in workflow");
             dot.endSubgraph();

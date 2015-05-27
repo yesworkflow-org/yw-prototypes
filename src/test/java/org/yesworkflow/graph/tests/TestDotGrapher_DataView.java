@@ -1,7 +1,7 @@
 package org.yesworkflow.graph.tests;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +14,7 @@ import org.yesworkflow.graph.CommentVisibility;
 import org.yesworkflow.graph.DotGrapher;
 import org.yesworkflow.graph.GraphView;
 import org.yesworkflow.graph.Grapher;
+import org.yesworkflow.graph.ParamVisibility;
 import org.yesworkflow.model.DefaultModeler;
 import org.yesworkflow.model.Modeler;
 import org.yesworkflow.model.Workflow;
@@ -26,276 +27,118 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
     Grapher grapher = null;
     Map<String,Object> config = null;
     
-    static final String TEST_RESOURCE_DIR = "org/yesworkflow/graph/";
+    static final String TEST_RESOURCE_DIR = "src/test/resources/org/yesworkflow/graph/TestDotGrapher_DataView/";
     
     @Override
     public void setUp() throws Exception {
+        
         super.setUp();
+        
         extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
         modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
         config = new HashMap<String,Object>();
         
-        config.put("view", GraphView.DATA_CENTRIC_VIEW);
-        config.put("comments", CommentVisibility.HIDE);
-        grapher.configure(config);
-    }
-    
+        grapher.configure("view", GraphView.DATA_CENTRIC_VIEW)
+               .configure("comments", CommentVisibility.HIDE);
+    }    
 
     public void testDotGrapher_DataView_TwoProgramsOneChannel_OneInOneOut() throws Exception {
         
-        String source = 
-            "# @begin script"       + EOL +
-            "#"                     + EOL +
-            "#   @begin program0"   + EOL +
-            "#   @out channel"      + EOL +
-            "#   @end program0"     + EOL +                
-            "#"                     + EOL +
-            "#   @begin program1"   + EOL +
-            "#   @in channel"       + EOL +
-            "#   @end program1"     + EOL +
-            "#"                     + EOL +
-            "# @end script"         + EOL;
-
-        BufferedReader reader = new BufferedReader(new StringReader(source));
+        String src = "twoProgramsOneChannel_OneInOneOut";
+        assertEquals(expectedGraph(src), actualGraph(src));
+        assertEquals("", stderrBuffer.toString());
+    }
+    
+    public void testDotGrapher_DataView_TwoProgramsOneChannel_OneParamOneOut_ShowParams() throws Exception {
+      
+        grapher.configure("params", ParamVisibility.SHOW);
         
-        List<Annotation> annotations = extractor
-                .configure("comment", "#")
-                .reader(reader)
-                .extract()
-                .getAnnotations();
-
-        Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                             .model()
-                                             .getModel()
-                                             .program;
-
-        grapher.workflow(workflow)
-               .graph();
-        
-        String dotString = grapher.toString();
-
-        assertEquals(
-            "digraph Workflow {"                                                                        + EOL +
-            "rankdir=LR"                                                                                + EOL +
-            "graph[fontname=Courier]"                                                                   + EOL +
-            "edge[fontname=Courier]"                                                                    + EOL +
-            "node[fontname=Helvetica]"                                                                  + EOL +
-            "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]"   + EOL +
-            "node1 [label=\"channel\"]"                                                                 + EOL +
-            "}"                                                                                         + EOL,
-            dotString);
+        assertEquals(expectedGraph("twoProgramsOneChannel_OneParamOneOut_ShowParams"), 
+                     actualGraph("twoProgramsOneChannel_OneParamOneOut"));
+        assertEquals("", stderrBuffer.toString());
     }
 
-    
-    public void testDotGrapher_DataView_TwoProgramsOneChannel_OneParamOneOut() throws Exception {
+    public void testDotGrapher_DataView_TwoProgramsOneChannel_OneParamOneOut_HideParams() throws Exception {
+
+        grapher.configure("params", ParamVisibility.HIDE);
         
-        String source = 
-            "# @begin script"       + EOL +
-            "#"                     + EOL +
-            "#   @begin program0"   + EOL +
-            "#   @out channel"      + EOL +
-            "#   @end program0"     + EOL +                
-            "#"                     + EOL +
-            "#   @begin program1"   + EOL +
-            "#   @param channel"    + EOL +
-            "#   @end program1"     + EOL +
-            "#"                     + EOL +
-            "# @end script"         + EOL;
-
-        BufferedReader reader = new BufferedReader(new StringReader(source));
-        
-        List<Annotation> annotations = extractor
-                .configure("comment", "#")
-                .reader(reader)
-                .extract()
-                .getAnnotations();
-
-        Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                             .model()
-                                             .getModel()
-                                             .program;
-
-        grapher.workflow(workflow)
-               .graph();
-        
-        String dotString = grapher.toString();
-
-        assertEquals(
-            "digraph Workflow {"                                                                        + EOL +
-            "rankdir=LR"                                                                                + EOL +
-            "graph[fontname=Courier]"                                                                   + EOL +
-            "edge[fontname=Courier]"                                                                    + EOL +
-            "node[fontname=Helvetica]"                                                                  + EOL +
-            "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]"   + EOL +
-            "node1 [label=\"channel\"]"                                                                 + EOL +
-            "}"                                                                                         + EOL,
-            dotString);
+        assertEquals(expectedGraph("twoProgramsOneChannel_OneParamOneOut_HideParams"), 
+                     actualGraph("twoProgramsOneChannel_OneParamOneOut"));        
+        assertEquals("", stderrBuffer.toString());
     }
 
-    
     public void testDotGrapher_DataView_TwoChannels_OneProgram_OneInOneOut() throws Exception {
       
-      String source = 
-          "# @begin script"       + EOL +
-          "# @in x"               + EOL +
-          "# @out d"              + EOL +
-          "#"                     + EOL +
-          "#   @begin program"    + EOL +
-          "#   @in x"             + EOL +
-          "#   @out d"            + EOL +
-          "#   @end program"      + EOL +                
-          "#"                     + EOL +
-          "# @end script"         + EOL;
-
-      BufferedReader reader = new BufferedReader(new StringReader(source));
-      
-      List<Annotation> annotations = extractor
-              .configure("comment", "#")
-              .reader(reader)
-              .extract()
-              .getAnnotations();
-
-      Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                           .model()
-                                           .getModel()
-                                           .program;
-
-      grapher.workflow(workflow)
-             .graph();
-
-      
-      String dotString = grapher.toString();
-
-      assertEquals(
-          "digraph Workflow {"                                                                      + EOL +
-          "rankdir=LR"                                                                              + EOL +
-          "graph[fontname=Courier]"                                                                 + EOL +
-          "edge[fontname=Courier]"                                                                  + EOL +
-          "node[fontname=Helvetica]"                                                                + EOL +
-          "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
-          "node1 [label=\"d\"]"                                                                     + EOL +
-          "node2 [label=\"x\"]"                                                                     + EOL +
-          "node2 -> node1 [label=\"program\"]"                                                      + EOL +
-          "}"                                                                                       + EOL,
-          dotString);
+        String src = "twoChannels_OneProgram_OneInOneOut";
+        assertEquals(expectedGraph(src), actualGraph(src));        
+        assertEquals("", stderrBuffer.toString());
   }
   
-    public void testDotGrapher_DataView_TwoChannels_OneProgram_OneInOneParam() throws Exception {
+    public void testDotGrapher_DataView_TwoChannels_OneProgram_OneParamOneOut_ShowParams() throws Exception {
         
-        String source = 
-            "# @begin script"       + EOL +
-            "# @param x"            + EOL +
-            "# @out d"              + EOL +
-            "#"                     + EOL +
-            "#   @begin program"    + EOL +
-            "#   @param x"          + EOL +
-            "#   @out d"            + EOL +
-            "#   @end program"      + EOL +                
-            "#"                     + EOL +
-            "# @end script"         + EOL;
-
-        BufferedReader reader = new BufferedReader(new StringReader(source));
+        grapher.configure("params", ParamVisibility.SHOW);
         
-        List<Annotation> annotations = extractor
-                .configure("comment", "#")
-                .reader(reader)
-                .extract()
-                .getAnnotations();
-
-        Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                             .model()
-                                             .getModel()
-                                             .program;
-        
-        grapher.workflow(workflow)
-               .graph();
-
-        
-        String dotString = grapher.toString();
-
-        assertEquals(
-            "digraph Workflow {"                                                                      + EOL +
-            "rankdir=LR"                                                                              + EOL +
-            "graph[fontname=Courier]"                                                                 + EOL +
-            "edge[fontname=Courier]"                                                                  + EOL +
-            "node[fontname=Helvetica]"                                                                + EOL +
-            "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
-            "node1 [label=\"d\"]"                                                                     + EOL +
-            "node2 [label=\"x\"]"                                                                     + EOL +
-            "node2 -> node1 [label=\"program\"]"                                                      + EOL +
-            "}"                                                                                       + EOL,
-            dotString);
+        assertEquals(expectedGraph("twoChannels_OneProgram_OneParamOneOut_ShowParams"),
+                     actualGraph("twoChannels_OneProgram_OneParamOneOut"));        
+        assertEquals("", stderrBuffer.toString());
     }
     
-    
+   public void testDotGrapher_DataView_TwoChannels_OneProgram_OneParamOneOut_HideParams() throws Exception {
+        
+        grapher.configure("params", ParamVisibility.HIDE);
+        
+        assertEquals(expectedGraph("twoChannels_OneProgram_OneParamOneOut_HideParams"), 
+                     actualGraph("twoChannels_OneProgram_OneParamOneOut"));        
+        assertEquals("", stderrBuffer.toString());
+    }
+
+   public void testDotGrapher_DataView_TwoChannels_OneProgram_OneParamOneOut_ReduceParams() throws Exception {
+       
+       grapher.configure("params", ParamVisibility.REDUCE);
+       
+       assertEquals(expectedGraph("twoChannels_OneProgram_OneParamOneOut_ReduceParams"), 
+                    actualGraph("twoChannels_OneProgram_OneParamOneOut"));        
+       assertEquals("", stderrBuffer.toString());
+   }
+
+   
     public void testDotGrapher_DataView_TwoChannels_OneProgram_TwoInOneOut() throws Exception {
-      
-      String source = 
-          "# @begin script"       + EOL +
-          "# @in x"               + EOL +
-          "# @in y"               + EOL +
-          "# @out d"              + EOL +
-          "#"                     + EOL +
-          "#   @begin program"    + EOL +
-          "#   @in x"             + EOL +
-          "#   @in y"             + EOL +
-          "#   @out d"            + EOL +
-          "#   @end program"      + EOL +                
-          "#"                     + EOL +
-          "# @end script"         + EOL;
-
-      BufferedReader reader = new BufferedReader(new StringReader(source));
-      
-      List<Annotation> annotations = extractor
-              .configure("comment", "#")
-              .reader(reader)
-              .extract()
-              .getAnnotations();
-
-      Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                           .model()
-                                           .getModel()
-                                           .program;
-      
-      grapher.workflow(workflow)
-             .graph();
-      
-      String dotString = grapher.toString();
-
-      assertEquals(
-          "digraph Workflow {"                                                                      + EOL +
-          "rankdir=LR"                                                                              + EOL +
-          "graph[fontname=Courier]"                                                                 + EOL +
-          "edge[fontname=Courier]"                                                                  + EOL +
-          "node[fontname=Helvetica]"                                                                + EOL +
-          "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
-          "node1 [label=\"d\"]"                                                                     + EOL +
-          "node2 [label=\"x\"]"                                                                     + EOL +
-          "node3 [label=\"y\"]"                                                                     + EOL +
-          "node2 -> node1 [label=\"program\"]"                                                      + EOL +
-          "node3 -> node1 [label=\"program\"]"                                                      + EOL +
-          "}"                                                                                       + EOL,
-          dotString);
+        String src = "twoChannels_OneProgram_TwoInOneOut";
+        assertEquals(expectedGraph(src), actualGraph(src));
+        assertEquals("", stderrBuffer.toString());
     }
 
-    public void testDotGrapher_DataView_TwoChannels_OneProgram_OneInOneParamOneOut() throws Exception {
+    public void testDotGrapher_DataView_TwoChannels_OneProgram_OneInOneParamOneOut_ShowParams() throws Exception {
+        grapher.configure("params", ParamVisibility.SHOW);
         
-        String source = 
-            "# @begin script"       + EOL +
-            "# @in x"               + EOL +
-            "# @param y"            + EOL +
-            "# @out d"              + EOL +
-            "#"                     + EOL +
-            "#   @begin program"    + EOL +
-            "#   @in x"             + EOL +
-            "#   @param y"          + EOL +
-            "#   @out d"            + EOL +
-            "#   @end program"      + EOL +                
-            "#"                     + EOL +
-            "# @end script"         + EOL;
+        assertEquals(expectedGraph("twoChannels_OneProgram_OneInOneParamOneOut_ShowParams"), 
+                     actualGraph("twoChannels_OneProgram_OneInOneParamOneOut"));        
+        assertEquals("", stderrBuffer.toString());
+    }
 
-        BufferedReader reader = new BufferedReader(new StringReader(source));
+    public void testDotGrapher_DataView_TwoChannels_OneProgram_OneInOneParamOneOut_HideParams() throws Exception {
+        grapher.configure("params", ParamVisibility.HIDE);
+        
+        assertEquals(expectedGraph("twoChannels_OneProgram_OneInOneParamOneOut_HideParams"), 
+                     actualGraph("twoChannels_OneProgram_OneInOneParamOneOut"));        
+        assertEquals("", stderrBuffer.toString());
+    }
+
+    public void testDotGrapher_DataView_TwoChannels_OneProgram_OneInOneParamOneOut_ReduceParams() throws Exception {
+        grapher.configure("params", ParamVisibility.REDUCE);
+        
+        assertEquals(expectedGraph("twoChannels_OneProgram_OneInOneParamOneOut_ReduceParams"), 
+                     actualGraph("twoChannels_OneProgram_OneInOneParamOneOut"));        
+        assertEquals("", stderrBuffer.toString());
+    }
+
+    
+    private String actualGraph(String name) throws Exception {
+        
+        String script = super.readTextFile(TEST_RESOURCE_DIR + name + ".in");
+
+        BufferedReader reader = new BufferedReader(new StringReader(script));
         
         List<Annotation> annotations = extractor
                 .configure("comment", "#")
@@ -307,25 +150,14 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                                              .model()
                                              .getModel()
                                              .program;
-        
+
         grapher.workflow(workflow)
                .graph();
         
-        String dotString = grapher.toString();
-
-        assertEquals(
-            "digraph Workflow {"                                                                      + EOL +
-            "rankdir=LR"                                                                              + EOL +
-            "graph[fontname=Courier]"                                                                 + EOL +
-            "edge[fontname=Courier]"                                                                  + EOL +
-            "node[fontname=Helvetica]"                                                                + EOL +
-            "node[shape=box style=\"rounded,filled\" fillcolor=\"#FFFFCC\" peripheries=1 label=\"\"]" + EOL +
-            "node1 [label=\"d\"]"                                                                     + EOL +
-            "node2 [label=\"x\"]"                                                                     + EOL +
-            "node3 [label=\"y\"]"                                                                     + EOL +
-            "node2 -> node1 [label=\"program\"]"                                                      + EOL +
-            "node3 -> node1 [label=\"program\"]"                                                      + EOL +
-            "}"                                                                                       + EOL,
-            dotString);
-    }
+        return grapher.toString();
+   }
+   
+   private String expectedGraph(String name) throws IOException {
+       return readTextFile(TEST_RESOURCE_DIR + name + ".gv");
+   }
 }

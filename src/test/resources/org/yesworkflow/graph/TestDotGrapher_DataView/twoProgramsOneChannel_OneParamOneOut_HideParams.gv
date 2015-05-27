@@ -1,0 +1,6 @@
+digraph Workflow {
+rankdir=LR
+graph[fontname=Courier]
+edge[fontname=Courier]
+node[fontname=Helvetica]
+}

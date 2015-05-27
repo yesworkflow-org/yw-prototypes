@@ -1,0 +1,13 @@
+digraph Workflow {
+rankdir=LR
+graph[fontname=Courier]
+edge[fontname=Courier]
+node[fontname=Helvetica]
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 label=""]
+node1 [label="d"]
+node2 [label="x"]
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 label=""]
+node3 [label="y"]
+node2 -> node1 [label="program"]
+node3 -> node1 [label="program"]
+}
