@@ -41,7 +41,8 @@ public class DotGrapher implements Grapher  {
     private String graphText = null;
     private String outputDotFile = null;
     private PrintStream stdoutStream = null;
-    List<String> channelBindings = new LinkedList<String>();
+    private List<String> channelBindings = new LinkedList<String>();
+    private DotBuilder dot;
         
     @SuppressWarnings("unused")
     private PrintStream stderrStream = null;
@@ -115,23 +116,28 @@ public class DotGrapher implements Grapher  {
             }
         }
         
+        dot = new DotBuilder().beginGraph()
+                              .rankDir(layoutDirection.toString())
+                              .enableComments(commentView == CommentVisibility.SHOW)
+                              .showClusterBox(workflowBoxMode == WorkflowBoxMode.SHOW);
+
         switch(graphView) {
         
         case PROCESS_CENTRIC_VIEW:
-            this.graphText = new ProcessRendering().render();
+            new ProcessRendering().render();
             break;
         
         case DATA_CENTRIC_VIEW:
-            this.graphText = new DataRendering().render();
+            new DataRendering().render();
             break;
         
         case COMBINED_VIEW:
-            this.graphText = new CombinedRendering().render();
+            new CombinedRendering().render();
             break;
         }
         
+        this.graphText = dot.endGraph().toString();        
         writeTextToFileOrStdout(outputDotFile, this.graphText);
-
         return this;
     }
     
@@ -147,8 +153,6 @@ public class DotGrapher implements Grapher  {
     
     private abstract class GraphRendering {
         
-        protected DotBuilder dot;
-        
         public GraphRendering() {
             dot = new DotBuilder().beginGraph()
                                   .rankDir(layoutDirection.toString())
@@ -156,7 +160,7 @@ public class DotGrapher implements Grapher  {
                                   .showClusterBox(workflowBoxMode == WorkflowBoxMode.SHOW);
         }
         
-        public abstract String render();
+        public abstract void render();
 
         protected String edgeLabel(String label) {
             return (edgeLabelMode == EdgeLabelMode.SHOW) ? label : "";
@@ -219,7 +223,7 @@ public class DotGrapher implements Grapher  {
     private class ProcessRendering extends GraphRendering {
 
         @Override
-        public String render() {
+        public void render() {
             
             dot.comment("Use serif font for process labels and sans serif font for data labels");
             dot.graphFont("Courier")
@@ -227,10 +231,6 @@ public class DotGrapher implements Grapher  {
                .nodeFont("Courier");
             
             renderWorkflowAsProcess(topWorkflow, 1);
-            
-            dot.endGraph();
-            
-            return dot.toString();
         }
         
         private void renderWorkflowAsProcess(Program workflow, int depth) {
@@ -324,17 +324,12 @@ public class DotGrapher implements Grapher  {
                 }
             }
         }
-
-        
-
-        
     }
-
     
     private class DataRendering extends GraphRendering {
 
         @Override
-        public String render() {
+        public void render() {
 
             dot.comment("Use serif font for process labels and sans serif font for data labels");
             dot.graphFont("Courier")
@@ -365,10 +360,6 @@ public class DotGrapher implements Grapher  {
                     }
                 }
             }
-
-            dot.endGraph();
-
-            return dot.toString();
         }
     }
     
@@ -376,7 +367,7 @@ public class DotGrapher implements Grapher  {
     private class CombinedRendering extends GraphRendering {
         
         @Override
-        public String render() {
+        public void render() {
             
             dot.comment("Start of cluster for drawing box around programs in workflow");
             dot.beginSubgraph();
@@ -459,12 +450,7 @@ public class DotGrapher implements Grapher  {
                     }
                 }
             }
-            
-            dot.endGraph();
-            
-            return dot.toString();
         }
-        
     }
 }
 
