@@ -29,7 +29,6 @@ public class DotGrapher implements Grapher  {
     private Program topWorkflow = null;
     private Model model = null;
     private GraphView graphView = DEFAULT_GRAPH_VIEW;
-    private DotBuilder dot;
     
     private ParamVisibility paramVisibility = DEFAULT_PARAM_VISIBILITY;
     private CommentVisibility commentView = DEFAULT_COMMENT_VISIBILITY;
@@ -115,320 +114,25 @@ public class DotGrapher implements Grapher  {
                 throw new YWToolUsageException("Top workflow not identified to grapher.");
             }
         }
-
-        dot = new DotBuilder();
-        
-        dot.beginGraph()
-                  .rankDir(layoutDirection.toString())
-                  .enableComments(commentView == CommentVisibility.SHOW)
-                  .showClusterBox(workflowBoxMode == WorkflowBoxMode.SHOW);
         
         switch(graphView) {
         
-            case PROCESS_CENTRIC_VIEW:
-                this.graphText = renderProcessCentricView();
-                break;
-            
-            case DATA_CENTRIC_VIEW:
-                this.graphText = renderDataCentricView();
-                break;
-            
-            case COMBINED_VIEW:
-                this.graphText = renderCombinedView();
-                break;
+        case PROCESS_CENTRIC_VIEW:
+            this.graphText = new ProcessRendering().render();
+            break;
+        
+        case DATA_CENTRIC_VIEW:
+            this.graphText = new DataRendering().render();
+            break;
+        
+        case COMBINED_VIEW:
+            this.graphText = new CombinedRendering().render();
+            break;
         }
         
         writeTextToFileOrStdout(outputDotFile, this.graphText);
 
         return this;
-    }
-    
-    private String renderProcessCentricView() {
-		
-        dot.comment("Use serif font for process labels and sans serif font for data labels");
-		dot.graphFont("Courier")
-           .edgeFont("Helvetica")
-           .nodeFont("Courier");
-		
-		renderWorkflowAsProcess(this.topWorkflow, 1);
-		
-		dot.endGraph();
-		
-		return dot.toString();
-	}
-    
-    private void renderInputAndOutputPorts(Program workflow) {
-        
-        // draw a small circle for each outward facing in and out port
-        dot.shape("circle").peripheries(1).width(0.2).fillcolor("#FFFFFF");
-        dot.flushNodeStyle();
-
-        if (portLayout == PortLayout.GROUP) dot.beginHiddenSubgraph();
-        dot.comment("Nodes representing workflow input ports");
-        for (Port p : workflow.inPorts) {
-            String binding = p.flowAnnotation.binding();
-            if (channelBindings.contains(binding)) {
-                dot.node(binding + "_inport", "");
-            }
-        }
-        if (portLayout == PortLayout.GROUP) dot.endSubgraph();
-        
-        if (portLayout == PortLayout.GROUP) dot.beginHiddenSubgraph();
-        dot.comment("Nodes representing workflow output ports");
-        for (Port p : workflow.outPorts) {
-            String binding = p.flowAnnotation.binding();
-            if (channelBindings.contains(binding)) {
-                dot.node(binding + "_outport", "");
-            }
-        }
-        if (portLayout == PortLayout.GROUP) dot.endSubgraph();
-    }
-    
-    private void renderWorkflowAsProcess(Program workflow, int depth) {
-
-        dot.comment("Start of cluster for drawing box around programs in workflow");
-        if (workflowTitleMode == WorkflowTitleMode.SHOW) {
-            dot.beginSubgraph(workflow.toString());
-        } else {
-            dot.beginSubgraph();
-        }
-        
-        dot.comment("Set node style for programs in workflow");
-        dot.shape("box3d").peripheries(1).fillcolor("#CCFFCC");      
-        dot.flushNodeStyle();
-        
-        dot.comment("Nodes representing programs in workflow");
-        for (Program p : workflow.programs) {
-            if (! (p.isWorkflow())) {
-                dot.node(p.beginAnnotation.name);
-                if (paramVisibility != ParamVisibility.HIDE) {
-                    channelBindings.addAll(p.outerBindings());
-                } else {
-                    channelBindings.addAll(p.outerDataBindings());
-                }
-            }
-        }
-
-        dot.comment("Set node style for subworkflows in workflow");
-        dot.shape("box").peripheries(2).fillcolor("#CCFFCC");      
-        dot.flushNodeStyle();
-
-        dot.comment("Nodes representing subworkflows in workflow");
-        dot.shape("box").peripheries(depth+1).fillcolor("#CCFFCC");   
-        for (Program p : workflow.programs) {
-            if (p.isWorkflow()) {
-                dot.node(p.beginAnnotation.name);
-                if (paramVisibility == ParamVisibility.SHOW) {
-                    channelBindings.addAll(p.outerBindings());
-                } else {
-                    channelBindings.addAll(p.outerDataBindings());
-                }
-            }
-        }
-
-        dot.comment("End of cluster for drawing box around programs in workflow");
-        dot.endSubgraph();
-        
-        if (portLayout != PortLayout.HIDE) {
-            renderInputAndOutputPorts(workflow);
-        }
-        
-        dot.comment("Directed edges for each channel in workflow");
-        for (Channel c : workflow.channels) {
-            
-            if (c.isParam && paramVisibility == ParamVisibility.HIDE) continue;
-            
-            Program sourceProgram = c.sourceProgram;
-            Program sinkProgram = c.sinkProgram;
-            
-            // draw edges for channels between workflow in ports and programs in workflow
-            if (sourceProgram == null) {
-                if (portLayout != PortLayout.HIDE) {
-                
-                    dot.edge(c.sinkPort.flowAnnotation.binding() + "_inport",
-                             c.sinkProgram.beginAnnotation.name,
-                             edgeLabel(c.sinkPort.flowAnnotation.binding()));
-                }
-                
-            // draw edges for channels between programs in workflow and workflow out ports
-            } else if (sinkProgram == null) {
-                if (portLayout != PortLayout.HIDE) {
-
-                    dot.edge(c.sourceProgram.beginAnnotation.name,
-                         c.sourcePort.flowAnnotation.binding() + "_outport",
-                         edgeLabel(c.sourcePort.flowAnnotation.binding()));
-                }
-                
-            // draw edges for channels between programs within workflow
-            } else {
-
-                dot.edge(c.sourceProgram.beginAnnotation.name,
-                         c.sinkProgram.beginAnnotation.name,
-                         edgeLabel(c.sourcePort.flowAnnotation.binding()));
-            }
-        }
-
-        // render subworkflows
-        for (Program p : workflow.programs) {
-            if (p.isWorkflow()) {
-                renderWorkflowAsProcess(p, depth + 1);
-            }
-        }
-    }
-
-    private String edgeLabel(String label) {
-        return (edgeLabelMode == EdgeLabelMode.SHOW) ? label : "";
-    }
-    
-    private String renderDataCentricView() {
-
-        dot.comment("Use serif font for process labels and sans serif font for data labels");
-        dot.graphFont("Courier")
-           .edgeFont("Courier")
-           .nodeFont("Helvetica");
-        
-        // draw a box for each channel in the workflow
-        dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
-
-        for (Channel c : topWorkflow.channels) {
-            String binding = c.sourcePort.flowAnnotation.binding();
-            channelBindings.add(binding);
-            dot.node(binding);
-        }
-
-        // draw an edge for each pairing of out port and in port for each program
-        for (Program p : topWorkflow.programs) {
-            for (Port out : p.outPorts) {
-                for (Port in : p.inPorts) {
-                    
-                    if (channelBindings.contains(in.flowAnnotation.binding()) && channelBindings.contains(out.flowAnnotation.binding())) {
-                        dot.edge(
-                            in.flowAnnotation.binding(), 
-                            out.flowAnnotation.binding(), 
-                            edgeLabel(p.beginAnnotation.name)
-                        );
-                    }
-                }
-            }
-        }
-
-        dot.endGraph();
-
-        return dot.toString();
-    }
-    
-    private String renderCombinedView() {
-        
-        dot.comment("Start of cluster for drawing box around programs in workflow");
-        dot.beginSubgraph();
-
-        dot.comment("Use serif font for process labels");
-        dot.graphFont("Courier")
-           .nodeFont("Courier");
-        
-        // draw a box for each program in the workflow
-        dot.shape("box3d").fillcolor("#CCFFCC");
-        for (Program p : topWorkflow.programs) dot.node(p.beginAnnotation.name);
-        
-        dot.comment("Use sans serif font for data labels");
-        dot.nodeFont("Helvetica");
-
-        // draw a box for each channel in the workflow
-        switch(paramVisibility) {
-            case SHOW:
-                dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
-                for (Channel c : topWorkflow.innerChannels()) {
-                    drawChannelNode(c);
-                }        
-            case REDUCE:
-                dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
-                for (Channel c : topWorkflow.innerDataChannels()) {
-                    drawChannelNode(c);
-                }
-                dot.shape("box").fillcolor("#FCFCFC").style("rounded,filled");
-                for (Channel c : topWorkflow.innerParamChannels()) {
-                    drawChannelNode(c);
-                }
-            case HIDE:
-                dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
-                for (Channel c : topWorkflow.innerDataChannels()) {
-                    drawChannelNode(c);
-                }
-        }
-        
-        dot.comment("End of cluster for drawing box around programs in workflow");
-        dot.endSubgraph();
-
-        if (portLayout != PortLayout.HIDE) {
-            renderInputAndOutputPorts(topWorkflow);
-        }
-        
-        // draw an edge for each pairing of out port and in port for each program
-        for (Program p : topWorkflow.programs) {
-
-            for (Port out : p.outPorts) {
-                
-                String binding = out.flowAnnotation.binding();
-                if (channelBindings.contains(binding)) {
-                    dot.edge(p.beginAnnotation.name, binding);
-                }
-            }
-
-            for (Port in : p.inPorts) {
-                String binding = in.flowAnnotation.binding();
-                if (channelBindings.contains(binding)) {
-                    dot.edge(binding, p.beginAnnotation.name);
-                }
-            }
-        }
-
-        if (portLayout != PortLayout.HIDE) {
-            
-            // draw an edge from each workflow input to the corresponding channel node
-            for (Port p : topWorkflow.inPorts) {
-                String binding = p.flowAnnotation.binding();
-                if (channelBindings.contains(binding)) {
-                    dot.edge(binding + "_inport", binding);
-                }
-            }
-            
-            // draw an edge from each workflow output to the corresponding channel node
-            for (Port p : topWorkflow.outPorts) {
-                String binding = p.flowAnnotation.binding();
-                if (topWorkflow.hasChannelForBinding(binding)) {
-                    dot.edge(binding, binding + "_outport");
-                }
-            }
-        }
-        
-        dot.endGraph();
-        
-        return dot.toString();
-    }
-
-    private void drawChannelNode(Channel c) {
-        
-        String binding = c.sourcePort.flowAnnotation.binding();
-        channelBindings.add(binding);
-        UriTemplate uri = c.sourcePort.uriTemplate;
-        
-        if (uri == null) {
-            dot.node(binding);
-        } else {
-            String uriLabel = uri.toString().replace("{", "\\{").replace("}", "\\}");
-            switch(uriDisplayMode) {
-                case NAME: 
-                    dot.node(binding);
-                    break;
-                case URI:
-                    dot.node(binding, uriLabel);
-                    break;
-                case BOTH:
-                    dot.recordNode(binding, binding, uriLabel);
-                    break;
-            }
-            dot.node(binding);
-        }
     }
     
     private void writeTextToFileOrStdout(String path, String text) throws IOException {        
@@ -438,6 +142,329 @@ public class DotGrapher implements Grapher  {
         if (stream != this.stdoutStream) {
             stream.close();
         }
+    }
+    
+    
+    private abstract class GraphRendering {
+        
+        protected DotBuilder dot;
+        
+        public GraphRendering() {
+            dot = new DotBuilder().beginGraph()
+                                  .rankDir(layoutDirection.toString())
+                                  .enableComments(commentView == CommentVisibility.SHOW)
+                                  .showClusterBox(workflowBoxMode == WorkflowBoxMode.SHOW);
+        }
+        
+        public abstract String render();
+
+        protected String edgeLabel(String label) {
+            return (edgeLabelMode == EdgeLabelMode.SHOW) ? label : "";
+        }
+        
+        protected void renderInputAndOutputPorts(Program workflow) {
+            
+            // draw a small circle for each outward facing in and out port
+            dot.shape("circle").peripheries(1).width(0.2).fillcolor("#FFFFFF");
+            dot.flushNodeStyle();
+
+            if (portLayout == PortLayout.GROUP) dot.beginHiddenSubgraph();
+            dot.comment("Nodes representing workflow input ports");
+            for (Port p : workflow.inPorts) {
+                String binding = p.flowAnnotation.binding();
+                if (channelBindings.contains(binding)) {
+                    dot.node(binding + "_inport", "");
+                }
+            }
+            if (portLayout == PortLayout.GROUP) dot.endSubgraph();
+            
+            if (portLayout == PortLayout.GROUP) dot.beginHiddenSubgraph();
+            dot.comment("Nodes representing workflow output ports");
+            for (Port p : workflow.outPorts) {
+                String binding = p.flowAnnotation.binding();
+                if (channelBindings.contains(binding)) {
+                    dot.node(binding + "_outport", "");
+                }
+            }
+            if (portLayout == PortLayout.GROUP) dot.endSubgraph();
+        }        
+
+        protected void drawChannelNode(Channel c) {
+            
+            String binding = c.sourcePort.flowAnnotation.binding();
+            channelBindings.add(binding);
+            UriTemplate uri = c.sourcePort.uriTemplate;
+            
+            if (uri == null) {
+                dot.node(binding);
+            } else {
+                String uriLabel = uri.toString().replace("{", "\\{").replace("}", "\\}");
+                switch(uriDisplayMode) {
+                    case NAME: 
+                        dot.node(binding);
+                        break;
+                    case URI:
+                        dot.node(binding, uriLabel);
+                        break;
+                    case BOTH:
+                        dot.recordNode(binding, binding, uriLabel);
+                        break;
+                }
+                dot.node(binding);
+            }
+        }
+
+    }
+    
+    private class ProcessRendering extends GraphRendering {
+
+        @Override
+        public String render() {
+            
+            dot.comment("Use serif font for process labels and sans serif font for data labels");
+            dot.graphFont("Courier")
+               .edgeFont("Helvetica")
+               .nodeFont("Courier");
+            
+            renderWorkflowAsProcess(topWorkflow, 1);
+            
+            dot.endGraph();
+            
+            return dot.toString();
+        }
+        
+        private void renderWorkflowAsProcess(Program workflow, int depth) {
+
+            dot.comment("Start of cluster for drawing box around programs in workflow");
+            if (workflowTitleMode == WorkflowTitleMode.SHOW) {
+                dot.beginSubgraph(workflow.toString());
+            } else {
+                dot.beginSubgraph();
+            }
+            
+            dot.comment("Set node style for programs in workflow");
+            dot.shape("box3d").peripheries(1).fillcolor("#CCFFCC");      
+            dot.flushNodeStyle();
+            
+            dot.comment("Nodes representing programs in workflow");
+            for (Program p : workflow.programs) {
+                if (! (p.isWorkflow())) {
+                    dot.node(p.beginAnnotation.name);
+                    if (paramVisibility != ParamVisibility.HIDE) {
+                        channelBindings.addAll(p.outerBindings());
+                    } else {
+                        channelBindings.addAll(p.outerDataBindings());
+                    }
+                }
+            }
+
+            dot.comment("Set node style for subworkflows in workflow");
+            dot.shape("box").peripheries(2).fillcolor("#CCFFCC");      
+            dot.flushNodeStyle();
+
+            dot.comment("Nodes representing subworkflows in workflow");
+            dot.shape("box").peripheries(depth+1).fillcolor("#CCFFCC");   
+            for (Program p : workflow.programs) {
+                if (p.isWorkflow()) {
+                    dot.node(p.beginAnnotation.name);
+                    if (paramVisibility == ParamVisibility.SHOW) {
+                        channelBindings.addAll(p.outerBindings());
+                    } else {
+                        channelBindings.addAll(p.outerDataBindings());
+                    }
+                }
+            }
+
+            dot.comment("End of cluster for drawing box around programs in workflow");
+            dot.endSubgraph();
+            
+            if (portLayout != PortLayout.HIDE) {
+                renderInputAndOutputPorts(workflow);
+            }
+            
+            dot.comment("Directed edges for each channel in workflow");
+            for (Channel c : workflow.channels) {
+                
+                if (c.isParam && paramVisibility == ParamVisibility.HIDE) continue;
+                
+                Program sourceProgram = c.sourceProgram;
+                Program sinkProgram = c.sinkProgram;
+                
+                // draw edges for channels between workflow in ports and programs in workflow
+                if (sourceProgram == null) {
+                    if (portLayout != PortLayout.HIDE) {
+                    
+                        dot.edge(c.sinkPort.flowAnnotation.binding() + "_inport",
+                                 c.sinkProgram.beginAnnotation.name,
+                                 edgeLabel(c.sinkPort.flowAnnotation.binding()));
+                    }
+                    
+                // draw edges for channels between programs in workflow and workflow out ports
+                } else if (sinkProgram == null) {
+                    if (portLayout != PortLayout.HIDE) {
+
+                        dot.edge(c.sourceProgram.beginAnnotation.name,
+                             c.sourcePort.flowAnnotation.binding() + "_outport",
+                             edgeLabel(c.sourcePort.flowAnnotation.binding()));
+                    }
+                    
+                // draw edges for channels between programs within workflow
+                } else {
+
+                    dot.edge(c.sourceProgram.beginAnnotation.name,
+                             c.sinkProgram.beginAnnotation.name,
+                             edgeLabel(c.sourcePort.flowAnnotation.binding()));
+                }
+            }
+
+            // render subworkflows
+            for (Program p : workflow.programs) {
+                if (p.isWorkflow()) {
+                    renderWorkflowAsProcess(p, depth + 1);
+                }
+            }
+        }
+
+        
+
+        
+    }
+
+    
+    private class DataRendering extends GraphRendering {
+
+        @Override
+        public String render() {
+
+            dot.comment("Use serif font for process labels and sans serif font for data labels");
+            dot.graphFont("Courier")
+               .edgeFont("Courier")
+               .nodeFont("Helvetica");
+            
+            // draw a box for each channel in the workflow
+            dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
+
+            for (Channel c : topWorkflow.channels) {
+                String binding = c.sourcePort.flowAnnotation.binding();
+                channelBindings.add(binding);
+                dot.node(binding);
+            }
+
+            // draw an edge for each pairing of out port and in port for each program
+            for (Program p : topWorkflow.programs) {
+                for (Port out : p.outPorts) {
+                    for (Port in : p.inPorts) {
+                        
+                        if (channelBindings.contains(in.flowAnnotation.binding()) && channelBindings.contains(out.flowAnnotation.binding())) {
+                            dot.edge(
+                                in.flowAnnotation.binding(), 
+                                out.flowAnnotation.binding(), 
+                                edgeLabel(p.beginAnnotation.name)
+                            );
+                        }
+                    }
+                }
+            }
+
+            dot.endGraph();
+
+            return dot.toString();
+        }
+    }
+    
+    
+    private class CombinedRendering extends GraphRendering {
+        
+        @Override
+        public String render() {
+            
+            dot.comment("Start of cluster for drawing box around programs in workflow");
+            dot.beginSubgraph();
+
+            dot.comment("Use serif font for process labels");
+            dot.graphFont("Courier")
+               .nodeFont("Courier");
+            
+            // draw a box for each program in the workflow
+            dot.shape("box3d").fillcolor("#CCFFCC");
+            for (Program p : topWorkflow.programs) dot.node(p.beginAnnotation.name);
+            
+            dot.comment("Use sans serif font for data labels");
+            dot.nodeFont("Helvetica");
+
+            // draw a box for each channel in the workflow
+            switch(paramVisibility) {
+                case SHOW:
+                    dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
+                    for (Channel c : topWorkflow.innerChannels()) {
+                        drawChannelNode(c);
+                    }        
+                case REDUCE:
+                    dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
+                    for (Channel c : topWorkflow.innerDataChannels()) {
+                        drawChannelNode(c);
+                    }
+                    dot.shape("box").fillcolor("#FCFCFC").style("rounded,filled");
+                    for (Channel c : topWorkflow.innerParamChannels()) {
+                        drawChannelNode(c);
+                    }
+                case HIDE:
+                    dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
+                    for (Channel c : topWorkflow.innerDataChannels()) {
+                        drawChannelNode(c);
+                    }
+            }
+            
+            dot.comment("End of cluster for drawing box around programs in workflow");
+            dot.endSubgraph();
+
+            if (portLayout != PortLayout.HIDE) {
+                renderInputAndOutputPorts(topWorkflow);
+            }
+            
+            // draw an edge for each pairing of out port and in port for each program
+            for (Program p : topWorkflow.programs) {
+
+                for (Port out : p.outPorts) {
+                    
+                    String binding = out.flowAnnotation.binding();
+                    if (channelBindings.contains(binding)) {
+                        dot.edge(p.beginAnnotation.name, binding);
+                    }
+                }
+
+                for (Port in : p.inPorts) {
+                    String binding = in.flowAnnotation.binding();
+                    if (channelBindings.contains(binding)) {
+                        dot.edge(binding, p.beginAnnotation.name);
+                    }
+                }
+            }
+
+            if (portLayout != PortLayout.HIDE) {
+                
+                // draw an edge from each workflow input to the corresponding channel node
+                for (Port p : topWorkflow.inPorts) {
+                    String binding = p.flowAnnotation.binding();
+                    if (channelBindings.contains(binding)) {
+                        dot.edge(binding + "_inport", binding);
+                    }
+                }
+                
+                // draw an edge from each workflow output to the corresponding channel node
+                for (Port p : topWorkflow.outPorts) {
+                    String binding = p.flowAnnotation.binding();
+                    if (topWorkflow.hasChannelForBinding(binding)) {
+                        dot.edge(binding, binding + "_outport");
+                    }
+                }
+            }
+            
+            dot.endGraph();
+            
+            return dot.toString();
+        }
+        
     }
 }
 
