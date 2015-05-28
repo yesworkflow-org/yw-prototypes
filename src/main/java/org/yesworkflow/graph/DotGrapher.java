@@ -243,7 +243,28 @@ public class DotGrapher implements Grapher  {
                 dot.node(binding);
             }
         }
-
+        
+        protected void drawEdgesFromPortsToChannelNodes() {
+            
+            if (portLayout != PortLayout.HIDE) {
+                
+                // draw an edge from each workflow input to the corresponding channel node
+                for (Port p : topWorkflow.inPorts) {
+                    String binding = p.flowAnnotation.binding();
+                    if (channelBindings.contains(binding)) {
+                        dot.edge(binding + "_inport", binding);
+                    }
+                }
+                
+                // draw an edge from each workflow output to the corresponding channel node
+                for (Port p : topWorkflow.outPorts) {
+                    String binding = p.flowAnnotation.binding();
+                    if (topWorkflow.hasChannelForBinding(binding)) {
+                        dot.edge(binding, binding + "_outport");
+                    }
+                }
+            }
+        }
     }
     
     private class ProcessRendering extends GraphRendering {
@@ -367,6 +388,12 @@ public class DotGrapher implements Grapher  {
 
             drawChannelNodes();
 
+            if (portLayout != PortLayout.HIDE) {
+                renderInputAndOutputPorts(topWorkflow);
+            }
+            
+            drawEdgesFromPortsToChannelNodes();
+            
             // draw an edge for each pairing of out port and in port for each program
             for (Program p : topWorkflow.programs) {
                 for (Port out : p.outPorts) {
@@ -433,25 +460,9 @@ public class DotGrapher implements Grapher  {
                 }
             }
 
-            if (portLayout != PortLayout.HIDE) {
-                
-                // draw an edge from each workflow input to the corresponding channel node
-                for (Port p : topWorkflow.inPorts) {
-                    String binding = p.flowAnnotation.binding();
-                    if (channelBindings.contains(binding)) {
-                        dot.edge(binding + "_inport", binding);
-                    }
-                }
-                
-                // draw an edge from each workflow output to the corresponding channel node
-                for (Port p : topWorkflow.outPorts) {
-                    String binding = p.flowAnnotation.binding();
-                    if (topWorkflow.hasChannelForBinding(binding)) {
-                        dot.edge(binding, binding + "_outport");
-                    }
-                }
-            }
+            drawEdgesFromPortsToChannelNodes();
+            
         }
-    }
+    }    
 }
 
