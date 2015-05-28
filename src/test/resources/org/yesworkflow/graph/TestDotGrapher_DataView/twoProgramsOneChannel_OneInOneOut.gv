@@ -1,8 +1,0 @@
-digraph Workflow {
-rankdir=LR
-graph[fontname=Courier]
-edge[fontname=Courier]
-node[fontname=Helvetica]
-node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 label=""]
-node1 [label="channel"]
-}
