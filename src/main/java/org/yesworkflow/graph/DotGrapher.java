@@ -339,6 +339,7 @@ public class DotGrapher implements Grapher  {
                 
                 // draw edges for channels between workflow in ports and programs in workflow
                 if (sourceProgram == null) {
+                    
                     if (portLayout != PortLayout.HIDE) {
                     
                         dot.edge(c.sinkPort.flowAnnotation.binding() + "_inport",
@@ -348,6 +349,7 @@ public class DotGrapher implements Grapher  {
                     
                 // draw edges for channels between programs in workflow and workflow out ports
                 } else if (sinkProgram == null) {
+                    
                     if (portLayout != PortLayout.HIDE) {
 
                         dot.edge(c.sourceProgram.beginAnnotation.name,
@@ -378,6 +380,9 @@ public class DotGrapher implements Grapher  {
         @Override
         public void render() {
 
+            dot.comment("Start of cluster for drawing box around programs in workflow");
+            dot.beginSubgraph();
+
             dot.comment("Use serif font for process labels and sans serif font for data labels");
             dot.graphFont("Courier")
                .edgeFont("Courier")
@@ -387,6 +392,9 @@ public class DotGrapher implements Grapher  {
             dot.shape("box").fillcolor("#FFFFCC").style("rounded,filled");
 
             drawChannelNodes();
+
+            dot.comment("End of cluster for drawing box around programs in workflow");
+            dot.endSubgraph();
 
             if (portLayout != PortLayout.HIDE) {
                 renderInputAndOutputPorts(topWorkflow);
