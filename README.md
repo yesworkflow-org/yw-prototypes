@@ -49,8 +49,11 @@ The text following the (optional) `@AS` keyword in an `@IN` or `@OUT` comment pr
 
 Note as well that the `@OUT` comment for `fetch_mask` declares the  name of the variable (`mask`) used to store the mask in the code.  It also provides an alias (`land_water_mask`) that is displayed in the graphical output of YesWorkflow. This alias matches the alias on an `@IN` comment on the downstream `standardize_with_mask` block, and YesWorkflow draws an arrow in the diagram accordingly.
 
-YesWorkflow comments of the kind discussed here can be added to any script to highlight how data is processed by that script.  YesWorkflow tools discover these comments in the script and produce graphical representations of the script that highlight its workflow-like structure. YesWorkflow can render a number of different views of the workflow structure of a script, including a *process* view (shown above), a *data* view, and a *combined* (*data* + *process*) view.  The combined view of the example script is shown below.
+YesWorkflow comments of the kind discussed here can be added to any script to highlight how data is processed by that script.  YesWorkflow tools discover these comments in the script and produce graphical representations of the script that highlight its workflow-like structure. YesWorkflow can render a number of different views of the workflow structure of a script, including a *process* view (shown above), a *data* view, and a *combined* (*data* + *process*) view.  The data view of the example script is shown below.
 
+![example](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example_data.png)
+
+And the combined view is:
 
 ![example](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example_combined.png)
 
