@@ -444,7 +444,7 @@ Instructions for developers
 
 #### JDK and Maven configuration
 
-The Java prototype is built using Maven 3. Before building YesWorkflow confirm that the `mvn` command is in your path and that a JDK version 1.7 or higher is found by maven:
+The Java prototype is built using Maven 3. Before building YesWorkflow confirm that the `mvn` command is in your path, that your version of Maven is at least 3.0.5, and that a JDK version 1.7 (or higher) is found by Maven:
     
     $ mvn --version
     Apache Maven 3.2.3 (33f8c3e1027c3ddde99d3cdebad2656a31e8fdf4; 2014-08-11T13:58:10-07:00)
@@ -455,10 +455,10 @@ The Java prototype is built using Maven 3. Before building YesWorkflow confirm t
     OS name: "windows 7", version: "6.1", arch: "amd64", family: "windows"
     $
 
-JDK 7 and Maven 3 downloads and installation instructions can be found at the following links.
+JDK 7 and Maven 3 downloads and detailed installation instructions can be found at the following links:
 
-- [http://docs.oracle.com/javase/7/docs/webnotes/install/](http://docs.oracle.com/javase/7/docs/webnotes/install/) 
-- [http://maven.apache.org/download.cgi](http://maven.apache.org/download.cgi)
+- [Instructions for installing and configuring JDK 1.7](http://docs.oracle.com/javase/7/docs/webnotes/install/) (Oracle Java Documentation)
+- [Instructions for installing and configuring Maven 3](http://maven.apache.org/download.cgi) (Apache Maven Project)
 
 
 #### Project directory layout
