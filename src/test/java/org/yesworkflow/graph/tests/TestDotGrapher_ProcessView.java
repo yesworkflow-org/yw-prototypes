@@ -108,7 +108,7 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
   
     public void test_OneProgram_TwoChannels_OneInOneOut_ExtraOut() throws Exception {
         String src = "oneProgram_TwoChannels_OneInOneOut_ExtraOut";
-        assertEquals(expectedGraph(src), actualGraph(src));      
+        assertEquals(expectedGraph(src), actualGraph(src));   
     }
   
      public void test_ThreePrograms_TwoChannels() throws Exception {
@@ -116,10 +116,13 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
          assertEquals(expectedGraph(src), actualGraph(src));  
      }
  
-     public void test_NestedSubworkflow() throws Exception {
-         String src = "nestedSubworkflow";
-         assertEquals(expectedGraph(src), actualGraph(src));  
+     public void test_NestedSubworkflow_Top() throws Exception {
+         assertEquals(expectedGraph("nestedSubworkflow"), actualGraph("nestedSubworkflow"));  
      }
+
+//     public void test_NestedSubworkflow_Sub() throws Exception {
+//         assertEquals(expectedGraph("nestedSubworkflow"), actualGraph("nestedSubworkflow"));  
+//     }
  
      public void test_ExamplePyScript() throws Exception {
          String src = "examplePyScript";

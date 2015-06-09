@@ -30,4 +30,28 @@ node2 -> node5 [label="workflowOutput"]
 node4 -> node1 [label="workflowInput"]
 node1 -> node3 [label="channel0"]
 node3 -> node2 [label="channel3"]
+subgraph cluster6 {
+label="subWorkflow"
+penwidth=2
+fontsize=18
+subgraph cluster7 {
+label=""
+color="white"
+node[shape=box3d style="filled" fillcolor="#CCFFCC" peripheries=1 label="" width=0.2]
+node6 [label="program2"]
+node7 [label="program3"]
+node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=2 label="" width=0.2]
+}}
+node[shape=circle style="filled" fillcolor="#FFFFFF" peripheries=1 label="" width=0.2]
+subgraph cluster8 { label="" color="white"
+subgraph cluster9 { label="" color="white"
+node8
+}}
+subgraph cluster10 { label="" color="white"
+subgraph cluster11 { label="" color="white"
+node9
+}}
+node7 -> node9 [label="channel3"]
+node8 -> node6 [label="channel0"]
+node6 -> node7 [label="channel2"]
 }
