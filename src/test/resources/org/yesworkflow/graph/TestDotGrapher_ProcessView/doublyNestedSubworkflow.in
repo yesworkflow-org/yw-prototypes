@@ -1,0 +1,47 @@
+# @begin workflow
+# @in channel0
+# @out channel3
+#
+#   @begin program0
+#   @in channel0
+#   @out channel1
+#   @end program0
+#
+#   @begin subWorkflow
+#   @in channel1
+#   @out channel2
+#
+#     @begin program2
+#     @in channel1
+#     @out channel4
+#     @end program2
+
+#     @begin subSubWorkflow
+#     @in channel4
+#     @out channel5
+#
+#       @begin program4
+#       @in channel4
+#       @out channel6
+#       @end program4
+#
+#       @begin program5
+#       @in channel6
+#       @out channel5
+#       @end program5
+#
+#     @end subSubWorkflow
+#
+#     @begin program3
+#     @in channel5
+#     @out channel2
+#     @end program3
+#
+#   @end subWorkflow
+#
+#   @begin program1
+#   @in channel2
+#   @out channel3
+#   @end program1
+#
+# @end workflow
