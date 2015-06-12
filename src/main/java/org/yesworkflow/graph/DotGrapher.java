@@ -38,6 +38,7 @@ public class DotGrapher implements Grapher  {
     private DataLabelMode uriDisplayMode = DEFAULT_URI_DISPLAY_MODE;
     private EdgeLabelMode edgeLabelMode = DEFAULT_EDGE_LABEL_MODE;
     private TitlePosition titlePosition = DEFAULT_TITLE_POSITION;
+    private String title = null;
     private String subworkflowName = null;
     private String graphText = null;
     private String outputDotFile = null;
@@ -96,6 +97,8 @@ public class DotGrapher implements Grapher  {
             edgeLabelMode = EdgeLabelMode.toEdgeLabelMode(value);
         } else if (key.equalsIgnoreCase("subworkflow")) {
             subworkflowName = (String)value;
+        } else if (key.equalsIgnoreCase("title")) {
+            title = (String)value;
         } else if (key.equalsIgnoreCase("titleposition")) {
             titlePosition = TitlePosition.toTitlePosition(value);
         } else if (key.equalsIgnoreCase("dotfile")) {
@@ -173,14 +176,18 @@ public class DotGrapher implements Grapher  {
         @SuppressWarnings("incomplete-switch")
         protected void drawWorkflowBoxAndTitle() {
 
+            if (title == null) {
+                title = workflow.toString();
+            }
+            
             if (titlePosition != TitlePosition.HIDE) {
                 dot.comment("Title for graph");
                 switch(titlePosition) {
                 case BOTTOM:
-                    dot.title(workflow.toString(), "b");
+                    dot.title(title, "b");
                     break;
                 case TOP:
-                    dot.title(workflow.toString(), "t");
+                    dot.title(title.toString(), "t");
                     break;
                 }
             }
