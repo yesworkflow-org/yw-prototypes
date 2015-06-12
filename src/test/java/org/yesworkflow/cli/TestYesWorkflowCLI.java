@@ -400,7 +400,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
         String[] args = {"graph", "src/main/resources/example.py", 
                          "-c", "graph.params=hide",
-                         "-c", "graph.titleposition=topcenter"};
+                         "-c", "graph.titleposition=hide"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args);
 

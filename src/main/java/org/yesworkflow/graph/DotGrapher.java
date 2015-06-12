@@ -24,7 +24,7 @@ public class DotGrapher implements Grapher  {
     public static PortLayout DEFAULT_PORT_LAYOUT = PortLayout.GROUP;
     public static DataLabelMode DEFAULT_URI_DISPLAY_MODE = DataLabelMode.BOTH;
     public static EdgeLabelMode DEFAULT_EDGE_LABEL_MODE = EdgeLabelMode.SHOW;
-    public static TitlePosition DEFAULT_TITLE_POSITION = TitlePosition.HIDE;
+    public static TitlePosition DEFAULT_TITLE_POSITION = TitlePosition.TOP;
     
     private Program topWorkflow = null;
     private Program workflow = null;
@@ -170,13 +170,23 @@ public class DotGrapher implements Grapher  {
         }
 
         
+        @SuppressWarnings("incomplete-switch")
         protected void drawWorkflowBoxAndTitle() {
-            dot.comment("Start of cluster for drawing box around programs in workflow");
-            if (titlePosition == TitlePosition.TOP_CENTER) {
-                dot.beginSubgraph(workflow.toString());
-            } else {
-                dot.beginSubgraph();
+
+            if (titlePosition != TitlePosition.HIDE) {
+                dot.comment("Title for graph");
+                switch(titlePosition) {
+                case BOTTOM:
+                    dot.title(workflow.toString(), "b");
+                    break;
+                case TOP:
+                    dot.title(workflow.toString(), "t");
+                    break;
+                }
             }
+            
+            dot.comment("Start of cluster for drawing box around programs in workflow");
+            dot.beginSubgraph();
         }
         
         protected String edgeLabel(String label) {

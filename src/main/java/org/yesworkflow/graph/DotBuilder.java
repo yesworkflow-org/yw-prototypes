@@ -33,6 +33,16 @@ public class DotBuilder {
 		return this;
 	}
 
+	public DotBuilder title(String title, String location) {
+	    _buffer.append(    "fontsize=18" + EOL     )
+	           .append(    "labelloc="             )
+	           .append(    location + EOL          )
+	           .append(    "label=\""              )
+	           .append(    title                   )
+	           .append(    "\"" + EOL              );
+	    return this;
+	}
+	
 	public DotBuilder rankDir(String rankdir) {
         _buffer.append( "rankdir=" + rankdir + EOL );        
         horizontalLayout = (rankdir.equalsIgnoreCase("LR") || rankdir.equalsIgnoreCase("RL")); 
@@ -62,10 +72,6 @@ public class DotBuilder {
         return this;
     }
 
-    public DotBuilder beginSubgraph() {
-        return beginSubgraph("");
-    }
-    
     public DotBuilder beginHiddenSubgraph() {
         
         String name = "cluster" + subgraphCount++;
@@ -94,7 +100,7 @@ public class DotBuilder {
     }
     
 
-    public DotBuilder beginSubgraph(String label) {
+    public DotBuilder beginSubgraph() {
         
         String name = "cluster" + subgraphCount++;
                 
@@ -103,7 +109,7 @@ public class DotBuilder {
                .append(     " {"                )
                .append(     EOL                 )
                .append(     "label="            )
-               .append(     dq(label)           )
+               .append(     dq("")              )
                .append(     EOL                 )
                .append(     "penwidth=2"        )
                .append(     EOL                 )

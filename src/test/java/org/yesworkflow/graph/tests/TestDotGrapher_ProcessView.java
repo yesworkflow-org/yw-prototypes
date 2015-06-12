@@ -42,7 +42,7 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
         grapher.configure("view", GraphView.PROCESS_CENTRIC_VIEW)
                .configure("comments", CommentVisibility.HIDE)
                .configure("params", ParamVisibility.SHOW)
-               .configure("titleposition", TitlePosition.TOP_CENTER);
+               .configure("titleposition", TitlePosition.HIDE);
     }
     
     public void test_TwoProgramsOneChannel_In() throws Exception {

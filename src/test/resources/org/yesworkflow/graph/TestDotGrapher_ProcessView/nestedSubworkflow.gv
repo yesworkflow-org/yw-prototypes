@@ -4,7 +4,7 @@ graph[fontname=Courier]
 edge[fontname=Helvetica]
 node[fontname=Courier]
 subgraph cluster0 {
-label="workflow"
+label=""
 penwidth=2
 fontsize=18
 subgraph cluster1 {
