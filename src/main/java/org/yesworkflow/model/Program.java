@@ -144,6 +144,23 @@ public class Program {
     
 	@Override
 	public String toString() {
-	    return this.beginAnnotation.name;
+	    return this.name;
 	}
+
+    public Program getSubprogram(String subprogramName) {
+
+        if (subprogramName.equals(name)) return this;
+        
+        for (Program nestedProgram : programs) {
+            Program match = nestedProgram.getSubprogram(subprogramName);
+            if (match != null) return match;
+        }
+        
+        for (Program nestedFunction : functions) {
+            Program match = nestedFunction.getSubprogram(subprogramName);
+            if (match != null) return match;
+        }
+        
+        return null;
+    }
 }

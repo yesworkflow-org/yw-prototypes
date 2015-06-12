@@ -120,10 +120,25 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
          assertEquals(expectedGraph("nestedSubworkflow"), actualGraph("nestedSubworkflow"));  
      }
 
-//     public void test_NestedSubworkflow_Sub() throws Exception {
-//         assertEquals(expectedGraph("nestedSubworkflow"), actualGraph("nestedSubworkflow"));  
-//     }
- 
+     public void test_NestedSubworkflow_Sub() throws Exception {
+         grapher.configure("subworkflow", "workflow.subWorkflow");
+         assertEquals(expectedGraph("nestedSubworkflow_sub"), actualGraph("nestedSubworkflow"));  
+     }
+
+     public void test_DoublyNestedSubworkflow_Top() throws Exception {
+         assertEquals(expectedGraph("doublyNestedSubworkflow"), actualGraph("doublyNestedSubworkflow"));  
+     }
+
+     public void test_DoublyNestedSubworkflow_Sub() throws Exception {
+         grapher.configure("subworkflow", "workflow.subWorkflow");
+         assertEquals(expectedGraph("doublyNestedSubworkflow_sub"), actualGraph("doublyNestedSubworkflow"));
+     }
+
+     public void test_DoublyNestedSubworkflow_SubSub() throws Exception {
+         grapher.configure("subworkflow", "workflow.subWorkflow.subSubWorkflow");
+         assertEquals(expectedGraph("doublyNestedSubworkflow_subSub"), actualGraph("doublyNestedSubworkflow"));  
+     }
+
      public void test_ExamplePyScript() throws Exception {
          String src = "examplePyScript";
          assertEquals(expectedGraph(src), actualGraph(src));  

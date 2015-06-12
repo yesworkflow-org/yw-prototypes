@@ -26,8 +26,8 @@ public class DotGrapher implements Grapher  {
     public static EdgeLabelMode DEFAULT_EDGE_LABEL_MODE = EdgeLabelMode.SHOW;
     public static WorkflowTitleMode DEFAULT_WORKFLOW_TITLE_MODE = WorkflowTitleMode.SHOW;
     
+    private Program topWorkflow = null;
     private Program workflow = null;
-    private Model model = null;
     private GraphView graphView = DEFAULT_GRAPH_VIEW;
     
     private ParamVisibility paramVisibility = DEFAULT_PARAM_VISIBILITY;
@@ -38,6 +38,7 @@ public class DotGrapher implements Grapher  {
     private DataLabelMode uriDisplayMode = DEFAULT_URI_DISPLAY_MODE;
     private EdgeLabelMode edgeLabelMode = DEFAULT_EDGE_LABEL_MODE;
     private WorkflowTitleMode workflowTitleMode = DEFAULT_WORKFLOW_TITLE_MODE;
+    private String subworkflowName = null;
     private String graphText = null;
     private String outputDotFile = null;
     private PrintStream stdoutStream = null;
@@ -53,14 +54,17 @@ public class DotGrapher implements Grapher  {
     }
 
     @Override
-    public DotGrapher model(Model model) {
-        this.model = model;
+    public DotGrapher model(Model model) {        
+        if (model == null) throw new IllegalArgumentException("Null model passed to DotGrapher.");
+        if (model.program == null) throw new IllegalArgumentException("Model with null program passed to DotGrapher.");
+        this.topWorkflow = model.program;
         return this;
     }
 
     @Override
     public DotGrapher workflow(Program workflow) {
-        this.workflow = workflow;
+        if (workflow == null) throw new IllegalArgumentException("Null workflow passed to DotGrapher.");
+        this.topWorkflow = workflow;
         return this;
     }
     
@@ -91,6 +95,8 @@ public class DotGrapher implements Grapher  {
             uriDisplayMode = DataLabelMode.toUriDisplayMode(value);
         } else if (key.equalsIgnoreCase("edgelabels")) {
             edgeLabelMode = EdgeLabelMode.toEdgeLabelMode(value);
+        } else if (key.equalsIgnoreCase("subworkflow")) {
+            subworkflowName = (String)value;
         } else if (key.equalsIgnoreCase("workflowtitle")) {
             workflowTitleMode = WorkflowTitleMode.toWorkflowTitleMode(value);
         } else if (key.equalsIgnoreCase("dotfile")) {
@@ -108,18 +114,14 @@ public class DotGrapher implements Grapher  {
     @Override
     public DotGrapher graph() throws Exception {
         
-        if (workflow == null) {
-            if (model != null & model.program != null) {
-                workflow = model.program;
-            } else {
-                throw new YWToolUsageException("Top workflow not identified to grapher.");
-            }
-        }
+        if (topWorkflow == null) throw new YWToolUsageException("Workflow not identified to DotGrapher.");
+        workflow = (subworkflowName == null) ? topWorkflow : topWorkflow.getSubprogram(subworkflowName);
+        if (workflow == null) throw new YWToolUsageException("Subworkflow named " + subworkflowName + " not found.");
         
         dot = new DotBuilder().beginGraph()
-                              .rankDir(layoutDirection.toString())
-                              .enableComments(commentView == CommentVisibility.SHOW)
-                              .showClusterBox(workflowBoxMode == WorkflowBoxMode.SHOW);
+                .rankDir(layoutDirection.toString())
+                .enableComments(commentView == CommentVisibility.SHOW)
+                .showClusterBox(workflowBoxMode == WorkflowBoxMode.SHOW);
 
         switch(graphView) {
         
@@ -140,6 +142,9 @@ public class DotGrapher implements Grapher  {
         writeTextToFileOrStdout(outputDotFile, this.graphText);
         return this;
     }
+    
+    
+    
     
     private void writeTextToFileOrStdout(String path, String text) throws IOException {        
         PrintStream stream = (path == null || path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
@@ -456,8 +461,7 @@ public class DotGrapher implements Grapher  {
                 }
             }
 
-            drawEdgesFromPortsToChannelNodes();
-            
+            drawEdgesFromPortsToChannelNodes();            
         }
     }    
 }
