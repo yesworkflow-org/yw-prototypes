@@ -129,6 +129,9 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
     graph.layout               Direction of graph layout: TB, LR, RL, or BT
     graph.params               SHOW, HIDE, or REDUCE visibility of parameters
     graph.portlayout           Layout mode for workflow ports: HIDE, RELAX or GROUP
+    graph.subworkflow          Qualified name of (sub)workflow to render
+    graph.title                Graph title (defaults to workflow name)
+    graph.titleposition        Where to place graph titl: TOP, BOTTOM, or HIDE
     graph.view                 Workflow view to render: PROCESS, DATA or COMBINED
     graph.workflowbox          SHOW or HIDE box around nodes internal to workflow
 

@@ -290,6 +290,9 @@ public class YesWorkflowCLI {
         "graph.layout               Direction of graph layout: TB, LR, RL, or BT"           + EOL +
         "graph.params               SHOW, HIDE, or REDUCE visibility of parameters"         + EOL +
         "graph.portlayout           Layout mode for workflow ports: HIDE, RELAX or GROUP"   + EOL +
+        "graph.subworkflow          Qualified name of (sub)workflow to render"              + EOL +
+        "graph.title                Graph title (defaults to workflow name)"                + EOL +
+        "graph.titleposition        Where to place graph title: TOP, BOTTOM, or HIDE"       + EOL +
         "graph.view                 Workflow view to render: PROCESS, DATA or COMBINED"     + EOL +
         "graph.workflowbox          SHOW or HIDE box around nodes internal to workflow"     + EOL;
     
