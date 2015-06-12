@@ -114,12 +114,14 @@ public class DefaultModeler implements Modeler {
 
             if (annotation instanceof Begin) {
 
+                String parentName = null;
                 if (workflowBuilder != null) {
                     parentWorkflowBuilders.push(workflowBuilder);
                     parentBuilder = workflowBuilder;
+                    parentName = parentBuilder.getName();
                 }
 
-                workflowBuilder = new WorkflowBuilder(nextProgramId++, this.stdoutStream, this.stderrStream)
+                workflowBuilder = new WorkflowBuilder(nextProgramId++, parentName, this.stdoutStream, this.stderrStream)
                     .begin((Begin)annotation);
                 
                 if (topWorkflowBuilder == null) { 

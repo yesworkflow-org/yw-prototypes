@@ -12,6 +12,7 @@ public class Function extends Workflow {
     
     public Function(
             Integer id,
+            String name,
             Begin beginAnnotation, 
             End endAnnotation,
             List<Port> inPorts,
@@ -21,7 +22,7 @@ public class Function extends Workflow {
             List<Channel> channels,
             List<Function> functions
     ) {
-        super(id, beginAnnotation, endAnnotation,
+        super(id, name, beginAnnotation, endAnnotation,
                 inPorts, outPorts, programs,
                 channels, functions);
         

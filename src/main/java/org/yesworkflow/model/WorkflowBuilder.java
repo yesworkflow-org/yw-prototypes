@@ -13,7 +13,9 @@ import org.yesworkflow.annotations.End;
 
 public class WorkflowBuilder {
 		
-        private final Integer programId;
+        public final Integer programId;
+        public final String parentName;
+        private String name;
         private Begin beginAnnotation;
         private End endAnnotation;
         private List<Port> workflowInPorts = new LinkedList<Port>();
@@ -29,6 +31,7 @@ public class WorkflowBuilder {
         private Map<String,Program> programForName = new HashMap<String,Program>();
         private Map<String,Function> functionForName = new HashMap<String,Function>();
         
+        
         private Integer nextChannelId = 1;
         
         @SuppressWarnings("unused")
@@ -37,17 +40,23 @@ public class WorkflowBuilder {
         @SuppressWarnings("unused")
         private PrintStream stderrStream = null;
 
-        public WorkflowBuilder(Integer id, PrintStream stdoutStream, PrintStream stderrStream) {
+        public WorkflowBuilder(Integer id, String parentName, PrintStream stdoutStream, PrintStream stderrStream) {
             this.programId = id;
+            this.parentName = parentName;
             this.stdoutStream = stdoutStream;
             this.stderrStream = stderrStream;
         }
         
 		public WorkflowBuilder begin(Begin annotation) {
 			this.beginAnnotation = annotation;
+			this.name = (parentName == null) ? annotation.name : parentName + "." + annotation.name; 
 			return this;
 		}
 
+		public String getName() {
+		    return this.name;
+		}
+		
         public void end(End annotation) {
             this.endAnnotation = annotation;
         }
@@ -174,6 +183,7 @@ public class WorkflowBuilder {
             buildChannels();
 		    return new Function(
 		            programId,
+		            name,
 		            beginAnnotation,
                     endAnnotation,
                     workflowInPorts,
@@ -188,6 +198,7 @@ public class WorkflowBuilder {
         private Program buildProgram() throws Exception {
             return new Program(
                     programId,
+                    name,
                     beginAnnotation, 
                     endAnnotation, 
                     workflowInPorts, 
@@ -199,7 +210,8 @@ public class WorkflowBuilder {
 	            
         private Workflow buildWorkflow() throws Exception {
 			return new Workflow(
-			        programId,
+                    programId,
+			        name,
                     beginAnnotation,
                     endAnnotation,
                     workflowInPorts,

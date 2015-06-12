@@ -9,6 +9,7 @@ public class Workflow extends Program {
 
     public Workflow(
            Integer id,
+           String name,
            Begin beginAnnotation,
            End endAnnotation,
            List<Port> inPorts,
@@ -17,7 +18,7 @@ public class Workflow extends Program {
            List<Channel> channels,
            List<Function> functions
     ) {
-        super(id, beginAnnotation, endAnnotation, 
+        super(id, name, beginAnnotation, endAnnotation, 
              inPorts.toArray(new Port[inPorts.size()]),
              outPorts.toArray(new Port[outPorts.size()]),
              programs.toArray(new Program[programs.size()]),

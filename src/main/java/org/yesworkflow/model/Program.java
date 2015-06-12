@@ -21,9 +21,11 @@ public class Program {
     public final Program[] programs;
     public final Channel[] channels;
     public final Function[] functions;
+    public final String name;
 
     public Program(
             Integer id,
+            String name,
             Begin beginAnnotation, 
             End endAnnotation, 
             Port[] inPorts, 
@@ -40,19 +42,21 @@ public class Program {
         this.programs = programs;
         this.channels = channels;
         this.functions = functions;
+        this.name = name;
     }
     
 	public Program(
 	        Integer id,
+	        String name,
 	        Begin beginAnnotation, 
 	        End endAnnotation, 
 	        List<Port> inPorts, 
 	        List<Port> outPorts,
 	        List<Program> subprograms,
             List<Function> functions
-	        
     ) {
 	    this(id,
+	         name,
 	         beginAnnotation,  
 	         endAnnotation, 
 	         inPorts.toArray(new Port[inPorts.size()]),
@@ -128,7 +132,6 @@ public class Program {
         }
         return ch;
     }
- 
     
     public boolean hasChannelForBinding(String binding) {
         for (Channel c : channels) {

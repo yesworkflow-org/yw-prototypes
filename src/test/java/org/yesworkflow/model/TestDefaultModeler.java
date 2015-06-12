@@ -50,6 +50,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                  .getModel()
                                  .program;
         
+        assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(0, program.inPorts.length);
@@ -74,6 +75,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                  .getModel()
                                  .program;
         
+        assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(0, program.inPorts.length);
@@ -97,6 +99,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                  .getModel()
                                  .program;
         
+        assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(0, program.inPorts.length);
@@ -125,6 +128,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                  .getModel()
                                  .program;
  
+        assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(0, program.inPorts.length);
@@ -133,6 +137,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(0, program.channels.length);
         
         Program subprogram = program.programs[0];
+        assertEquals("script.program", subprogram.name);
         assertFalse(subprogram instanceof Workflow);
         assertEquals("program", subprogram.beginAnnotation.name);
     }
@@ -156,6 +161,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                              .getModel()
                                              .program;
 
+        assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(0, program.inPorts.length);
@@ -164,6 +170,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(0, program.channels.length);
         
         Program subprogram = program.programs[0];
+        assertEquals("script.program", subprogram.name);
         assertFalse(subprogram instanceof Workflow);
         assertEquals("program", subprogram.beginAnnotation.name);
     }
@@ -253,6 +260,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                              .getModel()
                                              .program;
         
+        assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(0, program.inPorts.length);
@@ -261,6 +269,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(0, program.channels.length);
 
         Program program0 = program.programs[0];
+        assertEquals("script.program0", program0.name);
         assertFalse(program0 instanceof Workflow);
         assertEquals("program0", program0.beginAnnotation.name);        
         assertEquals("program0", program0.endAnnotation.name);
@@ -268,6 +277,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(0, program0.outPorts.length);
 
         Program program1 = program.programs[1];
+        assertEquals("script.program1", program1.name);
         assertFalse(program1 instanceof Workflow);
         assertEquals("program1", program1.beginAnnotation.name);        
         assertEquals("program1", program1.endAnnotation.name);
@@ -298,6 +308,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                  .getModel()
                                      .program;
         
+        assertEquals("workflow", program.name);
         assertEquals("workflow", program.beginAnnotation.name);
         assertEquals("workflow", program.endAnnotation.name);
         assertEquals(0, program.inPorts.length);
@@ -306,6 +317,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(0, program.channels.length);
         
         Program subprogram = program.programs[0];
+        assertEquals("workflow.subworkflow", subprogram.name);
         assertEquals("subworkflow", subprogram.beginAnnotation.name);
         assertEquals("subworkflow", subprogram.endAnnotation.name);
         assertEquals(0, subprogram.inPorts.length);
@@ -314,6 +326,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(0, subprogram.channels.length);
         
         Program subsubprogram = subprogram.programs[0];
+        assertEquals("workflow.subworkflow.program", subsubprogram.name);
         assertFalse(subsubprogram instanceof Workflow);
         assertEquals("program", subsubprogram.beginAnnotation.name);
         assertEquals("program", subsubprogram.endAnnotation.name);
@@ -344,6 +357,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                  .getModel()
                                  .program;
         
+        assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(2, program.inPorts.length);
@@ -376,6 +390,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                  .getModel()
                                  .program;
         
+        assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(2, program.inPorts.length);
@@ -408,6 +423,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                  .getModel()
                                  .program;
         
+        assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.name);
         assertEquals("script", program.endAnnotation.name);
         assertEquals(2, program.inPorts.length);
@@ -440,6 +456,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                              .getModel()
                                              .program;
         
+        assertEquals("script", workflow.name);
         assertEquals("script", workflow.beginAnnotation.name);
         assertEquals("script", workflow.endAnnotation.name);
         assertEquals(0, workflow.inPorts.length);
@@ -449,12 +466,14 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Program program0 = workflow.programs[0];
         assertFalse(program0 instanceof Workflow);
+        assertEquals("script.program0", program0.name);
         assertEquals("program0", program0.beginAnnotation.name);
         assertEquals("program0", program0.endAnnotation.name);
         assertEquals(0, program0.inPorts.length);
         assertEquals(1, program0.outPorts.length);
 
         Program program1 = workflow.programs[1];
+        assertEquals("script.program1", program1.name);
         assertFalse(program1 instanceof Workflow);
         assertEquals("program1", program1.beginAnnotation.name);
         assertEquals("program1", program1.endAnnotation.name);
@@ -462,11 +481,11 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(0, program1.outPorts.length);
         
         Channel channel = workflow.channels[0];
-        assertEquals("program0", channel.sourceProgram.beginAnnotation.name);
+        assertEquals("script.program0", channel.sourceProgram.name);
         assertEquals("channel", channel.sourcePort.flowAnnotation.name);
         assertEquals(Out.class, channel.sourcePort.flowAnnotation.getClass());
 
-        assertEquals("program1", channel.sinkProgram.beginAnnotation.name);
+        assertEquals("script.program1", channel.sinkProgram.name);
         assertEquals("channel", channel.sinkPort.flowAnnotation.name);
         assertEquals(In.class, channel.sinkPort.flowAnnotation.getClass());
 
@@ -497,6 +516,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                              .getModel()
                                              .program;
         
+        assertEquals("script", workflow.name);
         assertEquals("script", workflow.beginAnnotation.name);
         assertEquals("script", workflow.endAnnotation.name);
         assertEquals(0, workflow.inPorts.length);
@@ -506,6 +526,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Program program0 = workflow.programs[0];
         assertFalse(program0 instanceof Workflow);
+        assertEquals("script.program0", program0.name);
         assertEquals("program0", program0.beginAnnotation.name);
         assertEquals("program0", program0.endAnnotation.name);
         assertEquals(0, program0.inPorts.length);
@@ -513,17 +534,18 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Program program1 = workflow.programs[1];
         assertFalse(program1 instanceof Workflow);
+        assertEquals("script.program1", program1.name);
         assertEquals("program1", program1.beginAnnotation.name);
         assertEquals("program1", program1.endAnnotation.name);
         assertEquals(1, program1.inPorts.length);
         assertEquals(0, program1.outPorts.length);
         
         Channel channel = workflow.channels[0];
-        assertEquals("program0", channel.sourceProgram.beginAnnotation.name);
+        assertEquals("script.program0", channel.sourceProgram.name);
         assertEquals("channel", channel.sourcePort.flowAnnotation.name);
         assertEquals(Out.class, channel.sourcePort.flowAnnotation.getClass());
 
-        assertEquals("program1", channel.sinkProgram.beginAnnotation.name);
+        assertEquals("script.program1", channel.sinkProgram.name);
         assertEquals("channel", channel.sinkPort.flowAnnotation.name);
         assertEquals(Param.class, channel.sinkPort.flowAnnotation.getClass());
 
@@ -560,6 +582,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                              .getModel()
                                              .program;
         
+        assertEquals("script", workflow.name);
         assertEquals("script", workflow.beginAnnotation.name);
         assertEquals("script", workflow.endAnnotation.name);
         assertEquals(0, workflow.inPorts.length);
@@ -569,6 +592,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Program program0 = workflow.programs[0];
         assertFalse(program0 instanceof Workflow);
+        assertEquals("script.program0", program0.name);
         assertEquals("program0", program0.beginAnnotation.name);
         assertEquals("program0", program0.endAnnotation.name);
         assertEquals(0, program0.inPorts.length);
@@ -576,15 +600,16 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Program program1 = workflow.programs[1];
         assertFalse(program1 instanceof Workflow);
+        assertEquals("script.program1", program1.name);
         assertEquals("program1", program1.beginAnnotation.name);
         assertEquals("program1", program1.endAnnotation.name);
         assertEquals(1, program1.inPorts.length);
         assertEquals(0, program1.outPorts.length);
         
         Channel channel = workflow.channels[0];
-        assertEquals("program0", channel.sourceProgram.beginAnnotation.name);
+        assertEquals("script.program0", channel.sourceProgram.name);
         assertEquals("channel", channel.sourcePort.flowAnnotation.name);
-        assertEquals("program1", channel.sinkProgram.beginAnnotation.name);
+        assertEquals("script.program1", channel.sinkProgram.name);
         assertEquals("channel", channel.sinkPort.flowAnnotation.name);
     }
     
@@ -622,6 +647,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                                              .getModel()
                                              .program;
         
+        assertEquals("script", workflow.name);
         assertEquals("script", workflow.beginAnnotation.name);
         assertEquals("script", workflow.endAnnotation.name);
         assertEquals(0, workflow.inPorts.length);
@@ -631,6 +657,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Program program0 = workflow.programs[0];
         assertFalse(program0 instanceof Workflow);
+        assertEquals("script.program0", program0.name);
         assertEquals("program0", program0.beginAnnotation.name);
         assertEquals("program0", program0.endAnnotation.name);
         assertEquals(0, program0.inPorts.length);
@@ -638,6 +665,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Program program1 = workflow.programs[1];
         assertFalse(program1 instanceof Workflow);
+        assertEquals("script.program1", program1.name);
         assertEquals("program1", program1.beginAnnotation.name);
         assertEquals("program1", program1.endAnnotation.name);
         assertEquals(1, program1.inPorts.length);
@@ -645,22 +673,23 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         Program program2 = workflow.programs[2];
         assertFalse(program2 instanceof Workflow);
+        assertEquals("script.program2", program2.name);
         assertEquals("program2", program2.beginAnnotation.name);
         assertEquals("program2", program2.endAnnotation.name);
         assertEquals(1, program1.inPorts.length);
         assertEquals(0, program1.outPorts.length);
         
         Channel channel0 = workflow.channels[0];
-        assertEquals("program0", channel0.sourceProgram.beginAnnotation.name);
+        assertEquals("script.program0", channel0.sourceProgram.name);
         assertEquals("channel0", channel0.sourcePort.flowAnnotation.name);
-        assertEquals("program1", channel0.sinkProgram.beginAnnotation.name);
+        assertEquals("script.program1", channel0.sinkProgram.name);
         assertEquals("channel0", channel0.sinkPort.flowAnnotation.name);
         assertEquals(In.class, channel0.sinkPort.flowAnnotation.getClass());
 
         Channel channel1 = workflow.channels[1];
-        assertEquals("program0", channel1.sourceProgram.beginAnnotation.name);
+        assertEquals("script.program0", channel1.sourceProgram.name);
         assertEquals("channel1", channel1.sourcePort.flowAnnotation.name);
-        assertEquals("program2", channel1.sinkProgram.beginAnnotation.name);
+        assertEquals("script.program2", channel1.sinkProgram.name);
         assertEquals("channel1", channel1.sinkPort.flowAnnotation.name);
         assertEquals(Param.class, channel1.sinkPort.flowAnnotation.getClass());
     }
