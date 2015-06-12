@@ -24,7 +24,7 @@ public class DotGrapher implements Grapher  {
     public static PortLayout DEFAULT_PORT_LAYOUT = PortLayout.GROUP;
     public static DataLabelMode DEFAULT_URI_DISPLAY_MODE = DataLabelMode.BOTH;
     public static EdgeLabelMode DEFAULT_EDGE_LABEL_MODE = EdgeLabelMode.SHOW;
-    public static WorkflowTitleMode DEFAULT_WORKFLOW_TITLE_MODE = WorkflowTitleMode.SHOW;
+    public static TitlePosition DEFAULT_TITLE_POSITION = TitlePosition.HIDE;
     
     private Program topWorkflow = null;
     private Program workflow = null;
@@ -37,13 +37,12 @@ public class DotGrapher implements Grapher  {
     private PortLayout portLayout = DEFAULT_PORT_LAYOUT;
     private DataLabelMode uriDisplayMode = DEFAULT_URI_DISPLAY_MODE;
     private EdgeLabelMode edgeLabelMode = DEFAULT_EDGE_LABEL_MODE;
-    private WorkflowTitleMode workflowTitleMode = DEFAULT_WORKFLOW_TITLE_MODE;
+    private TitlePosition titlePosition = DEFAULT_TITLE_POSITION;
     private String subworkflowName = null;
     private String graphText = null;
     private String outputDotFile = null;
     private PrintStream stdoutStream = null;
     private List<String> channelBindings = new LinkedList<String>();
-    private DotBuilder dot;
         
     @SuppressWarnings("unused")
     private PrintStream stderrStream = null;
@@ -97,8 +96,8 @@ public class DotGrapher implements Grapher  {
             edgeLabelMode = EdgeLabelMode.toEdgeLabelMode(value);
         } else if (key.equalsIgnoreCase("subworkflow")) {
             subworkflowName = (String)value;
-        } else if (key.equalsIgnoreCase("workflowtitle")) {
-            workflowTitleMode = WorkflowTitleMode.toWorkflowTitleMode(value);
+        } else if (key.equalsIgnoreCase("titleposition")) {
+            titlePosition = TitlePosition.toTitlePosition(value);
         } else if (key.equalsIgnoreCase("dotfile")) {
             outputDotFile = (String)value;
         }
@@ -118,33 +117,24 @@ public class DotGrapher implements Grapher  {
         workflow = (subworkflowName == null) ? topWorkflow : topWorkflow.getSubprogram(subworkflowName);
         if (workflow == null) throw new YWToolUsageException("Subworkflow named " + subworkflowName + " not found.");
         
-        dot = new DotBuilder().beginGraph()
-                .rankDir(layoutDirection.toString())
-                .enableComments(commentView == CommentVisibility.SHOW)
-                .showClusterBox(workflowBoxMode == WorkflowBoxMode.SHOW);
-
         switch(graphView) {
         
         case PROCESS_CENTRIC_VIEW:
-            new ProcessRendering().render();
+            this.graphText = new ProcessRendering().render();
             break;
         
         case DATA_CENTRIC_VIEW:
-            new DataRendering().render();
+            this.graphText = new DataRendering().render();
             break;
         
         case COMBINED_VIEW:
-            new CombinedRendering().render();
+            this.graphText = new CombinedRendering().render();
             break;
         }
         
-        this.graphText = dot.endGraph().toString();        
         writeTextToFileOrStdout(outputDotFile, this.graphText);
         return this;
     }
-    
-    
-    
     
     private void writeTextToFileOrStdout(String path, String text) throws IOException {        
         PrintStream stream = (path == null || path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
@@ -154,9 +144,10 @@ public class DotGrapher implements Grapher  {
             stream.close();
         }
     }
-    
-    
+        
     private abstract class GraphRendering {
+        
+        protected DotBuilder dot;
         
         public GraphRendering() {
             dot = new DotBuilder().beginGraph()
@@ -165,8 +156,29 @@ public class DotGrapher implements Grapher  {
                                   .showClusterBox(workflowBoxMode == WorkflowBoxMode.SHOW);
         }
         
-        public abstract void render();
+        public abstract String render();
 
+        protected void beginRendering() {
+            dot = new DotBuilder().beginGraph()
+                    .rankDir(layoutDirection.toString())
+                    .enableComments(commentView == CommentVisibility.SHOW)
+                    .showClusterBox(workflowBoxMode == WorkflowBoxMode.SHOW);
+        }
+        
+        protected void endRendering() {
+            dot.endGraph();
+        }
+
+        
+        protected void drawWorkflowBoxAndTitle() {
+            dot.comment("Start of cluster for drawing box around programs in workflow");
+            if (titlePosition == TitlePosition.TOP_CENTER) {
+                dot.beginSubgraph(workflow.toString());
+            } else {
+                dot.beginSubgraph();
+            }
+        }
+        
         protected String edgeLabel(String label) {
             return (edgeLabelMode == EdgeLabelMode.SHOW) ? label : "";
         }
@@ -275,19 +287,16 @@ public class DotGrapher implements Grapher  {
     private class ProcessRendering extends GraphRendering {
 
         @Override
-        public void render() {
+        public String render() {
+            
+            beginRendering();
             
             dot.comment("Use serif font for process labels and sans serif font for data labels");
             dot.graphFont("Courier")
                .edgeFont("Helvetica")
                .nodeFont("Courier");
 
-            dot.comment("Start of cluster for drawing box around programs in workflow");
-            if (workflowTitleMode == WorkflowTitleMode.SHOW) {
-                dot.beginSubgraph(workflow.toString());
-            } else {
-                dot.beginSubgraph();
-            }
+            drawWorkflowBoxAndTitle();
             
             dot.comment("Set node style for programs in workflow");
             dot.shape("box3d").peripheries(1).fillcolor("#CCFFCC");      
@@ -365,16 +374,20 @@ public class DotGrapher implements Grapher  {
                              edgeLabel(c.sourcePort.flowAnnotation.binding()));
                 }
             }
+            
+            endRendering();
+            return dot.toString();
         }
     }
     
     private class DataRendering extends GraphRendering {
 
         @Override
-        public void render() {
+        public String render() {
 
-            dot.comment("Start of cluster for drawing box around programs in workflow");
-            dot.beginSubgraph();
+            beginRendering();
+            
+            drawWorkflowBoxAndTitle();
 
             dot.comment("Use serif font for process labels and sans serif font for data labels");
             dot.graphFont("Courier")
@@ -410,6 +423,9 @@ public class DotGrapher implements Grapher  {
                     }
                 }
             }
+            
+            endRendering();
+            return dot.toString();
         }
     }
     
@@ -417,11 +433,12 @@ public class DotGrapher implements Grapher  {
     private class CombinedRendering extends GraphRendering {
         
         @Override
-        public void render() {
+        public String render() {
             
-            dot.comment("Start of cluster for drawing box around programs in workflow");
-            dot.beginSubgraph();
-
+            beginRendering();
+            
+            drawWorkflowBoxAndTitle();
+            
             dot.comment("Use serif font for process labels");
             dot.graphFont("Courier")
                .nodeFont("Courier");
@@ -461,7 +478,10 @@ public class DotGrapher implements Grapher  {
                 }
             }
 
-            drawEdgesFromPortsToChannelNodes();            
+            drawEdgesFromPortsToChannelNodes();  
+            
+            endRendering();
+            return dot.toString();
         }
     }    
 }

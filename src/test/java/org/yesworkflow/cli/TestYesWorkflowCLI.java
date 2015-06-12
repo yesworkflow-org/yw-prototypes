@@ -398,7 +398,9 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     public void testYesWorkflowCLI_Graph_ExamplePy_ProcessGraph() throws Exception {
 
-        String[] args = {"graph", "src/main/resources/example.py", "-c", "graph.params=hide"};
+        String[] args = {"graph", "src/main/resources/example.py", 
+                         "-c", "graph.params=hide",
+                         "-c", "graph.titleposition=topcenter"};
         YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
         cli.runForArgs(args);
 

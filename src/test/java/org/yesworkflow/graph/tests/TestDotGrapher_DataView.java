@@ -15,6 +15,7 @@ import org.yesworkflow.graph.DotGrapher;
 import org.yesworkflow.graph.GraphView;
 import org.yesworkflow.graph.Grapher;
 import org.yesworkflow.graph.ParamVisibility;
+import org.yesworkflow.graph.TitlePosition;
 import org.yesworkflow.model.DefaultModeler;
 import org.yesworkflow.model.Modeler;
 import org.yesworkflow.model.Workflow;
@@ -40,7 +41,8 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         config = new HashMap<String,Object>();
         
         grapher.configure("view", GraphView.DATA_CENTRIC_VIEW)
-               .configure("comments", CommentVisibility.HIDE);
+               .configure("comments", CommentVisibility.HIDE)
+               .configure("titleposition", TitlePosition.HIDE);
     }    
 
     public void testDotGrapher_DataView_TwoProgramsOneChannel_OneInOneOut() throws Exception {

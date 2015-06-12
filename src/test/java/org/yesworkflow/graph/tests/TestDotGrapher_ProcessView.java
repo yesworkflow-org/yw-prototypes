@@ -15,6 +15,7 @@ import org.yesworkflow.graph.GraphView;
 import org.yesworkflow.graph.Grapher;
 import org.yesworkflow.graph.LayoutDirection;
 import org.yesworkflow.graph.ParamVisibility;
+import org.yesworkflow.graph.TitlePosition;
 import org.yesworkflow.model.DefaultModeler;
 import org.yesworkflow.model.Modeler;
 import org.yesworkflow.model.Workflow;
@@ -40,7 +41,8 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
 
         grapher.configure("view", GraphView.PROCESS_CENTRIC_VIEW)
                .configure("comments", CommentVisibility.HIDE)
-               .configure("params", ParamVisibility.SHOW);
+               .configure("params", ParamVisibility.SHOW)
+               .configure("titleposition", TitlePosition.TOP_CENTER);
     }
     
     public void test_TwoProgramsOneChannel_In() throws Exception {
