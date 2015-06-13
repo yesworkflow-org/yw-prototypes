@@ -1,46 +1,17 @@
 package org.yesworkflow.graph.tests;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.yesworkflow.annotations.Annotation;
-import org.yesworkflow.extract.DefaultExtractor;
-import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.graph.CommentVisibility;
-import org.yesworkflow.graph.DotGrapher;
 import org.yesworkflow.graph.GraphView;
-import org.yesworkflow.graph.Grapher;
 import org.yesworkflow.graph.ParamVisibility;
 import org.yesworkflow.graph.PortLayout;
 import org.yesworkflow.graph.TitlePosition;
-import org.yesworkflow.model.DefaultModeler;
-import org.yesworkflow.model.Modeler;
-import org.yesworkflow.model.Workflow;
-import org.yesworkflow.YesWorkflowTestCase;
 
-public class TestDotGrapher_DataView extends YesWorkflowTestCase {
+public class TestDotGrapher_DataView extends DotGrapherTestCase {
 
-	Extractor extractor = null;
-    Modeler modeler = null;
-    Grapher grapher = null;
-    Map<String,Object> config = null;
-    
-    static final String TEST_RESOURCE_DIR = "src/test/resources/org/yesworkflow/graph/TestDotGrapher_DataView/";
-    
     @Override
-    public void setUp() throws Exception {
-        
+    public void setUp() throws Exception {        
         super.setUp();
-        
-        extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
-        modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
-        grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
-        config = new HashMap<String,Object>();
-        
+        testResourceDirectory = "src/test/resources/org/yesworkflow/graph/TestDotGrapher_DataView/";
         grapher.configure("view", GraphView.DATA_CENTRIC_VIEW)
                .configure("dotcomments", CommentVisibility.SHOW)
                .configure("params", ParamVisibility.SHOW)
@@ -103,7 +74,6 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                     actualGraph("twoChannels_OneProgram_OneParamOneOut"));        
        assertEquals("", stderrBuffer.toString());
    }
-
    
     public void testDotGrapher_DataView_TwoChannels_OneProgram_TwoInOneOut() throws Exception {
         grapher.configure("portlayout", PortLayout.RELAX);
@@ -135,32 +105,4 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
                      actualGraph("twoChannels_OneProgram_OneInOneParamOneOut"));        
         assertEquals("", stderrBuffer.toString());
     }
-
-    
-    private String actualGraph(String name) throws Exception {
-        
-        String script = super.readTextFile(TEST_RESOURCE_DIR + name + ".in");
-
-        BufferedReader reader = new BufferedReader(new StringReader(script));
-        
-        List<Annotation> annotations = extractor
-                .configure("comment", "#")
-                .reader(reader)
-                .extract()
-                .getAnnotations();
-
-        Workflow workflow = (Workflow)modeler.annotations(annotations)
-                                             .model()
-                                             .getModel()
-                                             .program;
-
-        grapher.workflow(workflow)
-               .graph();
-        
-        return grapher.toString();
-   }
-   
-   private String expectedGraph(String name) throws IOException {
-       return readTextFile(TEST_RESOURCE_DIR + name + ".gv");
-   }
 }

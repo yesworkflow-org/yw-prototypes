@@ -1,7 +1,6 @@
 package org.yesworkflow.extract;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.StringReader;
 import java.util.List;
 
