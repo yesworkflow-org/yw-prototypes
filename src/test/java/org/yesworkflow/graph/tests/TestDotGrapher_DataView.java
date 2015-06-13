@@ -15,6 +15,7 @@ import org.yesworkflow.graph.DotGrapher;
 import org.yesworkflow.graph.GraphView;
 import org.yesworkflow.graph.Grapher;
 import org.yesworkflow.graph.ParamVisibility;
+import org.yesworkflow.graph.PortLayout;
 import org.yesworkflow.graph.TitlePosition;
 import org.yesworkflow.model.DefaultModeler;
 import org.yesworkflow.model.Modeler;
@@ -41,7 +42,8 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
         config = new HashMap<String,Object>();
         
         grapher.configure("view", GraphView.DATA_CENTRIC_VIEW)
-               .configure("comments", CommentVisibility.HIDE)
+               .configure("dotcomments", CommentVisibility.SHOW)
+               .configure("params", ParamVisibility.SHOW)
                .configure("titleposition", TitlePosition.HIDE);
     }    
 
@@ -96,9 +98,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
     }
 
    public void testDotGrapher_DataView_TwoChannels_OneProgram_OneParamOneOut_ReduceParams() throws Exception {
-       
        grapher.configure("params", ParamVisibility.REDUCE);
-       
        assertEquals(expectedGraph("twoChannels_OneProgram_OneParamOneOut_ReduceParams"), 
                     actualGraph("twoChannels_OneProgram_OneParamOneOut"));        
        assertEquals("", stderrBuffer.toString());
@@ -106,6 +106,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
 
    
     public void testDotGrapher_DataView_TwoChannels_OneProgram_TwoInOneOut() throws Exception {
+        grapher.configure("portlayout", PortLayout.RELAX);
         String src = "twoChannels_OneProgram_TwoInOneOut";
         assertEquals(expectedGraph(src), actualGraph(src));
         assertEquals("", stderrBuffer.toString());
@@ -113,7 +114,7 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
 
     public void testDotGrapher_DataView_TwoChannels_OneProgram_OneInOneParamOneOut_ShowParams() throws Exception {
         grapher.configure("params", ParamVisibility.SHOW);
-        
+        grapher.configure("portlayout", PortLayout.RELAX);
         assertEquals(expectedGraph("twoChannels_OneProgram_OneInOneParamOneOut_ShowParams"), 
                      actualGraph("twoChannels_OneProgram_OneInOneParamOneOut"));        
         assertEquals("", stderrBuffer.toString());
@@ -121,15 +122,15 @@ public class TestDotGrapher_DataView extends YesWorkflowTestCase {
 
     public void testDotGrapher_DataView_TwoChannels_OneProgram_OneInOneParamOneOut_HideParams() throws Exception {
         grapher.configure("params", ParamVisibility.HIDE);
-        
+        grapher.configure("portlayout", PortLayout.RELAX);
         assertEquals(expectedGraph("twoChannels_OneProgram_OneInOneParamOneOut_HideParams"), 
                      actualGraph("twoChannels_OneProgram_OneInOneParamOneOut"));        
         assertEquals("", stderrBuffer.toString());
     }
 
     public void testDotGrapher_DataView_TwoChannels_OneProgram_OneInOneParamOneOut_ReduceParams() throws Exception {
-        grapher.configure("params", ParamVisibility.REDUCE);
-        
+        grapher.configure("params", ParamVisibility.REDUCE);        
+        grapher.configure("portlayout", PortLayout.RELAX);
         assertEquals(expectedGraph("twoChannels_OneProgram_OneInOneParamOneOut_ReduceParams"), 
                      actualGraph("twoChannels_OneProgram_OneInOneParamOneOut"));        
         assertEquals("", stderrBuffer.toString());

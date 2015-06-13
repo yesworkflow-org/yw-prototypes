@@ -15,6 +15,7 @@ import org.yesworkflow.graph.GraphView;
 import org.yesworkflow.graph.Grapher;
 import org.yesworkflow.graph.LayoutDirection;
 import org.yesworkflow.graph.ParamVisibility;
+import org.yesworkflow.graph.PortLayout;
 import org.yesworkflow.graph.TitlePosition;
 import org.yesworkflow.model.DefaultModeler;
 import org.yesworkflow.model.Modeler;
@@ -40,7 +41,7 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
 
         grapher.configure("view", GraphView.PROCESS_CENTRIC_VIEW)
-               .configure("comments", CommentVisibility.HIDE)
+               .configure("dotcomments", CommentVisibility.SHOW)
                .configure("params", ParamVisibility.SHOW)
                .configure("titleposition", TitlePosition.HIDE);
     }
@@ -142,6 +143,7 @@ public class TestDotGrapher_ProcessView extends YesWorkflowTestCase {
      }
 
      public void test_ExamplePyScript() throws Exception {
+         grapher.configure("portlayout", PortLayout.RELAX);
          String src = "examplePyScript";
          assertEquals(expectedGraph(src), actualGraph(src));  
      }

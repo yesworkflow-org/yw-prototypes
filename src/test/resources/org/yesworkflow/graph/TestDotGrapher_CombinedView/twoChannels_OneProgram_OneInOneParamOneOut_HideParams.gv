@@ -1,26 +1,35 @@
 digraph Workflow {
 rankdir=LR
-subgraph cluster0 {
-label=""
-penwidth=2
-fontsize=18
-subgraph cluster1 {
-label=""
-color="white"
-graph[fontname=Courier]
-node[fontname=Courier]
-node[shape=box3d style="filled" fillcolor="#CCFFCC" peripheries=1 label=""]
+
+/* Start of double cluster for drawing box around nodes in workflow */
+subgraph cluster0 {label=""; penwidth=2; fontsize=18
+subgraph cluster1 {label=""; color="white"
+
+/* Nodes representing programs in workflow */
+node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=1 fontname="Courier"]
 node1 [label="program"]
-node[fontname=Helvetica]
-node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 label=""]
+
+/* Nodes representing subworkflows in workflow */
+node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=2 fontname="Courier"]
+
+/* Nodes for data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname="Helvetica"]
 node2 [label="d"]
 node3 [label="x"]
-}}
-node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 label="" width=0.2]
-node4
-node5
+
+/* Edges for channels between programs and channels */
 node1 -> node2
 node3 -> node1
+
+/* End of double cluster for drawing box around nodes in workflow */
+}}
+
+/* Nodes representing workflow ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname="Helvetica" width=0.2]
+node4 [label=""]
+node5 [label=""]
+
+/* Edges between channels and ports */
 node4 -> node3
 node2 -> node5
 }

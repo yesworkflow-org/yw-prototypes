@@ -1,15 +1,16 @@
 digraph Workflow {
 rankdir=TB
-subgraph cluster0 {
-label=""
-penwidth=2
-fontsize=18
-subgraph cluster1 {
-label=""
-color="white"
-graph[fontname=Courier]
-node[fontname=Courier]
-node[shape=box3d style="filled" fillcolor="#CCFFCC" peripheries=1 label=""]
+
+/* Title for graph */
+fontname=Courier; fontsize=18; labelloc=t
+label="simulate_data_collection"
+
+/* Start of double cluster for drawing box around nodes in workflow */
+subgraph cluster0 {label=""; penwidth=2; fontsize=18
+subgraph cluster1 {label=""; color="white"
+
+/* Nodes representing programs in workflow */
+node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=1 fontname="Courier"]
 node1 [label="initialize_run"]
 node2 [label="load_screening_results"]
 node3 [label="calculate_strategy"]
@@ -17,8 +18,12 @@ node4 [label="log_rejected_sample"]
 node5 [label="collect_data_set"]
 node6 [label="transform_images"]
 node7 [label="log_average_image_intensity"]
-node[fontname=Helvetica]
-node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 label=""]
+
+/* Nodes representing subworkflows in workflow */
+node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=2 fontname="Courier"]
+
+/* Nodes for data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname="Helvetica"]
 node8 [shape=record  rankdir=LR label="{<f0> corrected_image|<f1>file:data/\{sample_id\}/\{sample_id\}_\{energy\}eV_\{frame_number\}.img}"];
 node9 [shape=record  rankdir=LR label="{<f0> run_log|<f1>file:run/run_log.txt}"];
 node10 [shape=record  rankdir=LR label="{<f0> collection_log|<f1>file:run/collected_images.csv}"];
@@ -38,25 +43,11 @@ node23 [shape=record  rankdir=LR label="{<f0> calibration_image|<f1>file:calibra
 node24 [label="corrected_image_path"]
 node25 [label="total_intensity"]
 node26 [label="pixel_count"]
-node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 label=""]
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname="Helvetica"]
 node27 [label="cassette_id"]
 node28 [label="sample_score_cutoff"]
-}}
-node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 label="" width=0.2]
-subgraph cluster2 { label="" color="white"
-subgraph cluster3 { label="" color="white"
-node29
-node30
-node31
-node32
-}}
-subgraph cluster4 { label="" color="white"
-subgraph cluster5 { label="" color="white"
-node33
-node34
-node35
-node36
-}}
+
+/* Edges for channels between programs and channels */
 node1 -> node9
 node2 -> node13
 node2 -> node14
@@ -96,6 +87,28 @@ node21 -> node7
 node24 -> node7
 node25 -> node7
 node26 -> node7
+
+/* End of double cluster for drawing box around nodes in workflow */
+}}
+
+/* Nodes representing workflow ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname="Helvetica" width=0.2]
+subgraph cluster2 { label="" color="white"
+subgraph cluster3 { label="" color="white"
+node29 [label=""]
+node30 [label=""]
+node31 [label=""]
+node32 [label=""]
+}}
+subgraph cluster4 { label="" color="white"
+subgraph cluster5 { label="" color="white"
+node33 [label=""]
+node34 [label=""]
+node35 [label=""]
+node36 [label=""]
+}}
+
+/* Edges between channels and ports */
 node29 -> node27
 node30 -> node28
 node31 -> node12

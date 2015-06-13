@@ -26,6 +26,9 @@ public class DotBuilder {
     private boolean commentsEnabled = true;
     private boolean showClusterBox = true;
     private boolean horizontalLayout = true;
+    private String nodeFont = "Courier";
+    private String graphFont = "Courier";
+    
     Map<String,Map<String,Set<String>>> uniqueEdges = new HashMap<String,Map<String,Set<String>>>();
     
 	public DotBuilder beginGraph() {
@@ -34,8 +37,10 @@ public class DotBuilder {
 	}
 
 	public DotBuilder title(String title, String location) {
-	    _buffer.append(    "fontsize=18" + EOL     )
-	           .append(    "labelloc="             )
+	    _buffer.append(    "fontname="             )
+	           .append(    graphFont               )
+	           .append(    "; fontsize=18"         )
+	           .append(    "; labelloc="           )
 	           .append(    location + EOL          )
 	           .append(    "label=\""              )
 	           .append(    title                   )
@@ -106,33 +111,26 @@ public class DotBuilder {
                 
         _buffer.append(     "subgraph "         )
                .append(     name                )
-               .append(     " {"                )
-               .append(     EOL                 )
-               .append(     "label="            )
+               .append(     " {label="          )
                .append(     dq("")              )
-               .append(     EOL                 )
-               .append(     "penwidth=2"        )
-               .append(     EOL                 )
-               .append(     "fontsize=18"       )
-               .append(     EOL                 );
+               .append(     "; penwidth=2"      )
+               .append(     "; fontsize=18"     );
         
         if (!showClusterBox) {
             
-            _buffer.append(     "color="            )
-                   .append(     dq("white")         )
-                   .append(     EOL                 );
+            _buffer.append( "; color="          )
+                   .append( dq("white")         );
         }
+        
+        _buffer.append(     EOL                 );
             
         name = "cluster" + subgraphCount++;
         
         _buffer.append(     "subgraph "         )
                .append(     name                )
-               .append(     " {"                )
-               .append(     EOL                 )
-               .append(     "label="            )
+               .append(     " {label="          )
                .append(     dq("")              )
-               .append(     EOL                 )
-               .append(     "color="            )
+               .append(     "; color="          )
                .append(     dq("white")         )
                .append(     EOL                 );
 
@@ -179,6 +177,13 @@ public class DotBuilder {
         return this;
     }
 
+    public DotBuilder nodeFont(String font) {
+        nodeFont = font;
+        newNodeStyle = true;
+        return this;
+    }
+
+
     public DotBuilder node(String name) {
         return node(name, name);
     }
@@ -197,7 +202,7 @@ public class DotBuilder {
 		
 		_buffer	.append(      id			   );
 		
-		if (label != null && !label.isEmpty()) {
+		if (label != null) {
 		    _buffer.append(	  " [label="	   )
 				   .append(	   dq(label)	   )				
 				   .append(	   "]"             );
@@ -297,25 +302,10 @@ public class DotBuilder {
 	}
 	
 	public DotBuilder graphFont(String font) {
-	    
-	    _buffer.append(    "graph[fontname="   )
-	           .append(    font                )
-	           .append(    "]"                 )
-	           .append(    EOL                 );
-
+	    this.graphFont = font;
 	    return this;
 	}
 	
-    public DotBuilder nodeFont(String font) {
-        
-        _buffer.append(    "node[fontname="    )
-               .append(    font                )
-               .append(    "]"                 )
-               .append(    EOL                 );
-        
-        return this;
-    }
-
     public DotBuilder edgeFont(String font) {
        
         _buffer.append(    "edge[fontname="    )
@@ -337,8 +327,8 @@ public class DotBuilder {
                .append(    dq(fillcolor)    )
                .append(    " peripheries="  )
                .append(    peripheries      )
-               .append(    " label="        )
-               .append(    dq("")           );
+               .append(    " fontname="     )
+               .append(    dq(nodeFont)     );
         
         if (width != null) {
             _buffer.append(   " width="     )

@@ -37,7 +37,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
         
         grapher.configure("view", GraphView.COMBINED_VIEW)
-               .configure("comments", CommentVisibility.HIDE)
+               .configure("dotcomments", CommentVisibility.SHOW)
                .configure("params", ParamVisibility.SHOW)
                .configure("titleposition", TitlePosition.HIDE);
     }
@@ -57,7 +57,7 @@ public class TestDotGrapher_CombinedView extends YesWorkflowTestCase {
     public void testDotGrapher_CombinedView_TwoChannels_OneProgram_OneInOneOut() throws Exception {
         String src = "twoChannels_OneProgram_OneInOneOut";
         assertEquals(expectedGraph(src), actualGraph(src));
-        assertEquals("", stderrBuffer.toString());  
+        assertEquals("", stderrBuffer.toString());
     }
   
     public void testDotGrapher_CombinedView_TwoChannels_OneProgram_TwoInOneOut() throws Exception {

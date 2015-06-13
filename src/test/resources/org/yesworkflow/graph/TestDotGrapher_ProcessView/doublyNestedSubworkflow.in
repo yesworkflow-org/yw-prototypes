@@ -17,7 +17,7 @@
 #     @end program2
 
 #     @begin subSubWorkflow
-#     @in channel4
+#     @param channel4
 #     @out channel5
 #
 #       @begin program4
