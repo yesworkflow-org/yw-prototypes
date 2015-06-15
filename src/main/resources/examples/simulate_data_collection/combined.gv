@@ -24,11 +24,11 @@ node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=2 fontname="Courie
 
 /* Nodes for data channels in workflow */
 node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname="Helvetica"]
-node8 [shape=record  rankdir=LR label="{<f0> corrected_image|<f1>file:data/\{sample_id\}/\{sample_id\}_\{energy\}eV_\{frame_number\}.img}"];
-node9 [shape=record  rankdir=LR label="{<f0> run_log|<f1>file:run/run_log.txt}"];
-node10 [shape=record  rankdir=LR label="{<f0> collection_log|<f1>file:run/collected_images.csv}"];
-node11 [shape=record  rankdir=LR label="{<f0> rejection_log|<f1>file:/run/rejected_samples.txt}"];
-node12 [shape=record  rankdir=LR label="{<f0> sample_spreadsheet|<f1>file:cassette_\{cassette_id\}_spreadsheet.csv}"];
+node8 [shape=record rankdir=LR label="{<f0> corrected_image |<f1> file:data/\{sample_id\}/\{sample_id\}_\{energy\}eV_\{frame_number\}.img}"];
+node9 [shape=record rankdir=LR label="{<f0> run_log |<f1> file:run/run_log.txt}"];
+node10 [shape=record rankdir=LR label="{<f0> collection_log |<f1> file:run/collected_images.csv}"];
+node11 [shape=record rankdir=LR label="{<f0> rejection_log |<f1> file:/run/rejected_samples.txt}"];
+node12 [shape=record rankdir=LR label="{<f0> sample_spreadsheet |<f1> file:cassette_\{cassette_id\}_spreadsheet.csv}"];
 node13 [label="sample_name"]
 node14 [label="sample_quality"]
 node15 [label="rejected_sample"]
@@ -38,8 +38,8 @@ node18 [label="energies"]
 node19 [label="sample_id"]
 node20 [label="energy"]
 node21 [label="frame_number"]
-node22 [shape=record  rankdir=LR label="{<f0> raw_image|<f1>file:run/raw/\{cassette_id\}/\{sample_id\}/e\{energy\}/image_\{frame_number\}.raw}"];
-node23 [shape=record  rankdir=LR label="{<f0> calibration_image|<f1>file:calibration.img}"];
+node22 [shape=record rankdir=LR label="{<f0> raw_image |<f1> file:run/raw/\{cassette_id\}/\{sample_id\}/e\{energy\}/image_\{frame_number\}.raw}"];
+node23 [shape=record rankdir=LR label="{<f0> calibration_image |<f1> file:calibration.img}"];
 node24 [label="corrected_image_path"]
 node25 [label="total_intensity"]
 node26 [label="pixel_count"]

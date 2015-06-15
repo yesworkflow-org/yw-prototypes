@@ -205,8 +205,7 @@ public class DotGrapher implements Grapher  {
         private DotBuilder dot = new DotBuilder()
                                 .beginGraph()
                                 .rankDir(layoutDirection.toString())
-                                .enableComments(commentView == CommentVisibility.SHOW)
-                                .showClusterBox(workflowBoxMode == WorkflowBoxMode.SHOW);
+                                .enableComments(commentView == CommentVisibility.SHOW);
         
         public abstract String render();
 
@@ -214,32 +213,19 @@ public class DotGrapher implements Grapher  {
             return dot.endGraph().toString();
         }
         
-        @SuppressWarnings("incomplete-switch")
         protected void drawWorkflowTitle() {
-
-            if (title == null) {
-                title = workflow.toString();
-            }
             
-            if (titlePosition != TitlePosition.HIDE) {
-                
-                dot.comment("Title for graph")
-                   .graphFont(programFont);
-                
-                switch(titlePosition) {
-                case BOTTOM:
-                    dot.title(title, "b");
-                    break;
-                case TOP:
-                    dot.title(title, "t");
-                    break;
-                }
-            }
+            if (titlePosition == TitlePosition.HIDE) return;
+
+            dot.comment("Title for graph");
+            dot.title( (title == null) ? workflow.toString() : title,
+                       programFont, 
+                       (titlePosition == TitlePosition.TOP) ? "t" : "b");
         }
         
         protected void startWorkflowBox() {
             dot.comment("Start of double cluster for drawing box around nodes in workflow")
-               .beginSubgraph();
+               .beginSubgraph(workflowBoxMode == WorkflowBoxMode.HIDE);
         }
         
         protected void endWorkflowBox() {
@@ -256,10 +242,10 @@ public class DotGrapher implements Grapher  {
             if (portLayout == PortLayout.HIDE) return;
 
             dot.comment("Nodes representing workflow ports")
-               .shape(portShape)
-               .peripheries(portPeripheries)
+               .nodeShape(portShape)
+               .nodePeripheries(portPeripheries)
                .width(portSize)
-               .fillcolor(portFillColor)
+               .nodeFillcolor(portFillColor)
                .flushNodeStyle();
 
             if (portLayout == PortLayout.GROUP) dot.beginHiddenSubgraph();
@@ -285,10 +271,10 @@ public class DotGrapher implements Grapher  {
 
             dot.comment("Nodes representing programs in workflow")
                .nodeFont(programFont)
-               .shape(programShape)
-               .style(programStyle)
-               .fillcolor(programFillColor)
-               .peripheries(programPeripheries)
+               .nodeShape(programShape)
+               .nodeStyle(programStyle)
+               .nodeFillcolor(programFillColor)
+               .nodePeripheries(programPeripheries)
                .flushNodeStyle();
             
             for (Program p : workflow.programs) {
@@ -303,10 +289,10 @@ public class DotGrapher implements Grapher  {
             }
 
             dot.comment("Nodes representing subworkflows in workflow")
-               .shape(subworkflowShape)
-               .style(subworkflowStyle)
-               .fillcolor(subworkflowFillColor)
-               .peripheries(subworkflowPeripheries)
+               .nodeShape(subworkflowShape)
+               .nodeStyle(subworkflowStyle)
+               .nodeFillcolor(subworkflowFillColor)
+               .nodePeripheries(subworkflowPeripheries)
                .flushNodeStyle();
 
             for (Program p : workflow.programs) {
@@ -325,10 +311,10 @@ public class DotGrapher implements Grapher  {
 
             dot.comment("Nodes for data channels in workflow")
                .nodeFont(dataFont)
-               .shape(dataShape)
-               .style(dataStyle)
-               .fillcolor(dataFillColor)
-               .peripheries(dataPeripheries)
+               .nodeShape(dataShape)
+               .nodeStyle(dataStyle)
+               .nodeFillcolor(dataFillColor)
+               .nodePeripheries(dataPeripheries)
                .flushNodeStyle();
 
             switch(paramVisibility) {
@@ -341,7 +327,7 @@ public class DotGrapher implements Grapher  {
                 for (Channel c : workflow.innerDataChannels()) {
                     drawChannelNode(c);
                 }
-                dot.fillcolor(reducedParamFillColor);
+                dot.nodeFillcolor(reducedParamFillColor);
                 for (Channel c : workflow.innerParamChannels()) {
                     drawChannelNode(c);
                 }
