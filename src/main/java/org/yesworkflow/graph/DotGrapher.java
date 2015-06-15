@@ -244,7 +244,7 @@ public class DotGrapher implements Grapher  {
             dot.comment("Nodes representing workflow ports")
                .nodeShape(portShape)
                .nodePeripheries(portPeripheries)
-               .width(portSize)
+               .nodeWidth(portSize)
                .nodeFillcolor(portFillColor)
                .flushNodeStyle();
 

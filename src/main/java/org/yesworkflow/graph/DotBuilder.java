@@ -13,21 +13,22 @@ public class DotBuilder {
 	
     public static final String EOL = System.getProperty("line.separator");
 
-    private StringBuilder _buffer = new StringBuilder();
-	private int nodeCount = 0;
-    private int subgraphCount = 0;
-	private Map<String,String> nodeNameToIdMap = new HashMap<String,String>();
-    private String fillcolor = "#FFFFFF";
-    private String shape = "box";
-    private int peripheries = 1;
-    private String style = "filled";
-    private boolean newNodeStyle = true;
-    private Double width = null;
     private boolean commentsEnabled = true;
-    private boolean horizontalLayout = true;
-    private String nodeFont = "Courier";
     
-    Map<String,Map<String,Set<String>>> uniqueEdges = new HashMap<String,Map<String,Set<String>>>();
+    private String nodeShape = "box";
+    private String nodeStyle = "filled";
+    private String nodeFillcolor = "#FFFFFF";
+    private int nodePeripheries = 1;
+    private String nodeFont = "Courier";
+    private Double nodeWidth = null;
+    
+    private int nodeCount = 0;
+    private int subgraphCount = 0;
+    private boolean newNodeStyle = true;
+    private boolean horizontalLayout = true;
+    private StringBuilder _buffer = new StringBuilder();
+    private Map<String,String> nodeNameToIdMap = new HashMap<String,String>();
+    private Map<String,Map<String,Set<String>>> uniqueEdges = new HashMap<String,Map<String,Set<String>>>();
     
     public String toString() {
         return _buffer.toString();
@@ -43,31 +44,31 @@ public class DotBuilder {
     }
         
     public DotBuilder nodeShape(String s) {
-        this.shape = s;
+        this.nodeShape = s;
         newNodeStyle = true;
         return this;
     }
     
     public DotBuilder nodeStyle(String s) {
-       this.style = s;
+       this.nodeStyle = s;
        newNodeStyle = true;
        return this;
     }
     
     public DotBuilder nodeFillcolor(String fc) {
-        this.fillcolor = fc;
+        this.nodeFillcolor = fc;
         newNodeStyle = true;
         return this;
     }
     
     public DotBuilder nodePeripheries(int p) {
-        this.peripheries = p;
+        this.nodePeripheries = p;
         newNodeStyle = true;
         return this;
     }
     
-    public DotBuilder width(Double w) {
-        this.width = w;
+    public DotBuilder nodeWidth(Double w) {
+        this.nodeWidth = w;
         newNodeStyle = true;
         return this;
     }
@@ -144,12 +145,13 @@ public class DotBuilder {
     }
     
     public DotBuilder flushNodeStyle() {
-        _buffer.append(String.format(       "node[shape=%s style=%s fillcolor=%s peripheries=%d fontname=%s", 
-                                                 shape, dq(style), dq(fillcolor), peripheries,  dq(nodeFont))  );
-        if (width != null) 
-            _buffer.append(String.format(   " width=%s", width)                                                );
-        _buffer.append(                     "]"                                                                );            
-        _buffer.append(                     EOL                                                                );
+        _buffer.append(String.format(     "node[shape=%s style=%s fillcolor=%s peripheries=%d fontname=%s", 
+                                                 nodeShape, dq(nodeStyle), dq(nodeFillcolor), 
+                                                 nodePeripheries, dq(nodeFont))                              );
+        if (nodeWidth != null) 
+            _buffer.append(String.format( " width=%s", nodeWidth)                                            );
+        _buffer.append(                   "]"                                                                );            
+        _buffer.append(                   EOL                                                                );
         
         newNodeStyle = false;
         return this;
