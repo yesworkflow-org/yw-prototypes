@@ -165,15 +165,15 @@ public class DotBuilder {
         return this;
     }
    
-    public DotBuilder node(String name, String label) {
-
-        if (newNodeStyle) flushNodeStyle();
-        String id = "node" + ++nodeCount;
-		nodeNameToIdMap.put(name, id);
-		
-		_buffer.append(String.format(  "%s [label=%s]", id, dq(label) ));
-		_buffer.append(                EOL                             );
-	
+    public DotBuilder node(String name, String label) {        
+        if (nodeNameToIdMap.get(name) == null) {            
+            if (newNodeStyle) flushNodeStyle();
+            String id = "node" + ++nodeCount;
+    		nodeNameToIdMap.put(name, id);
+    		
+    		_buffer.append(String.format(  "%s [label=%s]", id, dq(label) ));
+    		_buffer.append(                EOL                             );
+        }	
 		return this;
 	}
 
@@ -182,18 +182,19 @@ public class DotBuilder {
     }
         
     public DotBuilder recordNode(String name, String label1, String label2) {
-
-        if (newNodeStyle) flushNodeStyle();     
-        String id = "node" + ++nodeCount;
-        nodeNameToIdMap.put(name, id);
-        
-        _buffer.append(String.format(           "%s [shape=record rankdir=LR label=\"{", id) );
-        if (horizontalLayout) _buffer.append(   "{"                                          );
-        _buffer.append(String.format(           "<f0> %s |<f1> %s", label1, label2)          );
-        if (horizontalLayout) _buffer.append(   "}"                                          );
-        _buffer.append(                         "}\"];"                                      )   
-               .append(                         EOL                                          );
+        if (nodeNameToIdMap.get(name) == null) {
+            if (newNodeStyle) flushNodeStyle();     
+            String id = "node" + ++nodeCount;
+            nodeNameToIdMap.put(name, id);
             
+            _buffer.append(String.format(           "%s [shape=record rankdir=LR label=\"{", id) );
+            if (horizontalLayout) _buffer.append(   "{"                                          );
+            _buffer.append(String.format(           "<f0> %s |<f1> %s", label1, label2)          );
+            if (horizontalLayout) _buffer.append(   "}"                                          );
+            _buffer.append(                         "}\"];"                                      )   
+                   .append(                         EOL                                          );
+            
+        }            
         return this;
     }
     
