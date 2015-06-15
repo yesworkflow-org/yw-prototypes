@@ -225,7 +225,7 @@ public class DotGrapher implements Grapher  {
         
         protected void startWorkflowBox() {
             dot.comment("Start of double cluster for drawing box around nodes in workflow")
-               .beginSubgraph(workflowBoxMode == WorkflowBoxMode.HIDE);
+               .beginSubgraph(workflowBoxMode == WorkflowBoxMode.SHOW);
         }
         
         protected void endWorkflowBox() {
@@ -248,7 +248,7 @@ public class DotGrapher implements Grapher  {
                .nodeFillcolor(portFillColor)
                .flushNodeStyle();
 
-            if (portLayout == PortLayout.GROUP) dot.beginHiddenSubgraph();
+            if (portLayout == PortLayout.GROUP) dot.beginSubgraph(false);
             for (Port p : workflow.inPorts) {
                 String binding = p.flowAnnotation.binding();
                 if (channelBindings.contains(binding)) {
@@ -257,7 +257,7 @@ public class DotGrapher implements Grapher  {
             }
             if (portLayout == PortLayout.GROUP) dot.endSubgraph();
             
-            if (portLayout == PortLayout.GROUP) dot.beginHiddenSubgraph();
+            if (portLayout == PortLayout.GROUP) dot.beginSubgraph(false);
             for (Port p : workflow.outPorts) {
                 String binding = p.flowAnnotation.binding();
                 if (channelBindings.contains(binding)) {

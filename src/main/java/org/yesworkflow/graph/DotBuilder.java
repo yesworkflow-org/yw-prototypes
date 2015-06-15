@@ -93,9 +93,9 @@ public class DotBuilder {
 	public DotBuilder title(String title, String font, String location) {
 
 	    _buffer.append(String.format(  "fontname=%s; fontsize=18; labelloc=%s", font, location ));
-        _buffer.append(                EOL                                                           );	    
-	    _buffer.append(String.format(  "label=%s", dq(title))                                        );
-        _buffer.append(                EOL                                                           );
+        _buffer.append(                EOL                                                      );	    
+	    _buffer.append(String.format(  "label=%s", dq(title))                                   );
+        _buffer.append(                EOL                                                      );
 
         return this;
 	}
@@ -117,32 +117,23 @@ public class DotBuilder {
         }
         return this;
     }
-
-    public DotBuilder beginHiddenSubgraph() {
-        
-        String c1 = "cluster" + subgraphCount++;
-        String c2 = "cluster" + subgraphCount++;
-        
-        _buffer.append(String.format(   "subgraph %s { label=%s color=%s", c1, dq(""), dq("white") ));
-        _buffer.append(                 EOL                                                         );
-        
-        _buffer.append(String.format(   "subgraph %s { label=%s color=%s", c2, dq(""), dq("white") ));
-        _buffer.append(                 EOL                                                         );
-        
-        return this;
-    }
     
-    public DotBuilder beginSubgraph(boolean hidden) {
+    public DotBuilder beginSubgraph(boolean visible) {
         
         String c1 = "cluster" + subgraphCount++;
         String c2 = "cluster" + subgraphCount++;
         
-        _buffer.append(String.format(       "subgraph %s {label=%s; penwidth=2; fontsize=18", c1, dq("") ));
-        if (hidden) 
-            _buffer.append(String.format(   "; color=%s", dq("white")                                    ));
-        _buffer.append(                     EOL                                                           );        
-        _buffer.append(String.format(       "subgraph %s {label=%s; color=%s", c2, dq(""), dq("white")   ));
-        _buffer.append(EOL);
+        if (visible) {
+            _buffer.append(String.format(   "subgraph %s {label=%s; penwidth=2; fontsize=18", c1, dq("") ));
+            _buffer.append(                 EOL                                                           );        
+            _buffer.append(String.format(   "subgraph %s {label=%s; color=%s", c2, dq(""), dq("white")   ));
+            _buffer.append(EOL);
+        } else {
+            _buffer.append(String.format(   "subgraph %s { label=%s color=%s", c1, dq(""), dq("white") ));
+            _buffer.append(                 EOL                                                         );
+            _buffer.append(String.format(   "subgraph %s { label=%s color=%s", c2, dq(""), dq("white") ));
+            _buffer.append(                 EOL                                                         );
+        }
         
         return this;
     }
