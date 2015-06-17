@@ -13,7 +13,7 @@ public class TestDotGrapher_DataView extends DotGrapherTestCase {
         super.setUp();
         testResourceDirectory = "src/test/resources/org/yesworkflow/graph/TestDotGrapher_DataView/";
         grapher.configure("view", GraphView.DATA_CENTRIC_VIEW)
-               .configure("dotcomments", CommentVisibility.SHOW)
+               .configure("dotcomments", CommentVisibility.ON)
                .configure("params", ParamVisibility.SHOW)
                .configure("titleposition", TitlePosition.HIDE);
     }    

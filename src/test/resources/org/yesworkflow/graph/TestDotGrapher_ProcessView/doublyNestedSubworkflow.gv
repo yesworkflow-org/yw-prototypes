@@ -1,40 +1,72 @@
+
+/* Start of top-level graph */
 digraph Workflow {
 rankdir=LR
 
 /* Start of double cluster for drawing box around nodes in workflow */
-subgraph cluster0 {label=""; penwidth=2; fontsize=18
-subgraph cluster1 {label=""; color="white"
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; color=white
 
-/* Nodes representing programs in workflow */
-node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=1 fontname="Courier"]
-node1 [label="program0"]
-node2 [label="program1"]
+/* Style for nodes representing atomic programs in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
 
-/* Nodes representing subworkflows in workflow */
-node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=2 fontname="Courier"]
-node3 [label="subWorkflow"]
+/* Nodes representing atomic programs in workflow */
+program0
+program1
 
-/* Edges for channels between programs in workflow */
+/* Style for nodes representing composite programs (sub-workflows) in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=2 fontname=Courier]
+
+/* Nodes representing composite programs (sub-workflows) in workflow */
+subWorkflow
+
+/* Style for edges representing channels between programs in workflow */
 edge[fontname=Helvetica]
-node1 -> node3 [label="channel1"]
-node3 -> node2 [label="channel2"]
+
+/* Edges representing channels between programs in workflow */
+program0 -> subWorkflow [label=channel1]
+subWorkflow -> program1 [label=channel2]
 
 /* End of double cluster for drawing box around nodes in workflow */
 }}
 
-/* Nodes representing workflow ports */
-node[shape=circle style="filled" fillcolor="#FFFFFF" peripheries=1 fontname="Courier" width=0.2]
-subgraph cluster2 { label="" color="white"
-subgraph cluster3 { label="" color="white"
-node4 [label=""]
-}}
-subgraph cluster4 { label="" color="white"
-subgraph cluster5 { label="" color="white"
-node5 [label=""]
+/* Hidden double-cluster for grouping workflow input ports */
+subgraph cluster_input_ports_group_outer { label=""; color=white
+subgraph cluster_input_ports_group_inner { label=""; color=white
+
+/* Style for nodes representing workflow input ports */
+node[shape=circle style=filled fillcolor="#FFFFFF" peripheries=1 fontname=Courier width=0.2]
+
+/* Nodes representing workflow input ports */
+channel0_input_port [label=""]
+
+/* End of double-cluster for grouping workflow input ports */
 }}
 
-/* Edges for channels between programs and ports */
+/* Hidden double-cluster for grouping workflow output ports */
+subgraph cluster_output_ports_group_outer { label=""; color=white
+subgraph cluster_output_ports_group_inner { label=""; color=white
+
+/* Style for nodes representing workflow output ports */
+node[shape=circle style=filled fillcolor="#FFFFFF" peripheries=1 fontname=Courier width=0.2]
+
+/* Nodes representing workflow output ports */
+channel3_output_port [label=""]
+
+/* End of double-cluster for grouping workflow output ports */
+}}
+
+/* Style for edges representing channels between programs and workflow input ports */
 edge[fontname=Helvetica]
-node2 -> node5 [label="channel3"]
-node4 -> node1 [label="channel0"]
+
+/* Edges representing channels between programs and workflow input ports */
+channel0_input_port -> program0 [label=channel0]
+
+/* Style for edges representing channels between programs and workflow output ports */
+edge[fontname=Helvetica]
+
+/* Edges representing channels between programs and workflow output ports */
+program1 -> channel3_output_port [label=channel3]
+
+/* End of top-level graph */
 }

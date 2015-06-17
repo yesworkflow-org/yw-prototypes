@@ -123,7 +123,7 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
     model.workflow             Name of top-level workflow in model
 
     graph.datalabel            Info to display in data nodes: NAME, URI, or BOTH
-    graph.dotcomments          SHOW or HIDE comments in dot files
+    graph.dotcomments          Include comments in dot file (ON or OFF)
     graph.dotfile              Name of GraphViz DOT file to write graph to
     graph.edgelabels           SHOW or HIDE labels on edges in process and data views
     graph.layout               Direction of graph layout: TB, LR, RL, or BT
@@ -205,39 +205,36 @@ Next, use the `graph` command to produce a graphical representations of the scri
     $ yw graph example.py
     digraph Workflow {
     rankdir=LR
-    graph[fontname=Courier]
+    fontname=Courier; fontsize=18; labelloc=t
+    label=main
+    subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+    subgraph cluster_workflow_box_inner { label=""; color=white
+    node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
+    fetch_mask
+    load_data
+    standardize_with_mask
+    simple_diagnose
     edge[fontname=Helvetica]
-    node[fontname=Courier]
-    subgraph cluster0 {
-    label="main"
-    penwidth=2
-    fontsize=18
-    subgraph cluster1 {
-    label=""
-    color="white"
-    node[shape=box3d style="filled" fillcolor="#CCFFCC" peripheries=1 label=""]
-    node1 [label="fetch_mask"]
-    node2 [label="load_data"]
-    node3 [label="standardize_with_mask"]
-    node4 [label="simple_diagnose"]
-    node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=2 label=""]
+    load_data -> standardize_with_mask [label=NEE_data]
+    fetch_mask -> standardize_with_mask [label=land_water_mask]
+     -> simple_diagnose [label=standardized_NEE_data]
     }}
-    node[shape=circle style="filled" fillcolor="#FFFFFF" peripheries=1 label="" width=0.2]
-    subgraph cluster2 { label="" color="white"
-    subgraph cluster3 { label="" color="white"
-    node5
-    node6
+    subgraph cluster_input_ports_group_outer { label=""; color=white
+    subgraph cluster_input_ports_group_inner { label=""; color=white
+    node[shape=circle style=filled fillcolor="#FFFFFF" peripheries=1 fontname=Courier width=0.2]
+    input_mask_file_input_port [label=""]
+    input_data_file_input_port [label=""]
     }}
-    subgraph cluster4 { label="" color="white"
-    subgraph cluster5 { label="" color="white"
-    node7
+    subgraph cluster_output_ports_group_outer { label=""; color=white
+    subgraph cluster_output_ports_group_inner { label=""; color=white
+    node[shape=circle style=filled fillcolor="#FFFFFF" peripheries=1 fontname=Courier width=0.2]
+    result_NEE_pdf_output_port [label=""]
     }}
-    node4 -> node7 [label="result_NEE_pdf"]
-    node5 -> node1 [label="input_mask_file"]
-    node6 -> node2 [label="input_data_file"]
-    node2 -> node3 [label="NEE_data"]
-    node1 -> node3 [label="land_water_mask"]
-    node3 -> node4 [label="standardized_NEE_data"]
+    edge[fontname=Helvetica]
+    input_mask_file_input_port -> fetch_mask [label=input_mask_file]
+    input_data_file_input_port -> load_data [label=input_data_file]
+    edge[fontname=Helvetica]
+    simple_diagnose -> result_NEE_pdf_output_port [label=result_NEE_pdf]
     }
 
 You can save the DOT output to a file, render it as PDF file using Graphviz's `dot` command, then open the PDF file to view the diagram:

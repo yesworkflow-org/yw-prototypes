@@ -1,34 +1,59 @@
+
+/* Start of top-level graph */
 digraph Workflow {
 rankdir=LR
 
 /* Start of double cluster for drawing box around nodes in workflow */
-subgraph cluster0 {label=""; penwidth=2; fontsize=18
-subgraph cluster1 {label=""; color="white"
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; color=white
 
-/* Nodes for data channels in workflow */
-node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname="Helvetica"]
-node1 [label="d"]
-node2 [label="x"]
+/* Style for nodes representing parameter and non-parameter data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
 
-/* Edges between channels in workflow */
+/* Nodes representing parameter and non-parameter data channels in workflow */
+d
+x
+
+/* Style for edges representing programs connecting data channels in workflow */
 edge[fontname=Courier]
-node2 -> node1 [label="program"]
+
+/* Edges representing programs connecting data channels in workflow */
+x -> d [label=program]
 
 /* End of double cluster for drawing box around nodes in workflow */
 }}
 
-/* Nodes representing workflow ports */
-node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname="Helvetica" width=0.2]
-subgraph cluster2 { label="" color="white"
-subgraph cluster3 { label="" color="white"
-node3 [label=""]
-}}
-subgraph cluster4 { label="" color="white"
-subgraph cluster5 { label="" color="white"
-node4 [label=""]
+/* Hidden double-cluster for grouping workflow input ports */
+subgraph cluster_input_ports_group_outer { label=""; color=white
+subgraph cluster_input_ports_group_inner { label=""; color=white
+
+/* Style for nodes representing workflow input ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+
+/* Nodes representing workflow input ports */
+x_input_port [label=""]
+
+/* End of double-cluster for grouping workflow input ports */
 }}
 
-/* Edges between channels and ports */
-node3 -> node2
-node1 -> node4
+/* Hidden double-cluster for grouping workflow output ports */
+subgraph cluster_output_ports_group_outer { label=""; color=white
+subgraph cluster_output_ports_group_inner { label=""; color=white
+
+/* Style for nodes representing workflow output ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+
+/* Nodes representing workflow output ports */
+d_output_port [label=""]
+
+/* End of double-cluster for grouping workflow output ports */
+}}
+
+/* Edges from input ports to channels */
+x_input_port -> x
+
+/* Edges from channels to output ports */
+d -> d_output_port
+
+/* End of top-level graph */
 }

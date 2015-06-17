@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class DotBuilder {
 	
@@ -21,63 +22,25 @@ public class DotBuilder {
     private int nodePeripheries = 1;
     private String nodeFont = "Courier";
     private Double nodeWidth = null;
+    private String edgeFont = "Courier";
     
-    private int nodeCount = 0;
-    private int subgraphCount = 0;
-    private boolean newNodeStyle = true;
     private boolean horizontalLayout = true;
     private StringBuilder _buffer = new StringBuilder();
-    private Map<String,String> nodeNameToIdMap = new HashMap<String,String>();
+    private Set<String> uniqueNodes = new HashSet<String>();
     private Map<String,Map<String,Set<String>>> uniqueEdges = new HashMap<String,Map<String,Set<String>>>();
     
-    public String toString() {
-        return _buffer.toString();
-    }
+    public String toString() { return _buffer.toString(); }
+    
+    public DotBuilder enableComments(boolean state) { commentsEnabled = state; return this; }
 
-    private String dq(String text) {
-        return "\"" + text + "\"";
-    }
+    public DotBuilder nodeShape(String s)           { nodeShape = s; return this; }
+    public DotBuilder nodeStyle(String s)           { nodeStyle = s; return this; }
+    public DotBuilder nodeFillcolor(String fc)      { nodeFillcolor = fc; return this; }
+    public DotBuilder nodePeripheries(int p)        { nodePeripheries = p;  return this; }
+    public DotBuilder nodeWidth(Double w)           { nodeWidth = w; return this; }    
+    public DotBuilder nodeFont(String font)         { nodeFont = font; return this; }
     
-    public DotBuilder enableComments(boolean state) {
-        commentsEnabled = state;
-        return this;
-    }
-        
-    public DotBuilder nodeShape(String s) {
-        this.nodeShape = s;
-        newNodeStyle = true;
-        return this;
-    }
-    
-    public DotBuilder nodeStyle(String s) {
-       this.nodeStyle = s;
-       newNodeStyle = true;
-       return this;
-    }
-    
-    public DotBuilder nodeFillcolor(String fc) {
-        this.nodeFillcolor = fc;
-        newNodeStyle = true;
-        return this;
-    }
-    
-    public DotBuilder nodePeripheries(int p) {
-        this.nodePeripheries = p;
-        newNodeStyle = true;
-        return this;
-    }
-    
-    public DotBuilder nodeWidth(Double w) {
-        this.nodeWidth = w;
-        newNodeStyle = true;
-        return this;
-    }
-    
-    public DotBuilder nodeFont(String font) {
-        nodeFont = font;
-        newNodeStyle = true;
-        return this;
-    }
+    public DotBuilder edgeFont(String font)         { edgeFont = font; return this; }
     
 	public DotBuilder beginGraph() {
 		_buffer.append(   "digraph Workflow {" );
@@ -95,7 +58,7 @@ public class DotBuilder {
 
 	    _buffer.append(String.format(  "fontname=%s; fontsize=18; labelloc=%s", font, location ));
         _buffer.append(                EOL                                                      );	    
-	    _buffer.append(String.format(  "label=%s", dq(title))                                   );
+	    _buffer.append(String.format(  "label=%s", q(title))                                    );
         _buffer.append(                EOL                                                      );
 
         return this;
@@ -119,22 +82,19 @@ public class DotBuilder {
         return this;
     }
     
-    public DotBuilder beginSubgraph(boolean visible) {
-        
-        String c1 = "cluster" + subgraphCount++;
-        String c2 = "cluster" + subgraphCount++;
+    public DotBuilder beginSubgraph(String name, boolean visible) {
+
+        String outer = "cluster_" + name + "_outer";
+        String inner = "cluster_" + name + "_inner";
         
         if (visible) {
-            _buffer.append(String.format(   "subgraph %s {label=%s; penwidth=2; fontsize=18", c1, dq("") ));
-            _buffer.append(                 EOL                                                           );        
-            _buffer.append(String.format(   "subgraph %s {label=%s; color=%s", c2, dq(""), dq("white")   ));
-            _buffer.append(EOL);
+            _buffer.append(String.format(   "subgraph %s { label=%s; color=black; penwidth=2", q(outer), q("") ));
         } else {
-            _buffer.append(String.format(   "subgraph %s { label=%s color=%s", c1, dq(""), dq("white") ));
-            _buffer.append(                 EOL                                                         );
-            _buffer.append(String.format(   "subgraph %s { label=%s color=%s", c2, dq(""), dq("white") ));
-            _buffer.append(                 EOL                                                         );
+            _buffer.append(String.format(   "subgraph %s { label=%s; color=white", q(outer), q("")             ));
         }
+        _buffer.append(                     EOL                                                                 );
+        _buffer.append(String.format(       "subgraph %s { label=%s; color=white", q(inner), q("")             ));
+        _buffer.append(                     EOL                                                                 );
         
         return this;
     }
@@ -145,34 +105,26 @@ public class DotBuilder {
     }
     
     public DotBuilder flushNodeStyle() {
+        
         _buffer.append(String.format(     "node[shape=%s style=%s fillcolor=%s peripheries=%d fontname=%s", 
-                                                 nodeShape, dq(nodeStyle), dq(nodeFillcolor), 
-                                                 nodePeripheries, dq(nodeFont))                              );
-        if (nodeWidth != null) 
-            _buffer.append(String.format( " width=%s", nodeWidth)                                            );
-        _buffer.append(                   "]"                                                                );            
-        _buffer.append(                   EOL                                                                );
+                                                 nodeShape, q(nodeStyle), q(nodeFillcolor),
+                                                 nodePeripheries, q(nodeFont))                              );
+        if (nodeWidth != null)
+            _buffer.append(String.format( " width=%s", nodeWidth)                                           );
         
-        newNodeStyle = false;
+        _buffer.append(                   "]"                                                               )
+               .append(                   EOL                                                               );
+
         return this;
     }
-    
-    public DotBuilder edgeFont(String font) {
-        
-        _buffer.append(String.format(   "edge[fontname=%s]", font) );
-        _buffer.append(                 EOL                        );
-        
-        return this;
-    }
-   
-    public DotBuilder node(String name, String label) {        
-        if (nodeNameToIdMap.get(name) == null) {            
-            if (newNodeStyle) flushNodeStyle();
-            String id = "node" + ++nodeCount;
-    		nodeNameToIdMap.put(name, id);
-    		
-    		_buffer.append(String.format(  "%s [label=%s]", id, dq(label) ));
-    		_buffer.append(                EOL                             );
+      
+    public DotBuilder node(String name, String label) {
+        if (nodeIsUnique(name)) {
+    		_buffer.append(String.format(      "%s", q(name)           ));
+    		if (label != null && 
+    		    !name.equals(label))
+    		    _buffer.append(String.format(  " [label=%s]", q(label) ));
+    		_buffer.append(                    EOL                      );
         }	
 		return this;
 	}
@@ -182,36 +134,30 @@ public class DotBuilder {
     }
         
     public DotBuilder recordNode(String name, String label1, String label2) {
-        if (nodeNameToIdMap.get(name) == null) {
-            if (newNodeStyle) flushNodeStyle();     
-            String id = "node" + ++nodeCount;
-            nodeNameToIdMap.put(name, id);
-            
-            _buffer.append(String.format(           "%s [shape=record rankdir=LR label=\"{", id) );
-            if (horizontalLayout) _buffer.append(   "{"                                          );
-            _buffer.append(String.format(           "<f0> %s |<f1> %s", label1, label2)          );
-            if (horizontalLayout) _buffer.append(   "}"                                          );
-            _buffer.append(                         "}\"];"                                      )   
-                   .append(                         EOL                                          );
+        if (nodeIsUnique(name)) {
+            _buffer.append(String.format(           "%s [shape=record rankdir=LR label=\"{", q(name) ));
+            if (horizontalLayout) _buffer.append(   "{"                                               );
+            _buffer.append(String.format(           "<f0> %s |<f1> %s", q(label1), esc(label2))       );
+            if (horizontalLayout) _buffer.append(   "}"                                               );
+            _buffer.append(                         "}\"];"                                           )
+                   .append(                         EOL                                               );
             
         }            
         return this;
     }
     
+   public DotBuilder flushEdgeStyle() {
+        _buffer.append(String.format( "edge[fontname=%s]", edgeFont) );
+        _buffer.append(               EOL                            );
+        return this;
+    }
+    
 	public DotBuilder edge(String fromNode, String toNode, String edgeLabel) {
-	    
-		String fromId = nodeNameToIdMap.get(fromNode);
-		if (fromId == null) System.err.println("WARNING: No graph edge from-node with name '" + fromNode + "'");
-		
-		String toId = nodeNameToIdMap.get(toNode);
-        if (toId == null) System.err.println("WARNING: No graph edge to-node with name '" + toNode + "'");
-		
-        if (edgeIsUnique(fromId, toId, edgeLabel)) {
-        
-    		_buffer.append(String.format(      "%s -> %s", fromId, toId     ));    		
+        if (edgeIsUnique(fromNode, toNode, edgeLabel)) {
+    		_buffer.append(String.format(      "%s -> %s", q(fromNode), q(toNode) ));    		
     		if (edgeLabel != null)
-    		    _buffer.append(String.format(  " [label=%s]", dq(edgeLabel) ));
-    		_buffer.append(                    EOL		                    );
+    		    _buffer.append(String.format(  " [label=%s]", q(edgeLabel)        ));
+    		_buffer.append(                    EOL		                           );
         }
         
 		return this;
@@ -219,6 +165,15 @@ public class DotBuilder {
 	
     public DotBuilder edge(String fromNode, String toNode) {
         return edge(fromNode, toNode, null);
+    }
+    
+    private boolean nodeIsUnique(String node) {
+        if (uniqueNodes.contains(node)) {
+            return false;
+        } else {
+            uniqueNodes.add(node);
+            return true;
+        }
     }
     
 	private boolean edgeIsUnique(String from, String to, String label) {
@@ -242,4 +197,25 @@ public class DotBuilder {
 	        return true;
 	    }
 	}
+	
+    private Pattern validDotIdPattern = Pattern.compile("[a-zA-Z_0-9]+");
+
+    private String q(String text) {
+        if (validDotIdPattern.matcher(text).matches()) {
+            return text;
+        } else {
+            return "\"" +  text.replace("\"", "\\\"") + "\"";
+        }
+    }
+
+    private String esc(String text) {
+        if (validDotIdPattern.matcher(text).matches()) {
+            return text;
+        } else {
+            text = text.replace("{", "\\{")
+                       .replace("}", "\\}")
+                       .replace(":", "\\:");
+            return text;
+        }
+    }
 }

@@ -14,7 +14,7 @@ public class TestDotGrapher_ProcessView extends DotGrapherTestCase {
         super.setUp();        
         testResourceDirectory = "src/test/resources/org/yesworkflow/graph/TestDotGrapher_ProcessView/";
         grapher.configure("view", GraphView.PROCESS_CENTRIC_VIEW)
-               .configure("dotcomments", CommentVisibility.SHOW)
+               .configure("dotcomments", CommentVisibility.ON)
                .configure("params", ParamVisibility.SHOW)
                .configure("titleposition", TitlePosition.HIDE);
     }

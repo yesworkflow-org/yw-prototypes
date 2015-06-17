@@ -284,7 +284,7 @@ public class YesWorkflowCLI {
         "model.workflow             Name of top-level workflow in model"                    + EOL +
         ""                                                                                  + EOL +
         "graph.datalabel            Info to display in data nodes: NAME, URI, or BOTH"      + EOL +
-        "graph.dotcomments          SHOW or HIDE comments in dot files"                     + EOL +
+        "graph.dotcomments          Include comments in dot file (ON or OFF)"               + EOL +
         "graph.dotfile              Name of GraphViz DOT file to write graph to"            + EOL +
         "graph.edgelabels           SHOW or HIDE labels on edges in process and data views" + EOL +
         "graph.layout               Direction of graph layout: TB, LR, RL, or BT"           + EOL +

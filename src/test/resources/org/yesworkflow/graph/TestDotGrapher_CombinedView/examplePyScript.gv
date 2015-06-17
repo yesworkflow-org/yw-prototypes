@@ -1,51 +1,65 @@
+
+/* Start of top-level graph */
 digraph Workflow {
 rankdir=LR
 
 /* Start of double cluster for drawing box around nodes in workflow */
-subgraph cluster0 {label=""; penwidth=2; fontsize=18
-subgraph cluster1 {label=""; color="white"
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; color=white
 
-/* Nodes representing programs in workflow */
-node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=1 fontname="Courier"]
-node1 [label="fetch_mask"]
-node2 [label="load_data"]
-node3 [label="standardize_with_mask"]
-node4 [label="simple_diagnose"]
+/* Style for nodes representing atomic programs in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
 
-/* Nodes representing subworkflows in workflow */
-node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=2 fontname="Courier"]
+/* Nodes representing atomic programs in workflow */
+fetch_mask
+load_data
+standardize_with_mask
+simple_diagnose
 
-/* Nodes for data channels in workflow */
-node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname="Helvetica"]
-node5 [label="result_NEE_pdf"]
-node6 [label="input_mask_file"]
-node7 [label="input_data_file"]
-node8 [label="NEE_data"]
-node9 [label="land_water_mask"]
-node10 [label="standardized_NEE_data"]
+/* Style for nodes representing parameter and non-parameter data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
 
-/* Edges for channels between programs and channels */
-node1 -> node9
-node6 -> node1
-node2 -> node8
-node7 -> node2
-node3 -> node10
-node8 -> node3
-node9 -> node3
-node4 -> node5
-node10 -> node4
+/* Nodes representing parameter and non-parameter data channels in workflow */
+result_NEE_pdf
+input_mask_file
+input_data_file
+NEE_data
+land_water_mask
+standardized_NEE_data
+
+/* Edges representing connections between programs and channels */
+fetch_mask -> land_water_mask
+input_mask_file -> fetch_mask
+load_data -> NEE_data
+input_data_file -> load_data
+standardize_with_mask -> standardized_NEE_data
+NEE_data -> standardize_with_mask
+land_water_mask -> standardize_with_mask
+simple_diagnose -> result_NEE_pdf
+standardized_NEE_data -> simple_diagnose
 
 /* End of double cluster for drawing box around nodes in workflow */
 }}
 
-/* Nodes representing workflow ports */
-node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname="Helvetica" width=0.2]
-node11 [label=""]
-node12 [label=""]
-node13 [label=""]
+/* Style for nodes representing workflow input ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
 
-/* Edges between channels and ports */
-node11 -> node6
-node12 -> node7
-node5 -> node13
+/* Nodes representing workflow input ports */
+input_mask_file_input_port [label=""]
+input_data_file_input_port [label=""]
+
+/* Style for nodes representing workflow output ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+
+/* Nodes representing workflow output ports */
+result_NEE_pdf_output_port [label=""]
+
+/* Edges from input ports to channels */
+input_mask_file_input_port -> input_mask_file
+input_data_file_input_port -> input_data_file
+
+/* Edges from channels to output ports */
+result_NEE_pdf -> result_NEE_pdf_output_port
+
+/* End of top-level graph */
 }

@@ -17,7 +17,9 @@ import org.yesworkflow.model.Program;
 public class DotGrapher implements Grapher  {
 
     public static GraphView DEFAULT_GRAPH_VIEW = GraphView.PROCESS_CENTRIC_VIEW;
-    public static CommentVisibility DEFAULT_COMMENT_VISIBILITY = CommentVisibility.HIDE;
+    public static CommentVisibility DEFAULT_COMMENT_VISIBILITY = CommentVisibility.OFF;
+    public static ElementStyleView DEFAULT_ELEMENT_STYLE_VIEW = ElementStyleView.ON;
+    public static LayoutClusterView DEFAULT_LAYOUT_CLUSTER_VIEW = LayoutClusterView.ON;
     public static ParamVisibility DEFAULT_PARAM_VISIBILITY = ParamVisibility.HIDE;
     public static LayoutDirection DEFAULT_LAYOUT_DIRECTION = LayoutDirection.LR;
     public static WorkflowBoxMode DEFAULT_WORKFLOW_BOX_MODE = WorkflowBoxMode.SHOW;
@@ -48,8 +50,10 @@ public class DotGrapher implements Grapher  {
     private Program topWorkflow = null;
     private Program workflow = null;
     private GraphView graphView = DEFAULT_GRAPH_VIEW;    
-    private ParamVisibility paramVisibility = DEFAULT_PARAM_VISIBILITY;
     private CommentVisibility commentView = DEFAULT_COMMENT_VISIBILITY;
+    private ElementStyleView elementStyleView = DEFAULT_ELEMENT_STYLE_VIEW;
+    private LayoutClusterView layoutClusterView = DEFAULT_LAYOUT_CLUSTER_VIEW;
+    private ParamVisibility paramVisibility = DEFAULT_PARAM_VISIBILITY;
     private LayoutDirection layoutDirection = DEFAULT_LAYOUT_DIRECTION;
     private WorkflowBoxMode workflowBoxMode = DEFAULT_WORKFLOW_BOX_MODE;
     private PortLayout portLayout = DEFAULT_PORT_LAYOUT;
@@ -122,6 +126,10 @@ public class DotGrapher implements Grapher  {
             graphView = GraphView.toGraphView(value);
         } else if (key.equalsIgnoreCase("dotcomments")) {
             commentView = CommentVisibility.toCommentVisibility(value);
+        } else if (key.equalsIgnoreCase("elementstyles")) {
+            elementStyleView = ElementStyleView.toElementStyleView(value);
+        } else if (key.equalsIgnoreCase("layoutclusters")) {
+            layoutClusterView = LayoutClusterView.toLayoutClusterView(value);
         } else if (key.equalsIgnoreCase("params")) {
             paramVisibility = ParamVisibility.toParamVisibility(value);
         } else if (key.equalsIgnoreCase("layout")) {
@@ -179,37 +187,45 @@ public class DotGrapher implements Grapher  {
     private void renderProcessView() {
         beginDotRendering();
         drawWorkflowTitle();
-        startWorkflowBox();
-        drawProgramsAsNodes();
+        beginWorkflowBox();
+        drawAtomicProgramsAsNodes();
+        drawCompositeProgramsAsNodes();
         drawChannelEdgesBetweenPrograms();
         endWorkflowBox();
-        drawWorkflowPortsAsNodes();
-        drawChannelEdgesBetweenProgramsAndPorts();
+        drawWorkflowInputPortsAsNodes();
+        drawWorkflowOutputPortsAsNodes();
+        drawChannelEdgesBetweenProgramsAndInputPorts();
+        drawChannelEdgesBetweenProgramsAndOutputPorts();
         endDotRendering();
     }
 
     private void renderDataView() {
         beginDotRendering();
         drawWorkflowTitle();
-        startWorkflowBox();
+        beginWorkflowBox();
         drawChannelsAsNodes();
         drawProgramEdgesBetweenChannels();
         endWorkflowBox();
-        drawWorkflowPortsAsNodes();
-        drawUnlabeledEdgesBetweenChannelsAndPorts();
+        drawWorkflowInputPortsAsNodes();
+        drawWorkflowOutputPortsAsNodes();
+        drawUnlabeledEdgesBetweenChannelsAndInputPorts();
+        drawUnlabeledEdgesBetweenChannelsAndOutputPorts();
         endDotRendering();
     }
 
     private void renderCombinedView() {
         beginDotRendering();
         drawWorkflowTitle();
-        startWorkflowBox();
-        drawProgramsAsNodes();
+        beginWorkflowBox();
+        drawAtomicProgramsAsNodes();
+        drawCompositeProgramsAsNodes();
         drawChannelsAsNodes();
         drawUnlabeledEdgesBetweenProgramsAndChannels();
         endWorkflowBox();
-        drawWorkflowPortsAsNodes();
-        drawUnlabeledEdgesBetweenChannelsAndPorts();
+        drawWorkflowInputPortsAsNodes();
+        drawWorkflowOutputPortsAsNodes();
+        drawUnlabeledEdgesBetweenChannelsAndInputPorts();
+        drawUnlabeledEdgesBetweenChannelsAndOutputPorts();
         endDotRendering();
     }
     
@@ -224,13 +240,16 @@ public class DotGrapher implements Grapher  {
     
     private void beginDotRendering() {
         dot = new DotBuilder()
+                .enableComments(commentView == CommentVisibility.ON)
+                .comment("Start of top-level graph")
                 .beginGraph()
-                .rankDir(layoutDirection.toString())
-                .enableComments(commentView == CommentVisibility.SHOW);
+                .rankDir(layoutDirection.toString());
     }
     
     private void endDotRendering() {
-        this.graphText = dot.endGraph().toString();
+        this.graphText = dot.comment("End of top-level graph")
+                            .endGraph()
+                            .toString();
     }
     
     private void drawWorkflowTitle() {
@@ -241,26 +260,33 @@ public class DotGrapher implements Grapher  {
                    (titlePosition == TitlePosition.TOP) ? "t" : "b");
     }
     
-    private void startWorkflowBox() {
-        dot.comment("Start of double cluster for drawing box around nodes in workflow")
-           .beginSubgraph(workflowBoxMode == WorkflowBoxMode.SHOW);
+    private void beginWorkflowBox() {
+        if (layoutClusterView == LayoutClusterView.ON) {
+            dot.comment("Start of double cluster for drawing box around nodes in workflow")
+               .beginSubgraph("workflow_box", workflowBoxMode == WorkflowBoxMode.SHOW);
+        }
     }
     
     private void endWorkflowBox() {
-        dot.comment("End of double cluster for drawing box around nodes in workflow")
-           .endSubgraph();
+        if (layoutClusterView == LayoutClusterView.ON) {
+            dot.comment("End of double cluster for drawing box around nodes in workflow")
+               .endSubgraph();
+        }
     }
     
-    private void drawProgramsAsNodes() {
+    private void drawAtomicProgramsAsNodes() {
 
-        dot.comment("Nodes representing programs in workflow")
-           .nodeFont(programFont)
-           .nodeShape(programShape)
-           .nodeStyle(programStyle)
-           .nodeFillcolor(programFillColor)
-           .nodePeripheries(programPeripheries)
-           .flushNodeStyle();
+        if (elementStyleView == ElementStyleView.ON) {
+            dot.comment("Style for nodes representing atomic programs in workflow")
+               .nodeFont(programFont)
+               .nodeShape(programShape)
+               .nodeStyle(programStyle)
+               .nodeFillcolor(programFillColor)
+               .nodePeripheries(programPeripheries)
+               .flushNodeStyle();
+        }
         
+        dot.comment("Nodes representing atomic programs in workflow");
         for (Program p : workflow.programs) {
             if (! (p.isWorkflow())) {
                 dot.node(p.beginAnnotation.name);
@@ -271,14 +297,22 @@ public class DotGrapher implements Grapher  {
                 }
             }
         }
+    }
 
-        dot.comment("Nodes representing subworkflows in workflow")
-           .nodeShape(subworkflowShape)
-           .nodeStyle(subworkflowStyle)
-           .nodeFillcolor(subworkflowFillColor)
-           .nodePeripheries(subworkflowPeripheries)
-           .flushNodeStyle();
+    private void drawCompositeProgramsAsNodes() {
 
+        if (workflow.subworkflowCount() == 0) return;
+        
+        if (elementStyleView == ElementStyleView.ON) {
+            dot.comment("Style for nodes representing composite programs (sub-workflows) in workflow")
+               .nodeShape(subworkflowShape)
+               .nodeStyle(subworkflowStyle)
+               .nodeFillcolor(subworkflowFillColor)
+               .nodePeripheries(subworkflowPeripheries)
+               .flushNodeStyle();
+        }
+        
+        dot.comment("Nodes representing composite programs (sub-workflows) in workflow");
         for (Program p : workflow.programs) {
             if (p.isWorkflow()) {
                 dot.node(p.beginAnnotation.name);
@@ -293,28 +327,59 @@ public class DotGrapher implements Grapher  {
     
     private void drawChannelsAsNodes() {
 
-        dot.comment("Nodes for data channels in workflow")
-           .nodeFont(dataFont)
-           .nodeShape(dataShape)
-           .nodeStyle(dataStyle)
-           .nodeFillcolor(dataFillColor)
-           .nodePeripheries(dataPeripheries)
-           .flushNodeStyle();
-
+        if (elementStyleView == ElementStyleView.ON) {
+            dot.nodeFont(dataFont)
+               .nodeShape(dataShape)
+               .nodeStyle(dataStyle)
+               .nodeFillcolor(dataFillColor)
+               .nodePeripheries(dataPeripheries);
+        }
+        
         switch(paramVisibility) {
 
             case SHOW:
+                
+                if (elementStyleView == ElementStyleView.ON) {
+                    dot.comment("Style for nodes representing parameter and non-parameter data channels in workflow")
+                       .flushNodeStyle();
+                }
+                
+                dot.comment("Nodes representing parameter and non-parameter data channels in workflow");
                 for (Channel c : workflow.innerChannels()) drawChannelNode(c);
+                
                 break;
                 
             case REDUCE:
+                
+                if (elementStyleView == ElementStyleView.ON) {
+                    dot.comment("Style for nodes representing non-parameter data channels in workflow")
+                       .flushNodeStyle();
+                }
+                
+                dot.comment("Nodes for non-parameter data channels in workflow");
                 for (Channel c : workflow.innerDataChannels()) drawChannelNode(c);
-                dot.nodeFillcolor(reducedParamFillColor);
+                
+                if (elementStyleView == ElementStyleView.ON) {
+                    dot.comment("Style for nodes representing parameter channels in workflow")
+                       .nodeFillcolor(reducedParamFillColor)
+                       .flushNodeStyle();
+                }
+                
+                dot.comment("Nodes representing parameter channels in workflow");
                 for (Channel c : workflow.innerParamChannels()) drawChannelNode(c);
+
                 break;
                 
             case HIDE:
+                
+                if (elementStyleView == ElementStyleView.ON) {
+                    dot.comment("Style for nodes representing non-parameter data channels in workflow")
+                       .flushNodeStyle();
+                }
+                
+                dot.comment("Nodes representing non-parameter data channels in workflow");
                 for (Channel c : workflow.innerDataChannels()) drawChannelNode(c);
+                
                 break;
         }
     }
@@ -328,7 +393,7 @@ public class DotGrapher implements Grapher  {
         if (uri == null) {
             dot.node(binding);
         } else {
-            String uriLabel = uri.toString().replace("{", "\\{").replace("}", "\\}");
+            String uriLabel = uri.toString();
             switch(uriDisplayMode) {
                 case NAME: dot.node(binding);                          break;
                 case URI:  dot.node(binding, uriLabel);                break;
@@ -338,67 +403,109 @@ public class DotGrapher implements Grapher  {
         }
     }
 
-    private void drawWorkflowPortsAsNodes() {
+    private void drawWorkflowInputPortsAsNodes() {
         
         if (portLayout == PortLayout.HIDE) return;
+        if (workflow.inPorts.length == 0) return;
 
-        dot.comment("Nodes representing workflow ports")
-           .nodeShape(portShape)
-           .nodePeripheries(portPeripheries)
-           .nodeWidth(portSize)
-           .nodeFillcolor(portFillColor)
-           .flushNodeStyle();
+        if (portLayout == PortLayout.GROUP && layoutClusterView == LayoutClusterView.ON) {
+            dot.comment("Hidden double-cluster for grouping workflow input ports")
+               .beginSubgraph("input_ports_group", false);
+        }
 
-        if (portLayout == PortLayout.GROUP) dot.beginSubgraph(false);
+        if (elementStyleView == ElementStyleView.ON) {
+            dot.comment("Style for nodes representing workflow input ports")
+               .nodeShape(portShape)
+               .nodePeripheries(portPeripheries)
+               .nodeWidth(portSize)
+               .nodeFillcolor(portFillColor)
+               .flushNodeStyle();
+        }
+        
+        dot.comment("Nodes representing workflow input ports");
         for (Port p : workflow.inPorts) {
             String binding = p.flowAnnotation.binding();
             if (channelBindings.contains(binding)) {
-                dot.node(binding + "_inport", "");
+                dot.node(binding + "_input_port", "");
             }
         }
-        if (portLayout == PortLayout.GROUP) dot.endSubgraph();
+
+        if (portLayout == PortLayout.GROUP && layoutClusterView == LayoutClusterView.ON) {
+            dot.comment("End of double-cluster for grouping workflow input ports")
+               .endSubgraph();
+        }
+    }
+
+    private void drawWorkflowOutputPortsAsNodes() {
         
-        if (portLayout == PortLayout.GROUP) dot.beginSubgraph(false);
+        if (portLayout == PortLayout.HIDE) return;
+        if (workflow.outPorts.length == 0) return;
+
+        if (portLayout == PortLayout.GROUP && layoutClusterView == LayoutClusterView.ON) {
+            dot.comment("Hidden double-cluster for grouping workflow output ports")
+               .beginSubgraph("output_ports_group", false);
+        }
+
+        if (elementStyleView == ElementStyleView.ON) {
+            dot.comment("Style for nodes representing workflow output ports")
+               .nodeShape(portShape)
+               .nodePeripheries(portPeripheries)
+               .nodeWidth(portSize)
+               .nodeFillcolor(portFillColor)
+               .flushNodeStyle();
+        }
+        
+        dot.comment("Nodes representing workflow output ports");
         for (Port p : workflow.outPorts) {
             String binding = p.flowAnnotation.binding();
             if (channelBindings.contains(binding)) {
-                dot.node(binding + "_outport", "");
+                dot.node(binding + "_output_port", "");
             }
         }
-        if (portLayout == PortLayout.GROUP) dot.endSubgraph();
+        
+        if (portLayout == PortLayout.GROUP && layoutClusterView == LayoutClusterView.ON) {
+            dot.comment("End of double-cluster for grouping workflow output ports")
+               .endSubgraph();
+        }
     }
-
+    
     private String edgeLabel(String label) {
         return (edgeLabelMode == EdgeLabelMode.SHOW) ? label : "";
     }
     
-    private void drawUnlabeledEdgesBetweenChannelsAndPorts() {
-        
-        dot.comment("Edges between channels and ports");
-
-        if (portLayout != PortLayout.HIDE) {
-            
-            for (Port p : workflow.inPorts) {
-                String binding = p.flowAnnotation.binding();
-                if (channelBindings.contains(binding)) {
-                    dot.edge(binding + "_inport", binding);
-                }
+    private void drawUnlabeledEdgesBetweenChannelsAndInputPorts() {
+        if (portLayout == PortLayout.HIDE) return;
+        if (workflow.inPorts.length == 0) return;
+        dot.comment("Edges from input ports to channels");
+        for (Port p : workflow.inPorts) {
+            String binding = p.flowAnnotation.binding();
+            if (channelBindings.contains(binding)) {
+                dot.edge(binding + "_input_port", binding);
             }
-            
-            for (Port p : workflow.outPorts) {
-                String binding = p.flowAnnotation.binding();
-                if (workflow.hasChannelForBinding(binding)) {
-                    dot.edge(binding, binding + "_outport");
-                }
+        }
+    }
+
+    private void drawUnlabeledEdgesBetweenChannelsAndOutputPorts() {
+        if (portLayout == PortLayout.HIDE) return;
+        if (workflow.outPorts.length == 0) return;
+        dot.comment("Edges from channels to output ports");
+        for (Port p : workflow.outPorts) {
+            String binding = p.flowAnnotation.binding();
+            if (workflow.hasChannelForBinding(binding)) {
+                dot.edge(binding, binding + "_output_port");
             }
         }
     }
     
     private void drawProgramEdgesBetweenChannels() {
 
-        dot.comment("Edges between channels in workflow")
-           .edgeFont(programFont);
+        if (elementStyleView == ElementStyleView.ON) {    
+            dot.comment("Style for edges representing programs connecting data channels in workflow")
+               .edgeFont(programFont)
+               .flushEdgeStyle();
+        }
         
+        dot.comment("Edges representing programs connecting data channels in workflow");
         for (Program p : workflow.programs) {
             for (Port out : p.outPorts) {
                 for (Port in : p.inPorts) {
@@ -416,12 +523,22 @@ public class DotGrapher implements Grapher  {
     }
     
     private void drawChannelEdgesBetweenPrograms() {
+
+        if (workflow.channels.length == 0) return;
+
+        if (elementStyleView == ElementStyleView.ON) {
+            dot.comment("Style for edges representing channels between programs in workflow")
+               .edgeFont(dataFont)
+               .flushEdgeStyle();
+        }
         
-        dot.comment("Edges for channels between programs in workflow")
-           .edgeFont(dataFont);
-        
+        dot.comment("Edges representing channels between programs in workflow");
         for (Channel c : workflow.channels) {
+            
+            // skip this channel if it's a parameter and parameters are hidden
             if (c.isParam && paramVisibility == ParamVisibility.HIDE) continue;
+            
+            // draw edge for the channel if both source and sink are progams (not ports)
             if (c.sourceProgram != null && c.sinkProgram != null) {
                 dot.edge(c.sourceProgram.beginAnnotation.name,
                          c.sinkProgram.beginAnnotation.name,
@@ -430,25 +547,56 @@ public class DotGrapher implements Grapher  {
         }
     }
             
-    private void drawChannelEdgesBetweenProgramsAndPorts() {
+    private void drawChannelEdgesBetweenProgramsAndInputPorts() {
+
+        if (portLayout == PortLayout.HIDE) return;
+        if (workflow.inPorts.length == 0) return;
+
+        if (elementStyleView == ElementStyleView.ON) {
+            dot.comment("Style for edges representing channels between programs and workflow input ports")
+               .edgeFont(dataFont)
+               .flushEdgeStyle();
+        }
         
-        dot.comment("Edges for channels between programs and ports")
-           .edgeFont(dataFont);
-        
-        for (Channel c : workflow.channels) {            
+        dot.comment("Edges representing channels between programs and workflow input ports");
+        for (Channel c : workflow.channels) {
+
+            // skip this channel if it's a parameter and parameters are hidden
             if (c.isParam && paramVisibility == ParamVisibility.HIDE) continue;
             
+            // draw edge from input port to sink program if source is not a program
             if (c.sourceProgram == null) {
                 if (portLayout != PortLayout.HIDE) {
-                    dot.edge(c.sinkPort.flowAnnotation.binding() + "_inport",
+                    dot.edge(c.sinkPort.flowAnnotation.binding() + "_input_port",
                              c.sinkProgram.beginAnnotation.name,
                              edgeLabel(c.sinkPort.flowAnnotation.binding()));
                 }
-                
-            } else if (c.sinkProgram == null) {
+            }             
+        }
+    }
+    
+    private void drawChannelEdgesBetweenProgramsAndOutputPorts() {
+
+        if (portLayout == PortLayout.HIDE) return;
+        if (workflow.outPorts.length == 0) return;
+
+        if (elementStyleView == ElementStyleView.ON) {
+            dot.comment("Style for edges representing channels between programs and workflow output ports")
+               .edgeFont(dataFont)
+               .flushEdgeStyle();
+        }
+        
+        dot.comment("Edges representing channels between programs and workflow output ports");
+        for (Channel c : workflow.channels) {
+
+            // skip this channel if it's a parameter and parameters are hidden
+            if (c.isParam && paramVisibility == ParamVisibility.HIDE) continue;
+
+            // draw edge from source program to output port if sink is not a program
+            if (c.sinkProgram == null) {
                 if (portLayout != PortLayout.HIDE) {
                     dot.edge(c.sourceProgram.beginAnnotation.name,
-                         c.sourcePort.flowAnnotation.binding() + "_outport",
+                         c.sourcePort.flowAnnotation.binding() + "_output_port",
                          edgeLabel(c.sourcePort.flowAnnotation.binding()));
                 }
             }
@@ -457,7 +605,8 @@ public class DotGrapher implements Grapher  {
     
     private void drawUnlabeledEdgesBetweenProgramsAndChannels() {
         
-        dot.comment("Edges for channels between programs and channels");
+        if (workflow.channels.length == 0) return;
+        dot.comment("Edges representing connections between programs and channels");
         
         for (Program p : workflow.programs) {
 

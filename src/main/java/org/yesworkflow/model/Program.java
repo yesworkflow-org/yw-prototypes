@@ -22,6 +22,8 @@ public class Program {
     public final Channel[] channels;
     public final Function[] functions;
     public final String name;
+    
+    private Integer subworkflowCount = null;
 
     public Program(
             Integer id,
@@ -162,5 +164,15 @@ public class Program {
         }
         
         return null;
+    }
+
+    public int subworkflowCount() {
+        if (subworkflowCount == null) {
+            subworkflowCount = 0;
+            for (Program p : programs) {
+               if (p.isWorkflow()) ++subworkflowCount;
+            }
+        }
+        return subworkflowCount;
     }
 }

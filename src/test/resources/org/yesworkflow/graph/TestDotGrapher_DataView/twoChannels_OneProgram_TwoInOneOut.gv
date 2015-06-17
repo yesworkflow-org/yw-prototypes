@@ -1,32 +1,49 @@
+
+/* Start of top-level graph */
 digraph Workflow {
 rankdir=LR
 
 /* Start of double cluster for drawing box around nodes in workflow */
-subgraph cluster0 {label=""; penwidth=2; fontsize=18
-subgraph cluster1 {label=""; color="white"
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; color=white
 
-/* Nodes for data channels in workflow */
-node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname="Helvetica"]
-node1 [label="d"]
-node2 [label="x"]
-node3 [label="y"]
+/* Style for nodes representing parameter and non-parameter data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
 
-/* Edges between channels in workflow */
+/* Nodes representing parameter and non-parameter data channels in workflow */
+d
+x
+y
+
+/* Style for edges representing programs connecting data channels in workflow */
 edge[fontname=Courier]
-node2 -> node1 [label="program"]
-node3 -> node1 [label="program"]
+
+/* Edges representing programs connecting data channels in workflow */
+x -> d [label=program]
+y -> d [label=program]
 
 /* End of double cluster for drawing box around nodes in workflow */
 }}
 
-/* Nodes representing workflow ports */
-node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname="Helvetica" width=0.2]
-node4 [label=""]
-node5 [label=""]
-node6 [label=""]
+/* Style for nodes representing workflow input ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
 
-/* Edges between channels and ports */
-node4 -> node2
-node5 -> node3
-node1 -> node6
+/* Nodes representing workflow input ports */
+x_input_port [label=""]
+y_input_port [label=""]
+
+/* Style for nodes representing workflow output ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+
+/* Nodes representing workflow output ports */
+d_output_port [label=""]
+
+/* Edges from input ports to channels */
+x_input_port -> x
+y_input_port -> y
+
+/* Edges from channels to output ports */
+d -> d_output_port
+
+/* End of top-level graph */
 }

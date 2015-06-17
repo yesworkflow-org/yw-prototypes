@@ -13,7 +13,7 @@ public class TestDotGrapher_CombinedView extends DotGrapherTestCase {
         super.setUp();
         testResourceDirectory = "src/test/resources/org/yesworkflow/graph/TestDotGrapher_CombinedView/";
         grapher.configure("view", GraphView.COMBINED_VIEW)
-               .configure("dotcomments", CommentVisibility.SHOW)
+               .configure("dotcomments", CommentVisibility.ON)
                .configure("params", ParamVisibility.SHOW)
                .configure("titleposition", TitlePosition.HIDE)
                .configure("portlayout", PortLayout.RELAX);
@@ -56,7 +56,14 @@ public class TestDotGrapher_CombinedView extends DotGrapherTestCase {
         assertEquals("", stderrBuffer.toString());  
     }
     
-     public void testDotGrapher_CombinedView_SamplePyScript() throws Exception {
+    public void testDotGrapher_CombinedView_TwoChannels_OneProgram_OneInOneParamOneOut_ReduceParams() throws Exception {
+        grapher.configure("params", ParamVisibility.REDUCE);
+        String src = "twoChannels_OneProgram_OneInOneParamOneOut";
+        assertEquals(expectedGraph(src + "_ReduceParams"), actualGraph(src));
+        assertEquals("", stderrBuffer.toString());  
+    }
+
+    public void testDotGrapher_CombinedView_SamplePyScript() throws Exception {
          String src = "examplePyScript";
          assertEquals(expectedGraph(src), actualGraph(src));  
      }
