@@ -18,6 +18,8 @@ import org.yesworkflow.graph.Grapher;
 import org.yesworkflow.model.DefaultModeler;
 import org.yesworkflow.model.Model;
 import org.yesworkflow.model.Modeler;
+import org.yesworkflow.recon.DefaultReconstructor;
+import org.yesworkflow.recon.Reconstructor;
 
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
@@ -65,6 +67,7 @@ public class YesWorkflowCLI {
     private List<Annotation> annotations;
     private Model model = null;
     private YWConfiguration config = null;
+    private Reconstructor reconstructor;
     
     /** Method invoked first when the YesWorkflow CLI is run from the 
      * command line. Creates an instance of {@link YesWorkflowCLI},
@@ -233,6 +236,12 @@ public class YesWorkflowCLI {
                     model();
                     graph();
                     return ExitCode.SUCCESS;
+
+                case RECON:
+                    extract();
+                    model();
+                    recon();
+                    return ExitCode.SUCCESS;
             }
             
         } catch (YWToolUsageException e) {
@@ -268,6 +277,7 @@ public class YesWorkflowCLI {
         "-------                    --------"                                               + EOL +
         "extract                    Identify YW comments in script source file(s)"          + EOL +
         "model                      Build workflow model from identified YW comments"       + EOL +
+        "recon                      Reconstruct a run from its persisted data products"     + EOL +
         "graph                      Graphically render workflow model of script"            + EOL;
 
     public static final String YW_CLI_CONFIG_HELP = 
@@ -367,4 +377,16 @@ public class YesWorkflowCLI {
                .model(model)
                .graph();
     }
+
+    private void recon() throws Exception {
+
+        if (reconstructor == null) {
+            reconstructor = new DefaultReconstructor(this.outStream, this.errStream);
+         }
+        
+        reconstructor.configure(config.getSection("recon"))
+                     .model(model)
+                     .reconstruct();
+    }
+
 }

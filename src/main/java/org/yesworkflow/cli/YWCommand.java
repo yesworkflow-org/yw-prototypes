@@ -5,7 +5,8 @@ public enum YWCommand {
     NOOP,
     EXTRACT,
     MODEL,
-    GRAPH;
+    GRAPH,
+    RECON;
     
     public static YWCommand toYWCommand(Object ywc) throws Exception {
                 
@@ -17,6 +18,7 @@ public enum YWCommand {
             if (ywcstring.equalsIgnoreCase("extract")) return YWCommand.EXTRACT;
             if (ywcstring.equalsIgnoreCase("model")) return YWCommand.MODEL;
             if (ywcstring.equalsIgnoreCase("graph")) return YWCommand.GRAPH;
+            if (ywcstring.equalsIgnoreCase("recon")) return YWCommand.RECON;
         }
         
         throw new Exception("Unrecognized YW command: " + ywc);
