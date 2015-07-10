@@ -731,10 +731,74 @@ public void testReduceTemplateAndExtractVariables_PathHasEmptyVariableBraces() {
 		assertEquals("", UriTemplate.extractPathName("/1/2/{v1}bar/"));
 	}
 	
+	public void testLeadingPath() {
+
+	    t1 = new UriTemplate("");
+	    assertEquals("", t1.leadingPath);
+
+	    t1 = new UriTemplate(".");
+	    assertEquals(".", t1.leadingPath);
+
+        t1 = new UriTemplate("..");
+        assertEquals("..", t1.leadingPath);
+
+        t1 = new UriTemplate("/");
+        assertEquals("/", t1.leadingPath);
+
+        t1 = new UriTemplate("./");
+        assertEquals(".", t1.leadingPath);
+
+        t1 = new UriTemplate("../");
+        assertEquals("..", t1.leadingPath);
+
+        t1 = new UriTemplate("/bar/");
+        assertEquals("/bar", t1.leadingPath);
+
+        t1 = new UriTemplate("./bar/");
+        assertEquals("./bar", t1.leadingPath);
+
+        t1 = new UriTemplate("../bar/");
+        assertEquals("../bar", t1.leadingPath);
+
+        t1 = new UriTemplate("bar");
+        assertEquals("bar", t1.leadingPath);
+
+        t1 = new UriTemplate("bar/");
+        assertEquals("bar", t1.leadingPath);
+
+        t1 = new UriTemplate("/1/bar/");
+        assertEquals("/1/bar", t1.leadingPath);
+
+        t1 = new UriTemplate("/1/2/bar/");
+        assertEquals("/1/2/bar", t1.leadingPath);
+
+        t1 = new UriTemplate("/1/2/{v1}/bar");
+        assertEquals("/1/2", t1.leadingPath);
+
+        t1 = new UriTemplate("/1/2/f{v1}/bar");
+        assertEquals("/1/2", t1.leadingPath);
+
+        t1 = new UriTemplate("/1/2/foo{v1}/bar");
+        assertEquals("/1/2", t1.leadingPath);
+
+        t1 = new UriTemplate("1/2/{v1}/bar");
+        assertEquals("1/2", t1.leadingPath);
+
+        t1 = new UriTemplate("1/2/f{v1}/bar");
+        assertEquals("1/2", t1.leadingPath);
+
+        t1 = new UriTemplate("1/2/foo{v1}/bar");
+        assertEquals("1/2", t1.leadingPath);
+
+        t1 = new UriTemplate("./2/foo{v1}/bar");
+        assertEquals("./2", t1.leadingPath);
+
+	}
+	
 	public void testGetName() {
 		
 		t1 = new UriTemplate("");
-		assertEquals("", t1.getName());		
+		assertEquals("", t1.getName());
 
 		t1 = new UriTemplate("/");
 		assertEquals("", t1.getName());

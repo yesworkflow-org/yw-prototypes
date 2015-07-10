@@ -32,9 +32,10 @@ public class UriTemplate extends UriBase {
 	///////////////////////////////////////////////////////////////////
 	////                    private data fields                    ////
 
-	private final String 		_reducedPath;	// Fully reduced, directly matchable representation of the URI template.
-	private final String[] 		_variableNames;	// Array of variables named in the URI template in position order
-	private final String[]		_pathFragments; // Array of strings representing non-variable portions of the template path
+	public final String    reducedPath;	    // Fully reduced, directly matchable representation of the URI template
+	public final String    leadingPath;     // Portion of path preceding any path element that contains variables
+	private final String[] _variableNames;	// Array of variables named in the URI template in position order
+	private final String[]	_pathFragments; // Array of strings representing non-variable portions of the template path
 	
 	///////////////////////////////////////////////////////////////////
 	////                     public constructors                   ////
@@ -52,13 +53,26 @@ public class UriTemplate extends UriBase {
 		// and extract the variable names and fixed portions of the template path
 		List<String> variableNames = new LinkedList<String>();
 		List<String> constantFragments = new LinkedList<String>();
-		_reducedPath = reduceTemplateAndExtractVariables(path, variableNames, constantFragments);
+		reducedPath = reduceTemplateAndExtractVariables(path, variableNames, constantFragments);
 		
 		// store the variable names as an array
 		_variableNames = variableNames.toArray(new String[] {});
 
 		// store the fixed portions of the template path as an array
-		_pathFragments = constantFragments.toArray(new String[] {});		
+		_pathFragments = constantFragments.toArray(new String[] {});
+		
+		if (_pathFragments.length == 0) {
+		    leadingPath = "";
+		} else if (_variableNames.length == 0) {
+		    leadingPath = _pathFragments[0];
+		} else {
+		    int lastSlashInFirstFragment = _pathFragments[0].lastIndexOf('/');
+		    if (lastSlashInFirstFragment == -1) {
+		        leadingPath = "";
+		    } else {
+	            leadingPath = path.substring(0, lastSlashInFirstFragment);		        
+		    }
+		}
 	}	
 	
 
@@ -123,7 +137,7 @@ public class UriTemplate extends UriBase {
 
 	/** @return The reduced, directly matchable representation of the URI template. */
 	public String getReducedPath() {
-		return _reducedPath;
+		return reducedPath;
 	}
 
 	/** @return The number of variable positions in the URI template */
@@ -140,7 +154,7 @@ public class UriTemplate extends UriBase {
 	 * @return true if the reduced paths of the two templates are identical, otherwise false
 	 */
 	public boolean matches(UriTemplate otherTemplate) {
-		return this._reducedPath.equals(otherTemplate._reducedPath);
+		return this.reducedPath.equals(otherTemplate.reducedPath);
 	}
 
 	
