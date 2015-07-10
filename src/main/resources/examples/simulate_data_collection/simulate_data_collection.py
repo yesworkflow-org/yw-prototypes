@@ -73,7 +73,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
             @begin log_rejected_sample 
             @param cassette_id 
             @in rejected_sample
-            @out rejection_log @uri file:/run/rejected_samples.txt
+            @out rejection_log @uri file:run/rejected_samples.txt
             """
             if (rejected_sample is not None):
                 run_log.write("Rejected sample {0}".format(rejected_sample))
@@ -116,7 +116,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                 @in frame_number
                 @in raw_image_path @as raw_image
                 @in calibration_image @uri file:calibration.img
-                @out corrected_image  @uri file:data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img
+                @out corrected_image  @uri file:run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img
                 @out corrected_image_path
                 @out total_intensity
                 @out pixel_count

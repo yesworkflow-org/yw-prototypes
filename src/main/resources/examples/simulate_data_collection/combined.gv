@@ -27,10 +27,10 @@ log_average_image_intensity
 node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
 
 /* Nodes for non-parameter data channels in workflow */
-corrected_image [shape=record rankdir=LR label="{<f0> corrected_image |<f1> file\:data/\{sample_id\}/\{sample_id\}_\{energy\}eV_\{frame_number\}.img}"];
+corrected_image [shape=record rankdir=LR label="{<f0> corrected_image |<f1> file\:run/data/\{sample_id\}/\{sample_id\}_\{energy\}eV_\{frame_number\}.img}"];
 run_log [shape=record rankdir=LR label="{<f0> run_log |<f1> file\:run/run_log.txt}"];
 collection_log [shape=record rankdir=LR label="{<f0> collection_log |<f1> file\:run/collected_images.csv}"];
-rejection_log [shape=record rankdir=LR label="{<f0> rejection_log |<f1> file\:/run/rejected_samples.txt}"];
+rejection_log [shape=record rankdir=LR label="{<f0> rejection_log |<f1> file\:run/rejected_samples.txt}"];
 sample_spreadsheet [shape=record rankdir=LR label="{<f0> sample_spreadsheet |<f1> file\:cassette_\{cassette_id\}_spreadsheet.csv}"];
 sample_name
 sample_quality

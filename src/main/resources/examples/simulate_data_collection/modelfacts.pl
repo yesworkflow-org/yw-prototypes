@@ -97,10 +97,10 @@ port_uri(7, 'file:run/collected_images.csv').
 port_uri(8, 'file:run/rejected_samples.txt').
 port_uri(9, 'file:run/run_log.txt').
 port_uri(11, 'file:cassette_{cassette_id}_spreadsheet.csv').
-port_uri(23, 'file:/run/rejected_samples.txt').
+port_uri(23, 'file:run/rejected_samples.txt').
 port_uri(31, 'file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw').
 port_uri(36, 'file:calibration.img').
-port_uri(37, 'file:data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img').
+port_uri(37, 'file:run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img').
 port_uri(47, 'file:run/collected_images.csv').
 
 % FACT: has_in_port(block_id, port_id).

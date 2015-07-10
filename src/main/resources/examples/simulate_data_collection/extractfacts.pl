@@ -42,7 +42,7 @@ annotation(36, 1, 73, '@begin', 'log_rejected_sample').
 annotation(37, 1, 74, '@param', 'cassette_id').
 annotation(38, 1, 75, '@in', 'rejected_sample').
 annotation(39, 1, 76, '@out', 'rejection_log').
-annotation(40, 1, 76, '@uri', 'file:/run/rejected_samples.txt').
+annotation(40, 1, 76, '@uri', 'file:run/rejected_samples.txt').
 annotation(41, 1, 85, '@end', 'log_rejected_sample').
 annotation(42, 1, 89, '@begin', 'collect_data_set').
 annotation(43, 1, 90, '@call', 'collect_next_image').
@@ -67,7 +67,7 @@ annotation(61, 1, 117, '@as', 'raw_image').
 annotation(62, 1, 118, '@in', 'calibration_image').
 annotation(63, 1, 118, '@uri', 'file:calibration.img').
 annotation(64, 1, 119, '@out', 'corrected_image').
-annotation(65, 1, 119, '@uri', 'file:data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img').
+annotation(65, 1, 119, '@uri', 'file:run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img').
 annotation(66, 1, 120, '@out', 'corrected_image_path').
 annotation(67, 1, 121, '@out', 'total_intensity').
 annotation(68, 1, 122, '@out', 'pixel_count').
