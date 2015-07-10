@@ -293,6 +293,8 @@ public class YesWorkflowCLI {
         "model.factsfile            File for storing prolog facts describing model"         + EOL +
         "model.workflow             Name of top-level workflow in model"                    + EOL +
         ""                                                                                  + EOL +
+        "recon.factsfile            File for storing reconstructed facts about a run"       + EOL +
+        ""                                                                                  + EOL +
         "graph.datalabel            Info to display in data nodes: NAME, URI, or BOTH"      + EOL +
         "graph.dotcomments          Include comments in dot file (ON or OFF)"               + EOL +
         "graph.dotfile              Name of GraphViz DOT file to write graph to"            + EOL +
@@ -386,7 +388,7 @@ public class YesWorkflowCLI {
         
         reconstructor.configure(config.getSection("recon"))
                      .model(model)
-                     .reconstruct();
+                     .recon();
     }
 
 }
