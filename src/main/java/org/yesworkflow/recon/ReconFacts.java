@@ -1,5 +1,9 @@
 package org.yesworkflow.recon;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +21,7 @@ public class ReconFacts {
 
     private final Run run;
     private String factsString = null;
+    private Integer nextResourceId = 1;
     
     private FactsBuilder resourceFacts;
     private FactsBuilder uriVariableValueFacts;
@@ -70,8 +75,8 @@ public class ReconFacts {
    
     private void buildFactsForPortResources(Port[] ports) {        
         for (Port port: ports) {
-            List<Resource> resources = findResourcesForPort(port);
-            for (Resource resource : resources) {
+            List<Resource> resourcesWithVariables = findResourcesForPort(port);
+            for (Resource resource : resourcesWithVariables) {
                 buildUriVariableValueFacts(port.uriTemplate, resource);
             }
         }
@@ -79,12 +84,30 @@ public class ReconFacts {
     
     private List<Resource> findResourcesForPort(Port port) {
         List<Resource> resources = new LinkedList<Resource>();
+        UriTemplate template = port.uriTemplate;
+        if (template != null) {
+            Path start = Paths.get(port.uriTemplate.leadingPath);
+            if (Files.isRegularFile(start)) {
+                addResource(start.toString());
+            }
+        
         // search file system for expansions of port.uriTemplate
         // each match corresponds to a resource with concrete uri
         // use Resource in resourceIdForUri if concrete uri has been seen before
         // otherwise create new Resource for each match and add new resources to 
         // resourceIdForUri and resourceFacts.
+        
+        }
+        
         return resources;
+    }
+    
+    private void addResource(String uri) {
+        if (resourceIdForUri.get(uri) == null) {
+            Integer id = nextResourceId++;
+            resourceIdForUri.put(uri, id);
+            resourceFacts.add(id, uri);
+        }
     }
 
     private void buildUriVariableValueFacts(UriTemplate uriTemplate, Resource resource) {
