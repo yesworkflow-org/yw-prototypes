@@ -12,7 +12,6 @@ public class DefaultReconstructor implements Reconstructor  {
     
     static private LogicLanguage DEFAULT_LOGIC_LANGUAGE = LogicLanguage.PROLOG;
     
-    @SuppressWarnings("unused")
     private Model model;    
     private PrintStream stdoutStream = null;
     @SuppressWarnings("unused")
@@ -70,7 +69,7 @@ public class DefaultReconstructor implements Reconstructor  {
         return this;
     }
     
-    public void reconRun() {
+    private void reconRun() {
         if (run == null) {
             run = new Run(model);
         }

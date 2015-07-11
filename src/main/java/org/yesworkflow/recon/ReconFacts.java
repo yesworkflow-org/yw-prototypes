@@ -1,9 +1,17 @@
 package org.yesworkflow.recon;
 
-import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,23 +91,20 @@ public class ReconFacts {
     }   
     
     private List<Resource> findResourcesForPort(Port port) {
-        List<Resource> resources = new LinkedList<Resource>();
+        
+        List<Resource> resourcesWithVariables = new LinkedList<Resource>();
+        
         UriTemplate template = port.uriTemplate;
         if (template != null) {
-            Path start = Paths.get(port.uriTemplate.leadingPath);
-            if (Files.isRegularFile(start)) {
-                addResource(start.toString());
+
+            if (Files.isRegularFile(port.uriTemplate.leadingPath)) {
+                addResource(port.uriTemplate.leadingPath.toString());
+            } else {
+                resourcesWithVariables.addAll(addMatchingResources(port.uriTemplate));
             }
-        
-        // search file system for expansions of port.uriTemplate
-        // each match corresponds to a resource with concrete uri
-        // use Resource in resourceIdForUri if concrete uri has been seen before
-        // otherwise create new Resource for each match and add new resources to 
-        // resourceIdForUri and resourceFacts.
-        
         }
         
-        return resources;
+        return resourcesWithVariables;
     }
     
     private void addResource(String uri) {
@@ -110,6 +115,18 @@ public class ReconFacts {
         }
     }
 
+    private List<Resource> addMatchingResources(UriTemplate template) {
+        
+        FileVisitor<Path> resourceFinder = new FileResourceFinder(template);
+        
+        try {
+            Files.walkFileTree(template.leadingPath, resourceFinder);
+        } catch(Exception e) {
+            System.out.println(e.getStackTrace());
+        }
+        return ((FileResourceFinder)resourceFinder).resources;
+    }
+    
     private void buildUriVariableValueFacts(UriTemplate uriTemplate, Resource resource) {
         // align resource.uri to fixed parts of uriTemplate
         // for each named variable in template extract corresponding value from resource.uri
@@ -119,5 +136,28 @@ public class ReconFacts {
     
     public String toString() {
         return factsString;
+    }
+    
+    private final class FileResourceFinder extends SimpleFileVisitor<Path> {
+        
+        private final PathMatcher matcher;
+        public final List<Resource> resources = new LinkedList<Resource>();
+        
+        public FileResourceFinder(UriTemplate template) {
+            super();
+            FileSystem fs = FileSystems.getDefault();
+            matcher = fs.getPathMatcher("glob:" + template.getGlobPattern());
+        }
+        
+        @Override public FileVisitResult visitFile(Path file, BasicFileAttributes aAttrs) throws IOException {
+          if (matcher.matches(file)) {
+              addResource(file.toString());
+          }
+          return FileVisitResult.CONTINUE;
+        }
+        
+        @Override  public FileVisitResult preVisitDirectory(Path directory, BasicFileAttributes aAttrs) throws IOException {
+          return FileVisitResult.CONTINUE;
+        }
     }
 }
