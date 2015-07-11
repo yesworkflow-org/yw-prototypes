@@ -59,7 +59,8 @@ public class UriTemplate extends UriBase {
 		List<String> constantFragments = new LinkedList<String>();
 		reducedPath = reduceTemplateAndExtractVariables(path, variableNames, constantFragments);
 
-		Map<String,Integer> idForVariableName = new LinkedHashMap<String,Integer>();
+		Map<String,UriVariable> uriVariableForName = new LinkedHashMap<String,UriVariable>();
+		int position = 0;
 		for (String name : variableNames) {
 		    if (!name.isEmpty()) {
     		    if (uriVariableForName.get(name) == null) {
