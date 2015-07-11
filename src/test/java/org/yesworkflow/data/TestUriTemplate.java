@@ -633,7 +633,6 @@ public void testReduceTemplateAndExtractVariables_PathHasEmptyVariableBraces() {
 	
 	public void testGetVariableNames_TemplateHasRepeatVariables() {
 		
-		
 		t1 = new UriTemplate("foo:/1/2/{v1}/bar/{v1}");
 		assertEquals(1, t1.variables.length);
 		assertEquals("v1", t1.variables[0].name);

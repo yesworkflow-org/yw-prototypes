@@ -62,16 +62,16 @@ public class UriTemplate extends UriBase {
 		Map<String,Integer> idForVariableName = new LinkedHashMap<String,Integer>();
 		for (String name : variableNames) {
 		    if (!name.isEmpty()) {
-    		    if (idForVariableName.get(name) == null) {
-    		        idForVariableName.put(name, nextUriVariableId++);
+    		    if (uriVariableForName.get(name) == null) {
+    		        uriVariableForName.put(name, new UriVariable(nextUriVariableId++, name, position++));
     		    }
 		    }
 		}
 		
-		variables = new UriVariable[idForVariableName.size()];
+		variables = new UriVariable[uriVariableForName.size()];
 		int i = 0;
-		for (Map.Entry<String,Integer> entry : idForVariableName.entrySet()) {
-		    variables[i++] = new UriVariable(entry.getValue(), entry.getKey());
+		for (Map.Entry<String, UriVariable> entry : uriVariableForName.entrySet()) {
+		    variables[i++] = entry.getValue();
 		}
 
 		// store the fixed portions of the template path as an array
@@ -92,8 +92,7 @@ public class UriTemplate extends UriBase {
 		}
 		
 		leadingPath = Paths.get(leadingPathString);
-	}	
-	
+	}
 
 	//TODO Add support for double slashes following scheme delimiter.
 	
