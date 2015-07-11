@@ -1,7 +1,6 @@
 package org.yesworkflow.recon;
 
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
@@ -9,7 +8,6 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
-import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
@@ -18,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.yesworkflow.data.UriTemplate;
+import org.yesworkflow.data.UriVariable;
 import org.yesworkflow.model.Function;
 import org.yesworkflow.model.Port;
 import org.yesworkflow.model.Program;
@@ -33,11 +32,12 @@ public class ReconFacts {
     
     private FactsBuilder resourceFacts;
     private FactsBuilder uriVariableValueFacts;
-    private Map<String, Integer> resourceIdForUri = new HashMap<String,Integer>();
+    private Map<String,Resource> resourceForUri = new HashMap<String,Resource>();
 
     public ReconFacts(LogicLanguage logicLanguage, Run run) {
-        if (logicLanguage == null) throw new IllegalArgumentException("Null logicLanguage argument passed to ModelFacts constructor.");
-        if (run == null) throw new IllegalArgumentException("Null run argument passed to RunFacts constructor.");
+        if (logicLanguage == null) throw new IllegalArgumentException("Null logicLanguage argument passed to ReconFacts constructor.");
+        if (run == null) throw new IllegalArgumentException("Null run argument passed to ReconFacts constructor.");
+        if (run.model == null) throw new IllegalArgumentException("Null model field in run argument to passed to ReconFacts constructor.");
         this.run = run;
         LogicLanguageModel logicLanguageModel = new LogicLanguageModel(logicLanguage);
 
@@ -53,21 +53,21 @@ public class ReconFacts {
             buildReconFactsRecursively(function);            
         }
         
-        StringBuilder sb = new StringBuilder();
-        sb.append(resourceFacts)
-          .append(uriVariableValueFacts);
+        factsString = new StringBuilder()
+          .append(resourceFacts)
+          .append(uriVariableValueFacts)
+          .toString();
 
-        factsString = sb.toString();
-     
         return this;
     }
 
    private void buildReconFactsRecursively(Program program) {
         
         if (program == null) throw new IllegalArgumentException("Null program argument.");
-        if (program.channels == null) throw new IllegalArgumentException("Null channels field in program argument.");
         if (program.programs == null) throw new IllegalArgumentException("Null programs field in program argument.");
         if (program.functions == null) throw new IllegalArgumentException("Null functions field in program argument.");
+        if (program.inPorts == null) throw new IllegalArgumentException("Null inPorts field in program argument.");
+        if (program.outPorts == null) throw new IllegalArgumentException("Null outPorts field in program argument.");
 
         buildFactsForPortResources(program.inPorts);
         buildFactsForPortResources(program.outPorts);
@@ -100,19 +100,23 @@ public class ReconFacts {
             if (Files.isRegularFile(port.uriTemplate.leadingPath)) {
                 addResource(port.uriTemplate.leadingPath.toString());
             } else {
-                resourcesWithVariables.addAll(addMatchingResources(port.uriTemplate));
+                List<Resource> matchingResources = addMatchingResources(port.uriTemplate);
+                resourcesWithVariables.addAll(matchingResources);
             }
         }
         
         return resourcesWithVariables;
     }
     
-    private void addResource(String uri) {
-        if (resourceIdForUri.get(uri) == null) {
+    private Resource addResource(String uri) {
+        Resource resource = resourceForUri.get(uri);
+        if (resource == null) {
             Integer id = nextResourceId++;
-            resourceIdForUri.put(uri, id);
+            resource = new Resource(id, uri);
+            resourceForUri.put(uri, resource);
             resourceFacts.add(id, uri);
         }
+        return resource;
     }
 
     private List<Resource> addMatchingResources(UriTemplate template) {
@@ -128,10 +132,11 @@ public class ReconFacts {
     }
     
     private void buildUriVariableValueFacts(UriTemplate uriTemplate, Resource resource) {
-        // align resource.uri to fixed parts of uriTemplate
-        // for each named variable in template extract corresponding value from resource.uri
-        //   if variable occurs early in template make sure new value matches last one
-        //   save valid variable values to uriVariableValueFacts
+        Map<String,String> variableValues = uriTemplate.extractValuesFromPath(resource.uri);
+        for (UriVariable variable : uriTemplate.variables) {
+            String variableValue = variableValues.get(variable.name);
+            uriVariableValueFacts.add(resource.id, variable.id, variableValue);
+        }
     }
     
     public String toString() {
@@ -151,12 +156,14 @@ public class ReconFacts {
         
         @Override public FileVisitResult visitFile(Path file, BasicFileAttributes aAttrs) throws IOException {
           if (matcher.matches(file)) {
-              addResource(file.toString());
+              Resource r = addResource(file.toString());
+              resources.add(r);
           }
           return FileVisitResult.CONTINUE;
         }
         
         @Override  public FileVisitResult preVisitDirectory(Path directory, BasicFileAttributes aAttrs) throws IOException {
+          // TODO: Improve performance by detecting when directory cannot lead to a match for the template
           return FileVisitResult.CONTINUE;
         }
     }

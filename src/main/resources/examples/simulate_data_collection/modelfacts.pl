@@ -248,9 +248,9 @@ port_connects_to_channel(46, 26).
 uri_variable(1, 'cassette_id', 3).
 uri_variable(2, 'cassette_id', 11).
 uri_variable(3, 'cassette_id', 31).
-uri_variable(4, 'frame_number', 31).
-uri_variable(5, 'sample_id', 31).
-uri_variable(6, 'energy', 31).
-uri_variable(7, 'frame_number', 37).
-uri_variable(8, 'sample_id', 37).
-uri_variable(9, 'energy', 37).
+uri_variable(4, 'sample_id', 31).
+uri_variable(5, 'energy', 31).
+uri_variable(6, 'frame_number', 31).
+uri_variable(7, 'sample_id', 37).
+uri_variable(8, 'energy', 37).
+uri_variable(9, 'frame_number', 37).

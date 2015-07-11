@@ -3,6 +3,7 @@ package org.yesworkflow.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.yesworkflow.data.UriVariable;
 import org.yesworkflow.query.FactsBuilder;
 import org.yesworkflow.query.LogicLanguage;
 import org.yesworkflow.query.LogicLanguageModel;
@@ -11,7 +12,6 @@ public class ModelFacts {
 
     private final Model model;
     private String factsString = null;
-    private Integer nextUriVariableId = 1;
     
     private FactsBuilder programFacts ;
 //    private FactsBuilder qualifiedProgramNameFacts;
@@ -151,12 +151,12 @@ public class ModelFacts {
             if (port.uriTemplate != null) {
                 portUriFacts.add(port.id, port.uriTemplate.toString());
                 Set<String> uniqueVariableNames = new HashSet<String>();
-                for (String name : port.uriTemplate.getVariableNames()) {
-                    uniqueVariableNames.add(name);
-                }
-                for (String uriVariableName : uniqueVariableNames) {
-                    if (! uriVariableName.trim().isEmpty()) {
-                        portUriVariableFacts.add(nextUriVariableId++, uriVariableName, port.id);
+                for (UriVariable variable : port.uriTemplate.variables) {
+                    if (! variable.name.trim().isEmpty()) {
+                        if (!uniqueVariableNames.contains(variable.name)) {
+                            uniqueVariableNames.add(variable.name);
+                            portUriVariableFacts.add(variable.id, variable.name, port.id);
+                        }
                     }
                 }
             }

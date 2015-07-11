@@ -520,195 +520,152 @@ public void testReduceTemplateAndExtractVariables_PathHasEmptyVariableBraces() {
 	public void testGetVariableCount_PathIsJustSlash() {
 		
 		t1 = new UriTemplate("/");
-		assertEquals(0, t1.getVariableCount());		
+		assertEquals(0, t1.variables.length);		
 
 		t1 = new UriTemplate("foo:/");
-		assertEquals(0, t1.getVariableCount());		
+		assertEquals(0, t1.variables.length);		
 	}
 	
 	
 	public void testGetVariableCount_TemplateHasNoVariables() {
 		
 		t1 = new UriTemplate("foo:/bar/");
-		assertEquals(0, t1.getVariableCount());
+		assertEquals(0, t1.variables.length);
 	
 		t1 = new UriTemplate("/foo/bar/");
-		assertEquals(0, t1.getVariableCount());
+		assertEquals(0, t1.variables.length);
 
 		t1 = new UriTemplate("data:/foo/1/bar/");
-		assertEquals(0, t1.getVariableCount());
+		assertEquals(0, t1.variables.length);
 
 		t1 = new UriTemplate("/foo/1/bar/");
-		assertEquals(0, t1.getVariableCount());
+		assertEquals(0, t1.variables.length);
 	}
 	
 	public void testGetVariableCount_TemplateHasUniqueVariables() {
 
 		t1 = new UriTemplate("foo:/1/2/{v1}/bar");
-		assertEquals(1, t1.getVariableCount());
+		assertEquals(1, t1.variables.length);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}bar");
-		assertEquals(1, t1.getVariableCount());
+		assertEquals(1, t1.variables.length);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}/bar/{v2}");
-		assertEquals(2, t1.getVariableCount());
+		assertEquals(2, t1.variables.length);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}bar{v2}");
-		assertEquals(2, t1.getVariableCount());
+		assertEquals(2, t1.variables.length);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}{v2}");
-		assertEquals(2, t1.getVariableCount());
+		assertEquals(2, t1.variables.length);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}{v2}/3");
-		assertEquals(2, t1.getVariableCount());
+		assertEquals(2, t1.variables.length);
 	}
 	
 	public void testGetVariableCount_TemplateHasRepeatVariables() {
 
 		t1 = new UriTemplate("foo:/1/2/{v1}/bar/{v1}");
-		assertEquals(2, t1.getVariableCount());
+		assertEquals(1, t1.variables.length);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}bar{v1}");
-		assertEquals(2, t1.getVariableCount());
+		assertEquals(1, t1.variables.length);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}{v1}");
-		assertEquals(2, t1.getVariableCount());
+		assertEquals(1, t1.variables.length);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}{v1}/3");
-		assertEquals(2, t1.getVariableCount());
+		assertEquals(1, t1.variables.length);
 	}
 
 	public void testGetVariableNames_TemplateHasNoVariables() {
 
-		String[] names;
-		
 		t1 = new UriTemplate("/");
-		assertEquals(0, t1.getVariableCount());		
-		names = t1.getVariableNames();
-		assertEquals(0, names.length);
+		assertEquals(0, t1.variables.length);		
 
 		t1 = new UriTemplate("foo:/");
-		assertEquals(0, t1.getVariableCount());
-		names = t1.getVariableNames();
-		assertEquals(0, names.length);
+		assertEquals(0, t1.variables.length);
 	
 		t1 = new UriTemplate("foo:/bar/");
-		assertEquals(0, t1.getVariableCount());
-		names = t1.getVariableNames();
-		assertEquals(0, names.length);
+		assertEquals(0, t1.variables.length);
 	
 		t1 = new UriTemplate("/foo/bar/");
-		assertEquals(0, t1.getVariableCount());
-		names = t1.getVariableNames();
-		assertEquals(0, names.length);
+		assertEquals(0, t1.variables.length);
 
 		t1 = new UriTemplate("data:/foo/1/bar/");
-		assertEquals(0, t1.getVariableCount());
-		names = t1.getVariableNames();
-		assertEquals(0, names.length);
+		assertEquals(0, t1.variables.length);
 
 		t1 = new UriTemplate("/foo/1/bar/");
-		assertEquals(0, t1.getVariableCount());
-		names = t1.getVariableNames();
-		assertEquals(0, names.length);
+		assertEquals(0, t1.variables.length);
 	}
 	
 	public void testGetVariables_TemplateHasUniqueVariables() {
 
-		String[] names;
-
 		t1 = new UriTemplate("foo:/1/2/{v1}/bar");
-		names = t1.getVariableNames();
-		assertEquals(1, names.length);
-		assertEquals("v1", names[0]);
+		assertEquals(1, t1.variables.length);
+		assertEquals("v1", t1.variables[0].name);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}bar");
-		names = t1.getVariableNames();
-		assertEquals(1, names.length);
-		assertEquals("v1", names[0]);
+		assertEquals(1, t1.variables.length);
+		assertEquals("v1", t1.variables[0].name);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}/bar/{v2}");
-		names = t1.getVariableNames();
-		assertEquals(2, names.length);
-		assertEquals("v1", names[0]);
-		assertEquals("v2", names[1]);
+		assertEquals(2, t1.variables.length);
+		assertEquals("v1", t1.variables[0].name);
+		assertEquals("v2", t1.variables[1].name);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}bar{v2}");
-		names = t1.getVariableNames();
-		assertEquals(2, names.length);
-		assertEquals("v1", names[0]);
-		assertEquals("v2", names[1]);
+		assertEquals(2, t1.variables.length);
+		assertEquals("v1", t1.variables[0].name);
+		assertEquals("v2", t1.variables[1].name);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}{v2}");
-		names = t1.getVariableNames();
-		assertEquals(2, names.length);
-		assertEquals("v1", names[0]);
-		assertEquals("v2", names[1]);
+		assertEquals(2, t1.variables.length);
+		assertEquals("v1", t1.variables[0].name);
+		assertEquals("v2", t1.variables[1].name);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}{v2}/3");
-		names = t1.getVariableNames();
-		assertEquals(2, names.length);
-		assertEquals("v1", names[0]);
-		assertEquals("v2", names[1]);
+		assertEquals(2, t1.variables.length);
+		assertEquals("v1", t1.variables[0].name);
+		assertEquals("v2", t1.variables[1].name);
 	}
 	
 	
 	public void testGetVariableNames_TemplateHasRepeatVariables() {
 		
-		String[] names;
 		
 		t1 = new UriTemplate("foo:/1/2/{v1}/bar/{v1}");
-		names = t1.getVariableNames();
-		assertEquals(2, names.length);
-		assertEquals("v1", names[0]);
-		assertEquals("v1", names[1]);
+		assertEquals(1, t1.variables.length);
+		assertEquals("v1", t1.variables[0].name);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}bar{v1}");
-		names = t1.getVariableNames();
-		assertEquals(2, names.length);
-		assertEquals("v1", names[0]);
-		assertEquals("v1", names[1]);
+		assertEquals(1, t1.variables.length);
+		assertEquals("v1", t1.variables[0].name);
 
 		t1 = new UriTemplate("foo:/1/2/{v1}{v1}");
-		names = t1.getVariableNames();
-		assertEquals(2, names.length);
-		assertEquals("v1", names[0]);
-		assertEquals("v1", names[1]);
+		assertEquals(1, t1.variables.length);
+		assertEquals("v1", t1.variables[0].name);
 		
 		t1 = new UriTemplate("foo:/1/2/{v1}{v1}/3");
-		names = t1.getVariableNames();
-		assertEquals(2, names.length);
-		assertEquals("v1", names[0]);
-		assertEquals("v1", names[1]);
+		assertEquals(1, t1.variables.length);
+		assertEquals("v1", t1.variables[0].name);
 	}	
 
 	public void testGetVariableNames_TemplateHasEmptyVariableBraces() {
 		
-		String[] names;
-
 		t1 = new UriTemplate("foo:/1/2/{}/bar/");
-		names = t1.getVariableNames();
-		assertEquals(1, names.length);
-		assertEquals("", names[0]);
+		assertEquals(0, t1.variables.length);
 		
 		t1 = new UriTemplate("foo:/1/2/{v1}/bar/{}");
-		names = t1.getVariableNames();
-		assertEquals(2, names.length);
-		assertEquals("v1", names[0]);
-		assertEquals("", names[1]);
+		assertEquals(1, t1.variables.length);
+		assertEquals("v1", t1.variables[0].name);
 
 		t1 = new UriTemplate("foo:/1/2/{}/bar/{}");
-		names = t1.getVariableNames();
-		assertEquals(2, names.length);
-		assertEquals("", names[0]);
-		assertEquals("", names[1]);
+		assertEquals(0, t1.variables.length);
 
 		t1 = new UriTemplate("foo:/1/2/{}/bar{v1}/{}");
-		names = t1.getVariableNames();
-		assertEquals(3, names.length);
-		assertEquals("", names[0]);
-		assertEquals("v1", names[1]);
-		assertEquals("", names[2]);
+		assertEquals(1, t1.variables.length);
+		assertEquals("v1", t1.variables[0].name);
 	}
 
 	public void testExtractPathName() {
@@ -1018,509 +975,6 @@ public void testReduceTemplateAndExtractVariables_PathHasEmptyVariableBraces() {
 		assertEquals("valueOne", values[0]);
 		assertEquals("valueThree", values[1]);
 		assertEquals("valueTwo", values[2]);
-	}
-	
-	public void testGetExpandedPath_PathHasRepeatedVariables() throws Exception {
-
-		Map<String,Object> nameValueMap;
-		Object[] values;
-
-		t1 = new UriTemplate("/1/2/{v1}/bar/{v1}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		assertEquals("/1/2/valueOne/bar/valueOne", t1.getExpandedPath(nameValueMap, values));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueOne", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v2}bar{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v2","valueTwo");
-		assertEquals("/1/2/valueTwobarvalueTwo", t1.getExpandedPath(nameValueMap, values));
-		assertEquals("valueTwo", values[0]);
-		assertEquals("valueTwo", values[1]);
-		
-		t1 = new UriTemplate("/1/2/{v3}{v3}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v3","valueThree");
-		assertEquals("/1/2/valueThreevalueThree", t1.getExpandedPath(nameValueMap, values));
-		assertEquals("valueThree", values[0]);
-		assertEquals("valueThree", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v1}{v2}/3/{v1}");
-		values = new Object[3];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals("/1/2/valueOnevalueTwo/3/valueOne", t1.getExpandedPath(nameValueMap, values));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueTwo", values[1]);
-		assertEquals("valueOne", values[2]);
-	}
-	
-	public void testGetExpandedUri_NoScheme_NoPrefix_NoSuffix() throws Exception {
-
-		Map<String,Object> nameValueMap;
-		Object[] values = new Object[0];
-		
-		t1 = new UriTemplate("/");
-		nameValueMap = new HashMap<String,Object>();
-		assertEquals(new ConcreteUri("/"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		
-		t1 = new UriTemplate("/foo");
-		nameValueMap = new HashMap<String,Object>();
-		assertEquals(new ConcreteUri("/foo"), t1.getExpandedUri(nameValueMap, values, "", ""));
-
-		t1 = new UriTemplate("/foo/bar");
-		nameValueMap = new HashMap<String,Object>();
-		assertEquals(new ConcreteUri("/foo/bar"), t1.getExpandedUri(nameValueMap, values, "", ""));
-
-		t1 = new UriTemplate("/1/2/{v1}/bar");
-		values = new Object[1];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		assertEquals(new ConcreteUri("/1/2/valueOne/bar"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueOne", values[0]);
-		
-		t1 = new UriTemplate("/1/2/{v1}/bar/{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("/1/2/valueOne/bar/valueTwo"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueTwo", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v2}bar{v1}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("/1/2/valueTwobarvalueOne"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueTwo", values[0]);
-		assertEquals("valueOne", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v1}{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("/1/2/valueOnevalueTwo"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueTwo", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v1}{v3}/3/{v2}");
-		values = new Object[3];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		nameValueMap.put("v3","valueThree");
-		assertEquals(new ConcreteUri("/1/2/valueOnevalueThree/3/valueTwo"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueThree", values[1]);
-		assertEquals("valueTwo", values[2]);	
-
-		t1 = new UriTemplate("/1/2/{v1}/bar/{v1}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		assertEquals(new ConcreteUri("/1/2/valueOne/bar/valueOne"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueOne", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v2}bar{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("/1/2/valueTwobarvalueTwo"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueTwo", values[0]);
-		assertEquals("valueTwo", values[1]);
-		
-		t1 = new UriTemplate("/1/2/{v3}{v3}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v3","valueThree");
-		assertEquals(new ConcreteUri("/1/2/valueThreevalueThree"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueThree", values[0]);
-		assertEquals("valueThree", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v1}{v2}/3/{v1}");
-		values = new Object[3];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("/1/2/valueOnevalueTwo/3/valueOne"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueTwo", values[1]);
-		assertEquals("valueOne", values[2]);	
-	}
-
-	public void testGetExpandedUri_NoPrefix_NoSuffix() throws Exception {
-
-		Map<String,Object> nameValueMap;
-		Object[] values = new Object[0];
-		
-		t1 = new UriTemplate("foo:/");
-		nameValueMap = new HashMap<String,Object>();
-		assertEquals(new ConcreteUri("foo:/"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		
-		t1 = new UriTemplate("data:/foo");
-		nameValueMap = new HashMap<String,Object>();
-		assertEquals(new ConcreteUri("data:/foo"), t1.getExpandedUri(nameValueMap, values, "", ""));
-
-		t1 = new UriTemplate("file:/foo/bar");
-		nameValueMap = new HashMap<String,Object>();
-		assertEquals(new ConcreteUri("file:/foo/bar"), t1.getExpandedUri(nameValueMap, values, "", ""));
-
-		t1 = new UriTemplate("foo:/1/2/{v1}/bar");
-		values = new Object[1];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		assertEquals(new ConcreteUri("foo:/1/2/valueOne/bar"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueOne", values[0]);
-		
-		t1 = new UriTemplate("data:/1/2/{v1}/bar/{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("data:/1/2/valueOne/bar/valueTwo"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueTwo", values[1]);
-
-		t1 = new UriTemplate("file:/1/2/{v2}bar{v1}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("file:/1/2/valueTwobarvalueOne"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueTwo", values[0]);
-		assertEquals("valueOne", values[1]);
-
-		t1 = new UriTemplate("foo:/1/2/{v1}{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("foo:/1/2/valueOnevalueTwo"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueTwo", values[1]);
-
-		t1 = new UriTemplate("bar:/1/2/{v1}{v3}/3/{v2}");
-		values = new Object[3];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		nameValueMap.put("v3","valueThree");
-		assertEquals(new ConcreteUri("bar:/1/2/valueOnevalueThree/3/valueTwo"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueThree", values[1]);
-		assertEquals("valueTwo", values[2]);	
-
-		t1 = new UriTemplate("foo:/1/2/{v1}/bar/{v1}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		assertEquals(new ConcreteUri("foo:/1/2/valueOne/bar/valueOne"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueOne", values[1]);
-
-		t1 = new UriTemplate("foo:/1/2/{v2}bar{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("foo:/1/2/valueTwobarvalueTwo"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueTwo", values[0]);
-		assertEquals("valueTwo", values[1]);
-		
-		t1 = new UriTemplate("data:/1/2/{v3}{v3}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v3","valueThree");
-		assertEquals(new ConcreteUri("data:/1/2/valueThreevalueThree"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueThree", values[0]);
-		assertEquals("valueThree", values[1]);
-
-		t1 = new UriTemplate("file:/1/2/{v1}{v2}/3/{v1}");
-		values = new Object[3];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("file:/1/2/valueOnevalueTwo/3/valueOne"), t1.getExpandedUri(nameValueMap, values, "", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueTwo", values[1]);
-		assertEquals("valueOne", values[2]);	
-	}
-
-	public void testGetExpandedUri_NoSuffix() throws Exception {
-
-		Map<String,Object> nameValueMap;
-		Object[] values = new Object[0];
-		
-		t1 = new UriTemplate("foo:/");
-		nameValueMap = new HashMap<String,Object>();
-		assertEquals(new ConcreteUri("foo:one.two/"), t1.getExpandedUri(nameValueMap, values, "one.two", ""));
-		
-		t1 = new UriTemplate("data:/foo");
-		nameValueMap = new HashMap<String,Object>();
-		assertEquals(new ConcreteUri("data:three.four.five/foo"), t1.getExpandedUri(nameValueMap, values, "three.four.five", ""));
-
-		t1 = new UriTemplate("file:/foo/bar");
-		nameValueMap = new HashMap<String,Object>();
-		assertEquals(new ConcreteUri("file:one/foo/bar"), t1.getExpandedUri(nameValueMap, values, "one", ""));
-
-		t1 = new UriTemplate("foo:/1/2/{v1}/bar");
-		values = new Object[1];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		assertEquals(new ConcreteUri("foo:one.two.three/1/2/valueOne/bar"), t1.getExpandedUri(nameValueMap, values, "one.two.three", ""));
-		assertEquals("valueOne", values[0]);
-		
-		t1 = new UriTemplate("data:/1/2/{v1}/bar/{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("data:four.five/1/2/valueOne/bar/valueTwo"), t1.getExpandedUri(nameValueMap, values, "four.five", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueTwo", values[1]);
-
-		t1 = new UriTemplate("file:/1/2/{v2}bar{v1}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("file:a.b.c/1/2/valueTwobarvalueOne"), t1.getExpandedUri(nameValueMap, values, "a.b.c", ""));
-		assertEquals("valueTwo", values[0]);
-		assertEquals("valueOne", values[1]);
-
-		t1 = new UriTemplate("foo:/1/2/{v1}{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("foo:foo.bar/1/2/valueOnevalueTwo"), t1.getExpandedUri(nameValueMap, values, "foo.bar", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueTwo", values[1]);
-
-		t1 = new UriTemplate("bar:/1/2/{v1}{v3}/3/{v2}");
-		values = new Object[3];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		nameValueMap.put("v3","valueThree");
-		assertEquals(new ConcreteUri("bar:one.two/1/2/valueOnevalueThree/3/valueTwo"), t1.getExpandedUri(nameValueMap, values, "one.two", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueThree", values[1]);
-		assertEquals("valueTwo", values[2]);	
-
-		t1 = new UriTemplate("foo:/1/2/{v1}/bar/{v1}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		assertEquals(new ConcreteUri("foo:a.b.c/1/2/valueOne/bar/valueOne"), t1.getExpandedUri(nameValueMap, values, "a.b.c", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueOne", values[1]);
-
-		t1 = new UriTemplate("foo:/1/2/{v2}bar{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("foo:foo-bar/1/2/valueTwobarvalueTwo"), t1.getExpandedUri(nameValueMap, values, "foo-bar", ""));
-		assertEquals("valueTwo", values[0]);
-		assertEquals("valueTwo", values[1]);
-		
-		t1 = new UriTemplate("data:/1/2/{v3}{v3}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v3","valueThree");
-		assertEquals(new ConcreteUri("data:a.1.b/1/2/valueThreevalueThree"), t1.getExpandedUri(nameValueMap, values, "a.1.b", ""));
-		assertEquals("valueThree", values[0]);
-		assertEquals("valueThree", values[1]);
-
-		t1 = new UriTemplate("file:/1/2/{v1}{v2}/3/{v1}");
-		values = new Object[3];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("file:1.2.c/1/2/valueOnevalueTwo/3/valueOne"), t1.getExpandedUri(nameValueMap, values, "1.2.c", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueTwo", values[1]);
-		assertEquals("valueOne", values[2]);	
-	}
-	
-	public void testGetExpandedUri_NoScheme_NoSuffix() throws Exception {
-
-		Map<String,Object> nameValueMap;
-		Object[] values = new Object[0];
-		
-		t1 = new UriTemplate("/");
-		nameValueMap = new HashMap<String,Object>();
-		assertEquals(new ConcreteUri("one.two/"), t1.getExpandedUri(nameValueMap, values, "one.two", ""));
-		
-		t1 = new UriTemplate("/foo");
-		nameValueMap = new HashMap<String,Object>();
-		assertEquals(new ConcreteUri("three.four.five/foo"), t1.getExpandedUri(nameValueMap, values, "three.four.five", ""));
-
-		t1 = new UriTemplate("/foo/bar");
-		nameValueMap = new HashMap<String,Object>();
-		assertEquals(new ConcreteUri("one/foo/bar"), t1.getExpandedUri(nameValueMap, values, "one", ""));
-
-		t1 = new UriTemplate("/1/2/{v1}/bar");
-		values = new Object[1];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		assertEquals(new ConcreteUri("one.two.three/1/2/valueOne/bar"), t1.getExpandedUri(nameValueMap, values, "one.two.three", ""));
-		assertEquals("valueOne", values[0]);
-		
-		t1 = new UriTemplate("/1/2/{v1}/bar/{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("four.five/1/2/valueOne/bar/valueTwo"), t1.getExpandedUri(nameValueMap, values, "four.five", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueTwo", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v2}bar{v1}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("a.b.c/1/2/valueTwobarvalueOne"), t1.getExpandedUri(nameValueMap, values, "a.b.c", ""));
-		assertEquals("valueTwo", values[0]);
-		assertEquals("valueOne", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v1}{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("foo.bar/1/2/valueOnevalueTwo"), t1.getExpandedUri(nameValueMap, values, "foo.bar", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueTwo", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v1}{v3}/3/{v2}");
-		values = new Object[3];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		nameValueMap.put("v3","valueThree");
-		assertEquals(new ConcreteUri("one.two/1/2/valueOnevalueThree/3/valueTwo"), t1.getExpandedUri(nameValueMap, values, "one.two", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueThree", values[1]);
-		assertEquals("valueTwo", values[2]);	
-
-		t1 = new UriTemplate("/1/2/{v1}/bar/{v1}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		assertEquals(new ConcreteUri("a.b.c/1/2/valueOne/bar/valueOne"), t1.getExpandedUri(nameValueMap, values, "a.b.c", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueOne", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v2}bar{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("foo-bar/1/2/valueTwobarvalueTwo"), t1.getExpandedUri(nameValueMap, values, "foo-bar", ""));
-		assertEquals("valueTwo", values[0]);
-		assertEquals("valueTwo", values[1]);
-		
-		t1 = new UriTemplate("/1/2/{v3}{v3}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v3","valueThree");
-		assertEquals(new ConcreteUri("a.1.b/1/2/valueThreevalueThree"), t1.getExpandedUri(nameValueMap, values, "a.1.b", ""));
-		assertEquals("valueThree", values[0]);
-		assertEquals("valueThree", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v1}{v2}/3/{v1}");
-		values = new Object[3];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","valueOne");
-		nameValueMap.put("v2","valueTwo");
-		assertEquals(new ConcreteUri("1.2.c/1/2/valueOnevalueTwo/3/valueOne"), t1.getExpandedUri(nameValueMap, values, "1.2.c", ""));
-		assertEquals("valueOne", values[0]);
-		assertEquals("valueTwo", values[1]);
-		assertEquals("valueOne", values[2]);	
-	}
-	
-	public void testGetExpandedPath_VariablesHaveDisallowedCharacters() throws Exception {
-
-		Map<String,Object> nameValueMap;
-		Object[] values;
-		
-		t1 = new UriTemplate("/1/2/{v1}/bar");
-		values = new Object[1];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","value$One");
-		assertEquals("/1/2/value%24One/bar", t1.getExpandedPath(nameValueMap, values));
-		assertEquals("value$One", values[0]);
-		
-		t1 = new UriTemplate("/1/2/{v1}/bar/{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","value%One");
-		nameValueMap.put("v2","value#Two");
-		assertEquals("/1/2/value%25One/bar/value%23Two", t1.getExpandedPath(nameValueMap, values));
-		assertEquals("value%One", values[0]);
-		assertEquals("value#Two", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v2}bar{v1}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","value,One");
-		nameValueMap.put("v2","value:Two");
-		assertEquals("/1/2/value%3aTwobarvalue%2cOne", t1.getExpandedPath(nameValueMap, values));
-		assertEquals("value:Two", values[0]);
-		assertEquals("value,One", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v1}{v2}");
-		values = new Object[2];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","value One");
-		nameValueMap.put("v2","value\tTwo");
-		assertEquals("/1/2/value%20Onevalue%09Two", t1.getExpandedPath(nameValueMap, values));
-		assertEquals("value One", values[0]);
-		assertEquals("value\tTwo", values[1]);
-
-		t1 = new UriTemplate("/1/2/{v1}{v3}/3/{v2}");
-		values = new Object[3];
-		nameValueMap = new HashMap<String,Object>();
-		nameValueMap.put("v1","value|One");
-		nameValueMap.put("v2","value}Two");
-		nameValueMap.put("v3","value[Three");
-		assertEquals("/1/2/value%7cOnevalue%5bThree/3/value%7dTwo", t1.getExpandedPath(nameValueMap, values));
-		assertEquals("value|One", values[0]);
-		assertEquals("value[Three", values[1]);
-		assertEquals("value}Two", values[2]);
-	}
-	
-	public void testGetExpandedPath_TemplateHasEmptyVariableBraces() {
-		
-		Map<String,Object> nameValueMap = new HashMap<String,Object>();
-		Object[] values = new Object[1];
-		String message = null;
-		
-		t1 = new UriTemplate("foo:/1/2/{}/bar/");		
-		try {
-			t1.getExpandedPath(nameValueMap, values);
-		} catch(Exception e) {
-			message = e.getMessage();
-		}
-		assertEquals("Cannot expand a URI template with missing variable names: foo:/1/2/{}/bar", message);
-
-		t1 = new UriTemplate("foo:/1/2/{v1}/bar/{}");
-		nameValueMap.put("v1","valueOne");
-		try {
-			t1.getExpandedPath(nameValueMap, values);
-		} catch(Exception e) {
-			message = e.getMessage();
-		}
-		assertEquals("Cannot expand a URI template with missing variable names: foo:/1/2/{v1}/bar/{}", message);
 	}
 }
 	

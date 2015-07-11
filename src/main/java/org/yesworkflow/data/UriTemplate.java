@@ -2,7 +2,7 @@ package org.yesworkflow.data;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
@@ -30,14 +30,16 @@ import java.util.Map;
  * as of 28Apr2015.
  */
 public class UriTemplate extends UriBase {
-	
+
+    private static Integer nextUriVariableId = 1;
+    
 	///////////////////////////////////////////////////////////////////
 	////                    private data fields                    ////
 
-	public final String    reducedPath;	    // Fully reduced, directly matchable representation of the URI template
-	public final Path      leadingPath;     // Portion of path preceding any path element that contains variables
-	private final String[] _variableNames;	// Array of variables named in the URI template in position order
-	private final String[]	_pathFragments; // Array of strings representing non-variable portions of the template path
+	public final String reducedPath;       // Fully reduced, directly matchable representation of the URI template
+	public final Path leadingPath;         // Portion of path preceding any path element that contains variables
+	public final UriVariable[] variables;  // Array of uri variables named in the URI template in position order
+	public final String[] fragments;       // Array of strings representing non-variable portions of the template path
 	
 	///////////////////////////////////////////////////////////////////
 	////                     public constructors                   ////
@@ -56,20 +58,32 @@ public class UriTemplate extends UriBase {
 		List<String> variableNames = new LinkedList<String>();
 		List<String> constantFragments = new LinkedList<String>();
 		reducedPath = reduceTemplateAndExtractVariables(path, variableNames, constantFragments);
+
+		Map<String,Integer> idForVariableName = new LinkedHashMap<String,Integer>();
+		for (String name : variableNames) {
+		    if (!name.isEmpty()) {
+    		    if (idForVariableName.get(name) == null) {
+    		        idForVariableName.put(name, nextUriVariableId++);
+    		    }
+		    }
+		}
 		
-		// store the variable names as an array
-		_variableNames = variableNames.toArray(new String[] {});
+		variables = new UriVariable[idForVariableName.size()];
+		int i = 0;
+		for (Map.Entry<String,Integer> entry : idForVariableName.entrySet()) {
+		    variables[i++] = new UriVariable(entry.getValue(), entry.getKey());
+		}
 
 		// store the fixed portions of the template path as an array
-		_pathFragments = constantFragments.toArray(new String[] {});
+		fragments = constantFragments.toArray(new String[] {});
 		
 		String leadingPathString;
-		if (_pathFragments.length == 0) {
+		if (fragments.length == 0) {
 		    leadingPathString = "";
-		} else if (_variableNames.length == 0) {
-		    leadingPathString = _pathFragments[0];
+		} else if (variables.length == 0) {
+		    leadingPathString = fragments[0];
 		} else {
-		    int lastSlashInFirstFragment = _pathFragments[0].lastIndexOf('/');
+		    int lastSlashInFirstFragment = fragments[0].lastIndexOf('/');
 		    if (lastSlashInFirstFragment == -1) {
 		        leadingPathString = "";
 		    } else {
@@ -87,81 +101,33 @@ public class UriTemplate extends UriBase {
 	////                 public instance methods                   ////
 
 	public String getGlobPattern() {
-        StringBuilder globPatternBuilder = new StringBuilder(_pathFragments[0]);
-        for (int i = 0; i < _variableNames.length; i++) {
+        StringBuilder globPatternBuilder = new StringBuilder(fragments[0]);
+        for (int i = 0; i < variables.length; i++) {
             globPatternBuilder.append("*");
-            globPatternBuilder.append(_pathFragments[i+1]);
+            globPatternBuilder.append(fragments[i+1]);
         }
         return globPatternBuilder.toString();
-    }	    
+    }
 	
-	/**
-	 * Expands a URI template to a concrete URI given an array of variable name-value pairs.
-	 * Also returns the values of the variables used in the template as an array ordered by
-	 * appearance of the variables in the template.  Variables values will appear multiple times
-	 * in the array if the corresponding variables are used more than once in the template.
-	 * 
-	 * @param nameValueMap	Mapping of variable names to values to be used
-	 * 						when expanding the template.
-	 * @param valueArray	Reference used to return an array of the values of the 
-	 * 						template variables expanded, in order of appearance
-	 * 						in the template.
-	 * @param pathPrefix	A string to insert between the scheme (if present)
-	 * 						and path portions of the uri template following expansion.
-	 * @param pathSuffix	A string to append to the end of the uri template following
-	 * 						expansion.
-	 * @return				Concrete URI representing the requested expansion of the template.
-	 * @throws				Exception if template has missing variables, i.e. empty braces
-	 * 						and thus cannot be expanded.
-	 */
-	public ConcreteUri getExpandedUri(Map<String,Object> nameValueMap, Object[] valueArray, 
-			  String pathPrefix, String pathSuffix) throws Exception {
-
-		// create a string builder for assembling the uri
-		StringBuilder uriBuilder = new StringBuilder();
-		
-		// start with the scheme and a colon if a scheme is defined
-		if (scheme != ConcreteUri.NO_SCHEME) {
-			uriBuilder.append(scheme);
-			uriBuilder.append(':');
-		}
-		
-		
-		String expandedPath = getExpandedPath(nameValueMap, valueArray);
-
-		// place the provided path prefix between the scheme and the expanded path
-		if (pathPrefix.length() > 0) {
-			uriBuilder.append(pathPrefix);
-			if (!pathPrefix.endsWith("/") && !expandedPath.startsWith("/")) {
-				uriBuilder.append("/");
-			}
-		}
-
-		// expand the template path and append to the uri
-		uriBuilder.append(expandedPath);
-		
-		// follow the expanded path with the provided suffix
-		uriBuilder.append(pathSuffix);
-		
-		// create a URI object from the assembled uri string and return
-		String uriString = uriBuilder.toString();
-		ConcreteUri uri = new ConcreteUri(uriString);
-		return uri;
-	}
+    public Map<String,String> extractValuesFromPath(String path) {
+       Map<String,String> variableValues = new LinkedHashMap<String,String>();
+       for (UriVariable variable : variables) {
+           String name = variable.name;
+           if (!name.isEmpty()) {
+               variableValues.put(name, name + "_value");
+           }
+       }
+       
+       // align resource.uri to fixed parts of uriTemplate
+       // for each named variable in template extract corresponding value from resource.uri
+       //   if variable occurs early in template make sure new value matches last one
+       //   save valid variable values to uriVariableValueFacts
+       return variableValues;
+  }
 
 	/** @return The reduced, directly matchable representation of the URI template. */
 	public String getReducedPath() {
 		return reducedPath;
-	}
-
-	/** @return The number of variable positions in the URI template */
-	public int getVariableCount() {
-		return _variableNames.length;
-	}
-	
-	/** @return A list of variables named in the URI template in order of their position */
-	public String[] getVariableNames() {
-		return Arrays.copyOf(_variableNames, _variableNames.length);
 	}
 
 	/** 
@@ -170,7 +136,6 @@ public class UriTemplate extends UriBase {
 	public boolean matches(UriTemplate otherTemplate) {
 		return this.reducedPath.equals(otherTemplate.reducedPath);
 	}
-
 	
 	/**
 	 * Expands the path portion of a URI template given an array of variable name-value pairs.
@@ -191,13 +156,13 @@ public class UriTemplate extends UriBase {
 		
 		// create a string builder for assembling the expanded template path
 		// starting with the first constant fragment of the template path
-		StringBuilder expandedPathBuilder = new StringBuilder(_pathFragments[0]);
+		StringBuilder expandedPathBuilder = new StringBuilder(fragments[0]);
 		
 		// iterate over template variable indices
-		for (int i = 0; i < _variableNames.length; i++) {
+		for (int i = 0; i < variables.length; i++) {
 			
 			// get the next variable name and make sure it isn't an empty string
-			String name = _variableNames[i];
+			String name = variables[i].name;
 			if (name.isEmpty()) {
 				throw new Exception("Cannot expand a URI template with missing variable names: " 
 						+ expression);
@@ -216,7 +181,7 @@ public class UriTemplate extends UriBase {
 			expandedPathBuilder.append(encodedValue);
 			
 			// append the next constant fragment of the template path
-			expandedPathBuilder.append(_pathFragments[i+1]);
+			expandedPathBuilder.append(fragments[i+1]);
 
 			// save the value of the current variable in the value array
 			valueArray[i] = value;
