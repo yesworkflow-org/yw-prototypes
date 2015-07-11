@@ -1,5 +1,7 @@
 package org.yesworkflow.data;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.LinkedList;
@@ -33,7 +35,7 @@ public class UriTemplate extends UriBase {
 	////                    private data fields                    ////
 
 	public final String    reducedPath;	    // Fully reduced, directly matchable representation of the URI template
-	public final String    leadingPath;     // Portion of path preceding any path element that contains variables
+	public final Path      leadingPath;     // Portion of path preceding any path element that contains variables
 	private final String[] _variableNames;	// Array of variables named in the URI template in position order
 	private final String[]	_pathFragments; // Array of strings representing non-variable portions of the template path
 	
@@ -61,18 +63,21 @@ public class UriTemplate extends UriBase {
 		// store the fixed portions of the template path as an array
 		_pathFragments = constantFragments.toArray(new String[] {});
 		
+		String leadingPathString;
 		if (_pathFragments.length == 0) {
-		    leadingPath = "";
+		    leadingPathString = "";
 		} else if (_variableNames.length == 0) {
-		    leadingPath = _pathFragments[0];
+		    leadingPathString = _pathFragments[0];
 		} else {
 		    int lastSlashInFirstFragment = _pathFragments[0].lastIndexOf('/');
 		    if (lastSlashInFirstFragment == -1) {
-		        leadingPath = "";
+		        leadingPathString = "";
 		    } else {
-	            leadingPath = path.substring(0, lastSlashInFirstFragment);		        
+		        leadingPathString = path.substring(0, lastSlashInFirstFragment);		        
 		    }
 		}
+		
+		leadingPath = Paths.get(leadingPathString);
 	}	
 	
 
@@ -81,6 +86,15 @@ public class UriTemplate extends UriBase {
 	///////////////////////////////////////////////////////////////////
 	////                 public instance methods                   ////
 
+	public String getGlobPattern() {
+        StringBuilder globPatternBuilder = new StringBuilder(_pathFragments[0]);
+        for (int i = 0; i < _variableNames.length; i++) {
+            globPatternBuilder.append("*");
+            globPatternBuilder.append(_pathFragments[i+1]);
+        }
+        return globPatternBuilder.toString();
+    }	    
+	
 	/**
 	 * Expands a URI template to a concrete URI given an array of variable name-value pairs.
 	 * Also returns the values of the variables used in the template as an array ordered by
