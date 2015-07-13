@@ -19,13 +19,6 @@ import java.util.Map;
  * out the templates, with variable positions represented by empty 
  * pairs of curly braces. </p>
  * 
- * <p> Instances of this classes can be expanded to concrete URIs by supplying
- * a mapping of variable names to values.  Template expansion also yields an
- * array of values corresponding to the variables in the template in the order
- * in which the value appear in the expanded URI.
- *
- * Instances of MatchableUriTemplate are immutable and thus thread safe. </p>
- * 
  * This file is derived from UriTemplate.java in the org.restflow.data package
  * as of 28Apr2015.
  */
@@ -38,7 +31,8 @@ public class UriTemplate extends UriBase {
 
 	public final String reducedPath;       // Fully reduced, directly matchable representation of the URI template
 	public final Path leadingPath;         // Portion of path preceding any path element that contains variables
-	public final UriVariable[] variables;  // Array of uri variables named in the URI template in position order
+	public final UriVariable[] variables;  // Array of uri variables named in the URI template in order of their first appearnce
+    public final UriVariable[] instances;   // Array of references to URI variables in order of each occurrence in the template
 	public final String[] fragments;       // Array of strings representing non-variable portions of the template path
 	
 	///////////////////////////////////////////////////////////////////
@@ -58,15 +52,18 @@ public class UriTemplate extends UriBase {
 		List<String> variableNames = new LinkedList<String>();
 		List<String> constantFragments = new LinkedList<String>();
 		reducedPath = reduceTemplateAndExtractVariables(path, variableNames, constantFragments);
-
+		instances = new UriVariable[variableNames.size()];
 		Map<String,UriVariable> uriVariableForName = new LinkedHashMap<String,UriVariable>();
 		int position = 0;
 		for (String name : variableNames) {
+		    UriVariable uriVariable = uriVariableForName.get(name);
 		    if (!name.isEmpty()) {
-    		    if (uriVariableForName.get(name) == null) {
-    		        uriVariableForName.put(name, new UriVariable(nextUriVariableId++, name, position++));
+    		    if (uriVariable == null) {
+    		        uriVariable = new UriVariable(nextUriVariableId++, name);
+    		        uriVariableForName.put(name, uriVariable);
     		    }
 		    }
+		    instances[position++] = uriVariable;
 		}
 		
 		variables = new UriVariable[uriVariableForName.size()];
@@ -102,7 +99,7 @@ public class UriTemplate extends UriBase {
 
 	public String getGlobPattern() {
         StringBuilder globPatternBuilder = new StringBuilder(fragments[0]);
-        for (int i = 0; i < variables.length; i++) {
+        for (int i = 0; i < fragments.length - 1; i++) {
             globPatternBuilder.append("*");
             globPatternBuilder.append(fragments[i+1]);
         }
@@ -110,18 +107,28 @@ public class UriTemplate extends UriBase {
     }
 	
     public Map<String,String> extractValuesFromPath(String path) {
-       Map<String,String> variableValues = new LinkedHashMap<String,String>();
-       for (UriVariable variable : variables) {
-           String name = variable.name;
-           if (!name.isEmpty()) {
-               variableValues.put(name, name + "_value");
-           }
-       }
        
-       // align resource.uri to fixed parts of uriTemplate
-       // for each named variable in template extract corresponding value from resource.uri
-       //   if variable occurs early in template make sure new value matches last one
-       //   save valid variable values to uriVariableValueFacts
+       Map<String,String> variableValues = new LinkedHashMap<String,String>();
+
+       // TODO handle case where first variable precedes first constant fragment
+       // TODO handle case where last variable follows last constant fragment
+       int start = 0;
+       for (int i = 0; i < fragments.length - 1; ++i) {
+           int valueStart = start + fragments[i].length();
+           int valueEnd = path.indexOf(fragments[i+1], valueStart);
+           UriVariable variable = instances[i];
+           // TODO make sure values in concrete URI match for multiple instances of a variable
+           if (variable != null && variableValues.get(variable.name) == null) {
+               String value = path.substring(valueStart, valueEnd);
+               variableValues.put(variable.name, value);
+               System.out.println(variable.name + " = " + value);
+               if (!variable.name.isEmpty()) {
+                   variableValues.put(variable.name, value);
+               }
+           }
+           start = valueEnd;
+       }
+
        return variableValues;
   }
 
