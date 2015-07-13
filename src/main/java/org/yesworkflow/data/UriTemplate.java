@@ -121,7 +121,6 @@ public class UriTemplate extends UriBase {
            if (variable != null && variableValues.get(variable.name) == null) {
                String value = path.substring(valueStart, valueEnd);
                variableValues.put(variable.name, value);
-               System.out.println(variable.name + " = " + value);
                if (!variable.name.isEmpty()) {
                    variableValues.put(variable.name, value);
                }
