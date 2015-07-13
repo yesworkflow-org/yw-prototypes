@@ -2,29 +2,33 @@ package org.yesworkflow.annotations;
 
 import java.util.StringTokenizer;
 
+import org.yesworkflow.YWKeywords.Tag;
 import org.yesworkflow.extract.SourceLine;
 
 public abstract class Annotation {
 
     public final Integer id;
     public final SourceLine line;
-    public final String tag;
+    public final String keyword;
     public final String name;
     public final String comment;
+    public final Tag tag;
     
     protected String description = null;
     
-    public Annotation(Integer id, SourceLine line, String comment, String expectedTag) throws Exception {
+    public Annotation(Integer id, SourceLine line, String comment, Tag tag) throws Exception {
 
         this.id = id;
         this.line = line;
         this.comment = comment;
+        this.tag = tag;
         
         StringTokenizer commentTokens = new StringTokenizer(comment);
         
-        tag = commentTokens.nextToken();
-        if (!tag.equalsIgnoreCase(expectedTag)) {
-            throw new Exception("Wrong tag for " + expectedTag + " comment: " + tag);
+        keyword = commentTokens.nextToken();
+        String expectedKeyword = tag.toString();
+        if (!keyword.equalsIgnoreCase(expectedKeyword)) {
+            throw new Exception("Wrong keyword for " + expectedKeyword.toLowerCase() + " annotation: " + keyword);
         }
        
         name = commentTokens.nextToken();

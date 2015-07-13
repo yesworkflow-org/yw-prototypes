@@ -1,16 +1,17 @@
 package org.yesworkflow.annotations;
 
 import org.yesworkflow.YWKeywords;
+import org.yesworkflow.YWKeywords.Tag;
 import org.yesworkflow.extract.SourceLine;
 
 public class Call extends Annotation {
 
-    public Call(Integer id, SourceLine line, String comment, String expectedTag) throws Exception {
+    public Call(Integer id, SourceLine line, String comment, Tag expectedTag) throws Exception {
     	super(id, line, comment, expectedTag);    	
     }
 
     public Call(Integer id, SourceLine line, String comment) throws Exception {
-        super(id, line, comment, YWKeywords.STANDARD_CALL_KEYWORD);
+        super(id, line, comment, YWKeywords.Tag.CALL);
     }
 
     @Override
@@ -18,7 +19,7 @@ public class Call extends Annotation {
         
         StringBuffer sb = new StringBuffer();
         
-        sb.append(tag)
+        sb.append(keyword)
           .append("{name=")
           .append(name);
 

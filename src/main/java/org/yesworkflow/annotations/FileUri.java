@@ -6,7 +6,7 @@ import org.yesworkflow.extract.SourceLine;
 public class FileUri extends UriAnnotation {
     
     public FileUri(Integer id, SourceLine line, String comment, Annotation primaryAnnotation) throws Exception {
-        super(id, line, comment, YWKeywords.STANDARD_FILE_KEYWORD, primaryAnnotation);
+        super(id, line, comment, YWKeywords.Tag.FILE, primaryAnnotation);
     }
     
     public String toString() {

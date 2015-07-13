@@ -1,11 +1,12 @@
 package org.yesworkflow.annotations;
 
+import org.yesworkflow.YWKeywords.Tag;
 import org.yesworkflow.extract.SourceLine;
 
 public abstract class Delimiter extends Annotation {
 
-    public Delimiter(Integer id, SourceLine line, String comment, String expectedTag) throws Exception {
-    	super(id, line, comment, expectedTag);    	
+    public Delimiter(Integer id, SourceLine line, String comment, Tag tag) throws Exception {
+    	super(id, line, comment, tag);    	
     }
     
     @Override
@@ -13,7 +14,7 @@ public abstract class Delimiter extends Annotation {
         
         StringBuffer sb = new StringBuffer();
         
-        sb.append(tag)
+        sb.append(keyword)
           .append("{name=")
           .append(name);
 

@@ -6,6 +6,6 @@ import org.yesworkflow.extract.SourceLine;
 public class Return extends Out {
     
     public Return(Integer id, SourceLine line, String comment) throws Exception {        
-        super(id, line, comment, YWKeywords.STANDARD_RETURN_KEYWORD);
+        super(id, line, comment, YWKeywords.Tag.RETURN);
     }  
 }

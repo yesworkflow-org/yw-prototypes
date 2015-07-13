@@ -20,6 +20,7 @@ public class YWKeywords {
      * recognized YW keywords. 
      */
     public enum Tag {
+        
         AS,
         BEGIN,
         CALL,
@@ -29,8 +30,11 @@ public class YWKeywords {
         OUT,
         PARAM,
         RETURN,
-        URI
+        URI;
         
+        public String toString() {
+            return "@" + super.toString();
+        }
     }
     
     /** Definition of the standard keyword for the AS tag. */

@@ -1,16 +1,17 @@
 package org.yesworkflow.annotations;
 
 import org.yesworkflow.YWKeywords;
+import org.yesworkflow.YWKeywords.Tag;
 import org.yesworkflow.extract.SourceLine;
 
 public class UriAnnotation extends Qualification {
     
     public UriAnnotation(Integer id, SourceLine line, String comment, Annotation primaryAnnotation) throws Exception {
-        super(id, line, comment, YWKeywords.STANDARD_URI_KEYWORD, primaryAnnotation);
+        super(id, line, comment, YWKeywords.Tag.URI, primaryAnnotation);
     }
 
-    protected UriAnnotation(Integer id, SourceLine line, String comment, String expectedTag, Annotation primaryAnnotation) throws Exception {
-        super(id, line, comment, expectedTag, primaryAnnotation);
+    protected UriAnnotation(Integer id, SourceLine line, String comment, Tag tag, Annotation primaryAnnotation) throws Exception {
+        super(id, line, comment, tag, primaryAnnotation);
     }
     
     public String toString() {

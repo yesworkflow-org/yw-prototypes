@@ -137,10 +137,10 @@ public class ModelFacts {
         for (Port port : ports) {
 
             if (port.flowAnnotation == null) throw new NullPointerException("Null flowAnnotation field in port.");
-            if (port.flowAnnotation.tag == null) throw new NullPointerException("Null tag field in port.flowAnnotation.");
+            if (port.flowAnnotation.keyword == null) throw new NullPointerException("Null tag field in port.flowAnnotation.");
             
             String variableName = port.flowAnnotation.name;
-            String portType = port.flowAnnotation.tag.substring(1);            
+            String portType = port.flowAnnotation.keyword.substring(1);            
             portFacts.add(port.id, portType, variableName, port.flowAnnotation.id);
 
             String portAlias = port.flowAnnotation.alias();

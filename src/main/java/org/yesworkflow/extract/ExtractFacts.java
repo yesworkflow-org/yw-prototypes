@@ -15,6 +15,7 @@ public class ExtractFacts {
     private String factsString = null;
     private FactsBuilder sourceFileFacts;
     private FactsBuilder annotationFacts;
+    private FactsBuilder beginAnnotationFacts;
     private FactsBuilder descriptionFacts;
     private FactsBuilder qualificationFacts;
 
@@ -27,6 +28,7 @@ public class ExtractFacts {
         LogicLanguageModel logicLanguageModel = new LogicLanguageModel(logicLanguage);
         this.sourceFileFacts  = new FactsBuilder(logicLanguageModel, "extract_source", "source_id", "source_path");
         this.annotationFacts  = new FactsBuilder(logicLanguageModel, "annotation", "annotation_id", "source_id", "line_number", "annotation_tag", "annotation_value");
+        this.beginAnnotationFacts  = new FactsBuilder(logicLanguageModel, "begin_annotation", "annotation_id");
         this.descriptionFacts  = new FactsBuilder(logicLanguageModel, "annotation_description", "annotation_id", "annotation_description");
         this.qualificationFacts = new FactsBuilder(logicLanguageModel, "annotation_qualifies", "qualifying_annotation_id", "primary_annotation_id");
     }
@@ -66,7 +68,7 @@ public class ExtractFacts {
                     annotation.id, 
                     annotation.line.sourceId, 
                     annotation.line.lineNumber, 
-                    annotation.tag, 
+                    annotation.keyword, 
                     annotation.name
             );
             
