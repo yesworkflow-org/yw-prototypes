@@ -31,10 +31,6 @@ public class YWKeywords {
         PARAM,
         RETURN,
         URI;
-        
-        public String toString() {
-            return "@" + super.toString();
-        }
     }
     
     /** Definition of the standard keyword for the AS tag. */

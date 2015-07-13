@@ -26,7 +26,7 @@ public abstract class Annotation {
         StringTokenizer commentTokens = new StringTokenizer(comment);
         
         keyword = commentTokens.nextToken();
-        String expectedKeyword = tag.toString();
+        String expectedKeyword = "@" + tag.toString();
         if (!keyword.equalsIgnoreCase(expectedKeyword)) {
             throw new Exception("Wrong keyword for " + expectedKeyword.toLowerCase() + " annotation: " + keyword);
         }
