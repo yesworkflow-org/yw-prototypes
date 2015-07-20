@@ -12,6 +12,7 @@ public class Workflow extends Program {
            String name,
            Begin beginAnnotation,
            End endAnnotation,
+           List<Data> data,
            List<Port> inPorts,
            List<Port> outPorts,
            List<Program> programs,
@@ -19,6 +20,7 @@ public class Workflow extends Program {
            List<Function> functions
     ) {
         super(id, name, beginAnnotation, endAnnotation, 
+             data.toArray(new Data[data.size()]),
              inPorts.toArray(new Port[inPorts.size()]),
              outPorts.toArray(new Port[outPorts.size()]),
              programs.toArray(new Program[programs.size()]),

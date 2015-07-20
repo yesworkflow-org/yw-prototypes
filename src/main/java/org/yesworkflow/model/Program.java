@@ -18,6 +18,7 @@ public class Program {
     public final End endAnnotation;
     public final Port[] inPorts;
     public final Port[] outPorts;
+    public final Data[] data;
     public final Program[] programs;
     public final Channel[] channels;
     public final Function[] functions;
@@ -30,6 +31,7 @@ public class Program {
             String name,
             Begin beginAnnotation, 
             End endAnnotation, 
+            Data[] data,
             Port[] inPorts, 
             Port[] outPorts, 
             Program[] programs,
@@ -41,6 +43,7 @@ public class Program {
         this.endAnnotation = endAnnotation;
         this.inPorts = inPorts;
         this.outPorts = outPorts;
+        this.data = data;
         this.programs = programs;
         this.channels = channels;
         this.functions = functions;
@@ -52,6 +55,7 @@ public class Program {
 	        String name,
 	        Begin beginAnnotation, 
 	        End endAnnotation, 
+	        List<Data> data,
 	        List<Port> inPorts, 
 	        List<Port> outPorts,
 	        List<Program> subprograms,
@@ -61,6 +65,7 @@ public class Program {
 	         name,
 	         beginAnnotation,  
 	         endAnnotation, 
+	         data.toArray(new Data[data.size()]),
 	         inPorts.toArray(new Port[inPorts.size()]),
 	         outPorts.toArray(new Port[outPorts.size()]),
 	         subprograms.toArray(new Program[subprograms.size()]),

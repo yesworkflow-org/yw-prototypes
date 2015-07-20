@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.yesworkflow.data.UriTemplate;
 import org.yesworkflow.data.UriVariable;
+import org.yesworkflow.model.Data;
 import org.yesworkflow.model.Function;
 import org.yesworkflow.model.Port;
 import org.yesworkflow.model.Program;
@@ -41,7 +42,7 @@ public class ReconFacts {
         this.run = run;
         LogicLanguageModel logicLanguageModel = new LogicLanguageModel(logicLanguage);
 
-        this.resourceFacts  = new FactsBuilder(logicLanguageModel, "resource", "resource_id", "resource_uri");
+        this.resourceFacts  = new FactsBuilder(logicLanguageModel, "resource", "resource_id", "data_id", "resource_uri");
         this.uriVariableValueFacts  = new FactsBuilder(logicLanguageModel, "uri_variable_value", "resource_id", "uri_variable_id", "uri_variable_value");
     }
 
@@ -50,7 +51,7 @@ public class ReconFacts {
         buildReconFactsRecursively(run.model.program);
         
         for (Function function : run.model.functions) {
-            buildReconFactsRecursively(function);            
+            buildReconFactsRecursively(function);
         }
         
         factsString = new StringBuilder()
@@ -92,15 +93,16 @@ public class ReconFacts {
     
     private List<Resource> findResourcesForPort(Port port) {
         
+        Data data = null;
         List<Resource> resourcesWithVariables = new LinkedList<Resource>();
         
         UriTemplate template = port.uriTemplate;
         if (template != null) {
 
             if (Files.isRegularFile(port.uriTemplate.leadingPath)) {
-                addResource(port.uriTemplate.leadingPath.toString());
+                addResource(data, port.uriTemplate.leadingPath.toString());
             } else {
-                List<Resource> matchingResources = addMatchingResources(port.uriTemplate);
+                List<Resource> matchingResources = addMatchingResources(data, port.uriTemplate);
                 resourcesWithVariables.addAll(matchingResources);
             }
         }
@@ -108,20 +110,20 @@ public class ReconFacts {
         return resourcesWithVariables;
     }
     
-    private Resource addResource(String uri) {
+    private Resource addResource(Data data, String uri) {
         Resource resource = resourceForUri.get(uri);
         if (resource == null) {
             Integer id = nextResourceId++;
             resource = new Resource(id, uri);
             resourceForUri.put(uri, resource);
-            resourceFacts.add(id, uri);
+            resourceFacts.add(id, data.id, uri);
         }
         return resource;
     }
 
-    private List<Resource> addMatchingResources(UriTemplate template) {
+    private List<Resource> addMatchingResources(Data data, UriTemplate template) {
         
-        FileVisitor<Path> resourceFinder = new FileResourceFinder(template);
+        FileVisitor<Path> resourceFinder = new FileResourceFinder(data, template);
         
         try {
             Files.walkFileTree(template.leadingPath, resourceFinder);
@@ -145,18 +147,21 @@ public class ReconFacts {
     
     private final class FileResourceFinder extends SimpleFileVisitor<Path> {
         
+        private final Data data;
         private final PathMatcher matcher;
+        
         public final List<Resource> resources = new LinkedList<Resource>();
         
-        public FileResourceFinder(UriTemplate template) {
+        public FileResourceFinder(Data data, UriTemplate template) {
             super();
+            this.data = data;
             FileSystem fs = FileSystems.getDefault();
             matcher = fs.getPathMatcher("glob:" + template.getGlobPattern());
         }
         
         @Override public FileVisitResult visitFile(Path file, BasicFileAttributes aAttrs) throws IOException {
           if (matcher.matches(file)) {
-              Resource r = addResource(file.toString());
+              Resource r = addResource(data, file.toString());
               resources.add(r);
           }
           return FileVisitResult.CONTINUE;

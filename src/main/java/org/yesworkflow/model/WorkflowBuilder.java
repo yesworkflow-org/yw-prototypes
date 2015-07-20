@@ -10,11 +10,16 @@ import java.util.Map.Entry;
 
 import org.yesworkflow.annotations.Begin;
 import org.yesworkflow.annotations.End;
+import org.yesworkflow.annotations.Flow;
+import org.yesworkflow.annotations.In;
+import org.yesworkflow.annotations.Out;
+import org.yesworkflow.annotations.Return;
 
 public class WorkflowBuilder {
 		
         public final Integer programId;
         public final String parentName;
+        private final WorkflowBuilder parentBuilder;
         private String name;
         private Begin beginAnnotation;
         private End endAnnotation;
@@ -25,14 +30,17 @@ public class WorkflowBuilder {
 		private List<Program> nestedPrograms = new LinkedList<Program>();
         private List<Channel> nestedChannels = new LinkedList<Channel>();
         private List<Function> nestedFunctions = new LinkedList<Function>();
+        private List<Data> nestedData = new LinkedList<Data>();
 		private Map<String,List<Port>> nestedProgramInPorts = new LinkedHashMap<String,List<Port>>();
 		private Map<String,Port> nestedProgramOutPorts = new  LinkedHashMap<String,Port>();
         private Map<String,Port> nestedProgramReturnPorts = new  LinkedHashMap<String,Port>();
         private Map<String,Program> programForName = new HashMap<String,Program>();
-        private Map<String,Function> functionForName = new HashMap<String,Function>();
+        private Map<String,Function> functionForName = new HashMap<String,Function>();        
+        private Map<String,Data> dataForBinding = new HashMap<String,Data>();
         
-        
-        private Integer nextChannelId = 1;
+        private static Integer nextChannelId = 1;
+        private static Integer nextPortId = 1;
+        private static Integer nextDataId = 1;
         
         @SuppressWarnings("unused")
         private PrintStream stdoutStream = null;
@@ -40,9 +48,18 @@ public class WorkflowBuilder {
         @SuppressWarnings("unused")
         private PrintStream stderrStream = null;
 
-        public WorkflowBuilder(Integer id, String parentName, PrintStream stdoutStream, PrintStream stderrStream) {
+        public WorkflowBuilder(PrintStream stdoutStream, PrintStream stderrStream) {
+            this.programId = 0;
+            this.parentName = null;
+            this.parentBuilder = null;
+            this.stdoutStream = stdoutStream;
+            this.stderrStream = stderrStream;
+        }
+
+        public WorkflowBuilder(Integer id, String parentName, WorkflowBuilder parentBuilder, PrintStream stdoutStream, PrintStream stderrStream) {
             this.programId = id;
             this.parentName = parentName;
+            this.parentBuilder = parentBuilder;
             this.stdoutStream = stdoutStream;
             this.stderrStream = stderrStream;
         }
@@ -69,6 +86,10 @@ public class WorkflowBuilder {
 		    return beginAnnotation;
 		}
 		
+		public List<Data> getData() {
+		    return nestedData;
+		}
+		
 		public WorkflowBuilder nestedProgram(Program program) {
 			this.nestedPrograms.add(program);
 			this.programForName.put(program.beginAnnotation.name, program);
@@ -81,31 +102,44 @@ public class WorkflowBuilder {
             return this;
         }
 		
-        public Port inPort(Port inPort) throws Exception {
-            
-            // model the outward facing in port
+        public Port inPort(In inPortAnnotation) throws Exception {
+            Port inPort = addPort(inPortAnnotation);
             workflowInPorts.add(inPort);
-            
-            // model a corresponding, inward-facing out port
             nestedOutPort(inPort);
-
-            // return the outward facing port
             return inPort;
         }
         
-        public WorkflowBuilder outPort(Port outPort) {
+        public Port outPort(Out outPortAnnotation) {
+            Port outPort = addPort(outPortAnnotation);
             workflowOutPorts.add(outPort);
             nestedInPort(outPort);
-            return this;
+            return outPort;
         }
 
-        public WorkflowBuilder returnPort(Port returnPort) {
+        public Port returnPort(Return returnAnnotation) {
+            Port returnPort = addPort(returnAnnotation);
             workflowReturnPorts.add(returnPort);
             nestedInPort(returnPort);
-            return this;
+            return returnPort;
         }
         
-		public WorkflowBuilder nestedInPort(Port inPort) {
+        private Port addPort(Flow portAnnotation) {
+            Data data = parentBuilder.addNestedData(portAnnotation.binding());
+            Port port = new Port(nextPortId++, data, portAnnotation, beginAnnotation);     
+            return port;
+        }
+
+        public Data addNestedData(String binding) {
+            Data data = dataForBinding.get(binding);
+            if (data == null) {
+                data = new Data(nextDataId++, binding);
+                nestedData.add(data);
+                dataForBinding.put(binding, data);
+            }
+            return data;
+        }
+        
+        public WorkflowBuilder nestedInPort(Port inPort) {
 		    String binding = inPort.flowAnnotation.binding();
 			addNestedInport(binding, inPort);
 			return this;
@@ -186,6 +220,7 @@ public class WorkflowBuilder {
 		            name,
 		            beginAnnotation,
                     endAnnotation,
+                    nestedData,
                     workflowInPorts,
                     workflowOutPorts,
                     workflowReturnPorts,
@@ -201,6 +236,7 @@ public class WorkflowBuilder {
                     name,
                     beginAnnotation, 
                     endAnnotation, 
+                    nestedData,
                     workflowInPorts, 
                     workflowOutPorts,
                     nestedPrograms,
@@ -214,6 +250,7 @@ public class WorkflowBuilder {
 			        name,
                     beginAnnotation,
                     endAnnotation,
+                    nestedData,
                     workflowInPorts,
                     workflowOutPorts,
                     nestedPrograms,
@@ -231,7 +268,9 @@ public class WorkflowBuilder {
                     unmatchedInBindings.add(binding);
                 }
             }
-            for (String binding : unmatchedInBindings) nestedProgramInPorts.remove(binding);
+            for (String binding : unmatchedInBindings) {
+                nestedProgramInPorts.remove(binding);
+            }
         }
 	    
         private void pruneUnusedNestedProgramOutPorts() {
@@ -245,7 +284,9 @@ public class WorkflowBuilder {
                 }
             }
             
-            for (String binding : unmatchedOutBindings) nestedProgramOutPorts.remove(binding);
+            for (String binding : unmatchedOutBindings) {
+                nestedProgramOutPorts.remove(binding);
+            }
         }	
         
         private void buildNestedChannels() throws Exception {
@@ -271,7 +312,7 @@ public class WorkflowBuilder {
                     Program inProgram = programForName.get(inProgramName);
     
                     // store the new channel
-                    Channel channel = new Channel(nextChannelId++, outProgram, boundOutPort, inProgram, inPort);
+                    Channel channel = new Channel(nextChannelId++, inPort.data, outProgram, boundOutPort, inProgram, inPort);
                     nestedChannels.add(channel);
                 }   
             }

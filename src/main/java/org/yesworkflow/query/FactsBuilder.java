@@ -58,6 +58,7 @@ public class FactsBuilder {
         return this;
     }
 
+    // TODO Apply quotes only when required by facts file format
     private String quote(Object value) {
         if (value instanceof Integer) {
             return value.toString();

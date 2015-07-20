@@ -100,15 +100,17 @@ public class DefaultModeler implements Modeler {
 
     private void buildModel() throws Exception {
 
+        WorkflowBuilder superBuilder = new WorkflowBuilder(this.stdoutStream, this.stderrStream);
+        
         WorkflowBuilder workflowBuilder = null;
         WorkflowBuilder topWorkflowBuilder = null;
         Program topProgram = null;
         WorkflowBuilder parentBuilder = null;
         Stack<WorkflowBuilder> parentWorkflowBuilders = new Stack<WorkflowBuilder>();
         List<Function> functions = new LinkedList<Function>();
+        List<Data> data = new LinkedList<Data>();
         
         Integer nextProgramId = 1;
-        Integer nextPortId = 1;
 
         for (Annotation annotation : annotations) {
 
@@ -121,8 +123,11 @@ public class DefaultModeler implements Modeler {
                     parentName = parentBuilder.getName();
                 }
 
-                workflowBuilder = new WorkflowBuilder(nextProgramId++, parentName, this.stdoutStream, this.stderrStream)
-                    .begin((Begin)annotation);
+                workflowBuilder = new WorkflowBuilder(nextProgramId++, parentName, 
+                                      (parentBuilder == null) ? superBuilder : parentBuilder, 
+                                      this.stdoutStream, this.stderrStream);
+                
+                workflowBuilder.begin((Begin)annotation);
                 
                 if (topWorkflowBuilder == null) { 
                     String blockName = ((Begin)annotation).name;
@@ -133,19 +138,18 @@ public class DefaultModeler implements Modeler {
 
             } else if (annotation instanceof Return) {
                 
-                Port returnPort = new Port(nextPortId++, (Return)annotation, workflowBuilder.getBeginAnnotation());
-                workflowBuilder.returnPort(returnPort);
+                workflowBuilder.returnPort((Return)annotation);
 
             } else if (annotation instanceof Out) {
-                Port outPort = new Port(nextPortId++, (Out)annotation, workflowBuilder.getBeginAnnotation());
-                workflowBuilder.outPort(outPort);
+                
+                Port outPort = workflowBuilder.outPort((Out)annotation);
                 if (parentBuilder != null) {
                     parentBuilder.nestedOutPort(outPort);
                 }
 
             } else if (annotation instanceof In) {
-                Port port = new Port(nextPortId++, (In)annotation, workflowBuilder.getBeginAnnotation());                
-                workflowBuilder.inPort(port);
+                
+                Port port = workflowBuilder.inPort((In)annotation);
                 if (parentBuilder != null) {
                     parentBuilder.nestedInPort(port);
                 }
@@ -201,6 +205,6 @@ public class DefaultModeler implements Modeler {
             if (functions.size() == 0) throw new Exception("No program or functions found in script.");
         }
         
-        model = new Model(topProgram, functions);
+        model = new Model(topProgram, functions, superBuilder.getData());
     }
 }

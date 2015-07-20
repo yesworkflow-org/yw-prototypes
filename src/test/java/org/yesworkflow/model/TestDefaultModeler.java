@@ -1,6 +1,8 @@
 package org.yesworkflow.model;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.StringReader;
 import java.util.List;
 
@@ -752,4 +754,16 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
        assertNotNull(caughtException);
        assertEquals("ERROR: No @end comment paired with '@begin main'" + EOL, caughtException.getMessage());
    }
+   
+    public void testModel_SimulateDataCollection() throws FileNotFoundException, Exception {       
+
+        List<Annotation> annotations = extractor
+               .configure("language", "python")
+               .reader(new FileReader("src/main/resources/examples/simulate_data_collection/simulate_data_collection.py"))
+               .extract()
+               .getAnnotations();
+        
+        modeler.annotations(annotations)
+               .model();
+    }
 }
