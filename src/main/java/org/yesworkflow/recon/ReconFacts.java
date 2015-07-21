@@ -93,16 +93,15 @@ public class ReconFacts {
     
     private List<Resource> findResourcesForPort(Port port) {
         
-        Data data = null;
         List<Resource> resourcesWithVariables = new LinkedList<Resource>();
         
         UriTemplate template = port.uriTemplate;
         if (template != null) {
 
             if (Files.isRegularFile(port.uriTemplate.leadingPath)) {
-                addResource(data, port.uriTemplate.leadingPath.toString());
+                addResource(port.data, port.uriTemplate.leadingPath.toString());
             } else {
-                List<Resource> matchingResources = addMatchingResources(data, port.uriTemplate);
+                List<Resource> matchingResources = addMatchingResources(port.data, port.uriTemplate);
                 resourcesWithVariables.addAll(matchingResources);
             }
         }
