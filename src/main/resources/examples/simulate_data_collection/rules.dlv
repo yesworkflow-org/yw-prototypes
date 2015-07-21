@@ -1,0 +1,68 @@
+
+program_source(QualifiedProgramName, SourcePath, StartLine, EndLine) :-
+        program(_, _, QualifiedProgramName, StartAnnotation, EndAnnotation),
+        annotation(StartAnnotation, SourceId, StartLine, _, _, _),
+        annotation(EndAnnotation, SourceId, EndLine, _, _, _),
+        extract_source(SourceId, SourcePath).
+
+subprogram(ProgramId) :-
+    program(ProgramId, _, _, _, _),
+    program(ParentId, _, _, _, _),
+    has_subprogram(ParentId, ProgramId).
+    
+top_workflow(ProgramId) :-
+    workflow(ProgramId),
+    not subprogram(ProgramId).
+    
+port_data(PortId, DataName, QualifiedDataName) :-
+    port_connects_to_channel(PortId, ChannelId),
+    channel(ChannelId, DataId),
+    data(DataId, DataName, QualifiedDataName).
+
+data_in_port(WorkflowId, DataId, PortId) :-
+    channel(ChannelId, DataId),
+    port_connects_to_channel(PortId, ChannelId),
+    has_in_port(ProgramId, PortId),
+    has_subprogram(WorkflowId, ProgramId).
+    
+data_in_port_count(WorkflowId, DataId, Count) :-
+    data_in_port(WorkflowId, DataId, _), 
+    #count{ P : data_in_port(WorkflowId, DataId, P) } = Count.
+
+program_immediately_downstream(Progam, DownstreamProgram) :-
+    has_out_port(Progam, UpstreamPort),
+    port_connects_to_channel(UpstreamPort, Channel),
+    port_connects_to_channel(DownstreamPort, Channel),
+    has_in_port(DownstreamProgram, DownstreamPort).
+
+program_immediately_upstream(Program, UpstreamProgram) :-
+    program_immediately_downstream(UpstreamProgram, Program).
+    
+program_downstream(Program, DownstreamProgram) :-
+    program_immediately_downstream(Program, DownstreamProgram).
+program_downstream(Program, DownstreamProgram) :-
+    program_immediately_downstream(Program, IntermediateProgram),
+    program_downstream(IntermediateProgram, DownstreamProgram).    
+
+program_upstream(Program, UpstreamProgram) :-
+    program_downstream(UpstreamProgram, Program).
+    
+data_immediately_downstream(DataId, DownstreamDataId) :-
+    channel(ChannelId, DataId),
+    port_connects_to_channel(InPortId, ChannelId),
+    has_in_port(ProgramId, InPortId),
+    has_out_port(ProgramId, OutPortId),
+    port_connects_to_channel(OutPortId, DownstreamChannelId),
+    channel(DownstreamChannelId, DownstreamDataId).
+
+data_immediately_upstream(DataId, UpstreamDataId) :-
+    data_immediately_downstream(UpstreamDataId, DataId).
+
+data_downstream(DataId, DownstreamDataId) :-
+    data_immediately_downstream(DataId, DownstreamDataId).    
+data_downstream(DataId, DownstreamDataId):-
+    data_immediately_downstream(DataId, IntermediateDataId),
+    data_downstream(IntermediateDataId, DownstreamDataId).
+    
+data_upstream(DataId, UpstreamDataId) :-
+    data_downstream(UpstreamDataId, DataId).

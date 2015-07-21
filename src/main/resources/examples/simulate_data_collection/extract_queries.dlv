@@ -1,0 +1,13 @@
+% EQ1:  What source files were YW annotations extracted from?
+eq1(SourcePath) :-
+    extract_source(_, SourcePath).
+    
+% EQ2:  What are the names of all program blocks?
+eq2(ProgramName) :-
+    annotation(_, _, _, "begin", _, ProgramName).
+    
+% EQ3:  What out ports are qualified with URIs?
+eq3(PortName) :-
+    annotation(UriId, _, _, "uri", _, _),
+    annotation(OutId, _, _, "out", _, PortName),
+    annotation_qualifies(UriId, OutId).
