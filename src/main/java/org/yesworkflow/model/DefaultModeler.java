@@ -108,7 +108,6 @@ public class DefaultModeler implements Modeler {
         WorkflowBuilder parentBuilder = null;
         Stack<WorkflowBuilder> parentWorkflowBuilders = new Stack<WorkflowBuilder>();
         List<Function> functions = new LinkedList<Function>();
-        List<Data> data = new LinkedList<Data>();
         
         Integer nextProgramId = 1;
 
@@ -137,23 +136,14 @@ public class DefaultModeler implements Modeler {
                 }
 
             } else if (annotation instanceof Return) {
-                
                 workflowBuilder.returnPort((Return)annotation);
-
+                
             } else if (annotation instanceof Out) {
+                workflowBuilder.outPort((Out)annotation);
                 
-                Port outPort = workflowBuilder.outPort((Out)annotation);
-                if (parentBuilder != null) {
-                    parentBuilder.nestedOutPort(outPort);
-                }
-
             } else if (annotation instanceof In) {
+                workflowBuilder.inPort((In)annotation);
                 
-                Port port = workflowBuilder.inPort((In)annotation);
-                if (parentBuilder != null) {
-                    parentBuilder.nestedInPort(port);
-                }
-
             } else if (annotation instanceof End) {
 
                 workflowBuilder.end((End)annotation);                
