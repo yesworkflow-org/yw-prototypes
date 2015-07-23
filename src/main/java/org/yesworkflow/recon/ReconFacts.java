@@ -1,7 +1,6 @@
 package org.yesworkflow.recon;
 
 import java.io.IOException;
-import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -32,6 +31,7 @@ public class ReconFacts {
     private Integer nextResourceId = 1;
     
     private FactsBuilder resourceFacts;
+    private FactsBuilder dataResourceFacts;
     private FactsBuilder uriVariableValueFacts;
     private Map<String,Resource> resourceForUri = new HashMap<String,Resource>();
 
@@ -42,7 +42,8 @@ public class ReconFacts {
         this.run = run;
         LogicLanguageModel logicLanguageModel = new LogicLanguageModel(logicLanguage);
 
-        this.resourceFacts  = new FactsBuilder(logicLanguageModel, "resource", "resource_id", "data_id", "resource_uri");
+        this.resourceFacts  = new FactsBuilder(logicLanguageModel, "resource", "resource_id", "resource_uri");
+        this.dataResourceFacts = new FactsBuilder(logicLanguageModel, "data_resource", "data_id", "resource_id"); 
         this.uriVariableValueFacts  = new FactsBuilder(logicLanguageModel, "uri_variable_value", "resource_id", "uri_variable_id", "uri_variable_value");
     }
 
@@ -56,6 +57,7 @@ public class ReconFacts {
         
         factsString = new StringBuilder()
           .append(resourceFacts)
+          .append(dataResourceFacts)
           .append(uriVariableValueFacts)
           .toString();
 
@@ -89,19 +91,16 @@ public class ReconFacts {
                 buildUriVariableValueFacts(port.uriTemplate, resource);
             }
         }
-    }   
+    }
     
     private List<Resource> findResourcesForPort(Port port) {
-        
         List<Resource> resourcesWithVariables = new LinkedList<Resource>();
-        
-        UriTemplate template = port.uriTemplate;
-        if (template != null) {
-
-            if (Files.isRegularFile(port.uriTemplate.leadingPath)) {
-                addResource(port.data, port.uriTemplate.leadingPath.toString());
+        if (port.uriTemplate != null) {
+            Path resourcePath = run.runDirectoryBase.resolve(port.uriTemplate.leadingPath);
+            if (Files.isRegularFile(resourcePath)) {
+                addResource(port.data, run.runDirectoryBase.relativize(resourcePath));
             } else {
-                List<Resource> matchingResources = addMatchingResources(port.data, port.uriTemplate);
+                List<Resource> matchingResources = addMatchingResources(port);
                 resourcesWithVariables.addAll(matchingResources);
             }
         }
@@ -109,25 +108,27 @@ public class ReconFacts {
         return resourcesWithVariables;
     }
     
-    private Resource addResource(Data data, String uri) {
+    private Resource addResource(Data data, Path path) {
+        String uri = path.toString();
         Resource resource = resourceForUri.get(uri);
         if (resource == null) {
-            Integer id = nextResourceId++;
-            resource = new Resource(id, uri);
+            resource = new Resource(nextResourceId++, path.toString());
             resourceForUri.put(uri, resource);
-            resourceFacts.add(id, data.id, uri);
+            resourceFacts.add(resource.id, uri);
         }
+        dataResourceFacts.add(data.id, resource.id);
         return resource;
     }
 
-    private List<Resource> addMatchingResources(Data data, UriTemplate template) {
+    private List<Resource> addMatchingResources(Port port) {
         
-        FileVisitor<Path> resourceFinder = new FileResourceFinder(data, template);
-        
+        Path resourceSearchBase = run.runDirectoryBase.resolve(port.uriTemplate.leadingPath);
+        FileVisitor<Path> resourceFinder = new FileResourceFinder(port.data, port.uriTemplate, run.runDirectoryBase);
+
         try {
-            Files.walkFileTree(template.leadingPath, resourceFinder);
+            Files.walkFileTree(resourceSearchBase, resourceFinder);
         } catch(Exception e) {
-            System.out.println(e.getStackTrace());
+            System.out.println(e.getMessage());
         }
         return ((FileResourceFinder)resourceFinder).resources;
     }
@@ -147,28 +148,32 @@ public class ReconFacts {
     private final class FileResourceFinder extends SimpleFileVisitor<Path> {
         
         private final Data data;
+        private String pattern;
         private final PathMatcher matcher;
+        private final Path runBase;
         
         public final List<Resource> resources = new LinkedList<Resource>();
         
-        public FileResourceFinder(Data data, UriTemplate template) {
+        public FileResourceFinder(Data data, UriTemplate template, Path runDirectoryBase) {
             super();
             this.data = data;
-            FileSystem fs = FileSystems.getDefault();
-            matcher = fs.getPathMatcher("glob:" + template.getGlobPattern());
+            this.runBase = runDirectoryBase;
+            this.pattern = template.getGlobPattern();
+            this.matcher = FileSystems.getDefault().getPathMatcher(pattern);
         }
         
-        @Override public FileVisitResult visitFile(Path file, BasicFileAttributes aAttrs) throws IOException {
-          if (matcher.matches(file)) {
-              Resource r = addResource(data, file.toString());
-              resources.add(r);
+        @Override public FileVisitResult visitFile(Path filePath, BasicFileAttributes fileAttributes) throws IOException {
+          Path runRelativePath = runBase.relativize(filePath);
+          if (matcher.matches(runRelativePath)) {
+              Resource resource = addResource(data, runRelativePath);
+              resources.add(resource);
           }
           return FileVisitResult.CONTINUE;
         }
         
-        @Override  public FileVisitResult preVisitDirectory(Path directory, BasicFileAttributes aAttrs) throws IOException {
+        @Override  public FileVisitResult preVisitDirectory(Path directoryPath, BasicFileAttributes fileAttributes) throws IOException {
           // TODO: Improve performance by detecting when directory cannot lead to a match for the template
-          return FileVisitResult.CONTINUE;
+            return FileVisitResult.CONTINUE;
         }
     }
 }

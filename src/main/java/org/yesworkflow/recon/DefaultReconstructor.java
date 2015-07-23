@@ -12,7 +12,6 @@ public class DefaultReconstructor implements Reconstructor  {
     
     static private LogicLanguage DEFAULT_LOGIC_LANGUAGE = LogicLanguage.PROLOG;
     
-    private Model model;    
     private PrintStream stdoutStream = null;
     @SuppressWarnings("unused")
     private PrintStream stderrStream = null;
@@ -24,14 +23,6 @@ public class DefaultReconstructor implements Reconstructor  {
     public DefaultReconstructor(PrintStream stdoutStream, PrintStream stderrStream) {
         this.stdoutStream = stdoutStream;
         this.stderrStream = stderrStream;
-    }
-
-    @Override
-    public DefaultReconstructor model(Model model) {        
-        if (model == null) throw new IllegalArgumentException("Null model passed to DefaultReconstructor.");
-        if (model.program == null) throw new IllegalArgumentException("Model with null program passed to DefaultReconstructor.");
-        this.model = model;
-        return this;
     }
 
     @Override
@@ -62,19 +53,12 @@ public class DefaultReconstructor implements Reconstructor  {
 
     @Override
     public DefaultReconstructor recon() throws Exception {
-        reconRun();
         if (factsFile != null) {
             writeTextToFileOrStdout(factsFile, getFacts());
         }
         return this;
     }
     
-    private void reconRun() {
-        if (run == null) {
-            run = new Run(model);
-        }
-    }
-
     @Override
     public String getFacts() {
         if (reconFacts == null) {

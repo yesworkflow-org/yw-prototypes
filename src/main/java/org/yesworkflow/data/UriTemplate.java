@@ -98,7 +98,8 @@ public class UriTemplate extends UriBase {
 	////                 public instance methods                   ////
 
 	public String getGlobPattern() {
-        StringBuilder globPatternBuilder = new StringBuilder(fragments[0]);
+        StringBuilder globPatternBuilder = new StringBuilder("glob:");
+        globPatternBuilder.append(fragments[0]);
         for (int i = 0; i < fragments.length - 1; i++) {
             globPatternBuilder.append("*");
             globPatternBuilder.append(fragments[i+1]);

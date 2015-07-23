@@ -20,6 +20,7 @@ import org.yesworkflow.model.Model;
 import org.yesworkflow.model.Modeler;
 import org.yesworkflow.recon.DefaultReconstructor;
 import org.yesworkflow.recon.Reconstructor;
+import org.yesworkflow.recon.Run;
 
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
@@ -385,10 +386,12 @@ public class YesWorkflowCLI {
 
         if (reconstructor == null) {
             reconstructor = new DefaultReconstructor(this.outStream, this.errStream);
-         }
+        }
+        
+        Run run = new Run(model);
         
         reconstructor.configure(config.getSection("recon"))
-                     .model(model)
+                     .run(run)
                      .recon();
     }
 
