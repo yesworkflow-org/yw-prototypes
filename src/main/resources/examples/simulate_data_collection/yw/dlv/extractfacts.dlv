@@ -1,6 +1,6 @@
 
 % FACT: extract_source(source_id, source_path).
-extract_source(1, "simulate_data_collection.py").
+extract_source(1, "../simulate_data_collection.py").
 
 % FACT: annotation(annotation_id, source_id, line_number, tag, keyword, value).
 annotation(1, 1, 9, "begin", "@begin", "simulate_data_collection").

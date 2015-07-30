@@ -1,7 +1,7 @@
 *** Extract Queries ***
 
 EQ1:  What source files were YW annotations extracted from?
-{eq1("simulate_data_collection.py")}
+{eq1("../simulate_data_collection.py")}
 
 EQ2:  What are the names of all program blocks?
 {eq2("simulate_data_collection"), eq2("initialize_run"), eq2("load_screening_results"), eq2("calculate_strategy"), eq2("log_rejected_sample"), eq2("collect_data_set"), eq2("collect_next_image"), eq2("transform_images"), eq2("transform_image"), eq2("log_average_image_intensity")}
@@ -13,7 +13,7 @@ EQ3:  What out ports are qualified with URIs?
 *** Model Queries ***
 
 MQ1:  Where is the definition of program simulate_data_collection.collect_data_set?
-{mq1("simulate_data_collection.py",89,108)}
+{mq1("../simulate_data_collection.py",89,108)}
 
 MQ2:  What is the name of the top-level workflow?
 {mq2("simulate_data_collection")}
