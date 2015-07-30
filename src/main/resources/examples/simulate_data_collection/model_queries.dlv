@@ -97,19 +97,19 @@ mq14(DownstreamProgramName):-
 % MQ15: What data is immediately downstream of raw_image?
 mq15(DownstreamData) :-
     data(DataId, "raw_image", _),
-    data_immediately_downstream(DataId, DownstreamDataId),
+    data_immediately_downstream(DownstreamDataId, DataId),
     data(DownstreamDataId, DownstreamData, _).
 
 % MQ16: What data is immediately upstream of raw_image?
 mq16(UpstreamData) :-
     data(DataId, "raw_image", _),
-    data_immediately_upstream(DataId, UpstreamDataId),
+    data_immediately_upstream(UpstreamDataId, DataId),
     data(UpstreamDataId, UpstreamData, _).
 
 % MQ17: What data is downstream of accepted_sample?
 mq17(DownstreamData):-
     data(DataId, "accepted_sample", _),
-    data_downstream(DataId, DownstreamDataId),
+    data_downstream(DownstreamDataId, DataId),
     data(DownstreamDataId, DownstreamData, _).
 
 % MQ18: What data is upstream of raw_image?

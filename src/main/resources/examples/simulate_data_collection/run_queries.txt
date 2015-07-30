@@ -72,6 +72,9 @@ MQ19: What URI variables are associated with writes of data simulate_data_collec
 MQ20: What URI variables do data written to raw_image and corrected_image have in common?
 {mq20("sample_id"), mq20("energy"), mq20("frame_number")}
 
+
+*** Reconstructed Trace Queries ***
+
 RQ0: What URI variable values are associated with writing resource run/data/DRT322/DRT322_11000eV_028.img?
 {rq0("sample_id","DRT322"), rq0("energy","11000"), rq0("frame_number","028")}
 

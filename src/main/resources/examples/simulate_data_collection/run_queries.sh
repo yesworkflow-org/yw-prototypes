@@ -99,6 +99,11 @@ echo "MQ20: What URI variables do data written to raw_image and corrected_image 
 dlv -silent -pfilter=mq20 extractfacts.dlv modelfacts.dlv rules.dlv model_queries.dlv
 echo ""
 
+
+echo ""
+echo "*** Reconstructed Trace Queries ***"
+echo ""
+
 echo "RQ0: What URI variable values are associated with writing resource run/data/DRT322/DRT322_11000eV_028.img?"
 dlv -silent -pfilter=rq0 extractfacts.dlv modelfacts.dlv reconfacts.dlv rules.dlv recon_queries.dlv
 echo ""

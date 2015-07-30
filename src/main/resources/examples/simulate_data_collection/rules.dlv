@@ -51,30 +51,31 @@ program_immediately_upstream(P1, P2) :-
 program_upstream(P1, P2) :-
     program_downstream(P2, P1).
     
-% Data D2 is immediately downstream of data D2.
+% Data D1 is immediately downstream of data D2.
 data_immediately_downstream(D1, D2) :-
-    channel(C1, D1),
-    port_connects_to_channel(In, C1),
+    channel(C2, D2),
+    port_connects_to_channel(In, C2),
     has_in_port(P, In),
     has_out_port(P, Out),
-    port_connects_to_channel(Out, C2),
-    channel(C2, D2).
+    port_connects_to_channel(Out, C1),
+    channel(C1, D1).
 
 % Data D1 is immediately upstream of data D2.
-data_immediately_upstream(D2, D1) :-
-    data_immediately_downstream(D1, D2).
+data_immediately_upstream(D1, D2) :-
+    data_immediately_downstream(D2, D1).
 
 % Data D1 is downstream of data D2.
-data_downstream(D2, D1) :-
-    data_immediately_downstream(D2, D1).
-data_downstream(D2, D1):-
-    data_immediately_downstream(D2, D),
-    data_downstream(D, D1).
+data_downstream(D1, D2) :-
+    data_immediately_downstream(D1, D2).
+data_downstream(D1, D2):-
+    data_immediately_downstream(D, D2),
+    data_downstream(D1, D).
 
 % Data D2 is upstream of Data D1
 data_upstream(D1, D2) :-
-    data_downstream(D2, D1).
+    data_downstream(D1, D2).
 
+% Resource R1 is upstream of resource R2.
 resource_upstream(R1, R2) :-
     data_resource(D1, R1),
     data_resource(D2, R2),
@@ -123,10 +124,10 @@ common_metadata_values_differ(R1, R2) :-
     resource_metadata(R2, N, V2, _),
     V1 != V2.
 
-% Resource R2 depends on resource R1.
+% Resource R1 depends on resource R2.
 depends_on(R1, R2) :-
     common_metadata_variable(R1, R2),
     not common_metadata_values_differ(R1, R2),
-    resource_upstream(R2, R1),
+    resource_upstream(R1, R2),
     R1 != R2.
      
