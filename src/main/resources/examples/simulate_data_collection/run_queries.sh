@@ -1,9 +1,4 @@
 #!/bin/bash
-clear
-echo ""
-
-
-echo ""
 echo "*** Extract Queries ***"
 echo ""
 
@@ -28,7 +23,7 @@ echo "MQ1:  Where is the definition of program simulate_data_collection.collect_
 dlv -silent -pfilter=mq1 extractfacts.dlv modelfacts.dlv rules.dlv model_queries.dlv
 echo ""
 
-echo "% MQ2:  What is the name of the top-level workflow?"
+echo "MQ2:  What is the name of the top-level workflow?"
 dlv -silent -pfilter=mq2 extractfacts.dlv modelfacts.dlv rules.dlv model_queries.dlv
 echo ""
 
@@ -61,7 +56,7 @@ dlv -silent -pfilter=mq9 extractfacts.dlv modelfacts.dlv rules.dlv model_queries
 echo ""
 
 echo "MQ10: How many data are read by more than port in workflow simulate_data_collection?"
-dlv -silent -pfilter=data_read_by_multiple_ports extractfacts.dlv modelfacts.dlv rules.dlv model_queries.dlv
+dlv -silent -pfilter=mq10 extractfacts.dlv modelfacts.dlv rules.dlv model_queries.dlv
 echo ""
 
 echo "MQ11: What program blocks are immediately downstream of calculate_strategy?"
@@ -98,4 +93,32 @@ echo ""
 
 echo "MQ19: What URI variables are associated with writes of data simulate_data_collection[corrected_image]?"
 dlv -silent -pfilter=mq19 extractfacts.dlv modelfacts.dlv rules.dlv model_queries.dlv
+echo ""
+
+echo "MQ20: What URI variables do data written to raw_image and corrected_image have in common?"
+dlv -silent -pfilter=mq20 extractfacts.dlv modelfacts.dlv rules.dlv model_queries.dlv
+echo ""
+
+echo "RQ0: What URI variable values are associated with writing resource run/data/DRT322/DRT322_11000eV_028.img?"
+dlv -silent -pfilter=rq0 extractfacts.dlv modelfacts.dlv reconfacts.dlv rules.dlv recon_queries.dlv
+echo ""
+
+echo "RQ1: What samples did the run of the script collect images from?"
+dlv -silent -pfilter=rq1 extractfacts.dlv modelfacts.dlv reconfacts.dlv rules.dlv recon_queries.dlv
+echo ""
+
+echo "RQ2: What energies were used during collection of images from sample DRT322?"
+dlv -silent -pfilter=rq2 extractfacts.dlv modelfacts.dlv reconfacts.dlv rules.dlv recon_queries.dlv
+echo ""
+
+echo "RQ3: Where is the raw image from which corrected image run/data/DRT322/DRT322_11000eV_028.img is derived?"
+dlv -silent -pfilter=rq3 extractfacts.dlv modelfacts.dlv reconfacts.dlv rules.dlv recon_queries.dlv
+echo ""
+
+echo "RQ4: Are there any raw images for which there are no corresponding corrected images?"
+dlv -silent -pfilter=rq4 extractfacts.dlv modelfacts.dlv reconfacts.dlv rules.dlv recon_queries.dlv
+echo ""
+
+echo "RQ5: Where is the spreadsheet that led to the corrected image run/data/DRT240/DRT240_10000eV_010.img?"
+dlv -silent -pfilter=rq5 extractfacts.dlv modelfacts.dlv reconfacts.dlv rules.dlv recon_queries.dlv
 echo ""

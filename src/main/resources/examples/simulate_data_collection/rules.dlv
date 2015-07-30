@@ -5,47 +5,50 @@ program_source(QualifiedProgramName, SourcePath, StartLine, EndLine) :-
         annotation(EndAnnotation, SourceId, EndLine, _, _, _),
         extract_source(SourceId, SourcePath).
 
-subprogram(ProgramId) :-
-    program(ProgramId, _, _, _, _),
-    program(ParentId, _, _, _, _),
-    has_subprogram(ParentId, ProgramId).
-    
-top_workflow(ProgramId) :-
-    workflow(ProgramId),
-    not subprogram(ProgramId).
-    
-port_data(PortId, DataName, QualifiedDataName) :-
-    port_connects_to_channel(PortId, ChannelId),
-    channel(ChannelId, DataId),
-    data(DataId, DataName, QualifiedDataName).
+% Program P is a subprogram of another program (a workflow).
+subprogram(P) :-
+    program(P, _, _, _, _),
+    program(Parent, _, _, _, _),
+    has_subprogram(Parent, P).
 
-data_in_port(WorkflowId, DataId, PortId) :-
-    channel(ChannelId, DataId),
-    port_connects_to_channel(PortId, ChannelId),
-    has_in_port(ProgramId, PortId),
-    has_subprogram(WorkflowId, ProgramId).
-    
-data_in_port_count(WorkflowId, DataId, Count) :-
-    data_in_port(WorkflowId, DataId, _), 
-    #count{ P : data_in_port(WorkflowId, DataId, P) } = Count.
+% Workflow W is the top-level workflow    
+top_workflow(W) :-
+    workflow(W),
+    not subprogram(W).
 
-program_immediately_downstream(Progam, DownstreamProgram) :-
-    has_out_port(Progam, UpstreamPort),
-    port_connects_to_channel(UpstreamPort, Channel),
-    port_connects_to_channel(DownstreamPort, Channel),
-    has_in_port(DownstreamProgram, DownstreamPort).
+% Port reads or writes data with Name and QualifiedName.
+port_data(Port, Name, QualifiedName) :-
+    port_connects_to_channel(Port, Channel),
+    channel(Channel, Data),
+    data(Data, Name, QualifiedName).
 
-program_immediately_upstream(Program, UpstreamProgram) :-
-    program_immediately_downstream(UpstreamProgram, Program).
-    
-program_downstream(Program, DownstreamProgram) :-
-    program_immediately_downstream(Program, DownstreamProgram).
-program_downstream(Program, DownstreamProgram) :-
-    program_immediately_downstream(Program, IntermediateProgram),
-    program_downstream(IntermediateProgram, DownstreamProgram).    
+% Port is an input for Data to Program.
+data_in_port(Port, Data) :-
+    port_connects_to_channel(Port, Channel),
+    channel(Channel, Data),
+    has_in_port(_, Port).
 
-program_upstream(Program, UpstreamProgram) :-
-    program_downstream(UpstreamProgram, Program).
+% Program P1 is immediately downstream of Program P2.
+program_immediately_downstream(P1, P2) :-
+    has_in_port(P1, InPort),
+    port_connects_to_channel(InPort, Channel),
+    port_connects_to_channel(OutPort, Channel),
+    has_out_port(P2, OutPort).
+ 
+% Program P1 is downstream of Program P2.
+program_downstream(P1, P2) :-
+    program_immediately_downstream(P1, P2).
+program_downstream(P1, P2) :-
+    program_downstream(P1, P3),
+    program_immediately_downstream(P3, P2).
+
+% Program P1 is immediately upstream of Program P2.
+program_immediately_upstream(P1, P2) :-
+    program_immediately_downstream(P2, P1).
+
+% Program P1 is upstream of Program P2.
+program_upstream(P1, P2) :-
+    program_downstream(P2, P1).
     
 data_immediately_downstream(DataId, DownstreamDataId) :-
     channel(ChannelId, DataId),
@@ -59,10 +62,62 @@ data_immediately_upstream(DataId, UpstreamDataId) :-
     data_immediately_downstream(UpstreamDataId, DataId).
 
 data_downstream(DataId, DownstreamDataId) :-
-    data_immediately_downstream(DataId, DownstreamDataId).    
+    data_immediately_downstream(DataId, DownstreamDataId).
 data_downstream(DataId, DownstreamDataId):-
     data_immediately_downstream(DataId, IntermediateDataId),
     data_downstream(IntermediateDataId, DownstreamDataId).
-    
-data_upstream(DataId, UpstreamDataId) :-
-    data_downstream(UpstreamDataId, DataId).
+
+% Data D2 is upstream of Data D1
+data_upstream(D1, D2) :-
+    data_downstream(D2, D1).
+
+resource_upstream(R1, R2) :-
+    data_resource(D1, R1),
+    data_resource(D2, R2),
+    data_upstream(D1, D2).
+
+data_output_port_has_uri_variable(Data, Variable) :-
+    channel(C, Data),
+    port_connects_to_channel(P, C),
+    has_out_port(_, P),
+    uri_variable(Variable, _, P).   
+
+data_input_port_has_uri_variable(Data, Variable) :-
+    channel(C, Data),
+    port_connects_to_channel(P, C),
+    has_in_port(_, P),
+    uri_variable(Variable, _, P).
+
+resource_metadata(Resource, VarName, VarValue, Port) :-
+    data_resource(Data, Resource),
+    channel(Channel, Data),
+    port_connects_to_channel(Port, Channel),
+    uri_variable(Variable, VarName, Port),
+    uri_variable_value(Resource, Variable, VarValue).
+
+read_resource_metadata(Resource, VarName, VarValue) :-
+    resource_metadata(Resource, VarName, VarValue, P),
+    has_in_port(_, P).
+
+written_resource_metadata(Resource, VarName, VarValue) :-
+    resource_metadata(Resource, VarName, VarValue, P),
+    has_out_port(_, P).
+
+% Resources R1 and R2 share a metadata variable name.
+common_metadata_variable(R1, R2) :-
+    resource_metadata(R1, VarName, _, P1),
+    resource_metadata(R2, VarName, _, P2).
+
+% Resources R1 and R2 have a metadata variable with a shared name but different value.
+common_metadata_values_differ(R1, R2) :-
+    resource_metadata(R1, VarName, V1, _),
+    resource_metadata(R2, VarName, V2, _),
+    V1 != V2.
+
+% Resource R2 depends on resource R1.
+depends_on(R1, R2) :-
+    common_metadata_variable(R1, R2),
+    not common_metadata_values_differ(R1, R2),
+    resource_upstream(R2, R1),
+    R1 != R2.
+     

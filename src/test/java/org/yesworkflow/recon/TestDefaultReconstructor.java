@@ -26,7 +26,7 @@ public class TestDefaultReconstructor extends YesWorkflowTestCase {
         reconstructor = new DefaultReconstructor(super.stdoutStream, super.stderrStream);
     }
    
-    public void testRecon_SimulateDataCollection() throws FileNotFoundException, Exception {       
+    public void testRecon_SimulateDataCollection() throws FileNotFoundException, Exception {
 
         List<Annotation> annotations = extractor
                .configure("language", "python")

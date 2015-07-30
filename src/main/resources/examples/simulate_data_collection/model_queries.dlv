@@ -50,40 +50,48 @@ mq8(ProgramName) :-
 
 % MQ9: How many ports read data simulate_data_collection[frame_number]?
 mq9(Count) :-
-    program(WorkflowId, _, "simulate_data_collection", _, _),
-    data(DataId, _, "simulate_data_collection[frame_number]"),
-    data_in_port_count(WorkflowId, DataId, Count).
+    data(Data, _, "simulate_data_collection[frame_number]"),
+    #count{ P : data_in_port(P, Data) } = Count.
 
 % MQ10: How many data are read by more than port in workflow simulate_data_collection?
 mq10(Count) :- 
-    Program(WorkflowId, _, "simulate_data_collection", _, _),
-    #count{ D : data_read_by_multiple_ports(WorkflowId, D) } = Count.
-data_read_by_multiple_ports(WorkflowId, DataId) :-
-    data_in_port_count(WorkflowId, DataId, Count),
+%    program(Workflow, _, "simulate_data_collection", _, _),
+    #count{ D : data_in_workflow_read_by_multiple_ports(D, 1) } = Count.
+data_in_workflow_read_by_multiple_ports(Data, Workflow) :-
+    has_subprogram(Workflow, Program),
+    has_in_port(Program, Port),
+    port_connects_to_channel(Port, Channel),
+    channel(Channel, Data),
+    data_read_by_multiple_ports(Data).
+data_read_by_multiple_ports(Data) :-
+    data_in_port_count(Count, Data),
     Count > 1.
+data_in_port_count(Count, Data) :-
+    data(Data, _, _),
+    #count{ P : data_in_port(P, Data) } = Count.
 
 % MQ11: What program blocks are immediately downstream of calculate_strategy?
 mq11(DownstreamProgramName) :-
     program(Program, _, "simulate_data_collection.calculate_strategy", _, _),
-    program_immediately_downstream(Program, DownstreamProgram),
+    program_immediately_downstream(DownstreamProgram, Program),
     program(DownstreamProgram, DownstreamProgramName, _, _, _).
 
 % MQ12: What program blocks are immediately upstream of transform_images?
 mq12(UpstreamProgramName) :-
     program(Program, _, "simulate_data_collection.transform_images", _, _),
-    program_immediately_upstream(Program, UpstreamProgram),
+    program_immediately_upstream(UpstreamProgram, Program),
     program(UpstreamProgram, UpstreamProgramName, _, _, _).
 
 % MQ13: What program blocks are upstream of transform_images?
 mq13(UpstreamProgramName):-
     program(Program, _, "simulate_data_collection.transform_images", _, _),
-    program_upstream(Program, UpstreamProgram),
+    program_upstream(UpstreamProgram, Program),
     program(UpstreamProgram, UpstreamProgramName, _, _, _).
 
 % MQ14: What program blocks are anywhere downstream of calculate_strategy?
 mq14(DownstreamProgramName):-
     program(Program, _, "simulate_data_collection.calculate_strategy", _, _),
-    program_downstream(Program, DownstreamProgram),
+    program_downstream(DownstreamProgram, Program),
     program(DownstreamProgram, DownstreamProgramName, _, _, _).
 
 % MQ15: What data is immediately downstream of raw_image?
@@ -109,7 +117,6 @@ mq18(UpstreamData):-
     data(DataId, "raw_image", _),
     data_upstream(DataId, UpstreamDataId),
     data(UpstreamDataId, UpstreamData, _).
-    
 
 % MQ19: What URI variables are associated with writes of data simulate_data_collection[corrected_image]?
 mq19(UriVariableName) :-
@@ -117,8 +124,17 @@ mq19(UriVariableName) :-
     channel(ChannelId, DataId),
     port_connects_to_channel(PortId, ChannelId),
     has_out_port(_, PortId),
-    uri_variable(_, UriVariableName, PortId).    
-        
+    uri_variable(_, UriVariableName, PortId).
+
+% MQ20: What URI variables do data written to raw_image and corrected_image have in common?
+mq20(CommonUriVariableName) :-
+    data(RawImageId, _, "simulate_data_collection[raw_image]"),
+    data(CorrectedImageId, _, "simulate_data_collection[corrected_image]"),
+    data_output_port_has_uri_variable(RawImageId, RawImageUriVariableId),
+    data_output_port_has_uri_variable(CorrectedImageId, CorrectedImageUriVariableId),
+    uri_variable(RawImageUriVariableId, CommonUriVariableName, _),
+    uri_variable(CorrectedImageUriVariableId, CommonUriVariableName, _).
+
 % MQ_X:  What workflows call what functions?
 %mq_x(WokflowName, FunctionName) :-
 %    program(WorkflowId, WorkflowName, _, _, _),
