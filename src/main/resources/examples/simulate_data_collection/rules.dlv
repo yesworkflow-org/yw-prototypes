@@ -85,19 +85,19 @@ resource_upstream(R1, R2) :-
 resource_downstream(R1, R2) :-
     resource_upstream(R2, R1).
 
-% Data D with URI variable U passed through output port P.
-data_output_port_has_uri_variable(D, U) :-
+% Data D with URI variable V passed through output port P.
+output_data_has_uri_variable(D, V) :-
     channel(C, D),
     port_connects_to_channel(P, C),
     has_out_port(_, P),
-    uri_variable(U, _, P).   
+    uri_variable(V, _, P).   
 
-% Data D with URI variable U passed through input port P.
-data_input_port_has_uri_variable(D, U) :-
+% Data D with URI variable V passed through input port P.
+input_data_has_uri_variable(D, V) :-
     channel(C, D),
     port_connects_to_channel(P, C),
     has_in_port(_, P),
-    uri_variable(U, _, P).
+    uri_variable(V, _, P).
 
 % Resource R with uri variable U named N with value V passed through Port P.
 resource_metadata(R, N, V, P) :-

@@ -118,19 +118,19 @@ mq18(UpstreamDataName):-
     data_upstream(D1, D2).
 
 % MQ19: What URI variables are associated with writes of data simulate_data_collection[corrected_image]?
-mq19(UriVariableName) :-
+mq19(VariableName) :-
     data(D, _, "simulate_data_collection[corrected_image]"),
     channel(C, D),
     port_connects_to_channel(OUT, C),
     has_out_port(_, OUT),
-    uri_variable(_, UriVariableName, OUT).
+    uri_variable(_, VariableName, OUT).
 
 % MQ20: What URI variables do data written to raw_image and corrected_image have in common?
-mq20(CommonUriVariableName) :-
-    data(RawImageId, _, "simulate_data_collection[raw_image]"),
-    data(CorrectedImageId, _, "simulate_data_collection[corrected_image]"),
-    data_output_port_has_uri_variable(RawImageId, RawImageUriVariableId),
-    data_output_port_has_uri_variable(CorrectedImageId, CorrectedImageUriVariableId),
-    uri_variable(RawImageUriVariableId, CommonUriVariableName, _),
-    uri_variable(CorrectedImageUriVariableId, CommonUriVariableName, _).
+mq20(VariableName) :-
+    data(D1, _, "simulate_data_collection[raw_image]"),
+    data(D2, _, "simulate_data_collection[corrected_image]"),
+    output_data_has_uri_variable(D1, V1),
+    output_data_has_uri_variable(D2, V2),
+    uri_variable(V1, VariableName, _),
+    uri_variable(V2, VariableName, _).
 
