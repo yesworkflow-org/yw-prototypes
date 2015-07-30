@@ -1,43 +1,43 @@
 
 % RQ0: What URI variable values are associated with resource run/data/DRT322/DRT322_11000eV_028.img?
 rq0(VarName, VarValue) :-
-    resource(Resource, "run/data/DRT322/DRT322_11000eV_028.img"),
-    resource_metadata(Resource, VarName, VarValue, _).
+    resource(R, "run/data/DRT322/DRT322_11000eV_028.img"),
+    resource_metadata(R, VarName, VarValue, _).
 
 % RQ1: What samples did the run of the script collect images from?
-rq1(SampleId) :-
-    data(DataId, _, "simulate_data_collection[raw_image]"),
-    data_resource(DataId, ResourceId),
-    written_resource_metadata(ResourceId, "sample_id", SampleId).
+rq1(Sample) :-
+    data(D, _, "simulate_data_collection[raw_image]"),
+    data_resource(D, R),
+    written_resource_metadata(R, "sample_id", Sample).
 
 % RQ2: What energies were used during collection of images from sample DRT322? 
-rq2(EnergyValue) :-
-    data(DataId, _, "simulate_data_collection[raw_image]"),
-    data_resource(DataId, ResourceId),
-    written_resource_metadata(ResourceId, "sample_id", "DRT322"),
-    written_resource_metadata(ResourceId, "energy", EnergyValue).
+rq2(Energy) :-
+    data(D, _, "simulate_data_collection[raw_image]"),
+    data_resource(D, R),
+    written_resource_metadata(R, "sample_id", "DRT322"),
+    written_resource_metadata(R, "energy", Energy).
 
 % RQ3: Where is the raw image from which corrected image run/data/DRT322/DRT322_11000eV_028.img is derived?
 rq3(RawImageFile) :-
-    resource(CorrectedImage, "run/data/DRT322/DRT322_11000eV_028.img"),
-    depends_on(CorrectedImage, RawImage),
-    resource(RawImage, RawImageFile).
+    resource(R1, "run/data/DRT322/DRT322_11000eV_028.img"),
+    resource(R2, RawImageFile),
+    depends_on(R1, R2).
         
 % RQ4: Are there any raw images for which there are no corresponding corrected images?
 rq4(RawImageFile) :-
-    data(RawImageDataId, _, "simulate_data_collection[raw_image]"),
-    data_resource(RawImageDataId, RawImageResourceId),
-    not raw_has_corrected_image(RawImageResourceId),
-    resource(RawImageResourceId, RawImageFile).    
+    data(D, _, "simulate_data_collection[raw_image]"),
+    data_resource(D, R),
+    not raw_has_corrected_image(R),
+    resource(R, RawImageFile).    
 raw_has_corrected_image(RawImageResource) :- 
-    data_resource(RawImageData, RawImageResource),
-    data(RawImageData, _, "simulate_data_collection[raw_image]"),
+    data_resource(D, RawImageResource),
+    data(D, _, "simulate_data_collection[raw_image]"),
     depends_on(CorrectedImageResource, RawImageResource),
     data_resource(CorrectedImageData, CorrectedImageResource),
     data(CorrectedImageData, _, "simulate_data_collection[corrected_image]").
 
-% RQ5: Where is the spreadsheet that led to the corrected image run/data/DRT240/DRT240_10000eV_010.img?
-rq5(CassetteId) :-
-   resource(CorrectedImage, "run/data/DRT240/DRT240_10000eV_010.img"),
-   depends_on(CorrectedImage, Dependency),
-   resource_metadata(Dependency, "cassette_id", CassetteId, _).
+% RQ5: What cassette held the sample from which run/data/DRT240/DRT240_10000eV_010.img was derived?
+rq5(Cassette) :-
+   resource(R1, "run/data/DRT240/DRT240_10000eV_010.img"),
+   resource_metadata(R2, "cassette_id", Cassette, _),
+   depends_on(R1, R2).

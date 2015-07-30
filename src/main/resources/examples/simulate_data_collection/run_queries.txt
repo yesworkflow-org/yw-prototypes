@@ -90,6 +90,6 @@ RQ3: Where is the raw image from which corrected image run/data/DRT322/DRT322_11
 RQ4: Are there any raw images for which there are no corresponding corrected images?
 {rq4("run/raw/q55/DRT240/e10000/image_031.raw")}
 
-RQ5: Where is the spreadsheet that led to the corrected image run/data/DRT240/DRT240_10000eV_010.img?
+RQ5: What cassette held the sample from which run/data/DRT240/DRT240_10000eV_010.img was derived?
 {rq5("q55")}
 

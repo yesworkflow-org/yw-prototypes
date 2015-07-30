@@ -124,6 +124,6 @@ echo "RQ4: Are there any raw images for which there are no corresponding correct
 dlv -silent -pfilter=rq4 extractfacts.dlv modelfacts.dlv reconfacts.dlv rules.dlv recon_queries.dlv
 echo ""
 
-echo "RQ5: Where is the spreadsheet that led to the corrected image run/data/DRT240/DRT240_10000eV_010.img?"
+echo "RQ5: What cassette held the sample from which run/data/DRT240/DRT240_10000eV_010.img was derived?"
 dlv -silent -pfilter=rq5 extractfacts.dlv modelfacts.dlv reconfacts.dlv rules.dlv recon_queries.dlv
 echo ""

@@ -1,10 +1,10 @@
 
-% Porgram with qualified name QN is defined in source File between lines First and Last.
-program_source(QN, File, First, Last) :-
-        program(_, _, QN, Begin, End),
-        annotation(Begin, Source, First, _, _, _),
-        annotation(End, Source, Last, _, _, _),
-        extract_source(Source, File).
+% Porgram with qualified name QN is defined in source file SF from first line F to last line L.
+program_source(QN, SF, F, L) :-
+        program(_, _, QN, BA, EA),
+        annotation(BA, S, F, _, _, _),
+        annotation(EA, S, L, _, _, _),
+        extract_source(S, SF).
 
 % Program P is a subprogram of another program (workflow) W.
 subprogram(P) :-
@@ -71,15 +71,15 @@ data_downstream(D1, D2):-
     data_immediately_downstream(D, D2),
     data_downstream(D1, D).
 
-% Data D2 is upstream of Data D1
+% Data D1 is upstream of Data D2
 data_upstream(D1, D2) :-
-    data_downstream(D1, D2).
+    data_downstream(D2, D1).
 
 % Resource R1 is upstream of resource R2.
 resource_upstream(R1, R2) :-
     data_resource(D1, R1),
     data_resource(D2, R2),
-    data_upstream(D1, D2).
+    data_upstream(D2, D1).
 
 % Data D with URI variable U passed through output port P.
 data_output_port_has_uri_variable(D, U) :-
@@ -130,4 +130,3 @@ depends_on(R1, R2) :-
     not common_metadata_values_differ(R1, R2),
     resource_upstream(R1, R2),
     R1 != R2.
-     
