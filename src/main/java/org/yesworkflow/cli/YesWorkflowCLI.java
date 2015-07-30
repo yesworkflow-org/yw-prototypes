@@ -211,11 +211,11 @@ public class YesWorkflowCLI {
                 config.applyConfigOption("extract.sources", sourceFiles);
             }
             
-            String queryLogicLanguage = (String) config.getConfigOptionValue("query.logic");
-            if (queryLogicLanguage != null) {
-                if (config.getConfigOptionValue("extract.logic") == null) config.applyConfigOption("extract.logic", queryLogicLanguage);
-                if (config.getConfigOptionValue("model.logic") == null) config.applyConfigOption("model.logic", queryLogicLanguage);
-                if (config.getConfigOptionValue("recon.logic") == null) config.applyConfigOption("recon.logic", queryLogicLanguage);
+            String queryEngine = (String) config.getConfigOptionValue("query.engine");
+            if (queryEngine != null) {
+                if (config.getConfigOptionValue("extract.queryengine") == null) config.applyConfigOption("extract.queryengine", queryEngine);
+                if (config.getConfigOptionValue("model.queryengine") == null) config.applyConfigOption("model.queryengine", queryEngine);
+                if (config.getConfigOptionValue("recon.queryengine") == null) config.applyConfigOption("recon.queryengine", queryEngine);
             }
             
             // execute sequence of commands through the requested one

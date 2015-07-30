@@ -5,8 +5,8 @@ import java.util.List;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.annotations.Qualification;
 import org.yesworkflow.query.FactsBuilder;
-import org.yesworkflow.query.LogicLanguage;
-import org.yesworkflow.query.LogicLanguageModel;
+import org.yesworkflow.query.QueryEngine;
+import org.yesworkflow.query.QueryEngineModel;
 
 public class ExtractFacts {
 
@@ -19,16 +19,16 @@ public class ExtractFacts {
     private FactsBuilder qualificationFacts;
 
     
-    public ExtractFacts(LogicLanguage logicLanguage, List<String> sources, List<Annotation> annotations) {
+    public ExtractFacts(QueryEngine queryEngine, List<String> sources, List<Annotation> annotations) {
         
         this.sources = sources;
         this.annotations = annotations;
         
-        LogicLanguageModel logicLanguageModel = new LogicLanguageModel(logicLanguage);
-        this.sourceFileFacts  = new FactsBuilder(logicLanguageModel, "extract_source", "source_id", "source_path");
-        this.annotationFacts  = new FactsBuilder(logicLanguageModel, "annotation", "annotation_id", "source_id", "line_number", "tag", "keyword", "value");
-        this.descriptionFacts  = new FactsBuilder(logicLanguageModel, "annotation_description", "annotation_id", "description");
-        this.qualificationFacts = new FactsBuilder(logicLanguageModel, "annotation_qualifies", "qualifying_annotation_id", "primary_annotation_id");
+        QueryEngineModel queryEngineModel = new QueryEngineModel(queryEngine);
+        this.sourceFileFacts  = new FactsBuilder(queryEngineModel, "extract_source", "source_id", "source_path");
+        this.annotationFacts  = new FactsBuilder(queryEngineModel, "annotation", "annotation_id", "source_id", "line_number", "tag", "keyword", "value");
+        this.descriptionFacts  = new FactsBuilder(queryEngineModel, "annotation_description", "annotation_id", "description");
+        this.qualificationFacts = new FactsBuilder(queryEngineModel, "annotation_qualifies", "qualifying_annotation_id", "primary_annotation_id");
     }
 
     public ExtractFacts build() {        

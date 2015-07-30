@@ -1,37 +1,42 @@
 package org.yesworkflow.query;
 
-public class LogicLanguageModel {
+public class QueryEngineModel {
 
-    public final LogicLanguage logicLanguage;
+    public final QueryEngine engine;
     public final boolean showComments;
     public final String commentStart;
     public final String quote;
 
-    public LogicLanguageModel(LogicLanguage logicLanguage) {
+    public QueryEngineModel(QueryEngine engine) {
         
-        this.logicLanguage = logicLanguage;
+        this.engine = engine;
         
-        switch(logicLanguage) {
+        switch(engine) {
             
-        case DATALOG_DLV:
+            case DLV:
                 this.showComments = true;
                 this.commentStart = "% ";
                 this.quote = "\"";
                 break;
             
-            case DATALOG_IRIS:
+            case IRIS:
                 this.showComments = false;
                 this.commentStart = null;
                 this.quote = "\'";
                 break;
                 
-            default:
-            case PROLOG:
+            case SWIPL:
                 this.showComments = true;
                 this.commentStart = "% ";
                 this.quote = "'";
                 break;
-        
+
+            default:
+            case XSB:
+                this.showComments = true;
+                this.commentStart = "% ";
+                this.quote = "'";
+                break;
         }
     }
 }

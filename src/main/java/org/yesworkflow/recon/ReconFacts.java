@@ -21,8 +21,8 @@ import org.yesworkflow.model.Function;
 import org.yesworkflow.model.Port;
 import org.yesworkflow.model.Program;
 import org.yesworkflow.query.FactsBuilder;
-import org.yesworkflow.query.LogicLanguage;
-import org.yesworkflow.query.LogicLanguageModel;
+import org.yesworkflow.query.QueryEngine;
+import org.yesworkflow.query.QueryEngineModel;
 
 public class ReconFacts {
 
@@ -35,16 +35,16 @@ public class ReconFacts {
     private FactsBuilder uriVariableValueFacts;
     private Map<String,Resource> resourceForUri = new HashMap<String,Resource>();
 
-    public ReconFacts(LogicLanguage logicLanguage, Run run) {
-        if (logicLanguage == null) throw new IllegalArgumentException("Null logicLanguage argument passed to ReconFacts constructor.");
+    public ReconFacts(QueryEngine queryEngine, Run run) {
+        if (queryEngine == null) throw new IllegalArgumentException("Null logicLanguage argument passed to ReconFacts constructor.");
         if (run == null) throw new IllegalArgumentException("Null run argument passed to ReconFacts constructor.");
         if (run.model == null) throw new IllegalArgumentException("Null model field in run argument to passed to ReconFacts constructor.");
         this.run = run;
-        LogicLanguageModel logicLanguageModel = new LogicLanguageModel(logicLanguage);
+        QueryEngineModel queryEngineModel = new QueryEngineModel(queryEngine);
 
-        this.resourceFacts  = new FactsBuilder(logicLanguageModel, "resource", "resource_id", "resource_uri");
-        this.dataResourceFacts = new FactsBuilder(logicLanguageModel, "data_resource", "data_id", "resource_id"); 
-        this.uriVariableValueFacts  = new FactsBuilder(logicLanguageModel, "uri_variable_value", "resource_id", "uri_variable_id", "uri_variable_value");
+        this.resourceFacts  = new FactsBuilder(queryEngineModel, "resource", "resource_id", "resource_uri");
+        this.dataResourceFacts = new FactsBuilder(queryEngineModel, "data_resource", "data_id", "resource_id"); 
+        this.uriVariableValueFacts  = new FactsBuilder(queryEngineModel, "uri_variable_value", "resource_id", "uri_variable_id", "uri_variable_value");
     }
 
     public ReconFacts build() {

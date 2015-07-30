@@ -5,11 +5,11 @@ import java.io.PrintStream;
 import java.util.Map;
 
 import org.yesworkflow.config.YWConfiguration;
-import org.yesworkflow.query.LogicLanguage;
+import org.yesworkflow.query.QueryEngine;
 
 public class DefaultReconstructor implements Reconstructor  {
     
-    static private LogicLanguage DEFAULT_LOGIC_LANGUAGE = LogicLanguage.PROLOG;
+    static private QueryEngine DEFAULT_QUERY_ENGINE = QueryEngine.SWIPL;
     
     private PrintStream stdoutStream = null;
     @SuppressWarnings("unused")
@@ -17,7 +17,7 @@ public class DefaultReconstructor implements Reconstructor  {
     private Run run = null;
     private String factsFile = null;
     private String reconFacts = null;
-    private LogicLanguage logicLanguage = DEFAULT_LOGIC_LANGUAGE;
+    private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;
 
     public DefaultReconstructor(PrintStream stdoutStream, PrintStream stderrStream) {
         this.stdoutStream = stdoutStream;
@@ -44,8 +44,8 @@ public class DefaultReconstructor implements Reconstructor  {
     public DefaultReconstructor configure(String key, Object value) throws Exception {
         if (key.equalsIgnoreCase("factsfile")) {
             factsFile = (String)value;
-         } else if (key.equalsIgnoreCase("logic")) {
-             logicLanguage = LogicLanguage.toLogicLanguage((String)value);
+         } else if (key.equalsIgnoreCase("queryengine")) {
+             queryEngine = QueryEngine.toQueryEngine((String)value);
          }
         return this;
     }
@@ -61,7 +61,7 @@ public class DefaultReconstructor implements Reconstructor  {
     @Override
     public String getFacts() {
         if (reconFacts == null) {
-            reconFacts = new ReconFacts(logicLanguage, run).build().toString();
+            reconFacts = new ReconFacts(queryEngine, run).build().toString();
         }
         return reconFacts;
     }

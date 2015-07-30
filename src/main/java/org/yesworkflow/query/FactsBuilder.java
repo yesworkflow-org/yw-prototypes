@@ -5,13 +5,13 @@ public class FactsBuilder {
     public static final String EOL = System.getProperty("line.separator");
     public final String name;
     public final int fieldCount;
-    public final LogicLanguageModel logicLanguageModel;
+    public final QueryEngineModel queryEngineModel;
 
     private StringBuilder _buffer = new StringBuilder();
     
-	public FactsBuilder(LogicLanguageModel logicLanguageModel, String name, String... fields) {
+	public FactsBuilder(QueryEngineModel queryEngineModel, String name, String... fields) {
 	    
-        this.logicLanguageModel = logicLanguageModel;
+        this.queryEngineModel = queryEngineModel;
 	    this.name = name;
 	    this.fieldCount = fields.length;
 	    
@@ -49,9 +49,9 @@ public class FactsBuilder {
 	}
 	
     public FactsBuilder comment(String c) {
-        if (logicLanguageModel.showComments) {
+        if (queryEngineModel.showComments) {
             _buffer.append(     EOL                             )
-                   .append(     logicLanguageModel.commentStart )
+                   .append(     queryEngineModel.commentStart )
                    .append(     c                               )
                    .append(     EOL                             );
         }        
@@ -63,7 +63,7 @@ public class FactsBuilder {
         if (value instanceof Integer) {
             return value.toString();
         } else {
-            return logicLanguageModel.quote + value.toString() + logicLanguageModel.quote;
+            return queryEngineModel.quote + value.toString() + queryEngineModel.quote;
         }
     }  
     

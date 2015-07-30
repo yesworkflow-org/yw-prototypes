@@ -29,16 +29,16 @@ import org.yesworkflow.annotations.Return;
 import org.yesworkflow.annotations.UriAnnotation;
 import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.exceptions.YWToolUsageException;
-import org.yesworkflow.query.LogicLanguage;
+import org.yesworkflow.query.QueryEngine;
 
 public class DefaultExtractor implements Extractor {
 
     static private Language DEFAULT_LANGUAGE = Language.GENERIC;
-    static private LogicLanguage DEFAULT_LOGIC_LANGUAGE = LogicLanguage.PROLOG;
+    static private QueryEngine DEFAULT_QUERY_ENGINE = QueryEngine.SWIPL;
     
     private LanguageModel globalLanguageModel = null;
     private Language lastLanguage = null;
-    private LogicLanguage logicLanguage = DEFAULT_LOGIC_LANGUAGE;
+    private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;
     private BufferedReader sourceReader = null;
     private List<String> sources;
     private List<SourceLine> lines;
@@ -112,8 +112,8 @@ public class DefaultExtractor implements Extractor {
             factsFile = (String)value;
         } else if (key.equalsIgnoreCase("skeletonfile")) {
             skeletonFile = (String)value;
-        } else if (key.equalsIgnoreCase("logic")) {
-            logicLanguage = LogicLanguage.toLogicLanguage((String)value);
+        } else if (key.equalsIgnoreCase("queryengine")) {
+            queryEngine = QueryEngine.toQueryEngine((String)value);
         }
         
         return this;
@@ -157,7 +157,7 @@ public class DefaultExtractor implements Extractor {
 	@Override
     public String getFacts() {
         if (extractFacts == null) {
-            extractFacts = new ExtractFacts(logicLanguage, sources, allAnnotations).build().toString();
+            extractFacts = new ExtractFacts(queryEngine, sources, allAnnotations).build().toString();
         }
         return extractFacts;
     }	

@@ -6,8 +6,8 @@ import java.util.Set;
 import org.yesworkflow.annotations.In;
 import org.yesworkflow.data.UriVariable;
 import org.yesworkflow.query.FactsBuilder;
-import org.yesworkflow.query.LogicLanguage;
-import org.yesworkflow.query.LogicLanguageModel;
+import org.yesworkflow.query.QueryEngine;
+import org.yesworkflow.query.QueryEngineModel;
 
 public class ModelFacts {
 
@@ -31,31 +31,31 @@ public class ModelFacts {
     private FactsBuilder outflowConnectionFacts;
     private FactsBuilder portUriVariableFacts;
 
-    public ModelFacts(LogicLanguage logicLanguage, Model model) {
+    public ModelFacts(QueryEngine queryEngine, Model model) {
 
-        if (logicLanguage == null) throw new IllegalArgumentException("Null logicLanguage argument passed to ModelFacts constructor.");
+        if (queryEngine == null) throw new IllegalArgumentException("Null logicLanguage argument passed to ModelFacts constructor.");
         if (model == null) throw new IllegalArgumentException("Null model argument passed to ModelFacts constructor.");
         if (model.program == null) throw new IllegalArgumentException("Null program field in model argument passed to ModelFacts constructor.");
         
         this.model = model;
 
-        LogicLanguageModel logicLanguageModel = new LogicLanguageModel(logicLanguage);
+        QueryEngineModel queryEngineModel = new QueryEngineModel(queryEngine);
 
-        this.programFacts  = new FactsBuilder(logicLanguageModel, "program", "program_id", "program_name", "qualified_program_name", "begin_annotation_id", "end_annotation_id");
-        this.workflowFacts = new FactsBuilder(logicLanguageModel, "workflow", "program_id");
-        this.functionFacts = new FactsBuilder(logicLanguageModel, "function", "program_id");
-        this.subprogramFacts = new FactsBuilder(logicLanguageModel, "has_subprogram", "program_id", "subprogram_id");
-        this.portFacts = new FactsBuilder(logicLanguageModel, "port", "port_id", "port_type", "port_name", "qualified_port_name", "port_annotation_id", "data_id");
-        this.portAliasFacts = new FactsBuilder(logicLanguageModel, "port_alias", "port_id", "alias");
-        this.portUriFacts = new FactsBuilder(logicLanguageModel, "port_uri_template", "port_id", "uri");
-        this.hasInPortFacts = new FactsBuilder(logicLanguageModel, "has_in_port", "block_id", "port_id");
-        this.hasOutPortFacts = new FactsBuilder(logicLanguageModel, "has_out_port", "block_id", "port_id");
-        this.channelFacts = new FactsBuilder(logicLanguageModel, "channel", "channel_id", "data_id");
-        this.dataFacts = new FactsBuilder(logicLanguageModel, "data", "data_id", "data_name", "qualified_data_name");
-        this.portConnectionFacts = new FactsBuilder(logicLanguageModel, "port_connects_to_channel", "port_id", "channel_id");
-        this.inflowConnectionFacts = new FactsBuilder(logicLanguageModel, "inflow_connects_to_channel", "port_id", "channel_id");
-        this.outflowConnectionFacts = new FactsBuilder(logicLanguageModel, "outflow_connects_to_channel", "port_id", "channel_id");
-        this.portUriVariableFacts = new FactsBuilder(logicLanguageModel, "uri_variable", "uri_variable_id", "variable_name", "port_id");
+        this.programFacts  = new FactsBuilder(queryEngineModel, "program", "program_id", "program_name", "qualified_program_name", "begin_annotation_id", "end_annotation_id");
+        this.workflowFacts = new FactsBuilder(queryEngineModel, "workflow", "program_id");
+        this.functionFacts = new FactsBuilder(queryEngineModel, "function", "program_id");
+        this.subprogramFacts = new FactsBuilder(queryEngineModel, "has_subprogram", "program_id", "subprogram_id");
+        this.portFacts = new FactsBuilder(queryEngineModel, "port", "port_id", "port_type", "port_name", "qualified_port_name", "port_annotation_id", "data_id");
+        this.portAliasFacts = new FactsBuilder(queryEngineModel, "port_alias", "port_id", "alias");
+        this.portUriFacts = new FactsBuilder(queryEngineModel, "port_uri_template", "port_id", "uri");
+        this.hasInPortFacts = new FactsBuilder(queryEngineModel, "has_in_port", "block_id", "port_id");
+        this.hasOutPortFacts = new FactsBuilder(queryEngineModel, "has_out_port", "block_id", "port_id");
+        this.channelFacts = new FactsBuilder(queryEngineModel, "channel", "channel_id", "data_id");
+        this.dataFacts = new FactsBuilder(queryEngineModel, "data", "data_id", "data_name", "qualified_data_name");
+        this.portConnectionFacts = new FactsBuilder(queryEngineModel, "port_connects_to_channel", "port_id", "channel_id");
+        this.inflowConnectionFacts = new FactsBuilder(queryEngineModel, "inflow_connects_to_channel", "port_id", "channel_id");
+        this.outflowConnectionFacts = new FactsBuilder(queryEngineModel, "outflow_connects_to_channel", "port_id", "channel_id");
+        this.portUriVariableFacts = new FactsBuilder(queryEngineModel, "uri_variable", "uri_variable_id", "variable_name", "port_id");
     }
 
     public ModelFacts build() {
