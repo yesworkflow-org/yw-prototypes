@@ -40,8 +40,8 @@ program_immediately_downstream(P1, P2) :-
 program_downstream(P1, P2) :-
     program_immediately_downstream(P1, P2).
 program_downstream(P1, P2) :-
-    program_downstream(P1, P3),
-    program_immediately_downstream(P3, P2).
+    program_downstream(P1, P),
+    program_immediately_downstream(P, P2).
 
 % Program P1 is immediately upstream of Program P2.
 program_immediately_upstream(P1, P2) :-
@@ -51,22 +51,25 @@ program_immediately_upstream(P1, P2) :-
 program_upstream(P1, P2) :-
     program_downstream(P2, P1).
     
-data_immediately_downstream(DataId, DownstreamDataId) :-
-    channel(ChannelId, DataId),
-    port_connects_to_channel(InPortId, ChannelId),
-    has_in_port(ProgramId, InPortId),
-    has_out_port(ProgramId, OutPortId),
-    port_connects_to_channel(OutPortId, DownstreamChannelId),
-    channel(DownstreamChannelId, DownstreamDataId).
+% Data D2 is immediately downstream of data D2.
+data_immediately_downstream(D1, D2) :-
+    channel(C1, D1),
+    port_connects_to_channel(In, C1),
+    has_in_port(P, In),
+    has_out_port(P, Out),
+    port_connects_to_channel(Out, C2),
+    channel(C2, D2).
 
-data_immediately_upstream(DataId, UpstreamDataId) :-
-    data_immediately_downstream(UpstreamDataId, DataId).
+% Data D1 is immediately upstream of data D2.
+data_immediately_upstream(D2, D1) :-
+    data_immediately_downstream(D1, D2).
 
-data_downstream(DataId, DownstreamDataId) :-
-    data_immediately_downstream(DataId, DownstreamDataId).
-data_downstream(DataId, DownstreamDataId):-
-    data_immediately_downstream(DataId, IntermediateDataId),
-    data_downstream(IntermediateDataId, DownstreamDataId).
+% Data D1 is downstream of data D2.
+data_downstream(D2, D1) :-
+    data_immediately_downstream(D2, D1).
+data_downstream(D2, D1):-
+    data_immediately_downstream(D2, D),
+    data_downstream(D, D1).
 
 % Data D2 is upstream of Data D1
 data_upstream(D1, D2) :-
@@ -77,42 +80,47 @@ resource_upstream(R1, R2) :-
     data_resource(D2, R2),
     data_upstream(D1, D2).
 
-data_output_port_has_uri_variable(Data, Variable) :-
-    channel(C, Data),
+% Data D with URI variable U passed through output port P.
+data_output_port_has_uri_variable(D, U) :-
+    channel(C, D),
     port_connects_to_channel(P, C),
     has_out_port(_, P),
-    uri_variable(Variable, _, P).   
+    uri_variable(U, _, P).   
 
-data_input_port_has_uri_variable(Data, Variable) :-
-    channel(C, Data),
+% Data D with URI variable U passed through input port P.
+data_input_port_has_uri_variable(D, U) :-
+    channel(C, D),
     port_connects_to_channel(P, C),
     has_in_port(_, P),
-    uri_variable(Variable, _, P).
+    uri_variable(U, _, P).
 
-resource_metadata(Resource, VarName, VarValue, Port) :-
-    data_resource(Data, Resource),
-    channel(Channel, Data),
-    port_connects_to_channel(Port, Channel),
-    uri_variable(Variable, VarName, Port),
-    uri_variable_value(Resource, Variable, VarValue).
+% Resource R with uri variable U named N with value V passed through Port P.
+resource_metadata(R, N, V, P) :-
+    data_resource(D, R),
+    channel(C, D),
+    port_connects_to_channel(P, C),
+    uri_variable(U, N, P),
+    uri_variable_value(R, U, V).
 
-read_resource_metadata(Resource, VarName, VarValue) :-
-    resource_metadata(Resource, VarName, VarValue, P),
+% Resource R was read with a metadata variable named N with value V.
+read_resource_metadata(R, N, V) :-
+    resource_metadata(R, N, V, P),
     has_in_port(_, P).
 
-written_resource_metadata(Resource, VarName, VarValue) :-
-    resource_metadata(Resource, VarName, VarValue, P),
+% Resource R was written with a metadata variable named N with value V.
+written_resource_metadata(R, N, V) :-
+    resource_metadata(R, N, V, P),
     has_out_port(_, P).
 
-% Resources R1 and R2 share a metadata variable name.
+% Resources R1 and R2 have metadata variables with shared name N.
 common_metadata_variable(R1, R2) :-
-    resource_metadata(R1, VarName, _, P1),
-    resource_metadata(R2, VarName, _, P2).
+    resource_metadata(R1, N, _, P1),
+    resource_metadata(R2, N, _, P2).
 
-% Resources R1 and R2 have a metadata variable with a shared name but different value.
+% Resources R1 and R2 have metadata variables with shared name N but different values V1 and V2.
 common_metadata_values_differ(R1, R2) :-
-    resource_metadata(R1, VarName, V1, _),
-    resource_metadata(R2, VarName, V2, _),
+    resource_metadata(R1, N, V1, _),
+    resource_metadata(R2, N, V2, _),
     V1 != V2.
 
 % Resource R2 depends on resource R1.
