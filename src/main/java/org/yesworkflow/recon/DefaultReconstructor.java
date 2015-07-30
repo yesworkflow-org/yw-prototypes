@@ -5,7 +5,6 @@ import java.io.PrintStream;
 import java.util.Map;
 
 import org.yesworkflow.config.YWConfiguration;
-import org.yesworkflow.model.Model;
 import org.yesworkflow.query.LogicLanguage;
 
 public class DefaultReconstructor implements Reconstructor  {

@@ -387,8 +387,9 @@ public class YesWorkflowCLI {
         if (reconstructor == null) {
             reconstructor = new DefaultReconstructor(this.outStream, this.errStream);
         }
-        
-        Run run = new Run(model);
+
+        String runDirectory = config.getConfigOptionValue("recon.rundir");
+        Run run = (runDirectory == null) ? new Run(model) : new Run(model, runDirectory);
         
         reconstructor.configure(config.getSection("recon"))
                      .run(run)
