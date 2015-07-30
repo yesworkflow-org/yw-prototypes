@@ -1,39 +1,40 @@
 
-program_source(QualifiedProgramName, SourcePath, StartLine, EndLine) :-
-        program(_, _, QualifiedProgramName, StartAnnotation, EndAnnotation),
-        annotation(StartAnnotation, SourceId, StartLine, _, _, _),
-        annotation(EndAnnotation, SourceId, EndLine, _, _, _),
-        extract_source(SourceId, SourcePath).
+% Porgram with qualified name QN is defined in source File between lines First and Last.
+program_source(QN, File, First, Last) :-
+        program(_, _, QN, Begin, End),
+        annotation(Begin, Source, First, _, _, _),
+        annotation(End, Source, Last, _, _, _),
+        extract_source(Source, File).
 
-% Program P is a subprogram of another program (a workflow).
+% Program P is a subprogram of another program (workflow) W.
 subprogram(P) :-
     program(P, _, _, _, _),
-    program(Parent, _, _, _, _),
-    has_subprogram(Parent, P).
+    program(W, _, _, _, _),
+    has_subprogram(W, P).
 
-% Workflow W is the top-level workflow    
+% Workflow W is the top-level workflow.
 top_workflow(W) :-
     workflow(W),
     not subprogram(W).
 
-% Port reads or writes data with Name and QualifiedName.
-port_data(Port, Name, QualifiedName) :-
-    port_connects_to_channel(Port, Channel),
-    channel(Channel, Data),
-    data(Data, Name, QualifiedName).
+% Port P reads or writes data D with name N and qualified name QN.
+port_data(P, N, QN) :-
+    port_connects_to_channel(P, C),
+    channel(C, D),
+    data(D, N, QN).
 
-% Port is an input for Data to Program.
-data_in_port(Port, Data) :-
-    port_connects_to_channel(Port, Channel),
-    channel(Channel, Data),
-    has_in_port(_, Port).
+% Port P is an input for data D.
+data_in_port(P, D) :-
+    port_connects_to_channel(P, C),
+    channel(C, D),
+    has_in_port(_, P).
 
 % Program P1 is immediately downstream of Program P2.
 program_immediately_downstream(P1, P2) :-
-    has_in_port(P1, InPort),
-    port_connects_to_channel(InPort, Channel),
-    port_connects_to_channel(OutPort, Channel),
-    has_out_port(P2, OutPort).
+    has_in_port(P1, In),
+    port_connects_to_channel(In, C),
+    port_connects_to_channel(Out, C),
+    has_out_port(P2, Out).
  
 % Program P1 is downstream of Program P2.
 program_downstream(P1, P2) :-
