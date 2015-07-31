@@ -1,0 +1,16 @@
+% EQ1:  What source files SF were YW annotations extracted from?
+:- table eq1/1.
+eq1(SourceFile) :-
+    extract_source(_, SourceFile).
+    
+% EQ2:  What are the names N of all program blocks?
+:- table eq2/1.
+eq2(ProgramName) :-
+    annotation(_, _, _, 'begin', _, ProgramName).
+    
+% EQ3:  What out ports are qualified with URIs?
+:- table eq3/1.
+eq3(PortName) :-
+    annotation(URI, _, _, 'uri', _, _),
+    annotation(OUT, _, _, 'out', _, PortName),
+    annotation_qualifies(URI, OUT).

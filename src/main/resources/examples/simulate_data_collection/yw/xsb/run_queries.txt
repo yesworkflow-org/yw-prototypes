@@ -1,0 +1,245 @@
+[xsb_configuration loaded]
+[sysinitrc loaded]
+[xsbbrat loaded]
+
+XSB Version 3.6. (Gazpatcho) of April 22, 2015
+[i386-apple-darwin14.4.0 64 bits; mode: optimal; engine: slg-wam; scheduling: local]
+[Build date: 2015-07-28]
+
+| ?- [extractfacts loaded]
+
+yes
+| ?- [modelfacts loaded, cpu time used: 0.0010 seconds]
+
+yes
+| ?- [reconfacts loaded, cpu time used: 0.0010 seconds]
+
+yes
+| ?- [rules loaded]
+
+yes
+| ?- [extract_queries loaded]
+
+yes
+| ?- [model_queries loaded]
+
+yes
+| ?- [recon_queries loaded]
+
+yes
+| ?- EQ1: What source files SF were YW annotations extracted from?
+yes
+| ?- 
+SourceFile = ../simulate_data_collection.py
+no
+| ?- EQ2: What are the names N of all program blocks?
+yes
+| ?- 
+ProgramName = load_screening_results
+ProgramName = collect_next_image
+ProgramName = simulate_data_collection
+ProgramName = initialize_run
+ProgramName = log_rejected_sample
+ProgramName = calculate_strategy
+ProgramName = transform_images
+ProgramName = collect_data_set
+ProgramName = transform_image
+ProgramName = log_average_image_intensity
+no
+| ?- EQ3: What out ports are qualified with URIs?
+yes
+| ?- 
+PortName = raw_image_path
+PortName = rejection_log
+PortName = collection_log
+PortName = run_log
+PortName = corrected_image
+no
+| ?- MQ1: Where is the definition of block simulate_data_collection.collect_data_set?
+yes
+| ?- 
+SourceFile = ../simulate_data_collection.py
+StartLine = 89
+EndLine = 108
+no
+| ?- MQ2: What is the name of the top-level workflow?
+yes
+| ?- 
+WorkflowName = simulate_data_collection
+no
+| ?- MQ3: What are the names of any top-level functions?
+yes
+| ?- 
+FunctionName = transform_image
+FunctionName = collect_next_image
+no
+| ?- MQ4:  What are the names of the programs comprising the top-level workflow?
+yes
+| ?- 
+ProgramName = log_average_image_intensity
+ProgramName = transform_images
+ProgramName = collect_data_set
+ProgramName = log_rejected_sample
+ProgramName = calculate_strategy
+ProgramName = load_screening_results
+ProgramName = initialize_run
+no
+| ?- MQ5: What are the inputs to the top-level workflow?
+yes
+| ?- 
+InputPortName = calibration_image
+InputPortName = sample_spreadsheet
+InputPortName = sample_score_cutoff
+InputPortName = cassette_id
+no
+| ?- MQ6: What data is output by program block simulate_data_collection.collect_data_set?
+yes
+| ?- 
+DataName = raw_image
+DataName = frame_number
+DataName = energy
+DataName = sample_id
+no
+| ?- MQ7: What program blocks provide input directly to simulate_data_collection.collect_data_set?
+yes
+| ?- 
+ProgramName = simulate_data_collection.calculate_strategy
+no
+| ?- MQ8: What programs have input ports that receive data simulate_data_collection[cassette_id]
+yes
+| ?- 
+ProgramName = simulate_data_collection.log_average_image_intensity
+ProgramName = simulate_data_collection.collect_data_set
+ProgramName = simulate_data_collection.log_rejected_sample
+ProgramName = simulate_data_collection.load_screening_results
+no
+| ?- MQ9: How many ports read data simulate_data_collection[frame_number]?
+yes
+| ?- 
+Ports = 2
+no
+| ?- MQ10: How many data are read by more than port in workflow simulate_data_collection?
+yes
+| ?- 
+Ports = 4
+no
+| ?- MQ11: What program blocks are immediately downstream of calculate_strategy?
+yes
+| ?- 
+ProgramName = collect_data_set
+ProgramName = log_rejected_sample
+no
+| ?- MQ12: What program blocks are immediately upstream of transform_images?
+yes
+| ?- 
+UpstreamProgramName = collect_data_set
+no
+| ?- MQ13: What program blocks are upstream of transform_images?
+yes
+| ?- 
+UpstreamProgramName = collect_data_set
+UpstreamProgramName = calculate_strategy
+UpstreamProgramName = load_screening_results
+no
+| ?- MQ14: What program blocks are anywhere downstream of calculate_strategy?
+yes
+| ?- 
+DownstreamProgramName = log_average_image_intensity
+DownstreamProgramName = transform_images
+DownstreamProgramName = collect_data_set
+DownstreamProgramName = log_rejected_sample
+no
+| ?- MQ15: What data is immediately downstream of raw_image?
+yes
+| ?- 
+DownstreamDataName = pixel_count
+DownstreamDataName = total_intensity
+DownstreamDataName = corrected_image_path
+DownstreamDataName = corrected_image
+no
+| ?- MQ16: What data is immediately upstream of raw_image?
+yes
+| ?- 
+UpstreamDataName = energies
+UpstreamDataName = num_images
+UpstreamDataName = accepted_sample
+UpstreamDataName = cassette_id
+no
+| ?- MQ17: What data is downstream of accepted_sample?
+yes
+| ?- 
+DownstreamDataName = raw_image
+DownstreamDataName = sample_id
+DownstreamDataName = corrected_image_path
+DownstreamDataName = energy
+DownstreamDataName = total_intensity
+DownstreamDataName = frame_number
+DownstreamDataName = pixel_count
+DownstreamDataName = collection_log
+DownstreamDataName = corrected_image
+no
+| ?- MQ18: What data is upstream of raw_image?
+yes
+| ?- 
+UpstreamDataName = energies
+UpstreamDataName = num_images
+UpstreamDataName = accepted_sample
+UpstreamDataName = sample_quality
+UpstreamDataName = sample_name
+UpstreamDataName = sample_spreadsheet
+UpstreamDataName = sample_score_cutoff
+UpstreamDataName = cassette_id
+no
+| ?- MQ19: What URI variables are associated with writes of data simulate_data_collection[corrected_image]?
+yes
+| ?- 
+UriVariableName = frame_number
+UriVariableName = energy
+UriVariableName = sample_id
+no
+| ?- MQ20: What URI variables do data written to raw_image and corrected_image have in common?
+yes
+| ?- 
+UpStreamDataName = sample_id
+UpStreamDataName = energy
+UpStreamDataName = frame_number
+no
+| ?- RQ0: What URI variable values are associated with resource run/data/DRT322/DRT322_11000eV_028.img?
+yes
+| ?- 
+VarName = sample_id
+VarValue = DRT322
+VarName = energy
+VarValue = 11000
+VarName = frame_number
+VarValue = 028
+no
+| ?- RQ1: What samples did the run of the script collect images from?
+yes
+| ?- 
+Sample = DRT322
+Sample = DRT240
+no
+| ?- RQ2: What energies were used during collection of images from sample DRT322?
+yes
+| ?- 
+Energy = 11000
+Energy = 10000
+no
+| ?- RQ3: Where is the raw image from which corrected image run/data/DRT322/DRT322_11000eV_028.img is derived?
+yes
+| ?- 
+RawImageFile = run/raw/q55/DRT322/e11000/image_028.raw
+no
+| ?- Q4: Are there any raw images for which there are no corresponding corrected images?
+yes
+| ?- 
+RawImageFile = run/raw/q55/DRT240/e10000/image_031.raw
+no
+| ?- RQ5: What cassette held the sample from which run/data/DRT240/DRT240_10000eV_010.img was derived?
+yes
+| ?- 
+Cassette = q55
+no
+| ?- 
+End XSB (cputime 0.07 secs, elapsetime 0.10 secs)

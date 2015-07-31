@@ -3,14 +3,14 @@
 extract.sources     = ../simulate_data_collection.py
 extract.listfile    = listing.txt
 extract.language    = python
-extract.factsfile   = xsb/extractfacts.P
+extract.factsfile   = dlv/extractfacts.dlv
 
 # model configuration
 model.workflow      = simulate_data_collection
-model.factsfile     = xsb/modelfacts.P
+model.factsfile     = dlv/modelfacts.dlv
 
 recon.rundir        = ../
-recon.factsfile     = xsb/reconfacts.P
+recon.factsfile     = dlv/reconfacts.dlv
 
 # graph configuration
 graph.view          = combined
@@ -25,4 +25,4 @@ graph.params        = reduce
 graph.titleposition = top
 
 # query configuration
-query.engine        = xsb
+query.engine        = dlv

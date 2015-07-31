@@ -1,0 +1,161 @@
+% MQ1:  Where is the definition of block simulate_data_collection.collect_data_set?
+:- table mq1/1.
+mq1(SourceFile, StartLine, EndLine) :-
+    program_source('simulate_data_collection.collect_data_set', SourceFile, StartLine, EndLine).
+    
+% MQ2:  What is the name of the top-level workflow?
+:- table mq2/1.
+mq2(WorkflowName) :-
+    top_workflow(W),
+    program(W, _, WorkflowName, _, _).
+    
+% MQ3:  What are the names of any top-level functions?
+:- table mq3/1.
+mq3(FunctionName) :-
+    function(F),
+    not subprogram(F),
+    program(F, _, FunctionName, _, _).
+
+% MQ4:  What are the names of the programs comprising the top-level workflow?
+:- table mq4/1.
+mq4(ProgramName) :-
+    top_workflow(W),
+    has_subprogram(W, P),
+    program(P, ProgramName, _, _, _).
+
+% MQ5:  What are the inputs to the top-level workflow?
+:- table mq5/1.
+mq5(InputPortName) :-
+    top_workflow(W),
+    has_in_port(W, P),
+    port(P, _, InputPortName, _, _, _).
+
+% MQ6:  What data is output by program block simulate_data_collection.collect_data_set?
+:- table mq6/1.
+mq6(DataName) :-
+    program(P, _, 'simulate_data_collection.collect_data_set', _, _),
+    has_out_port(P, OUT),
+    port_data(OUT, DataName, _).
+    
+% MQ7: What program blocks provide input directly to simulate_data_collection.collect_data_set?
+:- table mq7/1.
+mq7(ProgramName) :-
+    program(P1, _, 'simulate_data_collection.collect_data_set', _, _),
+    has_in_port(P1, IN),
+    port_data(IN, _, D),
+    port_data(OUT, _, D),
+    has_out_port(P2, OUT),
+    program(P2, _, ProgramName, _, _).
+
+% MQ8: What programs have input ports that receive data simulate_data_collection[cassette_id]?
+:- table mq8/1.
+mq8(ProgramName) :-
+    data(D, _, 'simulate_data_collection[cassette_id]'),
+    channel(C, D),
+    port_connects_to_channel(IN, C),
+    has_in_port(P, IN),
+    program(P, _, ProgramName, _, _).
+
+
+% MQ9: How many ports read data simulate_data_collection[frame_number]?
+:- table mq9/1.
+mq9(PortCount) :-
+    data(D, _, 'simulate_data_collection[frame_number]'),
+    findall(P, data_in_port(P, D), Ports),
+    llength(Ports, PortCount).
+
+% MQ10: How many data are read by more than port in workflow simulate_data_collection?
+:- table mq10/1.
+mq10(DataCount) :- 
+    program(W, 'simulate_data_collection', _, _, _),
+    findall(D, data_in_workflow_read_by_multiple_ports(D, W), Data),
+    llength(Data, DataCount).
+:- table data_in_workflow_read_by_multiple_ports/2.
+data_in_workflow_read_by_multiple_ports(D, W) :-
+    has_subprogram(W, P),
+    has_in_port(P, IN),
+    port_connects_to_channel(IN, C),
+    channel(C, D),
+    data_in_port_count(Count, D),
+    Count > 1.
+:- table data_in_port_count/2.
+data_in_port_count(PortCount, D) :-
+    data(D, _, _),
+    findall(P, data_in_port(P, D), Ports),
+    llength(Ports, PortCount).
+    
+% MQ11: What program blocks are immediately downstream of calculate_strategy?
+:- table mq11/1.
+mq11(DownstreamProgramName) :-
+    program(P1, DownstreamProgramName, _, _, _),
+    program(P2, _, 'simulate_data_collection.calculate_strategy', _, _),
+    program_immediately_downstream(P1, P2).
+
+% MQ12: What program blocks are immediately upstream of transform_images?
+:- table mq12/1.
+mq12(UpstreamProgramName) :-
+    program(P1, UpstreamProgramName, _, _, _),
+    program(P2, _, 'simulate_data_collection.transform_images', _, _),
+    program_immediately_upstream(P1, P2).
+    
+% MQ13: What program blocks are upstream of transform_images?
+:- table mq13/1.
+mq13(UpstreamProgramName):-
+    program(P1, UpstreamProgramName, _, _, _),
+    program(P2, _, 'simulate_data_collection.transform_images', _, _),
+    program_upstream(P1, P2).
+
+% MQ14: What program blocks are anywhere downstream of calculate_strategy?
+:- table mq14/1.
+mq14(DownstreamProgramName):-
+    program(P1, DownstreamProgramName, _, _, _),
+    program(P2, _, 'simulate_data_collection.calculate_strategy', _, _),
+    program_downstream(P1, P2).
+
+% MQ15: What data is immediately downstream of raw_image?
+:- table mq15/1.
+mq15(DownstreamDataName) :-
+    data(D1, DownstreamDataName, _),
+    data(D2, 'raw_image', _),
+    data_immediately_downstream(D1, D2).
+
+% MQ16: What data is immediately upstream of raw_image?
+:- table mq16/1.
+mq16(UpstreamDataName) :-
+    data(D1, UpstreamDataName, _),
+    data(D2, 'raw_image', _),
+    data_immediately_upstream(D1, D2).
+
+% MQ17: What data is downstream of accepted_sample?
+:- table mq17/1.
+mq17(DownstreamDataName):-
+    data(D1, DownstreamDataName, _),
+    data(D2, 'accepted_sample', _),
+    data_downstream(D1, D2).
+
+% MQ18: What data is upstream of raw_image?
+:- table mq18/1.
+mq18(UpstreamDataName):-
+    data(D1, UpstreamDataName, _),
+    data(D2, 'raw_image', _),
+    data_upstream(D1, D2).
+
+% MQ19: What URI variables are associated with writes of data simulate_data_collection[corrected_image]?
+:- table mq19/1.
+mq19(VariableName) :-
+    data(D, _, 'simulate_data_collection[corrected_image]'),
+    channel(C, D),
+    port_connects_to_channel(OUT, C),
+    has_out_port(_, OUT),
+    uri_variable(_, VariableName, OUT).
+
+% MQ20: What URI variables do data written to raw_image and corrected_image have in common?
+:- table mq20/1.
+mq20(VariableName) :-
+    data(D1, _, 'simulate_data_collection[raw_image]'),
+    data(D2, _, 'simulate_data_collection[corrected_image]'),
+    output_data_has_uri_variable(D1, V1),
+    output_data_has_uri_variable(D2, V2),
+    uri_variable(V1, VariableName, _),
+    uri_variable(V2, VariableName, _).
+
