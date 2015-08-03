@@ -1,5 +1,5 @@
 % MQ1:  Where is the definition of block simulate_data_collection.collect_data_set?
-:- table mq1/1.
+:- table mq1/3.
 mq1(SourceFile, StartLine, EndLine) :-
     program_source('simulate_data_collection.collect_data_set', SourceFile, StartLine, EndLine).
     
@@ -61,15 +61,13 @@ mq8(ProgramName) :-
 :- table mq9/1.
 mq9(PortCount) :-
     data(D, _, 'simulate_data_collection[frame_number]'),
-    findall(P, data_in_port(P, D), Ports),
-    llength(Ports, PortCount).
+    count(data_in_port(_, D), PortCount).
 
 % MQ10: How many data are read by more than port in workflow simulate_data_collection?
 :- table mq10/1.
 mq10(DataCount) :- 
     program(W, 'simulate_data_collection', _, _, _),
-    findall(D, data_in_workflow_read_by_multiple_ports(D, W), Data),
-    llength(Data, DataCount).
+    count(data_in_workflow_read_by_multiple_ports(_, W), DataCount).
 :- table data_in_workflow_read_by_multiple_ports/2.
 data_in_workflow_read_by_multiple_ports(D, W) :-
     has_subprogram(W, P),
@@ -81,8 +79,7 @@ data_in_workflow_read_by_multiple_ports(D, W) :-
 :- table data_in_port_count/2.
 data_in_port_count(PortCount, D) :-
     data(D, _, _),
-    findall(P, data_in_port(P, D), Ports),
-    llength(Ports, PortCount).
+    count(data_in_port(_, D), PortCount).
     
 % MQ11: What program blocks are immediately downstream of calculate_strategy?
 :- table mq11/1.

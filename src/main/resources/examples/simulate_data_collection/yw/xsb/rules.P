@@ -13,6 +13,9 @@ printall(Header, G) :-
     ;
     true.
 
+count(Goal, Count) :-
+    findall(_, Goal, List),
+    llength(List, Count).
 
 % Program with qualified name QN is defined in source file SF from first line F to last line L.
 :- table program_source/4.
