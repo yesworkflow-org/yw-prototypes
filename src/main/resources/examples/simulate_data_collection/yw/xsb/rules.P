@@ -1,8 +1,17 @@
-lmember(X,[X|_]).
-lmember(X,[_|T]) :- lmember(X,T).
 
 llength([],0).
 llength([_|T], N) :- llength(T, Nt), N is Nt + 1.
+
+printall(Header, G) :-
+    writeln(''),
+    writeln('---------------------------------------------------------------------------------------------------------------------------'),
+    writeln(Header),
+    writeln('---------------------------------------------------------------------------------------------------------------------------'),
+    call(G),
+    writeln(G),
+    fail
+    ;
+    true.
 
 
 % Program with qualified name QN is defined in source file SF from first line F to last line L.
