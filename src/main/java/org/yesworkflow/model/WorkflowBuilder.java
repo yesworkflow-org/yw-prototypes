@@ -169,6 +169,7 @@ public class WorkflowBuilder {
 			return this;
 		}
 
+        @SuppressWarnings("unused")
         private WorkflowBuilder nestedReturnPort(Port returnPort) throws Exception {
             String binding = returnPort.flowAnnotation.binding();
             
