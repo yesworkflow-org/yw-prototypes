@@ -1,6 +1,7 @@
 package org.yesworkflow;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +9,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import junit.framework.TestCase;
 
@@ -20,7 +23,14 @@ public abstract class YesWorkflowTestCase extends TestCase {
     
     protected PrintStream stdoutStream;
     protected PrintStream stderrStream;
-
+    
+    protected static Path getTestDirectory(String testName) throws IOException {
+        Path testDirectoryPath = new File("target/tests/" + testName).toPath();
+        Files.createDirectories(testDirectoryPath);
+        return testDirectoryPath;
+    }
+    
+    
     @Override
     public void setUp() throws Exception {
         
