@@ -1,0 +1,75 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.yesworkflow</groupId>
+    <artifactId>yesworkflow-h2-db</artifactId>
+    <version>0.2-SNAPSHOT</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>3.6.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.3.176</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- Configure the jOOQ code generator plugin -->
+            <plugin>
+
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>3.6.1</version>
+
+                <executions>
+                    <execution>
+                        <goals><goal>generate</goal></goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+
+                    <!-- JDBC connection parameters -->
+                    <jdbc>
+                        <driver>org.h2.Driver</driver>
+                        <url>jdbc:h2:target/empty</url>
+                    </jdbc>
+
+                    <!-- Generator parameters -->
+                    <generator>
+                        <name>org.jooq.util.DefaultGenerator</name>
+                        <database>
+                            <name>org.jooq.util.h2.H2Database</name>
+                            <includes>.*</includes>
+                            <excludes></excludes>
+                            <inputSchema>PUBLIC</inputSchema>
+                        </database>
+                        <target>
+                            <packageName>org.yesworkflow.db.h2</packageName>
+                            <directory>../../../../../java/</directory>
+                        </target>
+                    </generator>
+                </configuration>
+
+
+            </plugin>
+        </plugins>
+
+    </build>
+
+</project>
