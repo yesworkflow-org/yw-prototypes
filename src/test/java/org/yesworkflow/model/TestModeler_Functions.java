@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.util.List;
 
 import org.yesworkflow.annotations.Annotation;
+import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.model.Workflow;
@@ -12,13 +13,15 @@ import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestModeler_Functions extends YesWorkflowTestCase {
 
+    private YesWorkflowDB ywdb = null;
 	Extractor extractor = null;
     Modeler modeler = null;
     
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
+        this.ywdb = YesWorkflowDB.createVolatileDB();
+        extractor = new DefaultExtractor(this.ywdb, super.stdoutStream, super.stderrStream);
         modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
         
         extractor.configure("comment", "#");

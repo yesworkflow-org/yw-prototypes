@@ -6,18 +6,21 @@ import java.io.StringReader;
 
 import org.yesworkflow.Language;
 import org.yesworkflow.LanguageModel;
+import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestSkeletonBuilder extends YesWorkflowTestCase {
 
+    private YesWorkflowDB ywdb = null;
     DefaultExtractor extractor = null;
     LanguageModel languageModel = null;
     
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
+        ywdb = YesWorkflowDB.createVolatileDB();
+        extractor = new DefaultExtractor(this.ywdb, super.stdoutStream, super.stderrStream);
         extractor.configure("language", Language.PYTHON);
     }
 

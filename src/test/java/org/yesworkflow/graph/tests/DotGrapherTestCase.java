@@ -6,6 +6,7 @@ import java.io.StringReader;
 import java.util.List;
 
 import org.yesworkflow.annotations.Annotation;
+import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.graph.DotGrapher;
@@ -17,6 +18,7 @@ import org.yesworkflow.YesWorkflowTestCase;
 
 public abstract class DotGrapherTestCase extends YesWorkflowTestCase {
     
+    private YesWorkflowDB ywdb = null;
     protected Extractor extractor = null;
     protected Modeler modeler = null;
     protected Grapher grapher = null;
@@ -26,7 +28,8 @@ public abstract class DotGrapherTestCase extends YesWorkflowTestCase {
         
         super.setUp();
         
-        extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
+        ywdb = YesWorkflowDB.createVolatileDB();
+        extractor = new DefaultExtractor(this.ywdb, super.stdoutStream, super.stderrStream);
         modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);
     }

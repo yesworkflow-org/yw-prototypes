@@ -11,6 +11,7 @@ import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Param;
+import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
@@ -22,13 +23,15 @@ import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestDefaultModeler extends YesWorkflowTestCase {
 
+    private YesWorkflowDB ywdb = null;
 	Extractor extractor = null;
     Modeler modeler = null;
     
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
+        this.ywdb = YesWorkflowDB.createVolatileDB();
+        extractor = new DefaultExtractor(this.ywdb, super.stdoutStream, super.stderrStream);
         modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
     }
     

@@ -8,10 +8,17 @@ import java.util.Map;
 
 import org.yesworkflow.Language;
 import org.yesworkflow.annotations.Annotation;
+import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestDefaultModer_ExtractTopPorts extends YesWorkflowTestCase {
+    
+    private YesWorkflowDB ywdb = null;
+    
+    public void setUp() throws Exception {
+        this.ywdb = YesWorkflowDB.createVolatileDB();
+    }
     
     public void testDefaultModeler_ExtractTopPorts() throws Exception {
         
@@ -28,7 +35,7 @@ public class TestDefaultModer_ExtractTopPorts extends YesWorkflowTestCase {
 
         Map<String,Object> config = new HashMap<String,Object>();
         config.put("language", Language.MATLAB);
-        List<Annotation> annotations = new DefaultExtractor()
+        List<Annotation> annotations = new DefaultExtractor(ywdb)
                                            .configure(config)
                                            .reader(reader)
                                            .extract()

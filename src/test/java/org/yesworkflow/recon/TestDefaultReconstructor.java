@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.util.List;
 
 import org.yesworkflow.annotations.Annotation;
+import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
 import org.yesworkflow.model.DefaultModeler;
@@ -14,6 +15,8 @@ import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestDefaultReconstructor extends YesWorkflowTestCase {
 
+    private YesWorkflowDB ywdb = null;
+
 	Extractor extractor = null;
     Modeler modeler = null;
     Reconstructor reconstructor = null;
@@ -21,7 +24,8 @@ public class TestDefaultReconstructor extends YesWorkflowTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
+        this.ywdb = YesWorkflowDB.createVolatileDB();
+        extractor = new DefaultExtractor(this.ywdb, super.stdoutStream, super.stderrStream);
         modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
         reconstructor = new DefaultReconstructor(super.stdoutStream, super.stderrStream);
     }
