@@ -1,17 +1,12 @@
 package org.yesworkflow.db;
 
 import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.table;
 
 import org.jooq.Field;
-import org.jooq.Table;
 
 @SuppressWarnings("rawtypes")
-public class Tables {
+public class Column {
 
-    public static Table<?> ANNOTATION   = table("annotation");
-    public static Table<?> SOURCE_FILE  = table("source_file");
-    
     public static Field DESCRIPTION     = field("description");
     public static Field ID              = field("id");
     public static Field LINE_NUMBER     = field("line_number");
@@ -21,4 +16,14 @@ public class Tables {
     public static Field TAG             = field("tag");
     public static Field KEYWORD         = field("keyword");
     public static Field VALUE           = field("value");
+    
+    public static class SOURCE_FILE {
+        public static Field ID              = field("source_file.id");
+        public static Field PATH            = field("source_file.path");
+    }
+    
+    public static class ANNOTATION {
+        public static Field ID              = field("annotation.id");
+        public static Field SOURCE_FILE_ID  = field("annotation.source_file_id");
+    }
 }
