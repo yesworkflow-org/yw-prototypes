@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.config.YWConfiguration;
+import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.extract.DefaultExtractor;
@@ -58,9 +59,10 @@ public class YesWorkflowCLI {
     public static final String EOL = System.getProperty("line.separator");
     private static final String PROPERTY_FILE_NAME = "yw.properties";
     private static final String YAML_FILE_NAME = "yw.yaml";
-       
-    private PrintStream errStream;
-    private PrintStream outStream;    
+    
+    private final YesWorkflowDB ywdb;
+    private final PrintStream errStream;
+    private final PrintStream outStream;    
     private OptionSet options = null;
     private Extractor extractor = null;
     private Modeler modeler = null;
@@ -96,8 +98,9 @@ public class YesWorkflowCLI {
     /** 
      * Default constructor.  Used when YesWorkflow should use the
      * system-provided System.out and System.err streams.
+     * @throws Exception 
      */
-    public YesWorkflowCLI() {
+    public YesWorkflowCLI() throws Exception {
         this(System.out, System.err);
     }
 
@@ -107,8 +110,14 @@ public class YesWorkflowCLI {
      * of System.out and System.err.
      * @param outStream The PrintStream to use instead of System.out.
      * @param errStream The PrintStream to use instead of System.err.
+     * @throws Exception 
      */
-    public YesWorkflowCLI(PrintStream outStream, PrintStream errStream) {
+    public YesWorkflowCLI(PrintStream outStream, PrintStream errStream) throws Exception {
+        this(YesWorkflowDB.getGlobalInstance(), outStream, errStream);
+    }
+
+    public YesWorkflowCLI(YesWorkflowDB ywdb, PrintStream outStream, PrintStream errStream) throws Exception {
+        this.ywdb = ywdb;
         this.outStream = outStream;
         this.errStream = errStream;
     }
@@ -347,7 +356,7 @@ public class YesWorkflowCLI {
     private void extract() throws Exception {
     	
         if (extractor == null) {
-            extractor =  new DefaultExtractor(this.outStream, this.errStream);
+            extractor =  new DefaultExtractor(this.ywdb, this.outStream, this.errStream);
         }
 
         annotations = extractor.configure(config.getSection("extract"))
