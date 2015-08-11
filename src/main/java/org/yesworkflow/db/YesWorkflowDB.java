@@ -11,16 +11,20 @@ import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
-import org.yesworkflow.db.jooq.tables.Annotation;
-import org.yesworkflow.db.jooq.tables.SourceFile;
 import org.yesworkflow.util.FileIO;
 
-import static org.yesworkflow.db.jooq.Tables.SOURCE_FILE;
-import static org.yesworkflow.db.jooq.Tables.ANNOTATION;
+import static org.yesworkflow.db.Tables.*;
 
+@SuppressWarnings("unchecked")
 public class YesWorkflowDB {
 
-    private static String tableCreationSqlFile  = "org/yesworkflow/db/createtables.sql";
+    private static String CREATE_TABLES_SCRIPT_H2  = "org/yesworkflow/db/h2/createtables.h2";
+    private static String CREATE_TABLES_SCRIPT_SQLITE  = "org/yesworkflow/db/sqlite/createtables.sqlite";
+    private static String createTablesScript = CREATE_TABLES_SCRIPT_H2;
+
+    private static String IN_MEMORY_DB_URL_H2 = "jdbc:h2:mem:";
+    private static String IN_MEMORY_DB_URL_SQLITE = "jdbc:sqlite::memory:";
+    private static String inMemoryDbUrl = IN_MEMORY_DB_URL_H2;
     
     private final Connection connection;
     private final Statement statement;
@@ -29,15 +33,18 @@ public class YesWorkflowDB {
     public YesWorkflowDB(Connection connection) throws SQLException {
         this.connection = connection;
         this.statement = connection.createStatement();
-        this.db = DSL.using(this.connection, SQLDialect.SQLITE);
+        this.db = DSL.using(this.connection, SQLDialect.H2);
     }
     
-    public static YesWorkflowDB createVolatileDB() throws SQLException {
-        YesWorkflowDB db = new YesWorkflowDB(DriverManager.getConnection("jdbc:sqlite::memory:"));
-        return db;
+    public static YesWorkflowDB createVolatileDB() throws Exception {
+        YesWorkflowDB ywdb = new YesWorkflowDB(DriverManager.getConnection(inMemoryDbUrl));
+        ywdb.createDBTables();
+        return ywdb;
     }
 
     public static YesWorkflowDB openFileDB(Path dbFilePath) throws Exception {
+        
+        YesWorkflowDB ywdb;
         
         if (!(dbFilePath.toFile().exists())) {
             Path parentDirectory = dbFilePath.getParent();
@@ -48,10 +55,13 @@ public class YesWorkflowDB {
             } else {
                 Files.createDirectories(parentDirectory);
             }
+            ywdb = new YesWorkflowDB(DriverManager.getConnection("jdbc:sqlite:" + dbFilePath));
+            ywdb.createDBTables();
+        } else {
+            ywdb = new YesWorkflowDB(DriverManager.getConnection("jdbc:sqlite:" + dbFilePath));
         }
         
-        YesWorkflowDB db = new YesWorkflowDB(DriverManager.getConnection("jdbc:sqlite:" + dbFilePath));
-        return db;
+        return ywdb;
     }
 
     public void close() throws SQLException {
@@ -60,7 +70,7 @@ public class YesWorkflowDB {
     }
     
     public int createDBTables() throws Exception {
-        String sqlScript = FileIO.readTextFileOnClasspath(tableCreationSqlFile);
+        String sqlScript = FileIO.readTextFileOnClasspath(createTablesScript);
         int statementCount = executeSqlScript(sqlScript);
         return statementCount;
     }
@@ -86,31 +96,34 @@ public class YesWorkflowDB {
         
         return statementCount;
     }
-    
-    public int insertSourceFile(String sourceFilePath) {    
-        SourceFile SF = SOURCE_FILE;
-        return db.insertInto(SF, SF.PATH)
-                 .values(sourceFilePath)
-                 .returning(SF.ID)
-                 .fetchOne()
-                 .getValue(SF.ID);
-    }
 
-    public int insertAnnotation(int sourceFileId, Integer qualifiedAnnotationId,
-                                int lineNumber, String tag, String keyword,
-                                String value, String description) {
-        Annotation A = ANNOTATION;
-        return db.insertInto(A, A.SOURCE_FILE_ID, A.QUALIFIES, A.LINE_NUMBER,
-                                A.TAG, A.KEYWORD, A.VALUE, A.DESCRIPTION)
-                 .values(sourceFileId, qualifiedAnnotationId, lineNumber, 
-                         tag, keyword, value, description)
-                 .returning(A.ID)
-                 .fetchOne()
-                 .getValue(A.ID);
+    public void insertSourceFile(int id, String sourceFilePath) {
+
+        db.insertInto(SOURCE_FILE, ID, PATH)
+          .values(id, sourceFilePath)
+          .execute();
+    }
+    
+    public void insertAnnotation(int id, int sourceFileId, Integer qualifiedAnnotationId,
+            int lineNumber, String tag, String keyword, String value, String description) {
+        
+        db.insertInto(ANNOTATION,
+                      ID, SOURCE_FILE_ID, QUALIFIES, LINE_NUMBER,
+                      TAG, KEYWORD, VALUE, DESCRIPTION)
+          .values(id, sourceFileId, qualifiedAnnotationId, lineNumber, tag, keyword, value, description)
+          .execute();
     }
 
     
     public int getRowCount(Table<?> T) throws SQLException {
+        
+        return (int)db.selectCount()
+                      .from(T)
+                      .fetchOne()
+                      .getValue(0);
+    }
+
+    public int getRowCount(String T) throws SQLException {
         
         return (int)db.selectCount()
                       .from(T)

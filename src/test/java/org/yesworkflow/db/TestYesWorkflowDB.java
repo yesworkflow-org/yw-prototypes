@@ -2,10 +2,9 @@ package org.yesworkflow.db;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.SQLException;
 
-import static org.yesworkflow.db.jooq.Tables.SOURCE_FILE;
-import static org.yesworkflow.db.jooq.Tables.ANNOTATION;
+
+import static org.jooq.impl.DSL.table;
 
 import org.yesworkflow.YesWorkflowTestCase;
 
@@ -23,44 +22,41 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
         }
     }
     
-    public void testCreateVolatileDB() throws SQLException {
-        YesWorkflowDB.createVolatileDB();
+    public void testCreateVolatileDB() throws Exception {
+        YesWorkflowDB ywdb = YesWorkflowDB.createVolatileDB();
+        ywdb.close();
     }
 
     public void testCreateFileDB() throws Exception {
-        YesWorkflowDB.openFileDB(testDBFilePath);
+        YesWorkflowDB ywdb = YesWorkflowDB.openFileDB(testDBFilePath);
+        ywdb.close();
     }
-
     
     public void testCreateDBTables() throws Exception {
-//        YesWorkflowDB db = YesWorkflowDB.openFileDB(testDirectoryPath.resolve("schema.db"));
-        YesWorkflowDB db = YesWorkflowDB.createVolatileDB();
-        assertFalse(db.hasTable(SOURCE_FILE));
-        db.createDBTables();
-        assertTrue(db.hasTable(SOURCE_FILE));
-        db.close();
+//        YesWorkflowDB ywdb = YesWorkflowDB.openFileDB(testDirectoryPath.resolve("schema.db"));
+        YesWorkflowDB ywdb = YesWorkflowDB.createVolatileDB();
+        assertTrue(ywdb.hasTable(table("source_file")));
+        ywdb.close();
     }
 
     public void testInsertSourceFile() throws Exception {
-        YesWorkflowDB db = YesWorkflowDB.createVolatileDB();
-        db.createDBTables();
-        assertEquals(0, db.getRowCount(SOURCE_FILE));
-        assertEquals(1, db.insertSourceFile("source1"));
-        assertEquals(1, db.getRowCount(SOURCE_FILE));
-        assertEquals(2, db.insertSourceFile("source2"));
-        assertEquals(2, db.getRowCount(SOURCE_FILE));
-        assertEquals(3, db.insertSourceFile("source3"));
-        assertEquals(3, db.getRowCount(SOURCE_FILE));
+        YesWorkflowDB ywdb = YesWorkflowDB.createVolatileDB();
+        assertEquals(0, ywdb.getRowCount(table("source_file")));
+        ywdb.insertSourceFile(1, "source1");
+        assertEquals(1, ywdb.getRowCount(table("source_file")));
+        ywdb.insertSourceFile(2, "source2");
+        assertEquals(2, ywdb.getRowCount(table("source_file")));
+        ywdb.insertSourceFile(3, "source3");
+        assertEquals(3, ywdb.getRowCount("source_file"));
     }
 
     public void testInsertAnnotation() throws Exception {
-        YesWorkflowDB db = YesWorkflowDB.createVolatileDB();
-        db.createDBTables();
-        int sourceId = db.insertSourceFile("source");
-        db.insertAnnotation(sourceId, null, 10, "BEGIN", "begin", "p", null);
-        db.insertAnnotation(sourceId, null, 20, "END", "end", "p", null);
-        assertEquals(1, db.getRowCount(SOURCE_FILE));
-        assertEquals(2, db.getRowCount(ANNOTATION));
+        YesWorkflowDB ywdb = YesWorkflowDB.createVolatileDB();
+        ywdb.insertSourceFile(1, "source");
+        ywdb.insertAnnotation(1, 1, 1, 10, "BEGIN", "begin", "p", null);
+        ywdb.insertAnnotation(2, 1, 1, 20, "END", "end", "p", null);
+        assertEquals(1, ywdb.getRowCount("source_file"));
+        assertEquals(2, ywdb.getRowCount("annotation"));
         
     }
 }
