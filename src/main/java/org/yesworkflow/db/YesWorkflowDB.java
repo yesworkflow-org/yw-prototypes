@@ -32,6 +32,23 @@ public class YesWorkflowDB {
     private final Statement statement;
     public final DSLContext jooq;
     
+    private static YesWorkflowDB globalInstance = null;
+
+    public static YesWorkflowDB getGlobalInstance() throws Exception {
+        if (globalInstance == null) {
+            globalInstance = createVolatileDB();
+        }
+        return globalInstance;
+    }
+
+    public static void dropGlobalInstance() throws Exception {
+        if (globalInstance != null) {
+            globalInstance.close();
+            globalInstance = null;
+        }
+    }
+
+    
     public YesWorkflowDB(Connection connection) throws SQLException {
         this.connection = connection;
         this.statement = connection.createStatement();
@@ -108,7 +125,7 @@ public class YesWorkflowDB {
     
     public void insertAnnotation(int id, int sourceFileId, Integer qualifiedAnnotationId,
             int lineNumber, String tag, String keyword, String value, String description) {
-        
+
         jooq.insertInto(Table.ANNOTATION,
                         ID, SOURCE_FILE_ID, QUALIFIES, LINE_NUMBER,
                         TAG, KEYWORD, VALUE, DESCRIPTION)
