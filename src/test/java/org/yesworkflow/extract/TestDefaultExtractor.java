@@ -11,18 +11,21 @@ import org.yesworkflow.annotations.Begin;
 import org.yesworkflow.annotations.End;
 import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
+import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestDefaultExtractor extends YesWorkflowTestCase {
 
+    YesWorkflowDB ywdb = null;
     DefaultExtractor extractor = null;
     LanguageModel languageModel = null;
     
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
+        this.ywdb = YesWorkflowDB.createVolatileDB();
+        extractor = new DefaultExtractor(this.ywdb, super.stdoutStream, super.stderrStream);
         extractor.configure("language", Language.PYTHON);
     }
 
@@ -130,7 +133,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
 
     public void testExtract_GetCommentLines_MultipleComments_Slash() throws Exception {
         
-        extractor = new DefaultExtractor(super.stdoutStream, super.stderrStream);
+        extractor = new DefaultExtractor(this.ywdb, super.stdoutStream, super.stderrStream);
         extractor.configure("comment", "//");
 
         String source = 

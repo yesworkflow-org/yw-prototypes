@@ -28,6 +28,7 @@ import org.yesworkflow.annotations.Qualification;
 import org.yesworkflow.annotations.Return;
 import org.yesworkflow.annotations.UriAnnotation;
 import org.yesworkflow.config.YWConfiguration;
+import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.query.QueryEngine;
 
@@ -36,6 +37,7 @@ public class DefaultExtractor implements Extractor {
     static private Language DEFAULT_LANGUAGE = Language.GENERIC;
     static private QueryEngine DEFAULT_QUERY_ENGINE = QueryEngine.SWIPL;
     
+    private YesWorkflowDB ywdb;
     private LanguageModel globalLanguageModel = null;
     private Language lastLanguage = null;
     private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;
@@ -55,17 +57,18 @@ public class DefaultExtractor implements Extractor {
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
 
-    private Integer nextSourceId = 1;
     private Integer nextAnnotationId = 1;
 
-    
-    public DefaultExtractor() {
-        this(System.out, System.err);
-        this.keywordMapping = new YWKeywords();
-        this.keywordMatcher = new KeywordMatcher(keywordMapping.getKeywords());
+    public DefaultExtractor() throws Exception {
+        this(YesWorkflowDB.getGlobalInstance(), System.out, System.err);
     }
 
-    public DefaultExtractor(PrintStream stdoutStream, PrintStream stderrStream) {
+    public DefaultExtractor(YesWorkflowDB ywdb) {
+        this(ywdb, System.out, System.err);
+    }
+
+    public DefaultExtractor(YesWorkflowDB ywdb, PrintStream stdoutStream, PrintStream stderrStream) {
+        this.ywdb = ywdb;
         this.stdoutStream = stdoutStream;
         this.stderrStream = stderrStream;
         this.keywordMapping = new YWKeywords();
@@ -168,7 +171,7 @@ public class DefaultExtractor implements Extractor {
         lines = new LinkedList<SourceLine>();
         
         if (sourceReader != null) {
-            Source source = new Source(nextSourceId++, "__reader__");
+            Source source = Source.newSource(ywdb, "__reader__");
             extractLines(source, sourceReader, globalLanguageModel);
             sources = new LinkedList<String>();
             sources.add("_reader__");
@@ -200,13 +203,13 @@ public class DefaultExtractor implements Extractor {
     
     private void extractLinesFromStdin() throws IOException, YWToolUsageException {
         Reader reader = new InputStreamReader(System.in);
-        Source source = new Source(nextSourceId++, "__stdin__");
+        Source source = Source.newSource(ywdb, "__stdin__");
         extractLines(source, new BufferedReader(reader), globalLanguageModel);
     }
 
     private void extractLinesFromFiles(List<String> sourcePaths) throws IOException, YWToolUsageException {
         for (String sourcePath : sourcePaths) {
-            Source source = new Source(nextSourceId++, sourcePath);
+            Source source = Source.newSource(ywdb, sourcePath);
             LanguageModel languageModel = null;
             if (globalLanguageModel != null) {
                 languageModel = globalLanguageModel;
@@ -317,10 +320,19 @@ public class DefaultExtractor implements Extractor {
                 
                 allAnnotations.add(annotation);
     
-                if (! (annotation instanceof Qualification)) {
+                Integer qualifiedAnnotationId = null;
+                if (annotation instanceof Qualification) {
+                    qualifiedAnnotationId = primaryAnnotation.id;
+                } else {
                 	primaryAnnotation = annotation;
                     primaryAnnotations.add(annotation);
                 }
+                
+                ywdb.insertAnnotation(annotation.id, annotation.line.sourceId, 
+                                      qualifiedAnnotationId, annotation.line.lineNumber, 
+                                      tag.toString(), annotation.keyword, annotation.name, 
+                                      annotation.description());
+
             }
         }
     }
