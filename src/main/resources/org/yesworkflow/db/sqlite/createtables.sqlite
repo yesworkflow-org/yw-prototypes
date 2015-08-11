@@ -81,7 +81,7 @@ CREATE TABLE data_resource (
 );
 
 CREATE TABLE uri_variable_value (
-    resource_id     INTEGER         NOT NULL        REFERENCES rsource(id),
+    resource_id     INTEGER         NOT NULL        REFERENCES resource(id),
     uri_variable_id INTEGER         NOT NULL        REFERENCES uri_variable(id),
     value           TEXT            NOT NULL
 );
