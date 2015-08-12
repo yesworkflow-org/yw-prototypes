@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.yesworkflow.db.Table;
+import org.yesworkflow.util.FileIO;
 
 import static org.yesworkflow.db.Column.*;
 
@@ -108,6 +109,6 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
             "|3            |source2|5          |BEGIN|begin  |q    |"   + EOL +
             "|4            |source2|15         |END  |end    |q    |"   + EOL +
             "+-------------+-------+-----------+-----+-------+-----+",
-            r.toString());
+            FileIO.localizeLineEndings(r.toString()));
     }
 }

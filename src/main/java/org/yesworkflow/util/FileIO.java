@@ -22,4 +22,14 @@ public class FileIO {
         while ((line = br.readLine()) != null) stringBuilder.append(line).append(EOL);
         return stringBuilder.toString();
     }
+    
+    public static String localizeLineEndings(String original) throws IOException {
+
+        String corrected = original.replaceAll("\r", "");
+        
+        if (!EOL.equals("\n")) {
+            corrected = corrected.replaceAll("\n", EOL);
+        }
+        return corrected;
+    }
 }
