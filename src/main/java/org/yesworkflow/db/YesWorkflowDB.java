@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.LogManager;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -18,6 +20,11 @@ import static org.yesworkflow.db.Column.*;
 @SuppressWarnings("unchecked")
 public class YesWorkflowDB {
 
+    // disable display of jOOQ logo
+    static {
+        LogManager.getLogManager().reset();
+    }
+    
     private static String CREATE_TABLES_SCRIPT_H2  = "org/yesworkflow/db/h2/createtables.h2";
     @SuppressWarnings("unused")
     private static String CREATE_TABLES_SCRIPT_SQLITE  = "org/yesworkflow/db/sqlite/createtables.sqlite";
