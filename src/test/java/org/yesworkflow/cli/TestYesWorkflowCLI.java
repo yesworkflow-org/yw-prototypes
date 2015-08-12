@@ -40,7 +40,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        this.ywdb = YesWorkflowDB.createVolatileDB();
+        this.ywdb = YesWorkflowDB.createInMemoryDB();
     }
 
     public void testYesWorkflowCLI_NoArgs() throws Exception {

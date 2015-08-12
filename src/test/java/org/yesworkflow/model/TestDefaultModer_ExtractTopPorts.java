@@ -17,7 +17,7 @@ public class TestDefaultModer_ExtractTopPorts extends YesWorkflowTestCase {
     private YesWorkflowDB ywdb = null;
     
     public void setUp() throws Exception {
-        this.ywdb = YesWorkflowDB.createVolatileDB();
+        this.ywdb = YesWorkflowDB.createInMemoryDB();
     }
     
     public void testDefaultModeler_ExtractTopPorts() throws Exception {

@@ -28,7 +28,7 @@ public abstract class DotGrapherTestCase extends YesWorkflowTestCase {
         
         super.setUp();
         
-        ywdb = YesWorkflowDB.createVolatileDB();
+        ywdb = YesWorkflowDB.createInMemoryDB();
         extractor = new DefaultExtractor(this.ywdb, super.stdoutStream, super.stderrStream);
         modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
         grapher = new DotGrapher(super.stdoutStream, super.stderrStream);

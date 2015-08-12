@@ -26,7 +26,7 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
     }
     
     public void testCreateVolatileDB() throws Exception {
-        YesWorkflowDB ywdb = YesWorkflowDB.createVolatileDB();
+        YesWorkflowDB ywdb = YesWorkflowDB.createInMemoryDB();
         ywdb.close();
     }
 
@@ -37,14 +37,14 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
     
     public void testCreateDBTables() throws Exception {
 //        YesWorkflowDB ywdb = YesWorkflowDB.openFileDB(testDirectoryPath.resolve("schema.db"));
-        YesWorkflowDB ywdb = YesWorkflowDB.createVolatileDB();
+        YesWorkflowDB ywdb = YesWorkflowDB.createInMemoryDB();
         assertTrue(ywdb.hasTable(Table.SOURCE_FILE));
         ywdb.close();
     }
 
     @SuppressWarnings("rawtypes")
     public void testInsertSourceFile() throws Exception {
-        YesWorkflowDB ywdb = YesWorkflowDB.createVolatileDB();
+        YesWorkflowDB ywdb = YesWorkflowDB.createInMemoryDB();
         assertEquals(0, ywdb.getRowCount(Table.SOURCE_FILE));
         ywdb.insertSourceFile(1, "source1");
         assertEquals(1, ywdb.getRowCount(Table.SOURCE_FILE));
@@ -69,7 +69,7 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
     @SuppressWarnings("rawtypes")
     public void testInsertAnnotation() throws Exception {
         
-        YesWorkflowDB ywdb = YesWorkflowDB.createVolatileDB();
+        YesWorkflowDB ywdb = YesWorkflowDB.createInMemoryDB();
         
         ywdb.insertSourceFile(1, "source1");
         ywdb.insertSourceFile(2, "source2");

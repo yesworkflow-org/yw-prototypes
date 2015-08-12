@@ -1,49 +1,34 @@
 package org.yesworkflow.db;
 
+import java.nio.file.Path;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.LogManager;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import org.jooq.DSLContext;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
 import org.yesworkflow.util.FileIO;
 import org.yesworkflow.db.Table;
 
 import static org.yesworkflow.db.Column.*;
 
 @SuppressWarnings("unchecked")
-public class YesWorkflowDB {
+public abstract class YesWorkflowDB {
 
-    // disable display of jOOQ logo
     static {
+        // disable display of jOOQ logo
         LogManager.getLogManager().reset();
     }
-    
-    private static String CREATE_TABLES_SCRIPT_H2  = "org/yesworkflow/db/h2/createtables.h2";
-    @SuppressWarnings("unused")
-    private static String CREATE_TABLES_SCRIPT_SQLITE  = "org/yesworkflow/db/sqlite/createtables.sqlite";
-    private static String createTablesScript = CREATE_TABLES_SCRIPT_H2;
 
-    private static String IN_MEMORY_DB_URL_H2 = "jdbc:h2:mem:";
-    @SuppressWarnings("unused")
-    private static String IN_MEMORY_DB_URL_SQLITE = "jdbc:sqlite::memory:";
-    private static String inMemoryDbUrl = IN_MEMORY_DB_URL_H2;
-    
-    private final Connection connection;
-    private final Statement statement;
-    public final DSLContext jooq;
+    protected Connection connection;
+    protected Statement statement;
+    protected DSLContext jooq;
     
     private static YesWorkflowDB globalInstance = null;
 
     public static YesWorkflowDB getGlobalInstance() throws Exception {
         if (globalInstance == null) {
-            globalInstance = createVolatileDB();
+            globalInstance = YesWorkflowH2DB.createInMemoryDB();
         }
         return globalInstance;
     }
@@ -54,40 +39,18 @@ public class YesWorkflowDB {
             globalInstance = null;
         }
     }
+    
+    public static YesWorkflowDB createInMemoryDB() throws Exception {
+        return YesWorkflowH2DB.createInMemoryDB();
+    }
 
+    public static YesWorkflowDB openFileDB(Path dbFilePath) throws Exception {
+        return YesWorkflowSQLiteDB.openFileDB(dbFilePath);
+    }
     
     public YesWorkflowDB(Connection connection) throws SQLException {
         this.connection = connection;
         this.statement = connection.createStatement();
-        this.jooq = DSL.using(this.connection, SQLDialect.H2);
-    }
-    
-    public static YesWorkflowDB createVolatileDB() throws Exception {
-        YesWorkflowDB ywdb = new YesWorkflowDB(DriverManager.getConnection(inMemoryDbUrl));
-        ywdb.createDBTables();
-        return ywdb;
-    }
-
-    public static YesWorkflowDB openFileDB(Path dbFilePath) throws Exception {
-        
-        YesWorkflowDB ywdb;
-        
-        if (!(dbFilePath.toFile().exists())) {
-            Path parentDirectory = dbFilePath.getParent();
-            if (Files.exists(parentDirectory)) {
-                if (! Files.isDirectory(parentDirectory)) {
-                    throw new Exception("Cannot create " + dbFilePath + " because " + parentDirectory + " is not a directory");
-                }
-            } else {
-                Files.createDirectories(parentDirectory);
-            }
-            ywdb = new YesWorkflowDB(DriverManager.getConnection("jdbc:sqlite:" + dbFilePath));
-            ywdb.createDBTables();
-        } else {
-            ywdb = new YesWorkflowDB(DriverManager.getConnection("jdbc:sqlite:" + dbFilePath));
-        }
-        
-        return ywdb;
     }
 
     public void close() throws SQLException {
@@ -95,8 +58,8 @@ public class YesWorkflowDB {
         connection.close();
     }
     
-    public int createDBTables() throws Exception {
-        String sqlScript = FileIO.readTextFileOnClasspath(createTablesScript);
+    protected int createDBTables(String createTablesScriptPath) throws Exception {
+        String sqlScript = FileIO.readTextFileOnClasspath(createTablesScriptPath);
         int statementCount = executeSqlScript(sqlScript);
         return statementCount;
     }
@@ -139,7 +102,6 @@ public class YesWorkflowDB {
           .values(id, sourceFileId, qualifiedAnnotationId, lineNumber, tag, keyword, value, description)
           .execute();
     }
-
     
     public int getRowCount(org.jooq.Table<?> T) throws SQLException {
         

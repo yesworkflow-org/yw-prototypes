@@ -19,7 +19,7 @@ public class TestSkeletonBuilder extends YesWorkflowTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        ywdb = YesWorkflowDB.createVolatileDB();
+        ywdb = YesWorkflowDB.createInMemoryDB();
         extractor = new DefaultExtractor(this.ywdb, super.stdoutStream, super.stderrStream);
         extractor.configure("language", Language.PYTHON);
     }
