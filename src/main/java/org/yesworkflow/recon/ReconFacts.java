@@ -47,7 +47,7 @@ public class ReconFacts {
         this.uriVariableValueFacts  = new FactsBuilder(queryEngineModel, "uri_variable_value", "resource_id", "uri_variable_id", "uri_variable_value");
     }
 
-    public ReconFacts build() {
+    public ReconFacts build() throws Exception {
 
         buildReconFactsRecursively(run.model.program);
         
@@ -64,7 +64,7 @@ public class ReconFacts {
         return this;
     }
 
-   private void buildReconFactsRecursively(Program program) {
+   private void buildReconFactsRecursively(Program program) throws Exception {
         
         if (program == null) throw new IllegalArgumentException("Null program argument.");
         if (program.programs == null) throw new IllegalArgumentException("Null programs field in program argument.");
@@ -84,7 +84,7 @@ public class ReconFacts {
         }
     }
    
-    private void buildFactsForPortResources(Port[] ports) {        
+    private void buildFactsForPortResources(Port[] ports) throws Exception {        
         for (Port port: ports) {
             List<Resource> resourcesWithVariables = findResourcesForPort(port);
             for (Resource resource : resourcesWithVariables) {
@@ -133,7 +133,7 @@ public class ReconFacts {
         return ((FileResourceFinder)resourceFinder).resources;
     }
     
-    private void buildUriVariableValueFacts(UriTemplate uriTemplate, Resource resource) {
+    private void buildUriVariableValueFacts(UriTemplate uriTemplate, Resource resource) throws Exception {
         Map<String,String> variableValues = uriTemplate.extractValuesFromPath(resource.uri);
         for (UriVariable variable : uriTemplate.variables) {
             String variableValue = variableValues.get(variable.name);

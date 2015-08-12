@@ -33,11 +33,9 @@ public class FileIO {
         return corrected;
     }
     
-    public static String normalizePath(String path) {
-        
-        // replace backslashes in path with forward slashes to prevent problems
-        // using the directory as a replacement string
-        // (backslashes occur in Windows paths but Java can use forward slashes on Windows)
+    // Replaces backslashes in path with forward slashes.
+    // Note that backslashes occur in Windows paths but Java can use forward slashes on Windows.
+    public static String normalizePathSeparator(String path) {        
         return path.replace('\\', '/');
     }
 }

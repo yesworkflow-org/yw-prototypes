@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.yesworkflow.util.FileIO;
+
 /**
  * <p> This class represents a URI template that can be matched
  * directly against other URI templates without expanding 
@@ -107,9 +109,10 @@ public class UriTemplate extends UriBase {
         return globPatternBuilder.toString();
     }
 	
-    public Map<String,String> extractValuesFromPath(String path) {
-       
-       Map<String,String> variableValues = new LinkedHashMap<String,String>();
+    public Map<String,String> extractValuesFromPath(String path) throws Exception {
+
+        path = FileIO.normalizePathSeparator(path);
+        Map<String,String> variableValues = new LinkedHashMap<String,String>();
 
        // TODO handle case where first variable precedes first constant fragment
        // TODO handle case where last variable follows last constant fragment
@@ -117,6 +120,7 @@ public class UriTemplate extends UriBase {
        for (int i = 0; i < fragments.length - 1; ++i) {
            int valueStart = start + fragments[i].length();
            int valueEnd = path.indexOf(fragments[i+1], valueStart);
+           if (valueEnd == -1) throw new Exception("Cannot find fragment '" + fragments[i+1] + "' in '" + path.substring(valueStart));
            UriVariable variable = instances[i];
            // TODO make sure values in concrete URI match for multiple instances of a variable
            if (variable != null && variableValues.get(variable.name) == null) {

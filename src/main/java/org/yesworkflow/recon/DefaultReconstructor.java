@@ -59,7 +59,7 @@ public class DefaultReconstructor implements Reconstructor  {
     }
     
     @Override
-    public String getFacts() {
+    public String getFacts() throws Exception {
         if (reconFacts == null) {
             reconFacts = new ReconFacts(queryEngine, run).build().toString();
         }

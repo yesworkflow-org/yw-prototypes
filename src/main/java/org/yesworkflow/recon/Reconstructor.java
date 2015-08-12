@@ -9,5 +9,5 @@ public interface Reconstructor extends YWStage {
     Reconstructor configure(String key, Object value) throws Exception;
     Reconstructor configure(Map<String, Object> config) throws Exception;
     Reconstructor recon() throws Exception;
-    String getFacts();
+    String getFacts() throws Exception;
 }
