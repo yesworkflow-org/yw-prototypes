@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import org.yesworkflow.YesWorkflowTestCase;
+import org.yesworkflow.util.FileIO;
 
 public class TestUriTemplate extends YesWorkflowTestCase {
 
@@ -690,64 +691,64 @@ public void testReduceTemplateAndExtractVariables_PathHasEmptyVariableBraces() {
 	public void testLeadingPath() {
 
 	    t1 = new UriTemplate("");
-	    assertEquals("", t1.leadingPath.toString());
+	    assertEquals("", FileIO.normalizePath(t1.leadingPath.toString()));
 
 	    t1 = new UriTemplate(".");
-	    assertEquals(".", t1.leadingPath.toString());
+	    assertEquals(".", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("..");
-        assertEquals("..", t1.leadingPath.toString());
+        assertEquals("..", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("/");
-        assertEquals("/", t1.leadingPath.toString());
+        assertEquals("/", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("./");
-        assertEquals(".", t1.leadingPath.toString());
+        assertEquals(".", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("../");
-        assertEquals("..", t1.leadingPath.toString());
+        assertEquals("..", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("/bar/");
-        assertEquals("/bar", t1.leadingPath.toString());
+        assertEquals("/bar", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("./bar/");
-        assertEquals("./bar", t1.leadingPath.toString());
+        assertEquals("./bar", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("../bar/");
-        assertEquals("../bar", t1.leadingPath.toString());
+        assertEquals("../bar", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("bar");
-        assertEquals("bar", t1.leadingPath.toString());
+        assertEquals("bar", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("bar/");
-        assertEquals("bar", t1.leadingPath.toString());
+        assertEquals("bar", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("/1/bar/");
-        assertEquals("/1/bar", t1.leadingPath.toString());
+        assertEquals("/1/bar", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("/1/2/bar/");
-        assertEquals("/1/2/bar", t1.leadingPath.toString());
+        assertEquals("/1/2/bar", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("/1/2/{v1}/bar");
-        assertEquals("/1/2", t1.leadingPath.toString());
+        assertEquals("/1/2", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("/1/2/f{v1}/bar");
-        assertEquals("/1/2", t1.leadingPath.toString());
+        assertEquals("/1/2", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("/1/2/foo{v1}/bar");
-        assertEquals("/1/2", t1.leadingPath.toString());
+        assertEquals("/1/2", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("1/2/{v1}/bar");
-        assertEquals("1/2", t1.leadingPath.toString());
+        assertEquals("1/2", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("1/2/f{v1}/bar");
-        assertEquals("1/2", t1.leadingPath.toString());
+        assertEquals("1/2", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("1/2/foo{v1}/bar");
-        assertEquals("1/2", t1.leadingPath.toString());
+        assertEquals("1/2", FileIO.normalizePath(t1.leadingPath.toString()));
 
         t1 = new UriTemplate("./2/foo{v1}/bar");
-        assertEquals("./2", t1.leadingPath.toString());
+        assertEquals("./2", FileIO.normalizePath(t1.leadingPath.toString()));
 
 	}
 	
