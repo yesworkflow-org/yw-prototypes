@@ -23,6 +23,7 @@ import org.yesworkflow.model.Program;
 import org.yesworkflow.query.FactsBuilder;
 import org.yesworkflow.query.QueryEngine;
 import org.yesworkflow.query.QueryEngineModel;
+import org.yesworkflow.util.FileIO;
 
 public class ReconFacts {
 
@@ -114,7 +115,7 @@ public class ReconFacts {
         if (resource == null) {
             resource = new Resource(nextResourceId++, path.toString());
             resourceForUri.put(uri, resource);
-            resourceFacts.add(resource.id, uri);
+            resourceFacts.add(resource.id, FileIO.normalizePathSeparator(uri));
         }
         dataResourceFacts.add(data.id, resource.id);
         return resource;
