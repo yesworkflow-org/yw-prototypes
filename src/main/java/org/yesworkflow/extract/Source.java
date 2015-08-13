@@ -4,14 +4,13 @@ import org.yesworkflow.db.YesWorkflowDB;
 
 public class Source {
 
-    private static Integer nextSourceId = 1;
 
     public final Integer id;
     public final String path;
     
     public static Source newSource(YesWorkflowDB ywdb, String path) {
-        Source source = new Source(nextSourceId++, "path");
-        ywdb.insertSourceFile(source.id, source.path);
+        int id = ywdb.insertSourceFile(path);
+        Source source = new Source(id, path);
         return source;
     }
     

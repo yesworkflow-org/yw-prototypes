@@ -47,11 +47,11 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
     public void testInsertSourceFile() throws Exception {
         YesWorkflowDB ywdb = YesWorkflowDB.createInMemoryDB();
         assertEquals(0, ywdb.getRowCount(Table.SOURCE_FILE));
-        ywdb.insertSourceFile(1, "source1");
+        ywdb.insertSourceFile("source1");
         assertEquals(1, ywdb.getRowCount(Table.SOURCE_FILE));
-        ywdb.insertSourceFile(2, "source2");
+        ywdb.insertSourceFile("source2");
         assertEquals(2, ywdb.getRowCount(Table.SOURCE_FILE));
-        ywdb.insertSourceFile(3, "source3");
+        ywdb.insertSourceFile("source3");
         assertEquals(3, ywdb.getRowCount(Table.SOURCE_FILE));
         
         Result r = ywdb.jooq.select(ID, PATH)
@@ -72,8 +72,8 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
         
         YesWorkflowDB ywdb = YesWorkflowDB.createInMemoryDB();
         
-        ywdb.insertSourceFile(1, "source1");
-        ywdb.insertSourceFile(2, "source2");
+        ywdb.insertSourceFile("source1");
+        ywdb.insertSourceFile("source2");
         ywdb.insertAnnotation(1, 1, 1, 10, "BEGIN", "begin", "p", null);
         ywdb.insertAnnotation(2, 1, 1, 20, "END",   "end",   "p", null);
         ywdb.insertAnnotation(3, 2, 1, 5,  "BEGIN", "begin", "q", null);

@@ -24,6 +24,8 @@ public abstract class YesWorkflowDB {
     protected Statement statement;
     protected DSLContext jooq;
     
+    private int nextSourceFileId = 1;
+    
     private static YesWorkflowDB globalInstance = null;
 
     public static YesWorkflowDB getGlobalInstance() throws Exception {
@@ -86,11 +88,19 @@ public abstract class YesWorkflowDB {
         return statementCount;
     }
 
-    public void insertSourceFile(int id, String sourceFilePath) {
+    public DSLContext jooq() {
+        return jooq;
+    }
+    
+    public int insertSourceFile(String sourceFilePath) {
 
+        int id = nextSourceFileId++;
+        
         jooq.insertInto(Table.SOURCE_FILE, ID, PATH)
           .values(id, sourceFilePath)
           .execute();
+        
+        return id;
     }
     
     public void insertAnnotation(int id, int sourceFileId, Integer qualifiedAnnotationId,
