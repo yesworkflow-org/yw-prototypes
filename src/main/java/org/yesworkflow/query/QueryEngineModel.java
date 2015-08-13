@@ -3,9 +3,9 @@ package org.yesworkflow.query;
 public class QueryEngineModel {
 
     public final QueryEngine engine;
-    public final boolean showComments;
     public final String commentStart;
     public final String quote;
+    public boolean showComments;
 
     public QueryEngineModel(QueryEngine engine) {
         

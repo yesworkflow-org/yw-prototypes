@@ -1,37 +1,41 @@
 package org.yesworkflow.extract;
 
+import static org.yesworkflow.db.Column.ID;
+import static org.yesworkflow.db.Column.PATH;
+
 import java.util.List;
 
+import org.jooq.Record;
+import org.jooq.Result;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.annotations.Qualification;
+import org.yesworkflow.db.Table;
+import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.query.FactsBuilder;
-import org.yesworkflow.query.QueryEngine;
 import org.yesworkflow.query.QueryEngineModel;
 
 public class ExtractFacts {
 
+    private YesWorkflowDB ywdb;
     private final List<Annotation> annotations;
-    private final List<String> sources;
     private String factsString = null;
     private FactsBuilder sourceFileFacts;
     private FactsBuilder annotationFacts;
     private FactsBuilder descriptionFacts;
     private FactsBuilder qualificationFacts;
 
-    
-    public ExtractFacts(QueryEngine queryEngine, List<String> sources, List<Annotation> annotations) {
+    public ExtractFacts(YesWorkflowDB ywdb, QueryEngineModel queryEngineModel, List<Annotation> annotations) {
         
-        this.sources = sources;
+        this.ywdb = ywdb;
         this.annotations = annotations;
         
-        QueryEngineModel queryEngineModel = new QueryEngineModel(queryEngine);
         this.sourceFileFacts  = new FactsBuilder(queryEngineModel, "extract_source", "source_id", "source_path");
         this.annotationFacts  = new FactsBuilder(queryEngineModel, "annotation", "annotation_id", "source_id", "line_number", "tag", "keyword", "value");
         this.descriptionFacts  = new FactsBuilder(queryEngineModel, "annotation_description", "annotation_id", "description");
         this.qualificationFacts = new FactsBuilder(queryEngineModel, "annotation_qualifies", "qualifying_annotation_id", "primary_annotation_id");
     }
 
-    public ExtractFacts build() {        
+    public ExtractFacts build() {
                 
         buildSourceFileFacts();
         buildAnnotationFacts();
@@ -50,11 +54,19 @@ public class ExtractFacts {
     public String toString() {
         return factsString;
     }
-    
+
+    @SuppressWarnings("unchecked")
     private void buildSourceFileFacts() {
-        int nextSourceId = 1;
-        for (String source : sources) {
-            sourceFileFacts.add(nextSourceId++, source);
+        
+        Result<Record> results = ywdb.jooq().select(ID, PATH)
+                                     .from(Table.SOURCE_FILE)
+                                     .fetch();
+        
+        for (Record record : results) {
+            int id = (int)record.getValue(ID);
+            String path = (String)record.getValue(PATH);
+            if (path == null) path = "";
+            sourceFileFacts.add(id, path);
         }
     }
     
