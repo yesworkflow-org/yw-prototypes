@@ -11,7 +11,7 @@
 
 CREATE TABLE source_file (
     id              INTEGER         NOT NULL        PRIMARY KEY,
-    path            TEXT            NOT NULL
+    path            TEXT            NULL
 );
 
 CREATE TABLE annotation (

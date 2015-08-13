@@ -31,6 +31,7 @@ import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.query.QueryEngine;
+import org.yesworkflow.query.QueryEngineModel;
 
 public class DefaultExtractor implements Extractor {
 
@@ -42,7 +43,7 @@ public class DefaultExtractor implements Extractor {
     private Language lastLanguage = null;
     private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;
     private BufferedReader sourceReader = null;
-    private List<String> sources;
+    private List<String> sourcePaths;
     private List<SourceLine> lines;
     private List<String> comments;
     private List<Annotation> allAnnotations;
@@ -73,6 +74,7 @@ public class DefaultExtractor implements Extractor {
         this.stderrStream = stderrStream;
         this.keywordMapping = new YWKeywords();
         this.keywordMatcher = new KeywordMatcher(keywordMapping.getKeywords());
+        this.lines = new LinkedList<SourceLine>();
     }
 
     @Override
@@ -89,15 +91,15 @@ public class DefaultExtractor implements Extractor {
     @Override
     public DefaultExtractor configure(String key, Object value) throws Exception {
         if (key.equalsIgnoreCase("sources")) {
-            sources = new LinkedList<String>();
+            sourcePaths = new LinkedList<String>();
             if (value instanceof String) {
                 for (String token : ((String) value).split("\\s")) {
                     if (!token.trim().isEmpty()) {
-                        sources.add(token);
+                        sourcePaths.add(token);
                     }
                 }
             } else if (value instanceof List) {
-                sources.addAll((List<? extends String>) value);
+                sourcePaths.addAll((List<? extends String>) value);
             } else {
                 throw new Exception("Value of sources property must be one or more strings");
             }
@@ -158,34 +160,17 @@ public class DefaultExtractor implements Extractor {
     }
 	
 	@Override
-    public String getFacts() {
+    public String getFacts(QueryEngineModel queryEngineModel) {
         if (extractFacts == null) {
-            extractFacts = new ExtractFacts(queryEngine, sources, allAnnotations).build().toString();
+            extractFacts = new ExtractFacts(ywdb, queryEngineModel, allAnnotations).build().toString();
         }
         return extractFacts;
     }	
 	
     @Override
     public DefaultExtractor extract() throws Exception {
-
-        lines = new LinkedList<SourceLine>();
         
-        if (sourceReader != null) {
-            Source source = Source.newSource(ywdb, "__reader__");
-            extractLines(source, sourceReader, globalLanguageModel);
-            sources = new LinkedList<String>();
-            sources.add("_reader__");
-        } else if (sources == null || 
-                   sources.size() == 0 || 
-                   sources.size() == 1 && (sources.get(0).trim().isEmpty() || 
-                                           sources.get(0).trim().equals("-"))) {
-            sources = new LinkedList<String>();
-            sources.add("__stdin__");
-            extractLinesFromStdin();
-        } else {
-            extractLinesFromFiles(sources);
-        }
-        
+        extractLines();        
         writeCommentListing();
         extractAnnotations();
         writeSkeletonFile();
@@ -195,19 +180,34 @@ public class DefaultExtractor implements Extractor {
         }
 
         if (factsFile != null) {
-            writeTextToFileOrStdout(factsFile, getFacts());
+            QueryEngineModel queryEngineModel = new QueryEngineModel(queryEngine);
+            writeTextToFileOrStdout(factsFile, getFacts(queryEngineModel));
         }
         
         return this;
     }
-    
-    private void extractLinesFromStdin() throws IOException, YWToolUsageException {
-        Reader reader = new InputStreamReader(System.in);
-        Source source = Source.newSource(ywdb, "__stdin__");
-        extractLines(source, new BufferedReader(reader), globalLanguageModel);
-    }
 
-    private void extractLinesFromFiles(List<String> sourcePaths) throws IOException, YWToolUsageException {
+    private void extractLines() throws IOException, YWToolUsageException {
+
+        if (sourceReader != null) {
+            Source source = Source.newSource(ywdb, null);
+            extractLinesFromReader(source, sourceReader, globalLanguageModel);
+        
+        } else if (sourcePaths == null || 
+                   sourcePaths.size() == 0 || 
+                   sourcePaths.size() == 1 && (sourcePaths.get(0).trim().isEmpty() || 
+                                               sourcePaths.get(0).trim().equals("-"))) {
+            Reader reader = new InputStreamReader(System.in);
+            Source source = Source.newSource(ywdb, null);
+            extractLinesFromReader(source, new BufferedReader(reader), globalLanguageModel);
+        
+        } else {
+            extractLinesFromSourceFiles();
+        }
+    }
+    
+    private void extractLinesFromSourceFiles() throws IOException, YWToolUsageException {
+        
         for (String sourcePath : sourcePaths) {
             Source source = Source.newSource(ywdb, sourcePath);
             LanguageModel languageModel = null;
@@ -219,7 +219,7 @@ public class DefaultExtractor implements Extractor {
                     languageModel = new LanguageModel(language);
                 }
             }
-            extractLines(source, getFileReaderForPath(sourcePath), languageModel);
+            extractLinesFromReader(source, getFileReaderForPath(sourcePath), languageModel);
         }
     }
 
@@ -235,7 +235,7 @@ public class DefaultExtractor implements Extractor {
         return reader;
     }
     
-    private void extractLines(Source source, BufferedReader reader, LanguageModel languageModel) throws IOException {
+    private void extractLinesFromReader(Source source, BufferedReader reader, LanguageModel languageModel) throws IOException {
 
         if (languageModel == null) {
             languageModel = new LanguageModel(DEFAULT_LANGUAGE);
