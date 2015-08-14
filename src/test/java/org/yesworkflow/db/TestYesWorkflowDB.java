@@ -74,10 +74,10 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
         
         ywdb.insertSourceFile("source1");
         ywdb.insertSourceFile("source2");
-        ywdb.insertAnnotation(1, 1, 1, 10, "BEGIN", "begin", "p", null);
-        ywdb.insertAnnotation(2, 1, 1, 20, "END",   "end",   "p", null);
-        ywdb.insertAnnotation(3, 2, 1, 5,  "BEGIN", "begin", "q", null);
-        ywdb.insertAnnotation(4, 2, 1, 15, "END",   "end",   "q", null);
+        ywdb.insertAnnotation(1L, 1L, 1L, 10L, "BEGIN", "begin", "p", null);
+        ywdb.insertAnnotation(2L, 1L, 1L, 20L, "END",   "end",   "p", null);
+        ywdb.insertAnnotation(3L, 2L, 1L, 5L,  "BEGIN", "begin", "q", null);
+        ywdb.insertAnnotation(4L, 2L, 1L, 15L, "END",   "end",   "q", null);
         
         assertEquals(2, ywdb.getRowCount(Table.SOURCE));
         assertEquals(4, ywdb.getRowCount(Table.ANNOTATION));

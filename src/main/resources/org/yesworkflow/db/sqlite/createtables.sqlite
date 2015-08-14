@@ -14,6 +14,13 @@ CREATE TABLE source (
     path            TEXT            NULL
 );
 
+CREATE TABLE code (
+    id              INTEGER         NOT NULL        PRIMARY KEY,
+    source_id       INTEGER         NOT NULL        REFERENCES source(id),
+    line_number     INTEGER         NOT NULL,
+    line            TEXT            NOT NULL
+);
+
 CREATE TABLE annotation (
     id              INTEGER         NOT NULL        PRIMARY KEY,
     source_id       INTEGER         NULL            REFERENCES source(id),

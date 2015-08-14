@@ -1,11 +1,11 @@
 package org.yesworkflow.annotations;
 
 import org.yesworkflow.YWKeywords;
-import org.yesworkflow.extract.SourceLine;
+import org.yesworkflow.extract.CommentLine;
 
 public class End extends Delimiter {
 
-    public End(Integer id, SourceLine line, String comment) throws Exception {
+    public End(Long id, CommentLine line, String comment) throws Exception {
         super(id, line, comment, YWKeywords.Tag.END);
     }
 }

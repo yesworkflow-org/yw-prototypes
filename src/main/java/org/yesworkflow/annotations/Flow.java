@@ -1,13 +1,13 @@
 package org.yesworkflow.annotations;
 
 import org.yesworkflow.YWKeywords.Tag;
-import org.yesworkflow.extract.SourceLine;
+import org.yesworkflow.extract.CommentLine;
 
 public abstract class Flow extends AliasableAnnotation {
     	
     protected UriAnnotation uriAnnotation;
     
-    public Flow(Integer id, SourceLine line, String comment, Tag tag) throws Exception {
+    public Flow(Long id, CommentLine line, String comment, Tag tag) throws Exception {
     	super(id, line, comment, tag);    	
     }
 	

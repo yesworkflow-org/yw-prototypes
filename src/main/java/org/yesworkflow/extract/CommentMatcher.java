@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.yesworkflow.LanguageModel;
+import org.yesworkflow.db.YesWorkflowDB;
 
 
 /** Class for matching and retrieving comments from source code implemented
@@ -17,9 +18,10 @@ import org.yesworkflow.LanguageModel;
 public class CommentMatcher {
 
     private static final String EOL = System.getProperty("line.separator");
-    private static Integer nextLineId = 1;
+    private static Long nextLineId = 1L;
     
-    private Source source;
+    private YesWorkflowDB ywdb;
+    private long sourceId;
     private LanguageModel languageModel;
     private State currentState;
     private String commentStartToken;
@@ -31,8 +33,9 @@ public class CommentMatcher {
      * Constructs a CommentMatcher for the given programming language model.
      * @param languageModel The programming language model for the source code to be analyzed.
      */
-    public CommentMatcher(Source source, LanguageModel languageModel) {
-        this.source = source;
+    public CommentMatcher(YesWorkflowDB ywdb, long sourceId, LanguageModel languageModel) {
+        this.ywdb = ywdb;
+        this.sourceId = sourceId;
         this.languageModel = languageModel;
         this.currentState = State.IN_CODE;
         this.commentStartToken = null;
@@ -47,7 +50,7 @@ public class CommentMatcher {
      * @return  A List of Strings representing the comments in the source code.
      * @throws IOException 
      */
-    public List<SourceLine> getCommentsAsLines(String source) throws IOException {    
+    public List<CommentLine> getCommentsAsLines(String source) throws IOException {    
         BufferedReader reader = new BufferedReader(new StringReader(source));
         return getCommentsAsLines(reader);
     }
@@ -61,26 +64,29 @@ public class CommentMatcher {
      * @return  A List of Strings representing the comments in the source code.
      * @throws IOException 
      */
-    public List<SourceLine> getCommentsAsLines(BufferedReader reader) throws IOException {
+    public List<CommentLine> getCommentsAsLines(BufferedReader reader) throws IOException {
 
         String line;
-        int nextLineNumber = 1;
-        List<SourceLine> commentLines = new LinkedList<SourceLine>();
+        Long lineNumber = 1L;
+        List<CommentLine> commentLines = new LinkedList<CommentLine>();
         lastFullMatch = null;
         
         while ((line = reader.readLine()) != null) {
-            StringBuffer commentLineText = new StringBuffer();            
+            
+            ywdb.insertCode(sourceId, lineNumber, line);
+            
+            StringBuffer commentLineText = new StringBuffer();        
             for (int i = 0; i < line.length(); ++i) {
                 int c = line.charAt(i);
                 String newCommentChars = processNextChar((char)c);
                 commentLineText.append(newCommentChars);
                 if (newCommentChars.equals(EOL)) {
-                    addCommentLineToResult(commentLineText.toString(), nextLineNumber, commentLines);
+                    addCommentLineToResult(commentLineText.toString(), lineNumber, commentLines);
                     commentLineText = new StringBuffer();            
                 }
             }
             commentLineText.append(processNextChar('\n'));
-            addCommentLineToResult(commentLineText.toString(), nextLineNumber++, commentLines);
+            addCommentLineToResult(commentLineText.toString(), lineNumber++, commentLines);
         }
         
         return commentLines;
@@ -98,7 +104,7 @@ public class CommentMatcher {
     public String getCommentsAsString(String source) throws IOException {
         
         StringBuffer comments = new StringBuffer();
-        for (SourceLine cl : getCommentsAsLines(source)) {
+        for (CommentLine cl : getCommentsAsLines(source)) {
             comments.append(cl.text);
             comments.append(EOL);
         }
@@ -107,10 +113,10 @@ public class CommentMatcher {
     }
     
     /** Helper method for accumulating non-blank comment lines. */
-    private void addCommentLineToResult(String line, int sourceLineNumber, List<SourceLine> accumulatedLines) {
+    private void addCommentLineToResult(String line, Long sourceLineNumber, List<CommentLine> accumulatedLines) {
         String trimmedCommentLine = line.toString().trim();
         if (trimmedCommentLine.length() > 0) {
-            SourceLine commentLine = new SourceLine(nextLineId++, source.id, sourceLineNumber, trimmedCommentLine);
+            CommentLine commentLine = new CommentLine(nextLineId++, sourceId, sourceLineNumber, trimmedCommentLine);
             accumulatedLines.add(commentLine);
         }
     }

@@ -1,11 +1,11 @@
 package org.yesworkflow.annotations;
 
 import org.yesworkflow.YesWorkflowTestCase;
-import org.yesworkflow.extract.SourceLine;
+import org.yesworkflow.extract.CommentLine;
 
 public class TestOutWithUri extends YesWorkflowTestCase {
     
-    private static final SourceLine line = new SourceLine(1, 1, 1, "");
+    private static final CommentLine line = new CommentLine(1L, 1L, 1L, "");
     
     @Override
     public void setUp() throws Exception {
@@ -13,24 +13,24 @@ public class TestOutWithUri extends YesWorkflowTestCase {
     }
 
     public void testOutComment_NoUri() throws Exception {
-        Out out = (Out) new Out(1, line, "@out x ");
+        Out out = (Out) new Out(1L, line, "@out x ");
         assertEquals("x", out.name);
         assertNull(out.uriAnnotation());
         assertNull(out.description);
     }
 
     public void testOutComment_WithUri() throws Exception {
-        Out out = (Out) new Out(1, line, "@out x ");
-        new UriAnnotation(2, line, "@uri longitude.txt", out);
+        Out out = (Out) new Out(1L, line, "@out x ");
+        new UriAnnotation(2L, line, "@uri longitude.txt", out);
         assertEquals("x", out.name);
         assertEquals("longitude.txt", out.uriAnnotation().toString());
         assertNull(out.description);
     }
 
     public void testOutComment_AliasThenUri() throws Exception {
-        Out out = (Out) new Out(1, line, "@out x ");
-        new As(2, line, "@as longitude", out);
-        new UriAnnotation(3, line, "@uri longitude.txt", out);
+        Out out = (Out) new Out(1L, line, "@out x ");
+        new As(2L, line, "@as longitude", out);
+        new UriAnnotation(3L, line, "@uri longitude.txt", out);
         assertEquals("x", out.name);
         assertEquals("longitude", out.binding());
         assertEquals("longitude.txt", out.uriAnnotation().toString());
@@ -38,9 +38,9 @@ public class TestOutWithUri extends YesWorkflowTestCase {
     }
 
     public void testOutComment_UriThenAlias() throws Exception {
-        Out out = (Out) new Out(1, line, "@out x ");
-        new UriAnnotation(2, line, "@uri longitude.txt", out);
-        new As(3, line, "@as longitude", out);
+        Out out = (Out) new Out(1L, line, "@out x ");
+        new UriAnnotation(2L, line, "@uri longitude.txt", out);
+        new As(3L, line, "@as longitude", out);
         assertEquals("x", out.name);
         assertEquals("longitude", out.binding());
         assertEquals("longitude.txt", out.uriAnnotation().toString());

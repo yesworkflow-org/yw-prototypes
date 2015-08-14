@@ -18,6 +18,13 @@ CREATE TABLE source (
     path            VARCHAR         NULL
 );
 
+CREATE TABLE code (
+    id              IDENTITY        NOT NULL        PRIMARY KEY,
+    source_id       BIGINT          NOT NULL        REFERENCES source(id),
+    line_number     BIGINT          NOT NULL,
+    line            VARCHAR         NOT NULL
+);
+
 CREATE TABLE annotation (
     id              IDENTITY        NOT NULL        PRIMARY KEY,
     source_id       BIGINT          NULL            REFERENCES source(id),

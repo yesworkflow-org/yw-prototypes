@@ -9,6 +9,7 @@ public class Column {
 
     public static Field DESCRIPTION     = field("description");
     public static Field ID              = field("id");
+    public static Field LINE            = field("line");
     public static Field LINE_NUMBER     = field("line_number");
     public static Field PATH            = field("path");
     public static Field QUALIFIES       = field("qualifies");

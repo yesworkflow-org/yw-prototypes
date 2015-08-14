@@ -5,17 +5,20 @@ import java.io.IOException;
 import org.yesworkflow.Language;
 import org.yesworkflow.LanguageModel;
 import org.yesworkflow.YesWorkflowTestCase;
+import org.yesworkflow.db.YesWorkflowDB;
 
 public class TestCommentMatcher_Java extends YesWorkflowTestCase {
 
     private CommentMatcher matcher;
+    private YesWorkflowDB ywdb = null;
     
     @Override
     public void setUp() throws Exception {
         super.setUp();
+        this.ywdb = YesWorkflowDB.createInMemoryDB();
         LanguageModel lm = new LanguageModel(Language.JAVA);
-        Source source = new Source(1, "__reader__");
-        matcher = new CommentMatcher(source, lm);
+        Source source = Source.newSource(this.ywdb, "__reader__");
+        matcher = new CommentMatcher(this.ywdb, source.id, lm);
     }
 
     public void test_Java_EmptySource()  throws IOException {

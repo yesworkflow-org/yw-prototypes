@@ -1,13 +1,13 @@
 package org.yesworkflow.annotations;
 
 import org.yesworkflow.YWKeywords.Tag;
-import org.yesworkflow.extract.SourceLine;
+import org.yesworkflow.extract.CommentLine;
 
 public class Qualification extends Annotation {
 
     public final Annotation primaryAnnotation;
     
-	public Qualification(Integer id, SourceLine line, String comment, Tag tag, Annotation primaryAnnotation) throws Exception {
+	public Qualification(Long id, CommentLine line, String comment, Tag tag, Annotation primaryAnnotation) throws Exception {
 		
 	    super(id, line, comment, tag);
 

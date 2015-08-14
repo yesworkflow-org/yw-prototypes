@@ -44,7 +44,7 @@ public class DefaultExtractor implements Extractor {
     private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;
     private BufferedReader sourceReader = null;
     private List<String> sourcePaths;
-    private List<SourceLine> lines;
+    private List<CommentLine> lines;
     private List<String> comments;
     private List<Annotation> allAnnotations;
     private List<Annotation> primaryAnnotations;
@@ -58,7 +58,7 @@ public class DefaultExtractor implements Extractor {
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
 
-    private Integer nextAnnotationId = 1;
+    private Long nextAnnotationId = 1L;
 
     public DefaultExtractor() throws Exception {
         this(YesWorkflowDB.getGlobalInstance(), System.out, System.err);
@@ -74,7 +74,7 @@ public class DefaultExtractor implements Extractor {
         this.stderrStream = stderrStream;
         this.keywordMapping = new YWKeywords();
         this.keywordMatcher = new KeywordMatcher(keywordMapping.getKeywords());
-        this.lines = new LinkedList<SourceLine>();
+        this.lines = new LinkedList<CommentLine>();
     }
 
     @Override
@@ -130,7 +130,7 @@ public class DefaultExtractor implements Extractor {
     }
 
     @Override
-    public List<SourceLine> getLines() {
+    public List<CommentLine> getLines() {
         return lines;
     }
 
@@ -191,7 +191,7 @@ public class DefaultExtractor implements Extractor {
 
         if (sourceReader != null) {
             Source source = Source.newSource(ywdb, null);
-            extractLinesFromReader(source, sourceReader, globalLanguageModel);
+            extractLinesFromReader(source.id, sourceReader, globalLanguageModel);
         
         } else if (sourcePaths == null || 
                    sourcePaths.size() == 0 || 
@@ -199,7 +199,7 @@ public class DefaultExtractor implements Extractor {
                                                sourcePaths.get(0).trim().equals("-"))) {
             Reader reader = new InputStreamReader(System.in);
             Source source = Source.newSource(ywdb, null);
-            extractLinesFromReader(source, new BufferedReader(reader), globalLanguageModel);
+            extractLinesFromReader(source.id, new BufferedReader(reader), globalLanguageModel);
         
         } else {
             extractLinesFromSourceFiles();
@@ -219,7 +219,7 @@ public class DefaultExtractor implements Extractor {
                     languageModel = new LanguageModel(language);
                 }
             }
-            extractLinesFromReader(source, getFileReaderForPath(sourcePath), languageModel);
+            extractLinesFromReader(source.id, getFileReaderForPath(sourcePath), languageModel);
         }
     }
 
@@ -235,7 +235,7 @@ public class DefaultExtractor implements Extractor {
         return reader;
     }
     
-    private void extractLinesFromReader(Source source, BufferedReader reader, LanguageModel languageModel) throws IOException {
+    private void extractLinesFromReader(Long sourceId, BufferedReader reader, LanguageModel languageModel) throws IOException {
 
         if (languageModel == null) {
             languageModel = new LanguageModel(DEFAULT_LANGUAGE);
@@ -244,8 +244,8 @@ public class DefaultExtractor implements Extractor {
         lastLanguage = languageModel.getLanguage();
         
         // extract all comments from script using the language model
-        CommentMatcher commentMatcher = new CommentMatcher(source, languageModel);
-        List<SourceLine> allCommentLines = commentMatcher.getCommentsAsLines(reader);
+        CommentMatcher commentMatcher = new CommentMatcher(ywdb, sourceId, languageModel);
+        List<CommentLine> allCommentLines = commentMatcher.getCommentsAsLines(reader);
 
         // select only the comments that contain YW keywords,
         // trimming characters preceding the first YW keyword in each
@@ -255,7 +255,7 @@ public class DefaultExtractor implements Extractor {
     private void writeCommentListing() throws IOException {
         if (commentListingPath != null) {
             StringBuffer linesBuffer = new StringBuffer();
-            for (SourceLine line : lines) {
+            for (CommentLine line : lines) {
                 linesBuffer.append(line.text);
                 linesBuffer.append(System.getProperty("line.separator"));
             }
@@ -285,7 +285,7 @@ public class DefaultExtractor implements Extractor {
         primaryAnnotations = new LinkedList<Annotation>();
         Annotation primaryAnnotation = null;
         
-        for (SourceLine sourceLine : lines) {
+        for (CommentLine sourceLine : lines) {
         	List<String> commentsOnLine = findCommentsOnLine(sourceLine.text, keywordMatcher);
         	for (String comment : commentsOnLine) {
         		comments.add(comment);
@@ -293,7 +293,7 @@ public class DefaultExtractor implements Extractor {
         		Tag tag = KeywordMatcher.extractInitialKeyword(comment, keywordMapping);
             
                 Annotation annotation = null;
-                Integer id = nextAnnotationId++;
+                Long id = nextAnnotationId++;
                 switch(tag) {
                 
                     case BEGIN:     annotation = new Begin(id, sourceLine, comment);
@@ -320,7 +320,7 @@ public class DefaultExtractor implements Extractor {
                 
                 allAnnotations.add(annotation);
     
-                Integer qualifiedAnnotationId = null;
+                Long qualifiedAnnotationId = null;
                 if (annotation instanceof Qualification) {
                     qualifiedAnnotationId = primaryAnnotation.id;
                 } else {

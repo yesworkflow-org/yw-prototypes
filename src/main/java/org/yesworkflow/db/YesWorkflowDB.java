@@ -24,7 +24,8 @@ public abstract class YesWorkflowDB {
     protected Statement statement;
     protected DSLContext jooq;
     
-    private int nextSourceFileId = 1;
+    private Long nextCodeId = 1L;
+    private Long nextSourceId = 1L;
     
     private static YesWorkflowDB globalInstance = null;
 
@@ -92,19 +93,30 @@ public abstract class YesWorkflowDB {
         return jooq;
     }
     
-    public int insertSourceFile(String sourceFilePath) {
+    public Long insertSourceFile(String sourceFilePath) {
 
-        int id = nextSourceFileId++;
+        Long id = nextSourceId++;
         
         jooq.insertInto(Table.SOURCE, ID, PATH)
-          .values(id, sourceFilePath)
-          .execute();
+            .values(id, sourceFilePath)
+            .execute();
+        
+        return id;
+    }
+
+    public Long insertCode(Long sourceId, Long lineNumber, String line) {
+
+        Long id = nextCodeId++;
+
+        jooq.insertInto(Table.CODE, ID, SOURCE_ID, LINE_NUMBER, LINE)
+            .values(id, sourceId, lineNumber, line)
+            .execute();
         
         return id;
     }
     
-    public void insertAnnotation(int id, int sourceId, Integer qualifiedAnnotationId,
-            int lineNumber, String tag, String keyword, String value, String description) {
+    public void insertAnnotation(Long id, Long sourceId, Long qualifiedAnnotationId,
+            Long lineNumber, String tag, String keyword, String value, String description) {
 
         jooq.insertInto(Table.ANNOTATION,
                         ID, SOURCE_ID, QUALIFIES, LINE_NUMBER,

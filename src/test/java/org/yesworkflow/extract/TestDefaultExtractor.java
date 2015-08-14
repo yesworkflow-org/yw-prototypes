@@ -62,7 +62,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<SourceLine> commentLines = extractor.getLines();
+        List<CommentLine> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
@@ -87,7 +87,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<SourceLine> commentLines = extractor.getLines();
+        List<CommentLine> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
@@ -112,7 +112,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<SourceLine> commentLines = extractor.getLines();
+        List<CommentLine> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
@@ -138,7 +138,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<SourceLine> commentLines = extractor.getLines();
+        List<CommentLine> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
@@ -163,7 +163,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<SourceLine> commentLines = extractor.getLines();
+        List<CommentLine> commentLines = extractor.getLines();
         assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
@@ -197,7 +197,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<SourceLine> commentLines = extractor.getLines();
+        List<CommentLine> commentLines = extractor.getLines();
         assertEquals(4,commentLines.size());
         assertEquals("@begin step", commentLines.get(0).text);
         assertEquals("@in x", commentLines.get(1).text);
@@ -237,7 +237,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<SourceLine> commentLines = extractor.getLines();
+        List<CommentLine> commentLines = extractor.getLines();
         assertEquals(4, commentLines.size());
         assertEquals("@begin step", commentLines.get(0).text);
         assertEquals("@in x", commentLines.get(1).text);

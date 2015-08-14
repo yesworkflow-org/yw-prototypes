@@ -2,15 +2,15 @@ package org.yesworkflow.annotations;
 
 import org.yesworkflow.YWKeywords;
 import org.yesworkflow.YWKeywords.Tag;
-import org.yesworkflow.extract.SourceLine;
+import org.yesworkflow.extract.CommentLine;
 
 public class UriAnnotation extends Qualification {
     
-    public UriAnnotation(Integer id, SourceLine line, String comment, Annotation primaryAnnotation) throws Exception {
+    public UriAnnotation(Long id, CommentLine line, String comment, Annotation primaryAnnotation) throws Exception {
         super(id, line, comment, YWKeywords.Tag.URI, primaryAnnotation);
     }
 
-    protected UriAnnotation(Integer id, SourceLine line, String comment, Tag tag, Annotation primaryAnnotation) throws Exception {
+    protected UriAnnotation(Long id, CommentLine line, String comment, Tag tag, Annotation primaryAnnotation) throws Exception {
         super(id, line, comment, tag, primaryAnnotation);
     }
     
