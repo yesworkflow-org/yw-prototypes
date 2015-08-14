@@ -17,8 +17,8 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         super.setUp();
         this.ywdb = YesWorkflowDB.createInMemoryDB();
         LanguageModel lm = new LanguageModel(Language.JAVA);
-        Source source = Source.newSource(this.ywdb, "__reader__");
-        matcher = new CommentMatcher(this.ywdb, source.id, lm);
+        Long sourceId = ywdb.insertSource("__reader__");
+        matcher = new CommentMatcher(this.ywdb, sourceId, lm);
     }
 
     public void test_Java_EmptySource()  throws IOException {

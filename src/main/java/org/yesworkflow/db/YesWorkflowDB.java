@@ -93,7 +93,7 @@ public abstract class YesWorkflowDB {
         return jooq;
     }
     
-    public Long insertSourceFile(String sourceFilePath) {
+    public Long insertSource(String sourceFilePath) {
 
         Long id = nextSourceId++;
         

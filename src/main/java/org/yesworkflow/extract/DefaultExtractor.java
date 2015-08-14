@@ -190,16 +190,16 @@ public class DefaultExtractor implements Extractor {
     private void extractLines() throws IOException, YWToolUsageException {
 
         if (sourceReader != null) {
-            Source source = Source.newSource(ywdb, null);
-            extractLinesFromReader(source.id, sourceReader, globalLanguageModel);
+            Long sourceId = ywdb.insertSource(null);
+            extractLinesFromReader(sourceId, sourceReader, globalLanguageModel);
         
         } else if (sourcePaths == null || 
                    sourcePaths.size() == 0 || 
                    sourcePaths.size() == 1 && (sourcePaths.get(0).trim().isEmpty() || 
                                                sourcePaths.get(0).trim().equals("-"))) {
             Reader reader = new InputStreamReader(System.in);
-            Source source = Source.newSource(ywdb, null);
-            extractLinesFromReader(source.id, new BufferedReader(reader), globalLanguageModel);
+            Long sourceId = ywdb.insertSource(null);
+            extractLinesFromReader(sourceId, new BufferedReader(reader), globalLanguageModel);
         
         } else {
             extractLinesFromSourceFiles();
@@ -209,7 +209,8 @@ public class DefaultExtractor implements Extractor {
     private void extractLinesFromSourceFiles() throws IOException, YWToolUsageException {
         
         for (String sourcePath : sourcePaths) {
-            Source source = Source.newSource(ywdb, sourcePath);
+
+            Long sourceId = ywdb.insertSource(sourcePath);
             LanguageModel languageModel = null;
             if (globalLanguageModel != null) {
                 languageModel = globalLanguageModel;
@@ -219,7 +220,7 @@ public class DefaultExtractor implements Extractor {
                     languageModel = new LanguageModel(language);
                 }
             }
-            extractLinesFromReader(source.id, getFileReaderForPath(sourcePath), languageModel);
+            extractLinesFromReader(sourceId, getFileReaderForPath(sourcePath), languageModel);
         }
     }
 
