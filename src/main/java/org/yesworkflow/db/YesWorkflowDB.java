@@ -96,20 +96,20 @@ public abstract class YesWorkflowDB {
 
         int id = nextSourceFileId++;
         
-        jooq.insertInto(Table.SOURCE_FILE, ID, PATH)
+        jooq.insertInto(Table.SOURCE, ID, PATH)
           .values(id, sourceFilePath)
           .execute();
         
         return id;
     }
     
-    public void insertAnnotation(int id, int sourceFileId, Integer qualifiedAnnotationId,
+    public void insertAnnotation(int id, int sourceId, Integer qualifiedAnnotationId,
             int lineNumber, String tag, String keyword, String value, String description) {
 
         jooq.insertInto(Table.ANNOTATION,
-                        ID, SOURCE_FILE_ID, QUALIFIES, LINE_NUMBER,
+                        ID, SOURCE_ID, QUALIFIES, LINE_NUMBER,
                         TAG, KEYWORD, VALUE, DESCRIPTION)
-          .values(id, sourceFileId, qualifiedAnnotationId, lineNumber, tag, keyword, value, description)
+          .values(id, sourceId, qualifiedAnnotationId, lineNumber, tag, keyword, value, description)
           .execute();
     }
     

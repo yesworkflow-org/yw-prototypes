@@ -9,14 +9,14 @@
   
 **************************************************************************************************/
 
-CREATE TABLE source_file (
+CREATE TABLE source (
     id              INTEGER         NOT NULL        PRIMARY KEY,
-    path            TEXT            NOT NULL
+    path            TEXT            NULL
 );
 
 CREATE TABLE annotation (
-    id              INTEGER         NOT NULL		PRIMARY KEY,
-    source_file_id  INTEGER         NULL            REFERENCES source_file(id),
+    id              INTEGER         NOT NULL        PRIMARY KEY,
+    source_id       INTEGER         NULL            REFERENCES source(id),
     qualifies       INTEGER         NULL            REFERENCES annotation(id),
     line_number     INTEGER         NULL,
     tag             TEXT            NOT NULL,

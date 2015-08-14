@@ -39,31 +39,31 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
     public void testCreateDBTables() throws Exception {
 //        YesWorkflowDB ywdb = YesWorkflowDB.openFileDB(testDirectoryPath.resolve("schema.db"));
         YesWorkflowDB ywdb = YesWorkflowDB.createInMemoryDB();
-        assertTrue(ywdb.hasTable(Table.SOURCE_FILE));
+        assertTrue(ywdb.hasTable(Table.SOURCE));
         ywdb.close();
     }
 
     @SuppressWarnings("rawtypes")
     public void testInsertSourceFile() throws Exception {
         YesWorkflowDB ywdb = YesWorkflowDB.createInMemoryDB();
-        assertEquals(0, ywdb.getRowCount(Table.SOURCE_FILE));
+        assertEquals(0, ywdb.getRowCount(Table.SOURCE));
         ywdb.insertSourceFile("source1");
-        assertEquals(1, ywdb.getRowCount(Table.SOURCE_FILE));
+        assertEquals(1, ywdb.getRowCount(Table.SOURCE));
         ywdb.insertSourceFile("source2");
-        assertEquals(2, ywdb.getRowCount(Table.SOURCE_FILE));
+        assertEquals(2, ywdb.getRowCount(Table.SOURCE));
         ywdb.insertSourceFile("source3");
-        assertEquals(3, ywdb.getRowCount(Table.SOURCE_FILE));
+        assertEquals(3, ywdb.getRowCount(Table.SOURCE));
         
         Result r = ywdb.jooq.select(ID, PATH)
-                            .from(Table.SOURCE_FILE)
+                            .from(Table.SOURCE)
                             .fetch();
         
         assertEquals(3, r.size());
-        assertEquals(1, (int) r.getValue(0, ID));
+        assertEquals(1, (long) r.getValue(0, ID));
         assertEquals("source1", (String) r.getValue(0, PATH));
-        assertEquals(2, (int) r.getValue(1, ID));
+        assertEquals(2, (long) r.getValue(1, ID));
         assertEquals("source2", (String) r.getValue(1, PATH));
-        assertEquals(3, (int) r.getValue(2, ID));
+        assertEquals(3, (long) r.getValue(2, ID));
         assertEquals("source3", (String) r.getValue(2, PATH));
     }
 
@@ -79,25 +79,25 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
         ywdb.insertAnnotation(3, 2, 1, 5,  "BEGIN", "begin", "q", null);
         ywdb.insertAnnotation(4, 2, 1, 15, "END",   "end",   "q", null);
         
-        assertEquals(2, ywdb.getRowCount(Table.SOURCE_FILE));
+        assertEquals(2, ywdb.getRowCount(Table.SOURCE));
         assertEquals(4, ywdb.getRowCount(Table.ANNOTATION));
 
         Result r = ywdb.jooq.select(ANNOTATION.ID, PATH, LINE_NUMBER, TAG, KEYWORD, VALUE)
                             .from(Table.ANNOTATION)
-                            .join(Table.SOURCE_FILE)
-                            .on(ANNOTATION.SOURCE_FILE_ID.equal(SOURCE_FILE.ID))
+                            .join(Table.SOURCE)
+                            .on(ANNOTATION.SOURCE_ID.equal(Column.SOURCE.ID))
                             .fetch();
 
         assertEquals(4, r.size());
 
-        assertEquals(1, r.getValue(0, ANNOTATION.ID));
+        assertEquals(1L, r.getValue(0, ANNOTATION.ID));
         assertEquals("source1", r.getValue(0, PATH));
-        assertEquals(10, r.getValue(0, LINE_NUMBER));
+        assertEquals(10L, r.getValue(0, LINE_NUMBER));
         assertEquals("begin", r.getValue(0, KEYWORD));
         
-        assertEquals(4, r.getValue(3, ANNOTATION.ID));
+        assertEquals(4L, r.getValue(3, ANNOTATION.ID));
         assertEquals("source2", r.getValue(3, PATH));
-        assertEquals(15, r.getValue(3, LINE_NUMBER));
+        assertEquals(15L, r.getValue(3, LINE_NUMBER));
         assertEquals("end", r.getValue(3, KEYWORD));
         
         assertEquals(

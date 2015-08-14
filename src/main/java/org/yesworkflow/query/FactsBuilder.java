@@ -60,7 +60,7 @@ public class FactsBuilder {
 
     // TODO Apply quotes only when required by facts file format
     private String quote(Object value) {
-        if (value instanceof Integer) {
+        if (value instanceof Number) {
             return value.toString();
         } else {
             return queryEngineModel.quote + value.toString() + queryEngineModel.quote;

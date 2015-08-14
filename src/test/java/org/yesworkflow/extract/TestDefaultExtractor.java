@@ -17,7 +17,7 @@ import org.yesworkflow.annotations.Out;
 import org.yesworkflow.db.Table;
 import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.db.Column.ANNOTATION;
-import org.yesworkflow.db.Column.SOURCE_FILE;
+import org.yesworkflow.db.Column.SOURCE;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.util.FileIO;
 import org.yesworkflow.YesWorkflowTestCase;
@@ -40,7 +40,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
     private Result selectSourceFile() {
         
         return ywdb.jooq().select(ID, PATH)
-                          .from(Table.SOURCE_FILE)
+                          .from(Table.SOURCE)
                           .fetch();
     }
 
@@ -48,8 +48,8 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         return ywdb.jooq().select(ANNOTATION.ID, PATH, QUALIFIES, LINE_NUMBER, TAG, KEYWORD, VALUE, DESCRIPTION)
                           .from(Table.ANNOTATION)
-                          .join(Table.SOURCE_FILE)
-                          .on(ANNOTATION.SOURCE_FILE_ID.equal(SOURCE_FILE.ID))
+                          .join(Table.SOURCE)
+                          .on(ANNOTATION.SOURCE_ID.equal(SOURCE.ID))
                           .fetch();
     }
     

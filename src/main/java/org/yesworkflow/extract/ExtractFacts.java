@@ -59,11 +59,11 @@ public class ExtractFacts {
     private void buildSourceFileFacts() {
         
         Result<Record> results = ywdb.jooq().select(ID, PATH)
-                                     .from(Table.SOURCE_FILE)
+                                     .from(Table.SOURCE)
                                      .fetch();
         
         for (Record record : results) {
-            int id = (int)record.getValue(ID);
+            long id = (long)record.getValue(ID);
             String path = (String)record.getValue(PATH);
             if (path == null) path = "";
             sourceFileFacts.add(id, path);
