@@ -44,7 +44,7 @@ public class DefaultExtractor implements Extractor {
     private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;
     private BufferedReader sourceReader = null;
     private List<String> sourcePaths;
-    private List<CommentLine> lines;
+    private List<Comment> lines;
     private List<String> comments;
     private List<Annotation> allAnnotations;
     private List<Annotation> primaryAnnotations;
@@ -74,7 +74,7 @@ public class DefaultExtractor implements Extractor {
         this.stderrStream = stderrStream;
         this.keywordMapping = new YWKeywords();
         this.keywordMatcher = new KeywordMatcher(keywordMapping.getKeywords());
-        this.lines = new LinkedList<CommentLine>();
+        this.lines = new LinkedList<Comment>();
     }
 
     @Override
@@ -130,7 +130,7 @@ public class DefaultExtractor implements Extractor {
     }
 
     @Override
-    public List<CommentLine> getLines() {
+    public List<Comment> getLines() {
         return lines;
     }
 
@@ -246,17 +246,17 @@ public class DefaultExtractor implements Extractor {
         
         // extract all comments from script using the language model
         CommentMatcher commentMatcher = new CommentMatcher(ywdb, sourceId, languageModel);
-        List<CommentLine> allCommentLines = commentMatcher.getCommentsAsLines(reader);
+        List<Comment> allComments = commentMatcher.getCommentsAsLines(reader);
 
         // select only the comments that contain YW keywords,
         // trimming characters preceding the first YW keyword in each
-        lines.addAll(keywordMatcher.match(allCommentLines, true));
+        lines.addAll(keywordMatcher.match(allComments, true));
     }
 
     private void writeCommentListing() throws IOException {
         if (commentListingPath != null) {
             StringBuffer linesBuffer = new StringBuffer();
-            for (CommentLine line : lines) {
+            for (Comment line : lines) {
                 linesBuffer.append(line.text);
                 linesBuffer.append(System.getProperty("line.separator"));
             }
@@ -286,7 +286,7 @@ public class DefaultExtractor implements Extractor {
         primaryAnnotations = new LinkedList<Annotation>();
         Annotation primaryAnnotation = null;
         
-        for (CommentLine sourceLine : lines) {
+        for (Comment sourceLine : lines) {
         	List<String> commentsOnLine = findCommentsOnLine(sourceLine.text, keywordMatcher);
         	for (String comment : commentsOnLine) {
         		comments.add(comment);

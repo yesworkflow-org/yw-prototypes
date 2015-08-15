@@ -25,6 +25,7 @@ public abstract class YesWorkflowDB {
     protected DSLContext jooq;
     
     private Long nextCodeId = 1L;
+    private Long nextCommentId = 1L;
     private Long nextSourceId = 1L;
     
     private static YesWorkflowDB globalInstance = null;
@@ -110,6 +111,17 @@ public abstract class YesWorkflowDB {
 
         jooq.insertInto(Table.CODE, ID, SOURCE_ID, LINE_NUMBER, LINE)
             .values(id, sourceId, lineNumber, line)
+            .execute();
+        
+        return id;
+    }
+
+    public Long insertComment(Long sourceId, Long lineNumber, Long rank, String text) {
+
+        Long id = nextCommentId++;
+
+        jooq.insertInto(Table.COMMENT, ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
+            .values(id, sourceId, lineNumber, rank, text)
             .execute();
         
         return id;

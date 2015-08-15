@@ -1,17 +1,40 @@
 package org.yesworkflow.extract;
 
-import java.io.IOException;
+import static org.yesworkflow.db.Column.*;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
+import org.jooq.Record;
+import org.jooq.Result;
 import org.yesworkflow.Language;
 import org.yesworkflow.LanguageModel;
 import org.yesworkflow.YesWorkflowTestCase;
+import org.yesworkflow.db.Table;
 import org.yesworkflow.db.YesWorkflowDB;
+import org.yesworkflow.util.FileIO;
 
 public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
 
     private CommentMatcher matcher;
     private YesWorkflowDB ywdb = null;
 
+    @SuppressWarnings("unchecked")
+    private Result<Record> selectCode() {
+        return ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, LINE)
+                          .from(Table.CODE)
+                          .orderBy(SOURCE_ID, LINE_NUMBER)
+                          .fetch();
+    }
+
+    @SuppressWarnings("unchecked")
+    private Result<Record> selectComment() {
+        return ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
+                          .from(Table.COMMENT)
+                          .orderBy(SOURCE_ID, LINE_NUMBER, RANK)
+                          .fetch();
+    }
+    
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -33,18 +56,46 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         assertEquals("", comments);
     }
 
-    public void test_SAS_BlankSource_MultiLine()  throws IOException {
+    public void test_SAS_BlankSource_MultiLine()  throws IOException, SQLException {
         String source = "           "  + EOL +
                         "           "  + EOL +
                         "           "  + EOL;
         String comments = matcher.getCommentsAsString(source);
         assertEquals("", comments);
+        
+        assertEquals(
+                "+----+---------+-----------+-----------+"  + EOL +
+                "|id  |source_id|line_number|line       |"  + EOL +
+                "+----+---------+-----------+-----------+"  + EOL +
+                "|1   |1        |1          |           |"  + EOL +
+                "|2   |1        |2          |           |"  + EOL +
+                "|3   |1        |3          |           |"  + EOL +
+                "+----+---------+-----------+-----------+",
+                FileIO.localizeLineEndings(selectCode().toString()));
+        
+        assertEquals(0, ywdb.getRowCount(Table.COMMENT));
     }
     
     public void test_SAS_OneFullLineComment_JavaStyle()  throws IOException {
         String source = "  /* a comment */ ";
         String comments = matcher.getCommentsAsString(source);
         assertEquals("a comment"    + EOL, comments);
+                
+        assertEquals(
+                "+----+---------+-----------+------------------+"  + EOL +
+                "|id  |source_id|line_number|line              |"  + EOL +
+                "+----+---------+-----------+------------------+"  + EOL +
+                "|1   |1        |1          |  /* a comment */ |"  + EOL +
+                "+----+---------+-----------+------------------+",
+                FileIO.localizeLineEndings(selectCode().toString()));
+
+        assertEquals(
+                "+----+---------+-----------+----+---------+"   + EOL +
+                "|id  |source_id|line_number|rank|text     |"   + EOL +
+                "+----+---------+-----------+----+---------+"   + EOL +
+                "|1   |1        |1          |1   |a comment|"   + EOL +
+                "+----+---------+-----------+----+---------+",
+                FileIO.localizeLineEndings(selectComment().toString()));
     }
 
     public void test_SAS_OneFullLineComment_SASStyle()  throws IOException {

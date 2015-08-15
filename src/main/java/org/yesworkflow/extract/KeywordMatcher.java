@@ -34,14 +34,14 @@ public class KeywordMatcher {
      *  @param trim Characters preceding first keyword in each line are trimmed if true.
      *  @return The collection of (optionally trimmed) comment lines containing YW keywords. 
      */
-    public List<CommentLine> match(List<CommentLine> lines, boolean trim) {
+    public List<Comment> match(List<Comment> lines, boolean trim) {
 
-        List<CommentLine> matchingLines = new LinkedList<CommentLine>();
+        List<Comment> matchingLines = new LinkedList<Comment>();
         
-        for (CommentLine line : lines) {
+        for (Comment line : lines) {
             String matchedLine = match(line.text, trim);
             if (matchedLine != null) {
-                matchingLines.add(new CommentLine(line.lineId, line.sourceId, line.lineNumber, matchedLine));
+                matchingLines.add(new Comment(line.lineId, line.sourceId, line.lineNumber, matchedLine));
             }
         }
         

@@ -13,8 +13,10 @@ public class Column {
     public static Field LINE_NUMBER     = field("line_number");
     public static Field PATH            = field("path");
     public static Field QUALIFIES       = field("qualifies");
+    public static Field RANK            = field("rank");
     public static Field SOURCE_ID       = field("source_id");
     public static Field TAG             = field("tag");
+    public static Field TEXT            = field("text");
     public static Field KEYWORD         = field("keyword");
     public static Field VALUE           = field("value");
     

@@ -1,11 +1,11 @@
 package org.yesworkflow.annotations;
 
 import org.yesworkflow.YesWorkflowTestCase;
-import org.yesworkflow.extract.CommentLine;
+import org.yesworkflow.extract.Comment;
 
 public class TestOutWithUri extends YesWorkflowTestCase {
     
-    private static final CommentLine line = new CommentLine(1L, 1L, 1L, "");
+    private static final Comment line = new Comment(1L, 1L, 1L, "");
     
     @Override
     public void setUp() throws Exception {

@@ -21,6 +21,14 @@ CREATE TABLE code (
     line            TEXT            NOT NULL
 );
 
+CREATE TABLE comment (
+    id              INTEGER         NOT NULL        PRIMARY KEY,
+    source_id       INTEGER         NOT NULL        REFERENCES source(id),
+    line_number     INTEGER         NOT NULL,
+    rank            INTEGER         NOT NULL,
+    text            TEXT            NOT NULL
+);
+
 CREATE TABLE annotation (
     id              INTEGER         NOT NULL        PRIMARY KEY,
     source_id       INTEGER         NULL            REFERENCES source(id),

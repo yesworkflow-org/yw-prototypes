@@ -42,19 +42,6 @@ public class CommentMatcher {
         this.buffer = new StringBuffer();
     }
     
-    /** Extracts the contents of all comments found in the provided source code,
-     *  and returns each line of each comment as a string.  Comments that span multiple lines
-     *  in the source are represented as multiple strings in the return value.
-     * 
-     * @param source A String containing the entire source code to analyze.
-     * @return  A List of Strings representing the comments in the source code.
-     * @throws IOException 
-     */
-    public List<CommentLine> getCommentsAsLines(String source) throws IOException {    
-        BufferedReader reader = new BufferedReader(new StringReader(source));
-        return getCommentsAsLines(reader);
-    }
-    
     /** Extracts the contents of all comments found in the source code provided via
      *  a {@link java.io.BufferedReader BufferedReader}
      *  and returns each line of each comment as a string.  Comments that span multiple lines
@@ -64,29 +51,28 @@ public class CommentMatcher {
      * @return  A List of Strings representing the comments in the source code.
      * @throws IOException 
      */
-    public List<CommentLine> getCommentsAsLines(BufferedReader reader) throws IOException {
+    public List<Comment> getCommentsAsLines(BufferedReader reader) throws IOException {
 
         String line;
         Long lineNumber = 1L;
-        List<CommentLine> commentLines = new LinkedList<CommentLine>();
+        List<Comment> commentLines = new LinkedList<Comment>();
         lastFullMatch = null;
         
         while ((line = reader.readLine()) != null) {
-            
             ywdb.insertCode(sourceId, lineNumber, line);
-            
-            StringBuffer commentLineText = new StringBuffer();        
+            StringBuffer commentLineText = new StringBuffer();
+            Long rank = 1L;
             for (int i = 0; i < line.length(); ++i) {
                 int c = line.charAt(i);
                 String newCommentChars = processNextChar((char)c);
                 commentLineText.append(newCommentChars);
                 if (newCommentChars.equals(EOL)) {
-                    addCommentLineToResult(commentLineText.toString(), lineNumber, commentLines);
+                    addCommentLineToResult(commentLineText.toString(), lineNumber, rank, commentLines);
                     commentLineText = new StringBuffer();            
                 }
             }
             commentLineText.append(processNextChar('\n'));
-            addCommentLineToResult(commentLineText.toString(), lineNumber++, commentLines);
+            addCommentLineToResult(commentLineText.toString(), lineNumber++, rank, commentLines);
         }
         
         return commentLines;
@@ -102,21 +88,21 @@ public class CommentMatcher {
      * @throws IOException 
      */
     public String getCommentsAsString(String source) throws IOException {
-        
+        BufferedReader reader = new BufferedReader(new StringReader(source));
         StringBuffer comments = new StringBuffer();
-        for (CommentLine cl : getCommentsAsLines(source)) {
+        for (Comment cl : getCommentsAsLines(reader)) {
             comments.append(cl.text);
             comments.append(EOL);
         }
-        
         return comments.toString();
     }
     
     /** Helper method for accumulating non-blank comment lines. */
-    private void addCommentLineToResult(String line, Long sourceLineNumber, List<CommentLine> accumulatedLines) {
+    private void addCommentLineToResult(String line, Long lineNumber, Long rank, List<Comment> accumulatedLines) {
         String trimmedCommentLine = line.toString().trim();
         if (trimmedCommentLine.length() > 0) {
-            CommentLine commentLine = new CommentLine(nextLineId++, sourceId, sourceLineNumber, trimmedCommentLine);
+            Comment commentLine = new Comment(nextLineId++, sourceId, lineNumber, trimmedCommentLine);
+            ywdb.insertComment(sourceId, lineNumber, rank++, trimmedCommentLine);
             accumulatedLines.add(commentLine);
         }
     }
