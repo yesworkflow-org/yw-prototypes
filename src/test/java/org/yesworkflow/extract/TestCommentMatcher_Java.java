@@ -26,13 +26,13 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
     public void test_Java_EmptySource()  throws IOException {
         String source = "";
         matcher.extractComments(source);
-        assertEquals("", CommentMatcher.commentsAsString(ywdb));
+        assertEquals("", DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_Java_BlankSource_OneLine()  throws IOException {
         String source = "           ";
         matcher.extractComments(source);
-        assertEquals("", CommentMatcher.commentsAsString(ywdb));
+        assertEquals("", DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_Java_BlankSource_MultiLine()  throws IOException {
@@ -40,13 +40,13 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                         "           "  + EOL +
                         "           "  + EOL;
         matcher.extractComments(source);
-        assertEquals("", CommentMatcher.commentsAsString(ywdb));
+        assertEquals("", DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_Java_OneFullLineComment()  throws IOException {
         String source = "  // a comment ";
         matcher.extractComments(source);
-        assertEquals("a comment"    + EOL, CommentMatcher.commentsAsString(ywdb));
+        assertEquals("a comment"    + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_Java_TwoFullLineComment()  throws IOException {
@@ -55,7 +55,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_Java_TwoSeparatedComments()  throws IOException {
@@ -65,7 +65,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_Java_MixedCodeAndOneLineComments() throws IOException {
@@ -78,13 +78,13 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_Java_OnePartialLineComment()  throws IOException {
         String source = "  some code // a comment ";
         matcher.extractComments(source);
-        assertEquals("a comment" + EOL, CommentMatcher.commentsAsString(ywdb));
+        assertEquals("a comment" + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_Java_TwoPartialLineComment()  throws IOException {
@@ -93,13 +93,13 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_Java_OneFullLineComment_Delimited()  throws IOException {
         String source = "  /* a comment */ ";
         matcher.extractComments(source);
-        assertEquals("a comment"    + EOL, CommentMatcher.commentsAsString(ywdb));
+        assertEquals("a comment"    + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_Java_TwoFullLineComment_Delimited()  throws IOException {
@@ -108,7 +108,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_Java_TwoLineComment_Delimited()  throws IOException {
@@ -117,7 +117,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_Java_TwoSeparatedComments_Delimited()  throws IOException {
@@ -127,7 +127,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_Java_TwoMultilineComments()  throws IOException {
@@ -141,7 +141,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                      "on two lines"     + EOL +
                      "another comment"  + EOL +
                      "on two lines"     + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_Java_TwoMultilineComments_WithBlankCommentLines()  throws IOException {
@@ -153,7 +153,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_Java_MixedCodeAndOneLineComments_Delimited() throws IOException {
@@ -166,7 +166,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_Java_MixedCodeAndOneLineComments_MultilineComments() throws IOException {
@@ -185,13 +185,13 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                      "another comment"  + EOL +
                      "this one is on"   + EOL +
                      "three lines"      + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
    
     public void test_Java_OnePartialLineComment_Delimited()  throws IOException {
         String source = "  some code /* a comment*/ ";
         matcher.extractComments(source);
-        assertEquals("a comment" + EOL,  CommentMatcher.commentsAsString(ywdb));
+        assertEquals("a comment" + EOL,  DefaultExtractor.commentsAsString(ywdb));
     }
    
     public void test_Java_OnePartialLineComment_SpansTwoLines()  throws IOException {
@@ -200,7 +200,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment" + EOL +
                      "the rest of the comment" + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_Java_TwoPartialLineComment_Delimited()  throws IOException {
@@ -209,7 +209,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_Java_TwoPartialLineComments_OneOneLine()  throws IOException {
@@ -217,7 +217,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment" + EOL +
                      "another comment" + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_Java_ThreeCommentsOnOneLine()  throws IOException {
@@ -226,6 +226,6 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         assertEquals("one" + EOL +
                      "two" + EOL +
                      "three" + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }    
 }

@@ -4,13 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 
-import org.jooq.Record;
-import org.jooq.Result;
 import org.yesworkflow.LanguageModel;
-import org.yesworkflow.db.Table;
 import org.yesworkflow.db.YesWorkflowDB;
-
-import static org.yesworkflow.db.Column.*;
 
 /** Class for matching and retrieving comments from source code implemented
  *  in a particular programming language.  Uses a simple finite state machine
@@ -19,7 +14,7 @@ import static org.yesworkflow.db.Column.*;
  */
 public class CommentMatcher {
 
-    private static final String EOL = System.getProperty("line.separator");
+    static final String EOL = System.getProperty("line.separator");
     
     private YesWorkflowDB ywdb;
     private long sourceId;
@@ -40,7 +35,6 @@ public class CommentMatcher {
         this.keywordMatcher = keywordMatcher;
         this.sourceId = sourceId;
         this.languageModel = languageModel;
-        this.currentState = State.IN_CODE;
         this.commentStartToken = null;
         this.buffer = new StringBuffer();
     }
@@ -59,6 +53,7 @@ public class CommentMatcher {
         String line;
         Long lineNumber = 1L;
         lastFullMatch = null;
+        currentState = State.IN_CODE;
         
         while ((line = reader.readLine()) != null) {
             ywdb.insertCode(sourceId, lineNumber, line);
@@ -83,30 +78,7 @@ public class CommentMatcher {
     }
         
     
-    /** Extracts the contents of all comments found in the provided source code,
-     *  and returns all of the comments as a single string.  The comments are separated
-     *  by end-of-line characters in the returned String. Comments that span multiple 
-     *  lines in the source are represented as multiple lines.
-     * 
-     * @param source A String containing the entire source code to analyze.
-     * @return  A Strings containing all the comments in the source code.
-     * @throws IOException 
-     */
-    @SuppressWarnings("unchecked")
-    public static String commentsAsString(YesWorkflowDB ywdb) throws IOException {
-        StringBuffer comments = new StringBuffer();
-        Result<Record> rows = ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
-                                         .from(Table.COMMENT)
-                                         .orderBy(ID, LINE_NUMBER, RANK)
-                                         .fetch();
-        for (Record row : rows) {
-            comments.append(row.getValue(TEXT));
-            comments.append(EOL);
-        }
-        return comments.toString();
-    }
-    
-    /** Helper method for accumulating non-blank comments */
+    /** Helper method for inserting non-blank comments in YesWorkflow DB */
     private void insertTrimmedComment(String commentText, Long lineNumber, Long rank) {
         String trimmedCommentText = commentText.toString().trim();
         if (trimmedCommentText.length() > 0) {

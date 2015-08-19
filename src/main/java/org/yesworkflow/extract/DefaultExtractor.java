@@ -247,7 +247,7 @@ public class DefaultExtractor implements Extractor {
         
     private void writeCommentListing() throws IOException {
         if (commentListingPath != null) {
-            writeTextToFileOrStdout(commentListingPath, CommentMatcher.commentsAsString(ywdb));
+            writeTextToFileOrStdout(commentListingPath, DefaultExtractor.commentsAsString(ywdb));
         }
     }
 
@@ -411,5 +411,19 @@ public class DefaultExtractor implements Extractor {
         
         // if all else fails use the default comment delimiter
         return "#";
+    }
+
+    @SuppressWarnings("unchecked")
+    public static String commentsAsString(YesWorkflowDB ywdb) throws IOException {
+        StringBuffer comments = new StringBuffer();
+        Result<Record> rows = ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
+                                         .from(Table.COMMENT)
+                                         .orderBy(ID, LINE_NUMBER, RANK)
+                                         .fetch();
+        for (Record row : rows) {
+            comments.append(row.getValue(TEXT));
+            comments.append(CommentMatcher.EOL);
+        }
+        return comments.toString();
     }
 }

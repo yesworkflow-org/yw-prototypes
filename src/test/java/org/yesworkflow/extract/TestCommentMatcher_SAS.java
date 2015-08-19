@@ -49,13 +49,13 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
     public void test_SAS_EmptySource()  throws IOException {
         String source = "";
         matcher.extractComments(source);
-        assertEquals("", CommentMatcher.commentsAsString(ywdb));
+        assertEquals("", DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_BlankSource_OneLine()  throws IOException {
         String source = "           ";
         matcher.extractComments(source);
-        assertEquals("", CommentMatcher.commentsAsString(ywdb));
+        assertEquals("", DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_BlankSource_MultiLine()  throws IOException, SQLException {
@@ -63,7 +63,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
                         "           "  + EOL +
                         "           "  + EOL;
         matcher.extractComments(source);
-        assertEquals("", CommentMatcher.commentsAsString(ywdb));
+        assertEquals("", DefaultExtractor.commentsAsString(ywdb));
         
         assertEquals(
                 "+----+---------+-----------+-----------+"  + EOL +
@@ -81,7 +81,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
     public void test_SAS_OneFullLineComment_JavaStyle()  throws IOException {
         String source = "  /* a comment */ ";
         matcher.extractComments(source);
-        assertEquals("a comment"    + EOL, CommentMatcher.commentsAsString(ywdb));
+        assertEquals("a comment"    + EOL, DefaultExtractor.commentsAsString(ywdb));
                 
         assertEquals(
                 "+----+---------+-----------+------------------+"  + EOL +
@@ -103,7 +103,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
     public void test_SAS_OneFullLineComment_SASStyle()  throws IOException {
         String source = "  * a comment ; ";
         matcher.extractComments(source);
-        assertEquals("a comment"    + EOL, CommentMatcher.commentsAsString(ywdb));
+        assertEquals("a comment"    + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
 
     
@@ -113,7 +113,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_TwoFullLineComment_SASStyle()  throws IOException {
@@ -122,7 +122,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_TwoLineComment_JavaStyle()  throws IOException {
@@ -131,7 +131,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_TwoLineComment_SASStyle()  throws IOException {
@@ -140,7 +140,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_SAS_TwoSeparatedComments_JavaStyle()  throws IOException {
@@ -150,7 +150,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_TwoSeparatedComments_SASStyle()  throws IOException {
@@ -160,7 +160,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_TwoMultilineComments_JavaStyle()  throws IOException {
@@ -174,7 +174,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
                      "on two lines"     + EOL +
                      "another comment"  + EOL +
                      "on two lines"     + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_SAS_TwoMultilineComments_SASStyle()  throws IOException {
@@ -188,7 +188,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
                      "on two lines"     + EOL +
                      "another comment"  + EOL +
                      "on two lines"     + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_TwoMultilineComments_WithBlankCommentLines_JavaStyle()  throws IOException {
@@ -200,7 +200,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_TwoMultilineComments_WithBlankCommentLines_SASStyle()  throws IOException {
@@ -212,7 +212,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }   
     
     public void test_SAS_MixedCodeAndOneLineComments_Delimited_JavaStyle() throws IOException {
@@ -225,7 +225,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_SAS_MixedCodeAndOneLineComments_Delimited_SASStyle() throws IOException {
@@ -238,7 +238,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_SAS_MixedCodeAndOneLineComments_MultilineComments_JavaStyle() throws IOException {
@@ -257,7 +257,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
                      "another comment"  + EOL +
                      "this one is on"   + EOL +
                      "three lines"      + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_SAS_MixedCodeAndOneLineComments_MultilineComments_SASStyle() throws IOException {
@@ -276,19 +276,19 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
                      "another comment"  + EOL +
                      "this one is on"   + EOL +
                      "three lines"      + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
    
     public void test_SAS_OnePartialLineComment_JavaStyle()  throws IOException {
         String source = "  some code /* a comment*/ ";
         matcher.extractComments(source);
-        assertEquals("a comment" + EOL, CommentMatcher.commentsAsString(ywdb));
+        assertEquals("a comment" + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_OnePartialLineComment_SASStyle()  throws IOException {
         String source = "  some code * a comment; ";
         matcher.extractComments(source);
-        assertEquals("a comment" + EOL, CommentMatcher.commentsAsString(ywdb));
+        assertEquals("a comment" + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_OnePartialLineComment_SpansTwoLines_JavaStyle()  throws IOException {
@@ -297,7 +297,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment" + EOL +
                      "the rest of the comment" + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_OnePartialLineComment_SpansTwoLines_SASStyle()  throws IOException {
@@ -306,7 +306,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment" + EOL +
                      "the rest of the comment" + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_TwoPartialLineComment_JavaStyle()  throws IOException {
@@ -315,7 +315,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_TwoPartialLineComment_SASStyle()  throws IOException {
@@ -324,7 +324,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_TwoPartialLineComments_JavaStyle()  throws IOException {
@@ -332,7 +332,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment" + EOL +
                      "another comment" + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_TwoPartialLineComments_SASStyle()  throws IOException {
@@ -340,7 +340,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment" + EOL +
                      "another comment" + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_TwoPartialLineComments_MixedStyle()  throws IOException {
@@ -348,7 +348,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment */ more code" + EOL +
                      "another comment ;" + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_SAS_ThreeCommentsOnOneLine_JavaStyle()  throws IOException {
@@ -357,7 +357,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         assertEquals("one" + EOL +
                      "two" + EOL +
                      "three" + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
     
     public void test_SAS_ThreeCommentsOnOneLine_MixedStyles()  throws IOException {
@@ -365,7 +365,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("one" + EOL +
                      "two ; /* three" + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }
 
     public void test_SAS_ThreeCommentsOnOneLine_SASStyle()  throws IOException {
@@ -374,6 +374,6 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         assertEquals("one" + EOL +
                      "two" + EOL +
                      "three" + EOL,
-                     CommentMatcher.commentsAsString(ywdb));
+                     DefaultExtractor.commentsAsString(ywdb));
     }    
 }
