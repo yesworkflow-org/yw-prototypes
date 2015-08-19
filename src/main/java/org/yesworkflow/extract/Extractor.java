@@ -15,8 +15,6 @@ public interface Extractor extends YWStage {
     Extractor reader(Reader reader);
     Extractor extract() throws Exception;
     Language getLanguage();
-    List<Comment> getLines();
-    List<String> getComments();
     String getSkeleton();
     List<Annotation> getAnnotations();
     String getFacts(QueryEngineModel qem);

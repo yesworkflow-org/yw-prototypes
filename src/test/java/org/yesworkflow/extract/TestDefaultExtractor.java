@@ -45,12 +45,14 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                           .fetch();
     }
 
-    private Result joinAnnotationWithSourceFile() {
+    private Result annotationJoinCommentJoinSourceFile() {
         
         return ywdb.jooq().select(ANNOTATION.ID, PATH, QUALIFIES, LINE_NUMBER, TAG, KEYWORD, VALUE, DESCRIPTION)
                           .from(Table.ANNOTATION)
+                          .join(Table.COMMENT)
+                          .on(ANNOTATION.COMMENT_ID.equal(COMMENT.ID))
                           .join(Table.SOURCE)
-                          .on(ANNOTATION.SOURCE_ID.equal(SOURCE.ID))
+                          .on(COMMENT.SOURCE_ID.equal(SOURCE.ID))
                           .orderBy(SOURCE.ID, LINE_NUMBER)
                           .fetch();
     }
@@ -64,8 +66,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<Comment> commentLines = extractor.getLines();
-        assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
         
@@ -89,8 +89,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<Comment> commentLines = extractor.getLines();
-        assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
         
@@ -114,8 +112,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<Comment> commentLines = extractor.getLines();
-        assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
 
@@ -140,8 +136,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<Comment> commentLines = extractor.getLines();
-        assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
 
@@ -165,8 +159,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<Comment> commentLines = extractor.getLines();
-        assertEquals(0,commentLines.size());
         assertEquals("", super.stdoutBuffer.toString());
         assertEquals("WARNING: No YW comments found in source code." + EOL, super.stderrBuffer.toString());
 
@@ -199,13 +191,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<Comment> commentLines = extractor.getLines();
-        assertEquals(4,commentLines.size());
-        assertEquals("@begin step", commentLines.get(0).text);
-        assertEquals("@in x", commentLines.get(1).text);
-        assertEquals("@out y", commentLines.get(2).text);
-        assertEquals("@end step", commentLines.get(3).text);
-        
         assertEquals(
             "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
             "|annotation.id|path  |qualifies|line_number|tag  |keyword|value|description|"  + EOL +
@@ -215,7 +200,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
             "|3            |{null}|{null}   |6          |OUT  |@out   |y    |{null}     |"  + EOL +
             "|4            |{null}|{null}   |9          |END  |@end   |step |{null}     |"  + EOL +
             "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
-            FileIO.localizeLineEndings(joinAnnotationWithSourceFile().toString()));
+            FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));
     }
 
     public void testExtract_GetCommentLines_MultipleComments_Slash() throws Exception {
@@ -239,13 +224,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         extractor.reader(reader)
                  .extract();
         
-        List<Comment> commentLines = extractor.getLines();
-        assertEquals(4, commentLines.size());
-        assertEquals("@begin step", commentLines.get(0).text);
-        assertEquals("@in x", commentLines.get(1).text);
-        assertEquals("@out y", commentLines.get(2).text);
-        assertEquals("@end step", commentLines.get(3).text);
-
         assertEquals(
             "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
             "|annotation.id|path  |qualifies|line_number|tag  |keyword|value|description|"  + EOL +
@@ -255,7 +233,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
             "|3            |{null}|{null}   |6          |OUT  |@out   |y    |{null}     |"  + EOL +
             "|4            |{null}|{null}   |9          |END  |@end   |step |{null}     |"  + EOL +
             "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
-            FileIO.localizeLineEndings(joinAnnotationWithSourceFile().toString()));
+            FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));
     }
 
     public void testExtract_GetComments_MultipleComments() throws Exception {
@@ -275,14 +253,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         extractor.reader(reader)
                  .extract();
-        
-        List<String> comments = extractor.getComments();
-
-        assertEquals(4, comments.size());
-        assertEquals("@begin step", comments.get(0));
-        assertEquals("@in x", comments.get(1));
-        assertEquals("@param y", comments.get(2));
-        assertEquals("@end step", comments.get(3));
 
         assertEquals(
             "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
@@ -293,7 +263,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
             "|3            |{null}|{null}   |6          |PARAM|@param |y    |{null}     |"  + EOL +
             "|4            |{null}|{null}   |9          |END  |@end   |step |{null}     |"  + EOL +
             "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
-            FileIO.localizeLineEndings(joinAnnotationWithSourceFile().toString()));
+            FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));
     }
     
     public void testExtract_GetComments_MultipleComments_WithAliasesOnSameLines() throws Exception {
@@ -312,17 +282,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         extractor.reader(reader)
-                 .extract();
-        
-        List<String> comments = extractor.getComments();
-
-        assertEquals(6, comments.size());
-        assertEquals("@begin step", comments.get(0));
-        assertEquals("@in x", comments.get(1));
-        assertEquals("@as horiz", comments.get(2));
-        assertEquals("@param y", comments.get(3));
-        assertEquals("@as vert", comments.get(4));
-        assertEquals("@end step", comments.get(5));        
+                 .extract();      
 
         assertEquals(
             "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
@@ -335,7 +295,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
             "|5            |{null}|4        |6          |AS   |@as    |vert |{null}     |"  + EOL +
             "|6            |{null}|{null}   |9          |END  |@end   |step |{null}     |"  + EOL +
             "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
-            FileIO.localizeLineEndings(joinAnnotationWithSourceFile().toString()));
+            FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));
     }
     
     
@@ -357,17 +317,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         BufferedReader reader = new BufferedReader(new StringReader(source));
         
         extractor.reader(reader)
-                 .extract();
-        
-        List<String> comments = extractor.getComments();
-
-        assertEquals(6, comments.size());
-        assertEquals("@begin step", comments.get(0));
-        assertEquals("@in x", comments.get(1));
-        assertEquals("@as horiz", comments.get(2));
-        assertEquals("@param y", comments.get(3));
-        assertEquals("@as vert", comments.get(4));
-        assertEquals("@end step", comments.get(5));        
+                 .extract();       
 
         assertEquals(
             "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
@@ -380,7 +330,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
             "|5            |{null}|4        |8          |AS   |@as    |vert |{null}     |"  + EOL +
             "|6            |{null}|{null}   |11         |END  |@end   |step |{null}     |"  + EOL +
             "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
-            FileIO.localizeLineEndings(joinAnnotationWithSourceFile().toString()));
+            FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));
     }
     
     public void testExtract_GetComments_MultipleCommentsOnOneLine() throws Exception {
@@ -391,16 +341,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         
         extractor.reader(reader)
                  .extract();
-        
-        List<String> comments = extractor.getComments();
-
-        assertEquals(6, comments.size());
-        assertEquals("@begin step", comments.get(0));
-        assertEquals("@in x", comments.get(1));
-        assertEquals("@as horiz", comments.get(2));
-        assertEquals("@param y", comments.get(3));
-        assertEquals("@as vert", comments.get(4));
-        assertEquals("@end step", comments.get(5));
         
         assertEquals(
             "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
@@ -413,7 +353,7 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
             "|5            |{null}|4        |1          |AS   |@as    |vert |{null}     |"  + EOL +
             "|6            |{null}|{null}   |1          |END  |@end   |step |{null}     |"  + EOL +
             "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
-            FileIO.localizeLineEndings(joinAnnotationWithSourceFile().toString()));
+            FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));
         
         
     }
@@ -467,6 +407,6 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
             "|3            |{null}|{null}   |6          |OUT  |@out   |y    |{null}     |"  + EOL +
             "|4            |{null}|{null}   |9          |END  |@end   |step |{null}     |"  + EOL +
             "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
-            FileIO.localizeLineEndings(joinAnnotationWithSourceFile().toString()));    
+            FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));    
     }
 }

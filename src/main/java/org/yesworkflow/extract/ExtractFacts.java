@@ -76,8 +76,8 @@ public class ExtractFacts {
             
             annotationFacts.add(
                     annotation.id, 
-                    annotation.line.sourceId, 
-                    annotation.line.lineNumber, 
+                    annotation.sourceId, 
+                    annotation.lineNumber, 
                     annotation.tag.toString().toLowerCase(),
                     annotation.keyword, 
                     annotation.name

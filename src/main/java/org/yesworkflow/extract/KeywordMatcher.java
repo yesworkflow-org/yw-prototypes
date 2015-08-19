@@ -2,8 +2,6 @@ package org.yesworkflow.extract;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -25,27 +23,6 @@ public class KeywordMatcher {
      */
     public KeywordMatcher(Collection<String> keywords) {
         this.keywords.addAll(keywords);
-    }
-
-    /** Searches a list of comment lines for YW keywords and returns the 
-     *  lines in which a keyword is found.  Trims characters
-     *  preceding the first keyword in each returned comment line if requested.
-     *  @param lines The collection of comment lines to search for YW keywords.  
-     *  @param trim Characters preceding first keyword in each line are trimmed if true.
-     *  @return The collection of (optionally trimmed) comment lines containing YW keywords. 
-     */
-    public List<Comment> match(List<Comment> lines, boolean trim) {
-
-        List<Comment> matchingLines = new LinkedList<Comment>();
-        
-        for (Comment line : lines) {
-            String matchedLine = match(line.text, trim);
-            if (matchedLine != null) {
-                matchingLines.add(new Comment(line.lineId, line.sourceId, line.lineNumber, matchedLine));
-            }
-        }
-        
-        return matchingLines;
     }
     
     public static enum MatchExtent {

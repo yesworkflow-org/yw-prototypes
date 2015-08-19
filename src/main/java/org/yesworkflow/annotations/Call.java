@@ -2,16 +2,15 @@ package org.yesworkflow.annotations;
 
 import org.yesworkflow.YWKeywords;
 import org.yesworkflow.YWKeywords.Tag;
-import org.yesworkflow.extract.Comment;
 
 public class Call extends Annotation {
 
-    public Call(Long id, Comment line, String comment, Tag expectedTag) throws Exception {
-    	super(id, line, comment, expectedTag);    	
+    public Call(Long id, Long sourceId, Long lineNumber, String comment, Tag expectedTag) throws Exception {
+    	super(id, sourceId, lineNumber,comment, expectedTag);    	
     }
 
-    public Call(Long id, Comment line, String comment) throws Exception {
-        super(id, line, comment, YWKeywords.Tag.CALL);
+    public Call(Long id, Long sourceId, Long lineNumber, String comment) throws Exception {
+        super(id, sourceId, lineNumber, comment, YWKeywords.Tag.CALL);
     }
 
     @Override

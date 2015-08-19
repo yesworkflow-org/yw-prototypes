@@ -116,24 +116,23 @@ public abstract class YesWorkflowDB {
         return id;
     }
 
-    public Long insertComment(Long sourceId, Long lineNumber, Long rank, String text) {
+    public Long insertComment(Long sourceId, Long lineNumber, Long rank, String text, Long keywordStart) {
 
         Long id = nextCommentId++;
 
-        jooq.insertInto(Table.COMMENT, ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
-            .values(id, sourceId, lineNumber, rank, text)
+        jooq.insertInto(Table.COMMENT, ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT, KEYWORD_START)
+            .values(id, sourceId, lineNumber, rank, text, keywordStart)
             .execute();
         
         return id;
     }
     
-    public void insertAnnotation(Long id, Long sourceId, Long qualifiedAnnotationId,
-            Long lineNumber, String tag, String keyword, String value, String description) {
+    public void insertAnnotation(Long id, Long qualifiedAnnotationId, Long commentId,
+                                 String tag, String keyword, String value, String description) {
 
         jooq.insertInto(Table.ANNOTATION,
-                        ID, SOURCE_ID, QUALIFIES, LINE_NUMBER,
-                        TAG, KEYWORD, VALUE, DESCRIPTION)
-          .values(id, sourceId, qualifiedAnnotationId, lineNumber, tag, keyword, value, description)
+                        ID, QUALIFIES, COMMENT_ID, TAG, KEYWORD, VALUE, DESCRIPTION)
+          .values(id, qualifiedAnnotationId, commentId, tag, keyword, value, description)
           .execute();
     }
     

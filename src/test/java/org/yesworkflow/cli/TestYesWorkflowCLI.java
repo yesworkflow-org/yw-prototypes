@@ -16,7 +16,6 @@ import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
-import org.yesworkflow.extract.Comment;
 import org.yesworkflow.query.QueryEngineModel;
 import org.yesworkflow.YesWorkflowTestCase;
 
@@ -421,8 +420,6 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
         public boolean extracted = false;
  
-        @Override public List<Comment> getLines() { return null; }
-        @Override public List<String> getComments() { return null; }
         @Override public Extractor extract() throws Exception { this.extracted = true; return this; }
         @Override public Language getLanguage() { return null; }
 		@Override public List<Annotation> getAnnotations() { return null; }

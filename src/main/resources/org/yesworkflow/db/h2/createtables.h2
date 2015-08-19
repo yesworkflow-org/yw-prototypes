@@ -30,14 +30,14 @@ CREATE TABLE comment (
     source_id       BIGINT          NOT NULL        REFERENCES source(id),
     line_number     BIGINT          NOT NULL,
     rank            BIGINT          NOT NULL,
-    text            VARCHAR         NOT NULL
+    text            VARCHAR         NOT NULL,
+    keyword_start   BIGINT          NULL
 );
 
 CREATE TABLE annotation (
     id              IDENTITY        NOT NULL        PRIMARY KEY,
-    source_id       BIGINT          NULL            REFERENCES source(id),
     qualifies       BIGINT          NULL            REFERENCES annotation(id),
-    line_number     BIGINT          NULL,
+    comment_id      BIGINT          NOT NULL        REFERENCES comment(id),
     tag             VARCHAR         NOT NULL,
     keyword         VARCHAR         NOT NULL,
     value           VARCHAR         NULL,

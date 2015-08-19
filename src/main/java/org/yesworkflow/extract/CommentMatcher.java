@@ -3,12 +3,15 @@ package org.yesworkflow.extract;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.LinkedList;
-import java.util.List;
 
+import org.jooq.Record;
+import org.jooq.Result;
 import org.yesworkflow.LanguageModel;
+import org.yesworkflow.db.Table;
 import org.yesworkflow.db.YesWorkflowDB;
+import org.yesworkflow.db.Column.SOURCE;
 
+import static org.yesworkflow.db.Column.*;
 
 /** Class for matching and retrieving comments from source code implemented
  *  in a particular programming language.  Uses a simple finite state machine
@@ -18,13 +21,13 @@ import org.yesworkflow.db.YesWorkflowDB;
 public class CommentMatcher {
 
     private static final String EOL = System.getProperty("line.separator");
-    private static Long nextLineId = 1L;
     
     private YesWorkflowDB ywdb;
     private long sourceId;
     private LanguageModel languageModel;
     private State currentState;
     private String commentStartToken;
+    private KeywordMatcher keywordMatcher;
     private String lastFullMatch;
     private boolean lastFullMatchWasSingle;
     private StringBuffer buffer = new StringBuffer();
@@ -33,8 +36,9 @@ public class CommentMatcher {
      * Constructs a CommentMatcher for the given programming language model.
      * @param languageModel The programming language model for the source code to be analyzed.
      */
-    public CommentMatcher(YesWorkflowDB ywdb, long sourceId, LanguageModel languageModel) {
+    public CommentMatcher(YesWorkflowDB ywdb, KeywordMatcher keywordMatcher, long sourceId, LanguageModel languageModel) {
         this.ywdb = ywdb;
+        this.keywordMatcher = keywordMatcher;
         this.sourceId = sourceId;
         this.languageModel = languageModel;
         this.currentState = State.IN_CODE;
@@ -51,31 +55,28 @@ public class CommentMatcher {
      * @return  A List of Strings representing the comments in the source code.
      * @throws IOException 
      */
-    public List<Comment> getCommentsAsLines(BufferedReader reader) throws IOException {
+    public void extractCommentsFromLines(BufferedReader reader) throws IOException {
 
         String line;
         Long lineNumber = 1L;
-        List<Comment> commentLines = new LinkedList<Comment>();
         lastFullMatch = null;
         
         while ((line = reader.readLine()) != null) {
             ywdb.insertCode(sourceId, lineNumber, line);
-            StringBuffer commentLineText = new StringBuffer();
+            StringBuffer commentText = new StringBuffer();
             Long rank = 1L;
             for (int i = 0; i < line.length(); ++i) {
                 int c = line.charAt(i);
                 String newCommentChars = processNextChar((char)c);
-                commentLineText.append(newCommentChars);
+                commentText.append(newCommentChars);
                 if (newCommentChars.equals(EOL)) {
-                    addCommentLineToResult(commentLineText.toString(), lineNumber, rank, commentLines);
-                    commentLineText = new StringBuffer();            
+                    addCommentToDB(commentText.toString(), lineNumber, rank);
+                    commentText = new StringBuffer();            
                 }
             }
-            commentLineText.append(processNextChar('\n'));
-            addCommentLineToResult(commentLineText.toString(), lineNumber++, rank, commentLines);
+            commentText.append(processNextChar('\n'));
+            addCommentToDB(commentText.toString(), lineNumber++, rank);
         }
-        
-        return commentLines;
     }
         
     /** Extracts the contents of all comments found in the provided source code,
@@ -87,23 +88,33 @@ public class CommentMatcher {
      * @return  A Strings containing all the comments in the source code.
      * @throws IOException 
      */
+    @SuppressWarnings("unchecked")
     public String getCommentsAsString(String source) throws IOException {
+        
         BufferedReader reader = new BufferedReader(new StringReader(source));
         StringBuffer comments = new StringBuffer();
-        for (Comment cl : getCommentsAsLines(reader)) {
-            comments.append(cl.text);
+        extractCommentsFromLines(reader);
+        
+        Result<Record> rows = ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
+                                         .from(Table.COMMENT)
+                                         .orderBy(ID, LINE_NUMBER, RANK)
+                                         .fetch();
+        
+        for (Record row : rows) {
+            comments.append(row.getValue(TEXT));
             comments.append(EOL);
         }
+        
         return comments.toString();
     }
     
     /** Helper method for accumulating non-blank comment lines. */
-    private void addCommentLineToResult(String line, Long lineNumber, Long rank, List<Comment> accumulatedLines) {
-        String trimmedCommentLine = line.toString().trim();
-        if (trimmedCommentLine.length() > 0) {
-            Comment commentLine = new Comment(nextLineId++, sourceId, lineNumber, trimmedCommentLine);
-            ywdb.insertComment(sourceId, lineNumber, rank++, trimmedCommentLine);
-            accumulatedLines.add(commentLine);
+    private void addCommentToDB(String commentText, Long lineNumber, Long rank) {
+        String trimmedCommentText = commentText.toString().trim();
+        if (trimmedCommentText.length() > 0) {
+            long firstKeywordIndex = keywordMatcher.findKeyword(trimmedCommentText);
+            Long keywordStart = (firstKeywordIndex != -1) ? firstKeywordIndex : null;
+            ywdb.insertComment(sourceId, lineNumber, rank++, trimmedCommentText, keywordStart);
         }
     }
     

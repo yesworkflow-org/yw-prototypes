@@ -9,6 +9,7 @@ import org.jooq.Record;
 import org.jooq.Result;
 import org.yesworkflow.Language;
 import org.yesworkflow.LanguageModel;
+import org.yesworkflow.YWKeywords;
 import org.yesworkflow.YesWorkflowTestCase;
 import org.yesworkflow.db.Table;
 import org.yesworkflow.db.YesWorkflowDB;
@@ -41,7 +42,8 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         this.ywdb = YesWorkflowDB.createInMemoryDB();
         LanguageModel lm = new LanguageModel(Language.SAS);
         Long sourceId = ywdb.insertSource("__reader__");
-        matcher = new CommentMatcher(this.ywdb, sourceId, lm);
+        matcher = new CommentMatcher(this.ywdb, 
+                new KeywordMatcher(new YWKeywords().getKeywords()), sourceId, lm);
     }
 
     public void test_SAS_EmptySource()  throws IOException {

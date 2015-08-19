@@ -11,6 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.jooq.Record;
+import org.jooq.Result;
 import org.yesworkflow.Language;
 import org.yesworkflow.LanguageModel;
 import org.yesworkflow.YWKeywords;
@@ -28,10 +30,14 @@ import org.yesworkflow.annotations.Qualification;
 import org.yesworkflow.annotations.Return;
 import org.yesworkflow.annotations.UriAnnotation;
 import org.yesworkflow.config.YWConfiguration;
+import org.yesworkflow.db.Table;
 import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.query.QueryEngine;
 import org.yesworkflow.query.QueryEngineModel;
+
+import static org.yesworkflow.db.Table.*;
+import static org.yesworkflow.db.Column.*;
 
 public class DefaultExtractor implements Extractor {
 
@@ -44,8 +50,6 @@ public class DefaultExtractor implements Extractor {
     private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;
     private BufferedReader sourceReader = null;
     private List<String> sourcePaths;
-    private List<Comment> lines;
-    private List<String> comments;
     private List<Annotation> allAnnotations;
     private List<Annotation> primaryAnnotations;
     private YWKeywords keywordMapping;
@@ -74,7 +78,6 @@ public class DefaultExtractor implements Extractor {
         this.stderrStream = stderrStream;
         this.keywordMapping = new YWKeywords();
         this.keywordMatcher = new KeywordMatcher(keywordMapping.getKeywords());
-        this.lines = new LinkedList<Comment>();
     }
 
     @Override
@@ -129,16 +132,6 @@ public class DefaultExtractor implements Extractor {
         return lastLanguage;
     }
 
-    @Override
-    public List<Comment> getLines() {
-        return lines;
-    }
-
-    @Override
-    public List<String> getComments() {
-        return comments;
-    }
-
 	@Override
 	public List<Annotation> getAnnotations() {
 		return primaryAnnotations;
@@ -170,12 +163,12 @@ public class DefaultExtractor implements Extractor {
     @Override
     public DefaultExtractor extract() throws Exception {
         
-        extractLines();        
+        extractCommentsFromSources();        
         writeCommentListing();
         extractAnnotations();
         writeSkeletonFile();
         
-        if (comments.isEmpty()) {
+        if (ywdb.getRowCount(ANNOTATION) == 0) {
             stderrStream.println("WARNING: No YW comments found in source code.");
         }
 
@@ -187,44 +180,60 @@ public class DefaultExtractor implements Extractor {
         return this;
     }
 
-    private void extractLines() throws IOException, YWToolUsageException {
+    private void extractCommentsFromSources() throws IOException, YWToolUsageException {
 
+        // read source code from reader if provided
         if (sourceReader != null) {
+            
             Long sourceId = ywdb.insertSource(null);
-            extractLinesFromReader(sourceId, sourceReader, globalLanguageModel);
+            extractLinesCommentsFromReader(sourceId, sourceReader, globalLanguageModel);
         
-        } else if (sourcePaths == null || 
-                   sourcePaths.size() == 0 || 
-                   sourcePaths.size() == 1 && (sourcePaths.get(0).trim().isEmpty() || 
-                                               sourcePaths.get(0).trim().equals("-"))) {
+        // otherwise read source code from stdin if source path is empty or just a dash
+        } else if (sourcePathsEmptyOrDash(sourcePaths)) {
+            
             Reader reader = new InputStreamReader(System.in);
             Long sourceId = ywdb.insertSource(null);
-            extractLinesFromReader(sourceId, new BufferedReader(reader), globalLanguageModel);
+            extractLinesCommentsFromReader(sourceId, new BufferedReader(reader), globalLanguageModel);
         
+        // else read source code from each file in the list of source paths
         } else {
-            extractLinesFromSourceFiles();
+            
+            for (String sourcePath : sourcePaths) {
+                Long sourceId = ywdb.insertSource(sourcePath);
+                LanguageModel languageModel = languageModelForSourceFile(sourcePath);
+                extractLinesCommentsFromReader(sourceId, fileReaderForPath(sourcePath), languageModel);
+            }
         }
     }
     
-    private void extractLinesFromSourceFiles() throws IOException, YWToolUsageException {
-        
-        for (String sourcePath : sourcePaths) {
-
-            Long sourceId = ywdb.insertSource(sourcePath);
-            LanguageModel languageModel = null;
-            if (globalLanguageModel != null) {
-                languageModel = globalLanguageModel;
-            } else {
-                Language language = LanguageModel.languageForFileName(sourcePath);
-                if (language != null) {
-                    languageModel = new LanguageModel(language);
-                }
+    private boolean sourcePathsEmptyOrDash(List<String> sourcePaths) {
+        return sourcePaths == null || 
+                sourcePaths.size() == 0 || 
+                sourcePaths.size() == 1 && (sourcePaths.get(0).trim().isEmpty() || 
+                                            sourcePaths.get(0).trim().equals("-"));
+    }
+    
+    private LanguageModel languageModelForSourceFile(String sourcePath) {
+        LanguageModel languageModel = null;
+        if (globalLanguageModel != null) {
+            languageModel = globalLanguageModel;
+        } else {
+            Language language = LanguageModel.languageForFileName(sourcePath);
+            if (language != null) {
+                languageModel = new LanguageModel(language);
             }
-            extractLinesFromReader(sourceId, getFileReaderForPath(sourcePath), languageModel);
         }
+        return languageModel;
+    }
+    
+    private void extractLinesCommentsFromReader(Long sourceId, BufferedReader reader, LanguageModel languageModel) throws IOException {
+        if (languageModel == null)  languageModel = new LanguageModel(DEFAULT_LANGUAGE);
+        lastLanguage = languageModel.getLanguage();
+        CommentMatcher commentMatcher = new CommentMatcher(ywdb, this.keywordMatcher, sourceId, languageModel);
+        commentMatcher.extractCommentsFromLines(reader);
     }
 
-    public BufferedReader getFileReaderForPath(String path) throws YWToolUsageException {
+    private BufferedReader fileReaderForPath(String path) throws YWToolUsageException {
 
         BufferedReader reader = null;
         try {
@@ -235,32 +244,22 @@ public class DefaultExtractor implements Extractor {
 
         return reader;
     }
-    
-    private void extractLinesFromReader(Long sourceId, BufferedReader reader, LanguageModel languageModel) throws IOException {
-
-        if (languageModel == null) {
-            languageModel = new LanguageModel(DEFAULT_LANGUAGE);
-        }
-
-        lastLanguage = languageModel.getLanguage();
         
-        // extract all comments from script using the language model
-        CommentMatcher commentMatcher = new CommentMatcher(ywdb, sourceId, languageModel);
-        List<Comment> allComments = commentMatcher.getCommentsAsLines(reader);
-
-        // select only the comments that contain YW keywords,
-        // trimming characters preceding the first YW keyword in each
-        lines.addAll(keywordMatcher.match(allComments, true));
-    }
-
+    @SuppressWarnings("unchecked")
     private void writeCommentListing() throws IOException {
         if (commentListingPath != null) {
-            StringBuffer linesBuffer = new StringBuffer();
-            for (Comment line : lines) {
-                linesBuffer.append(line.text);
-                linesBuffer.append(System.getProperty("line.separator"));
+            
+            Result<Record> rows = ywdb.jooq().select(SOURCE_ID, LINE_NUMBER, RANK, TEXT)
+                    .from(Table.COMMENT)
+                    .orderBy(SOURCE_ID, LINE_NUMBER, RANK)
+                    .fetch();
+            
+            StringBuffer commentsListingBuffer = new StringBuffer();
+            for (Record comment : rows) {
+                commentsListingBuffer.append(comment.getValue(TEXT));
+                commentsListingBuffer.append(System.getProperty("line.separator"));
             }
-            writeTextToFileOrStdout(commentListingPath, linesBuffer.toString());
+            writeTextToFileOrStdout(commentListingPath, commentsListingBuffer.toString());
         }
     }
 
@@ -279,43 +278,51 @@ public class DefaultExtractor implements Extractor {
         }
     }
     
+    @SuppressWarnings({ "unchecked" })
     private void extractAnnotations() throws Exception {
     	
-    	comments = new LinkedList<String>();
     	allAnnotations = new LinkedList<Annotation>();
         primaryAnnotations = new LinkedList<Annotation>();
         Annotation primaryAnnotation = null;
         
-        for (Comment sourceLine : lines) {
-        	List<String> commentsOnLine = findCommentsOnLine(sourceLine.text, keywordMatcher);
-        	for (String comment : commentsOnLine) {
-        		comments.add(comment);
+        Result<Record> rows = ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
+                .from(Table.COMMENT)
+                .orderBy(SOURCE_ID, LINE_NUMBER, RANK)
+                .fetch();
+        
+        for (Record comment : rows) {
 
-        		Tag tag = KeywordMatcher.extractInitialKeyword(comment, keywordMapping);
+            Long sourceId = comment.getValue(SOURCE_ID);
+            Long lineNumber = comment.getValue(LINE_NUMBER);
+            String commentText = comment.getValue(TEXT);
+        	List<String> annotationStrings = findCommentsOnLine(commentText, keywordMatcher);
+        	for (String annotationString: annotationStrings) {
+
+        		Tag tag = KeywordMatcher.extractInitialKeyword(annotationString, keywordMapping);
             
                 Annotation annotation = null;
                 Long id = nextAnnotationId++;
                 switch(tag) {
                 
-                    case BEGIN:     annotation = new Begin(id, sourceLine, comment);
+                    case BEGIN:     annotation = new Begin(id, sourceId, lineNumber, annotationString);
                                     break;
-                    case CALL:      annotation = new Call(id, sourceLine, comment);
+                    case CALL:      annotation = new Call(id, sourceId, lineNumber, annotationString);
                                     break;
-                    case END:       annotation = new End(id, sourceLine, comment);
+                    case END:       annotation = new End(id, sourceId, lineNumber, annotationString);
                                     break;
-                    case FILE:      annotation = new FileUri(id, sourceLine, comment, primaryAnnotation);
+                    case FILE:      annotation = new FileUri(id, sourceId, lineNumber, annotationString, primaryAnnotation);
                                     break;
-                    case IN:        annotation = new In(id, sourceLine, comment);
+                    case IN:        annotation = new In(id, sourceId, lineNumber, annotationString);
                                     break;
-                    case OUT:       annotation = new Out(id, sourceLine, comment);
+                    case OUT:       annotation = new Out(id, sourceId, lineNumber, annotationString);
                                     break;
-                    case AS:        annotation = new As(id, sourceLine, comment, primaryAnnotation);
+                    case AS:        annotation = new As(id, sourceId, lineNumber, annotationString, primaryAnnotation);
                                     break;
-                    case PARAM:     annotation = new Param(id, sourceLine, comment);
+                    case PARAM:     annotation = new Param(id, sourceId, lineNumber, annotationString);
                                     break;
-                    case RETURN:    annotation = new Return(id, sourceLine, comment);
+                    case RETURN:    annotation = new Return(id, sourceId, lineNumber, annotationString);
                                     break;
-                    case URI:       annotation = new UriAnnotation(id, sourceLine, comment, primaryAnnotation);
+                    case URI:       annotation = new UriAnnotation(id, sourceId, lineNumber, annotationString, primaryAnnotation);
                                     break;   
                 }
                 
@@ -329,8 +336,7 @@ public class DefaultExtractor implements Extractor {
                     primaryAnnotations.add(annotation);
                 }
                 
-                ywdb.insertAnnotation(annotation.id, annotation.line.sourceId, 
-                                      qualifiedAnnotationId, annotation.line.lineNumber, 
+                ywdb.insertAnnotation(annotation.id, qualifiedAnnotationId, (Long)comment.getValue(ID),
                                       tag.toString(), annotation.keyword, annotation.name, 
                                       annotation.description());
 

@@ -3,12 +3,12 @@ package org.yesworkflow.annotations;
 import java.util.StringTokenizer;
 
 import org.yesworkflow.YWKeywords.Tag;
-import org.yesworkflow.extract.Comment;
 
 public abstract class Annotation {
 
     public final Long id;
-    public final Comment line;
+    public final Long sourceId;
+    public final Long lineNumber;
     public final String keyword;
     public final String name;
     public final String comment;
@@ -16,10 +16,11 @@ public abstract class Annotation {
     
     protected String description = null;
     
-    public Annotation(Long id, Comment line, String comment, Tag tag) throws Exception {
+    public Annotation(Long id, Long sourceId, Long lineNumber, String comment, Tag tag) throws Exception {
 
         this.id = id;
-        this.line = line;
+        this.sourceId = sourceId;
+        this.lineNumber = lineNumber;
         this.comment = comment;
         this.tag = tag;
         

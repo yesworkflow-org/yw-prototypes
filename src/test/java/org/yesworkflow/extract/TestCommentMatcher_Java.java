@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.yesworkflow.Language;
 import org.yesworkflow.LanguageModel;
+import org.yesworkflow.YWKeywords;
 import org.yesworkflow.YesWorkflowTestCase;
 import org.yesworkflow.db.YesWorkflowDB;
 
@@ -18,7 +19,8 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         this.ywdb = YesWorkflowDB.createInMemoryDB();
         LanguageModel lm = new LanguageModel(Language.JAVA);
         Long sourceId = ywdb.insertSource("__reader__");
-        matcher = new CommentMatcher(this.ywdb, sourceId, lm);
+        matcher = new CommentMatcher(this.ywdb, 
+                new KeywordMatcher(new YWKeywords().getKeywords()), sourceId, lm);
     }
 
     public void test_Java_EmptySource()  throws IOException {
