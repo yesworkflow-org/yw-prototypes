@@ -25,71 +25,71 @@ public class TestCommentMatcher_Matlab extends YesWorkflowTestCase {
 
     public void test_Matlab_EmptySource()  throws IOException {
         String source = "";
-        String comments = matcher.getCommentsAsString(source);
-        assertEquals("", comments);
+        matcher.extractComments(source);
+        assertEquals("", CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Matlab_BlankSource_OneLine()  throws IOException {
         String source = "           ";
-        String comments = matcher.getCommentsAsString(source);
-        assertEquals("", comments);
+        matcher.extractComments(source);
+        assertEquals("", CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Matlab_BlankSource_MultiLine()  throws IOException {
         String source = "           "  + EOL +
                         "           "  + EOL +
                         "           "  + EOL;
-        String comments = matcher.getCommentsAsString(source);
-        assertEquals("", comments);
+        matcher.extractComments(source);
+        assertEquals("", CommentMatcher.commentsAsString(ywdb));
     }
     
     public void test_Matlab_OneLineComment_Paired()  throws IOException {
         String source = "  %{ a comment %} ";
-        String comments = matcher.getCommentsAsString(source);
-        assertEquals("a comment"    + EOL, comments);
+        matcher.extractComments(source);
+        assertEquals("a comment"    + EOL, CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Matlab_OneFullLineComment_Single()  throws IOException {
         String source = "  % a comment ";
-        String comments = matcher.getCommentsAsString(source);
-        assertEquals("a comment"    + EOL, comments);
+        matcher.extractComments(source);
+        assertEquals("a comment"    + EOL, CommentMatcher.commentsAsString(ywdb));
     }
     
     public void test_Matlab_TwoFullLineComment_Paired()  throws IOException {
         String source = "  %{ a comment %} " + EOL +
                         "  %{ another comment %} ";        
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Matlab_TwoFullLineComment_Single()  throws IOException {
         String source = "  % a comment " + EOL +
                         "  % another comment ";        
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Matlab_TwoLineComment_Paired()  throws IOException {
         String source = "  %{ a comment "           + EOL +
                         "     another comment %} "  + EOL;        
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Matlab_TwoSeparatedComments_Paired()  throws IOException {
         String source = "  %{ a comment    %}  "    + EOL +
                         "  some code"               + EOL +
                         "  %{ another comment%}";        
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Matlab_TwoMultilineComments_Paired()  throws IOException {
@@ -98,12 +98,12 @@ public class TestCommentMatcher_Matlab extends YesWorkflowTestCase {
                         "  some code"               + EOL +
                         "  %{ another comment     " + EOL +
                         "     on two lines  %} " + EOL;        
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "on two lines"     + EOL +
                      "another comment"  + EOL +
                      "on two lines"     + EOL,
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Matlab_TwoMultilineComments_WithBlankCommentLines_Paired()  throws IOException {
@@ -112,10 +112,10 @@ public class TestCommentMatcher_Matlab extends YesWorkflowTestCase {
                         "  some code"               + EOL +
                         "  %{ another comment     " + EOL +
                         "                      %} " + EOL;        
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
     
     public void test_Matlab_MixedCodeAndOneLineComments_Paired() throws IOException {
@@ -124,11 +124,11 @@ public class TestCommentMatcher_Matlab extends YesWorkflowTestCase {
                         "  %{ a comment  %} "           + EOL +
                         "  some more code"              + EOL +
                         "  %{ another comment   %}"     + EOL +
-                        "  a final bit of code";        
-        String comments = matcher.getCommentsAsString(source);
+                        "  a final bit of code";
+        matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
     
     public void test_Matlab_MixedCodeAndOneLineComments_MultilineComments_Paired() throws IOException {
@@ -141,55 +141,55 @@ public class TestCommentMatcher_Matlab extends YesWorkflowTestCase {
                         "     this one is on "          + EOL +
                         "  three lines%}"               + EOL +
                         "  a final bit of code";        
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "on two lines"     + EOL +
                      "another comment"  + EOL +
                      "this one is on"   + EOL +
                      "three lines"      + EOL,
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
 
    
     public void test_Matlab_OnePartialLineComment_Paired()  throws IOException {
         String source = "  some code %{ a comment%} ";
-        String comments = matcher.getCommentsAsString(source);
-        assertEquals("a comment" + EOL, comments);
+        matcher.extractComments(source);
+        assertEquals("a comment" + EOL, CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Matlab_OnePartialLineComment_SpansTwoLines_Paired()  throws IOException {
         String source = "  some code %{ a comment "                 + EOL +
                         "  the rest of the comment %} more code"    + EOL;
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("a comment" + EOL +
                      "the rest of the comment" + EOL, 
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Matlab_TwoPartialLineComment_Paired()  throws IOException {
         String source = "  some code %{ a comment %}" + EOL +
                         "  some more code  %{ another comment %}";        
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("a comment"        + EOL +
                      "another comment"  + EOL, 
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Matlab_TwoPartialLineComments_Paired()  throws IOException {
         String source = "  code %{ a comment %} more code %{ another comment %}" + EOL;
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("a comment" + EOL +
                      "another comment" + EOL,
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
     
     public void test_Matlab_ThreeCommentsOnOneLine_Paired()  throws IOException {
         String source = " %{ one %} %{ two %} %{ three %}" + EOL;
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("one" + EOL +
                      "two" + EOL +
                      "three" + EOL,
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
     
     public void test_Matlab_VeryMixedStyles()  throws IOException {
@@ -200,7 +200,7 @@ public class TestCommentMatcher_Matlab extends YesWorkflowTestCase {
                         "  yet more code %{ a multiline comment   "         + EOL +
                         "  % not a separate comment      "                  + EOL +
                         "  third line of % the comment %} code % last one"  + EOL;
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals(
                 "a comment"                                     + EOL +
                 "second comment"                                + EOL +
@@ -212,10 +212,6 @@ public class TestCommentMatcher_Matlab extends YesWorkflowTestCase {
                 "% not a separate comment"                      + EOL +
                 "third line of % the comment"                   + EOL +
                 "last one"                                      + EOL, 
-                comments);
+                CommentMatcher.commentsAsString(ywdb));
     }
-
-    
-    
-
 }

@@ -25,53 +25,53 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
     
     public void test_Bash_EmptySource()  throws IOException {
         String source = "";
-        String comments = matcher.getCommentsAsString(source);
-        assertEquals("", comments);
+        matcher.extractComments(source);
+        assertEquals("", CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Bash_BlankSource_OneLine()  throws IOException {
         String source = "           ";
-        String comments = matcher.getCommentsAsString(source);
-        assertEquals("", comments);
+        matcher.extractComments(source);
+        assertEquals("", CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Bash_BlankSource_MultiLine()  throws IOException {
         String source = "           "  + EOL +
                         "           "  + EOL +
                         "           "  + EOL;
-        String comments = matcher.getCommentsAsString(source);
-        assertEquals("", comments);
+        matcher.extractComments(source);
+        assertEquals("", CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Bash_OneFullLineComment_NoSpaceOnEnds()  throws IOException {
         String source = "# a comment";
-        String comments = matcher.getCommentsAsString(source);
-        assertEquals("a comment" + EOL, comments);
+        matcher.extractComments(source);
+        assertEquals("a comment" + EOL, CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Bash_OneFullLineComment_SpaceOnEnds()  throws IOException {
         String source = "  # a comment ";
-        String comments = matcher.getCommentsAsString(source);
-        assertEquals("a comment" + EOL, comments);
+        matcher.extractComments(source);
+        assertEquals("a comment" + EOL,  CommentMatcher.commentsAsString(ywdb));
     }
     
     public void test_Bash_TwoFullLineComment()  throws IOException {
         String source = "  # a comment " + EOL +
                         "  # another comment ";        
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("a comment"          + EOL +
                      "another comment"    + EOL, 
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Bash_TwoSeparatedComments()  throws IOException {
         String source = "  # a comment "        + EOL +
                         "  some code"           + EOL +
-                        "  # another comment ";        
-        String comments = matcher.getCommentsAsString(source);
+                        "  # another comment ";
+        matcher.extractComments(source);
         assertEquals("a comment"          + EOL +
                      "another comment"    + EOL, 
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Bash_MixedCodeAndOneLineComments() throws IOException {
@@ -81,10 +81,10 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                         "  some more code"              + EOL +
                         "  # another comment "          + EOL +
                         " a final bit of code";        
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("a comment"          + EOL +
                      "another comment"    + EOL, 
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Comment_MixedCodeAndOneLineComments() throws IOException {
@@ -93,27 +93,27 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                         "  # a comment "                + EOL +
                         "  some more code"              + EOL +
                         "  # another comment "          + EOL +
-                        " a final bit of code";        
-        String comments = matcher.getCommentsAsString(source);
+                        " a final bit of code";
+        matcher.extractComments(source);
         assertEquals("a comment"          + EOL +
                      "another comment"    + EOL, 
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));
     }
     
     
     public void test_Bash_OnePartialLineComment()  throws IOException {
         String source = "  some code # a comment ";
-        String comments = matcher.getCommentsAsString(source);
-        assertEquals("a comment" + EOL, comments);
+        matcher.extractComments(source);
+        assertEquals("a comment" + EOL, CommentMatcher.commentsAsString(ywdb));
     }
 
     public void test_Bash_TwoPartialLineComment()  throws IOException {
         String source = "  some code # a comment " + EOL +
                         "some more cod  # another comment ";        
-        String comments = matcher.getCommentsAsString(source);
+        matcher.extractComments(source);
         assertEquals("a comment"          + EOL +
                      "another comment"    + EOL, 
-                     comments);
+                     CommentMatcher.commentsAsString(ywdb));    
     }
     
 }

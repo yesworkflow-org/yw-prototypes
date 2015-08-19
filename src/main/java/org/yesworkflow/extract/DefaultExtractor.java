@@ -230,7 +230,7 @@ public class DefaultExtractor implements Extractor {
         if (languageModel == null)  languageModel = new LanguageModel(DEFAULT_LANGUAGE);
         lastLanguage = languageModel.getLanguage();
         CommentMatcher commentMatcher = new CommentMatcher(ywdb, this.keywordMatcher, sourceId, languageModel);
-        commentMatcher.extractCommentsFromLines(reader);
+        commentMatcher.extractComments(reader);
     }
 
     private BufferedReader fileReaderForPath(String path) throws YWToolUsageException {
@@ -245,21 +245,9 @@ public class DefaultExtractor implements Extractor {
         return reader;
     }
         
-    @SuppressWarnings("unchecked")
     private void writeCommentListing() throws IOException {
         if (commentListingPath != null) {
-            
-            Result<Record> rows = ywdb.jooq().select(SOURCE_ID, LINE_NUMBER, RANK, TEXT)
-                    .from(Table.COMMENT)
-                    .orderBy(SOURCE_ID, LINE_NUMBER, RANK)
-                    .fetch();
-            
-            StringBuffer commentsListingBuffer = new StringBuffer();
-            for (Record comment : rows) {
-                commentsListingBuffer.append(comment.getValue(TEXT));
-                commentsListingBuffer.append(System.getProperty("line.separator"));
-            }
-            writeTextToFileOrStdout(commentListingPath, commentsListingBuffer.toString());
+            writeTextToFileOrStdout(commentListingPath, CommentMatcher.commentsAsString(ywdb));
         }
     }
 
@@ -292,9 +280,9 @@ public class DefaultExtractor implements Extractor {
         
         for (Record comment : rows) {
 
-            Long sourceId = comment.getValue(SOURCE_ID);
-            Long lineNumber = comment.getValue(LINE_NUMBER);
-            String commentText = comment.getValue(TEXT);
+            Long sourceId = (Long)comment.getValue(SOURCE_ID);
+            Long lineNumber = (Long)comment.getValue(LINE_NUMBER);
+            String commentText = (String)comment.getValue(TEXT);
         	List<String> annotationStrings = findCommentsOnLine(commentText, keywordMatcher);
         	for (String annotationString: annotationStrings) {
 
