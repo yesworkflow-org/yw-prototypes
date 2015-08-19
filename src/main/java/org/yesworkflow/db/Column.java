@@ -10,7 +10,7 @@ public class Column {
     public static Field COMMENT_ID      = field("comment_id");
     public static Field DESCRIPTION     = field("description");
     public static Field ID              = field("id");
-    public static Field KEYWORD_START   = field("keyword_start");
+    public static Field KEYWORD         = field("keyword");
     public static Field LINE            = field("line");
     public static Field LINE_NUMBER     = field("line_number");
     public static Field PATH            = field("path");
@@ -19,7 +19,6 @@ public class Column {
     public static Field SOURCE_ID       = field("source_id");
     public static Field TAG             = field("tag");
     public static Field TEXT            = field("text");
-    public static Field KEYWORD         = field("keyword");
     public static Field VALUE           = field("value");
     
     public static class SOURCE {
@@ -32,8 +31,7 @@ public class Column {
         public static Field SOURCE_ID       = field("comment.source_id");
         public static Field LINE_NUMBER     = field("comment.line_number");
         public static Field RANK            = field("comment.rank");
-        public static Field TEXT            = field("comment.text");        
-        public static Field KEYWORD_START   = field("comment.keyword_start");
+        public static Field TEXT            = field("comment.text");
     }
     
     public static class ANNOTATION {

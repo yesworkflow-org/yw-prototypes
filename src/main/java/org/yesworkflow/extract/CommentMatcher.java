@@ -21,7 +21,6 @@ public class CommentMatcher {
     private LanguageModel languageModel;
     private State currentState;
     private String commentStartToken;
-    private KeywordMatcher keywordMatcher;
     private String lastFullMatch;
     private boolean lastFullMatchWasSingle;
     private StringBuffer buffer = new StringBuffer();
@@ -30,9 +29,8 @@ public class CommentMatcher {
      * Constructs a CommentMatcher for the given programming language model.
      * @param languageModel The programming language model for the source code to be analyzed.
      */
-    public CommentMatcher(YesWorkflowDB ywdb, KeywordMatcher keywordMatcher, long sourceId, LanguageModel languageModel) {
+    public CommentMatcher(YesWorkflowDB ywdb, long sourceId, LanguageModel languageModel) {
         this.ywdb = ywdb;
-        this.keywordMatcher = keywordMatcher;
         this.sourceId = sourceId;
         this.languageModel = languageModel;
         this.commentStartToken = null;
@@ -82,9 +80,7 @@ public class CommentMatcher {
     private void insertTrimmedComment(String commentText, Long lineNumber, Long rank) {
         String trimmedCommentText = commentText.toString().trim();
         if (trimmedCommentText.length() > 0) {
-            long firstKeywordIndex = keywordMatcher.findKeyword(trimmedCommentText);
-            Long keywordStart = (firstKeywordIndex != -1) ? firstKeywordIndex : null;
-            ywdb.insertComment(sourceId, lineNumber, rank++, trimmedCommentText, keywordStart);
+            ywdb.insertComment(sourceId, lineNumber, rank++, trimmedCommentText);
         }
     }
     

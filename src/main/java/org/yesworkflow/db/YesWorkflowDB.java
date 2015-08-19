@@ -116,12 +116,12 @@ public abstract class YesWorkflowDB {
         return id;
     }
 
-    public Long insertComment(Long sourceId, Long lineNumber, Long rank, String text, Long keywordStart) {
+    public Long insertComment(Long sourceId, Long lineNumber, Long rank, String text) {
 
         Long id = nextCommentId++;
 
-        jooq.insertInto(Table.COMMENT, ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT, KEYWORD_START)
-            .values(id, sourceId, lineNumber, rank, text, keywordStart)
+        jooq.insertInto(Table.COMMENT, ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
+            .values(id, sourceId, lineNumber, rank, text)
             .execute();
         
         return id;

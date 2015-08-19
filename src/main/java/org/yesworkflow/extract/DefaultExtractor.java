@@ -229,7 +229,7 @@ public class DefaultExtractor implements Extractor {
     private void extractLinesCommentsFromReader(Long sourceId, BufferedReader reader, LanguageModel languageModel) throws IOException {
         if (languageModel == null)  languageModel = new LanguageModel(DEFAULT_LANGUAGE);
         lastLanguage = languageModel.getLanguage();
-        CommentMatcher commentMatcher = new CommentMatcher(ywdb, this.keywordMatcher, sourceId, languageModel);
+        CommentMatcher commentMatcher = new CommentMatcher(ywdb, sourceId, languageModel);
         commentMatcher.extractComments(reader);
     }
 
