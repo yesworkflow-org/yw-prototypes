@@ -17,7 +17,6 @@ public class CommentMatcher {
     static final String EOL = System.getProperty("line.separator");
     
     private YesWorkflowDB ywdb;
-    private long sourceId;
     private LanguageModel languageModel;
     private State currentState;
     private String commentStartToken;
@@ -29,12 +28,9 @@ public class CommentMatcher {
      * Constructs a CommentMatcher for the given programming language model.
      * @param languageModel The programming language model for the source code to be analyzed.
      */
-    public CommentMatcher(YesWorkflowDB ywdb, long sourceId, LanguageModel languageModel) {
+    public CommentMatcher(YesWorkflowDB ywdb, LanguageModel languageModel) {
         this.ywdb = ywdb;
-        this.sourceId = sourceId;
         this.languageModel = languageModel;
-        this.commentStartToken = null;
-        this.buffer = new StringBuffer();
     }
     
     /** Extracts the contents of all comments found in the source code provided via
@@ -46,12 +42,16 @@ public class CommentMatcher {
      * @return  A List of Strings representing the comments in the source code.
      * @throws IOException 
      */
-    public void extractComments(BufferedReader reader) throws IOException {
+    public void extractComments(Long sourceId, BufferedReader reader) throws IOException {
 
         String line;
         Long lineNumber = 1L;
         lastFullMatch = null;
-        currentState = State.IN_CODE;
+        this.currentState = State.IN_CODE;
+        this.commentStartToken = null;
+        this.buffer = new StringBuffer();
+        
+        if (sourceId == null) sourceId = ywdb.insertSource(null);
         
         while ((line = reader.readLine()) != null) {
             ywdb.insertCode(sourceId, lineNumber, line);
@@ -62,26 +62,26 @@ public class CommentMatcher {
                 String newCommentChars = processNextChar((char)c);
                 commentText.append(newCommentChars);
                 if (newCommentChars.equals(EOL)) {
-                    insertTrimmedComment(commentText.toString(), lineNumber, rank);
+                    rank = insertTrimmedComment(sourceId, lineNumber, rank, commentText.toString());
                     commentText = new StringBuffer();            
                 }
             }
             commentText.append(processNextChar('\n'));
-            insertTrimmedComment(commentText.toString(), lineNumber++, rank);
+            insertTrimmedComment(sourceId, lineNumber++, rank, commentText.toString());
         }
     }
         
     public void extractComments(String code) throws IOException {
-        extractComments(new BufferedReader(new StringReader(code)));
+        extractComments(null, new BufferedReader(new StringReader(code)));
     }
         
-    
     /** Helper method for inserting non-blank comments in YesWorkflow DB */
-    private void insertTrimmedComment(String commentText, Long lineNumber, Long rank) {
+    private Long insertTrimmedComment(Long sourceId, Long lineNumber, Long rank, String commentText) {
         String trimmedCommentText = commentText.toString().trim();
         if (trimmedCommentText.length() > 0) {
             ywdb.insertComment(sourceId, lineNumber, rank++, trimmedCommentText);
         }
+        return rank;
     }
     
     /** Enumeration defining the three states of the comment-matching finite state machine */

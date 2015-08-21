@@ -17,8 +17,7 @@ public class TestCommentMatcher_Matlab extends YesWorkflowTestCase {
         super.setUp();
         this.ywdb = YesWorkflowDB.createInMemoryDB();
         LanguageModel lm = new LanguageModel(Language.MATLAB);
-        Long sourceId = ywdb.insertSource("__reader__");
-        matcher = new CommentMatcher(this.ywdb, sourceId, lm);
+        matcher = new CommentMatcher(this.ywdb, lm);
     }
 
     public void test_Matlab_EmptySource()  throws IOException {

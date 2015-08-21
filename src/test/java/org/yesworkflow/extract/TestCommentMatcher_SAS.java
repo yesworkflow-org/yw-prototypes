@@ -40,8 +40,7 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         super.setUp();
         this.ywdb = YesWorkflowDB.createInMemoryDB();
         LanguageModel lm = new LanguageModel(Language.SAS);
-        Long sourceId = ywdb.insertSource("__reader__");
-        matcher = new CommentMatcher(this.ywdb, sourceId, lm);
+        matcher = new CommentMatcher(this.ywdb, lm);
     }
 
     public void test_SAS_EmptySource()  throws IOException {

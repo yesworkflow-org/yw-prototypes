@@ -185,15 +185,13 @@ public class DefaultExtractor implements Extractor {
         // read source code from reader if provided
         if (sourceReader != null) {
             
-            Long sourceId = ywdb.insertSource(null);
-            extractLinesCommentsFromReader(sourceId, sourceReader, globalLanguageModel);
+            extractLinesCommentsFromReader(null, sourceReader, globalLanguageModel);
         
         // otherwise read source code from stdin if source path is empty or just a dash
         } else if (sourcePathsEmptyOrDash(sourcePaths)) {
             
             Reader reader = new InputStreamReader(System.in);
-            Long sourceId = ywdb.insertSource(null);
-            extractLinesCommentsFromReader(sourceId, new BufferedReader(reader), globalLanguageModel);
+            extractLinesCommentsFromReader(null, new BufferedReader(reader), globalLanguageModel);
         
         // else read source code from each file in the list of source paths
         } else {
@@ -229,8 +227,8 @@ public class DefaultExtractor implements Extractor {
     private void extractLinesCommentsFromReader(Long sourceId, BufferedReader reader, LanguageModel languageModel) throws IOException {
         if (languageModel == null)  languageModel = new LanguageModel(DEFAULT_LANGUAGE);
         lastLanguage = languageModel.getLanguage();
-        CommentMatcher commentMatcher = new CommentMatcher(ywdb, sourceId, languageModel);
-        commentMatcher.extractComments(reader);
+        CommentMatcher commentMatcher = new CommentMatcher(ywdb, languageModel);
+        commentMatcher.extractComments(sourceId, reader);
     }
 
     private BufferedReader fileReaderForPath(String path) throws YWToolUsageException {

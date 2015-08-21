@@ -22,15 +22,14 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
         super.setUp();
         this.ywdb = YesWorkflowDB.createInMemoryDB();
         LanguageModel lm = new LanguageModel(Language.BASH);
-        Long sourceId = ywdb.insertSource("__reader__");
-        matcher = new CommentMatcher(this.ywdb, sourceId, lm);
+        matcher = new CommentMatcher(this.ywdb, lm);
     }
     
     @SuppressWarnings({ "unchecked" })
     private Result<Record> selectComments() {
         return ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
                 .from(Table.COMMENT)
-                .orderBy(ID, LINE_NUMBER, RANK)
+                .orderBy(SOURCE_ID, LINE_NUMBER, RANK)
                 .fetch();
     }
     
