@@ -14,6 +14,7 @@ import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Return;
 import org.yesworkflow.config.YWConfiguration;
+import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.query.QueryEngine;
 
@@ -21,6 +22,7 @@ public class DefaultModeler implements Modeler {
 
     static private QueryEngine DEFAULT_QUERY_ENGINE = QueryEngine.SWIPL;
 
+    private YesWorkflowDB ywdb;
     private List<Annotation> annotations;
     private Model model;
     private String topWorkflowName = null;
@@ -30,11 +32,18 @@ public class DefaultModeler implements Modeler {
     private String modelFacts = null;
     private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;
     
-    public DefaultModeler() {
-        this(System.out, System.err);
+    
+    public DefaultModeler() throws Exception {
+        this(YesWorkflowDB.getGlobalInstance(), System.out, System.err);
     }
 
-    public DefaultModeler(PrintStream stdoutStream, PrintStream stderrStream) {
+    
+    public DefaultModeler(YesWorkflowDB ywdb) throws Exception {
+        this(ywdb, System.out, System.err);
+    }
+
+    public DefaultModeler(YesWorkflowDB ywdb, PrintStream stdoutStream, PrintStream stderrStream) {
+        this.ywdb = ywdb;
         this.stdoutStream = stdoutStream;
         this.stderrStream = stderrStream;
     }
@@ -100,7 +109,7 @@ public class DefaultModeler implements Modeler {
 
     private void buildModel() throws Exception {
 
-        WorkflowBuilder superBuilder = new WorkflowBuilder(this.stdoutStream, this.stderrStream);
+        WorkflowBuilder superBuilder = new WorkflowBuilder(ywdb, this.stdoutStream, this.stderrStream);
         
         WorkflowBuilder workflowBuilder = null;
         WorkflowBuilder topWorkflowBuilder = null;
@@ -109,8 +118,6 @@ public class DefaultModeler implements Modeler {
         Stack<WorkflowBuilder> parentWorkflowBuilders = new Stack<WorkflowBuilder>();
         List<Function> functions = new LinkedList<Function>();
         
-        Integer nextProgramId = 1;
-
         for (Annotation annotation : annotations) {
 
             if (annotation instanceof Begin) {
@@ -122,7 +129,7 @@ public class DefaultModeler implements Modeler {
                     parentName = parentBuilder.getName();
                 }
 
-                workflowBuilder = new WorkflowBuilder(nextProgramId++, parentName, 
+                workflowBuilder = new WorkflowBuilder(ywdb, parentName, 
                                       (parentBuilder == null) ? superBuilder : parentBuilder, 
                                       this.stdoutStream, this.stderrStream);
                 

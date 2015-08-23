@@ -13,7 +13,7 @@ public class Program {
     static final Function[] EMPTY_FUNCTION_ARRAY = new Function[]{};
     static final Channel[] EMPTY_CHANNEL_ARRAY = new Channel[]{};
 
-    public final Integer id;
+    public final Long id;
     public final Begin beginAnnotation;
     public final End endAnnotation;
     public final Port[] inPorts;
@@ -27,7 +27,7 @@ public class Program {
     private Integer subworkflowCount = null;
 
     public Program(
-            Integer id,
+            Long id,
             String name,
             Begin beginAnnotation, 
             End endAnnotation, 
@@ -51,7 +51,7 @@ public class Program {
     }
     
 	public Program(
-	        Integer id,
+	        Long id,
 	        String name,
 	        Begin beginAnnotation, 
 	        End endAnnotation, 

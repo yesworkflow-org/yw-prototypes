@@ -11,7 +11,7 @@ public class Function extends Workflow {
     public final Port[] returnPorts;
     
     public Function(
-            Integer id,
+            Long id,
             String name,
             Begin beginAnnotation, 
             End endAnnotation,

@@ -48,10 +48,10 @@ CREATE TABLE program (
     parent_id       BIGINT          NULL            REFERENCES program(id),
     begin_id        BIGINT          NULL            REFERENCES annotation(id),
     end_id          BIGINT          NULL            REFERENCES annotation(id),
-    name            VARCHAR         NOT NULL,
-    qualified_name  VARCHAR         NOT NULL,
-    is_workflow     BOOLEAN         NOT NULL,
-    is_function     BOOLEAN         NOT NULL
+    name            VARCHAR         NOT NULL        DEFAULT '',
+    qualified_name  VARCHAR         NOT NULL        DEFAULT '',
+    is_workflow     BOOLEAN         NOT NULL        DEFAULT FALSE,
+    is_function     BOOLEAN         NOT NULL        DEFAULT FALSE
 );
 
 CREATE TABLE data (

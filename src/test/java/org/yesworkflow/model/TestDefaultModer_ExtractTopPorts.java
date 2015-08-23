@@ -41,7 +41,7 @@ public class TestDefaultModer_ExtractTopPorts extends YesWorkflowTestCase {
                                            .extract()
                                            .getAnnotations();
 
-        Program program = new DefaultModeler()
+        Program program = new DefaultModeler(ywdb)
                                 .annotations(annotations)
                                 .model()
                                 .getModel()

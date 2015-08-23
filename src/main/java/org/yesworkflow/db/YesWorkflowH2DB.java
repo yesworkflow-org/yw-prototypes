@@ -22,5 +22,4 @@ public class YesWorkflowH2DB extends YesWorkflowDB {
         ywdb.createDBTables(CREATE_TABLES_SCRIPT);
         return ywdb;
     }
-
 }

@@ -31,7 +31,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         super.setUp();
         this.ywdb = YesWorkflowDB.createInMemoryDB();
         extractor = new DefaultExtractor(this.ywdb, super.stdoutStream, super.stderrStream);
-        modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
+        modeler = new DefaultModeler(this.ywdb, super.stdoutStream, super.stderrStream);
     }
     
     public void testExtract_GetModel_OneProgram() throws Exception {

@@ -1,6 +1,7 @@
 package org.yesworkflow.model;
 
 import java.io.PrintStream;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -15,10 +16,11 @@ import org.yesworkflow.annotations.Flow;
 import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Return;
+import org.yesworkflow.db.YesWorkflowDB;
 
 public class WorkflowBuilder {
 		
-        public final Integer programId;
+        public final Long programId;
         public final String parentName;
         private final WorkflowBuilder parentBuilder;
         private String name;
@@ -28,6 +30,7 @@ public class WorkflowBuilder {
         private List<Port> workflowOutPorts = new LinkedList<Port>();
         private List<Port> workflowReturnPorts = new LinkedList<Port>();
 
+        private YesWorkflowDB ywdb;
 		private List<Program> nestedPrograms = new LinkedList<Program>();
         private List<Channel> nestedChannels = new LinkedList<Channel>();
         private List<Function> nestedFunctions = new LinkedList<Function>();
@@ -49,20 +52,18 @@ public class WorkflowBuilder {
         @SuppressWarnings("unused")
         private PrintStream stderrStream = null;
 
-        public WorkflowBuilder(PrintStream stdoutStream, PrintStream stderrStream) {
-            this.programId = 0;
-            this.parentName = null;
-            this.parentBuilder = null;
-            this.stdoutStream = stdoutStream;
-            this.stderrStream = stderrStream;
+        public WorkflowBuilder(YesWorkflowDB ywdb, PrintStream stdoutStream, PrintStream stderrStream) throws SQLException {
+            this(ywdb, null, null, stdoutStream, stderrStream);
         }
 
-        public WorkflowBuilder(Integer id, String parentName, WorkflowBuilder parentBuilder, PrintStream stdoutStream, PrintStream stderrStream) {
-            this.programId = id;
+        public WorkflowBuilder(YesWorkflowDB ywdb, String parentName, WorkflowBuilder parentBuilder, PrintStream stdoutStream, PrintStream stderrStream) throws SQLException {
+            this.ywdb = ywdb;
             this.parentName = parentName;
             this.parentBuilder = parentBuilder;
             this.stdoutStream = stdoutStream;
             this.stderrStream = stderrStream;
+            Long parentId = (parentBuilder == null) ? null : parentBuilder.programId;
+            this.programId = this.ywdb.insertDefaultProgram(parentId);
         }
         
 		public WorkflowBuilder begin(Begin annotation) {
@@ -218,6 +219,8 @@ public class WorkflowBuilder {
         }
 		
         private Program buildProgram() throws Exception {
+            ywdb.updateProgram(programId, beginAnnotation.id, 
+                    endAnnotation.id, beginAnnotation.name, name, false, false);
             return new Program(
                     programId,
                     name,

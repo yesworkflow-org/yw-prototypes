@@ -7,8 +7,6 @@ import static org.yesworkflow.db.Column.RANK;
 import static org.yesworkflow.db.Column.SOURCE_ID;
 import static org.yesworkflow.db.Column.TEXT;
 
-import java.io.IOException;
-
 import org.jooq.Record;
 import org.jooq.Result;
 import org.yesworkflow.Language;
@@ -46,19 +44,19 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                           .fetch();
     }
     
-    public void test_Java_EmptySource()  throws IOException {
+    public void test_Java_EmptySource()  throws Exception {
         matcher.extractComments("");
         assertEquals(0, selectComments().size());
         assertEquals("", DefaultExtractor.commentsAsString(ywdb));
     }
 
-    public void test_Java_BlankSource_OneLine()  throws IOException {
+    public void test_Java_BlankSource_OneLine()  throws Exception {
         matcher.extractComments("           ");
         assertEquals(0, selectComments().size());
         assertEquals("", DefaultExtractor.commentsAsString(ywdb));
     }
 
-    public void test_Java_BlankSource_MultiLine()  throws IOException {
+    public void test_Java_BlankSource_MultiLine()  throws Exception {
         matcher.extractComments(
                 "           "  + EOL +
                 "           "  + EOL +
@@ -67,7 +65,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         assertEquals("", DefaultExtractor.commentsAsString(ywdb));
     }
 
-    public void test_Java_OneFullLineComment()  throws IOException {
+    public void test_Java_OneFullLineComment()  throws Exception {
         matcher.extractComments("  // a comment ");
         assertEquals(
                 "+----+---------+-----------+---------------+"   + EOL +
@@ -86,7 +84,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         assertEquals("a comment"    + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
 
-    public void test_Java_TwoFullLineComment()  throws IOException {
+    public void test_Java_TwoFullLineComment()  throws Exception {
         matcher.extractComments(
                 "  // a comment " + EOL +
                 "  // another comment ");
@@ -111,7 +109,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
 
-    public void test_Java_TwoSeparatedComments()  throws IOException {
+    public void test_Java_TwoSeparatedComments()  throws Exception {
         matcher.extractComments(
                 "  // a comment "           + EOL +
                 "  some code"               + EOL +
@@ -138,7 +136,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
 
-    public void test_Java_MixedCodeAndOneLineComments() throws IOException {
+    public void test_Java_MixedCodeAndOneLineComments() throws Exception {
         matcher.extractComments(
                 "  some initial code"           + EOL +
                 "  a second line of code "      + EOL +
@@ -172,7 +170,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
     }
     
     
-    public void test_Java_MixedCodeAndOneLineComments_TwoSources() throws IOException {
+    public void test_Java_MixedCodeAndOneLineComments_TwoSources() throws Exception {
         matcher.extractComments(
                 "  some initial code"           + EOL +
                 "  a second line of code "      + EOL +
@@ -206,7 +204,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
         
-    public void test_Java_OnePartialLineComment()  throws IOException {
+    public void test_Java_OnePartialLineComment()  throws Exception {
         matcher.extractComments("  some code // a comment ");
         assertEquals(
                 "+----+---------+-----------+-------------------------+"   + EOL +
@@ -225,7 +223,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         assertEquals("a comment" + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
 
-    public void test_Java_TwoPartialLineComment()  throws IOException {
+    public void test_Java_TwoPartialLineComment()  throws Exception {
         matcher.extractComments(
                 "  some code // a comment " + EOL +
                 "  some more code  // another comment ");
@@ -251,7 +249,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
     
-    public void test_Java_OneFullLineComment_Delimited()  throws IOException {
+    public void test_Java_OneFullLineComment_Delimited()  throws Exception {
         matcher.extractComments("  /* a comment */ ");
         assertEquals(
                 "+----+---------+-----------+------------------+"   + EOL +
@@ -270,7 +268,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         assertEquals("a comment"    + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
     
-    public void test_Java_TwoFullLineComment_Delimited()  throws IOException {
+    public void test_Java_TwoFullLineComment_Delimited()  throws Exception {
         matcher.extractComments(
                 "  /* a comment */ " + EOL +
                 "  /* another comment */ ");
@@ -295,7 +293,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
 
-    public void test_Java_TwoLineComment_Delimited()  throws IOException {
+    public void test_Java_TwoLineComment_Delimited()  throws Exception {
         matcher.extractComments(
                 "  /* a comment "           + EOL +
                 "     another comment */ "  + EOL);
@@ -320,7 +318,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
     
-    public void test_Java_TwoSeparatedComments_Delimited()  throws IOException {
+    public void test_Java_TwoSeparatedComments_Delimited()  throws Exception {
         matcher.extractComments(
                 "  /* a comment    */  "    + EOL +
                 "  some code"               + EOL +
@@ -347,7 +345,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
 
-    public void test_Java_TwoMultilineComments()  throws IOException {
+    public void test_Java_TwoMultilineComments()  throws Exception {
         matcher.extractComments(
                 "  /* a comment    "        + EOL +
                 "      on two lines */"     + EOL +
@@ -382,7 +380,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
 
-    public void test_Java_TwoMultilineComments_WithBlankCommentLines()  throws IOException {
+    public void test_Java_TwoMultilineComments_WithBlankCommentLines()  throws Exception {
         matcher.extractComments(
                 "  /* a comment    "        + EOL +
                 "                */"        + EOL +
@@ -413,7 +411,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
 
-    public void test_Java_MixedCodeAndOneLineComments_Delimited() throws IOException {
+    public void test_Java_MixedCodeAndOneLineComments_Delimited() throws Exception {
         matcher.extractComments(
                 "  some initial code"           + EOL +
                 "  a second line of code "      + EOL +
@@ -446,7 +444,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
     
-    public void test_Java_MixedCodeAndOneLineComments_MultilineComments() throws IOException {
+    public void test_Java_MixedCodeAndOneLineComments_MultilineComments() throws Exception {
         matcher.extractComments(
                 "  some initial code"           + EOL +
                 "  a second line of code "      + EOL +
@@ -491,7 +489,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
    
-    public void test_Java_OnePartialLineComment_Delimited()  throws IOException {
+    public void test_Java_OnePartialLineComment_Delimited()  throws Exception {
         matcher.extractComments("  some code /* a comment*/ ");
         assertEquals(
                 "+----+---------+-----------+---------------------------+"   + EOL +
@@ -510,7 +508,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         assertEquals("a comment" + EOL,  DefaultExtractor.commentsAsString(ywdb));
     }
    
-    public void test_Java_OnePartialLineComment_SpansTwoLines()  throws IOException {
+    public void test_Java_OnePartialLineComment_SpansTwoLines()  throws Exception {
         matcher.extractComments(
                 "  some code /* a comment "                 + EOL +
                 "  the rest of the comment */ more code"    + EOL);
@@ -527,7 +525,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
     
-    public void test_Java_TwoPartialLineComment_Delimited()  throws IOException {
+    public void test_Java_TwoPartialLineComment_Delimited()  throws Exception {
          matcher.extractComments(
                  "  some code /* a comment */" + EOL +
                  "  some more code  /* another comment */");
@@ -544,7 +542,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
 
-    public void test_Java_TwoPartialLineComments_OneOneLine()  throws IOException {
+    public void test_Java_TwoPartialLineComments_OneOneLine()  throws Exception {
         matcher.extractComments("  code /* a comment */ more code // another comment" + EOL);
         assertEquals(
                 "+----+---------+-----------+----+---------------+"   + EOL +
@@ -559,7 +557,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 DefaultExtractor.commentsAsString(ywdb));
     }
     
-    public void test_Java_ThreeCommentsOnOneLine()  throws IOException {
+    public void test_Java_ThreeCommentsOnOneLine()  throws Exception {
         matcher.extractComments(" /* one */ /* two */ /* three */" + EOL);
         assertEquals(
                 "+----+---------+-----------+----+-----+"   + EOL +

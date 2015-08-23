@@ -8,7 +8,7 @@ import org.yesworkflow.annotations.End;
 public class Workflow extends Program {
 
     public Workflow(
-           Integer id,
+           Long id,
            String name,
            Begin beginAnnotation,
            End endAnnotation,

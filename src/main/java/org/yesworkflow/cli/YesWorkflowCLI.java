@@ -371,7 +371,7 @@ public class YesWorkflowCLI {
         }
         
         if (modeler == null) {
-            modeler = new DefaultModeler(this.outStream, this.errStream);
+            modeler = new DefaultModeler(this.ywdb, this.outStream, this.errStream);
          }
 
         model =  modeler.configure(config.getSection("model"))

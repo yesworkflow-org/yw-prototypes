@@ -63,7 +63,7 @@ public class ExtractFacts {
                                      .fetch();
         
         for (Record record : results) {
-            long id = (long)record.getValue(ID);
+            long id = ywdb.getLongValue(record, ID);
             String path = (String)record.getValue(PATH);
             if (path == null) path = "";
             sourceFileFacts.add(id, path);

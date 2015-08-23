@@ -96,7 +96,7 @@ public class ModelFacts {
         return this;
     }
 
-    private void buildProgramFactsRecursively(Program program, String parentName, Integer parentId) {
+    private void buildProgramFactsRecursively(Program program, String parentName, Long parentId) {
 
         if (program == null) throw new IllegalArgumentException("Null program argument.");
         if (program.channels == null) throw new IllegalArgumentException("Null channels field in program argument.");
@@ -161,7 +161,7 @@ public class ModelFacts {
         return (parentName == null) ? name : parentName + infix + name + suffix;
     }
     
-    private void buildPortFacts(Port[] ports, Program block, Integer blockId, String programName) {
+    private void buildPortFacts(Port[] ports, Program block, Long blockId, String programName) {
         
         if (ports == null) throw new IllegalArgumentException("Null ports argument.");
         if (block == null) throw new IllegalArgumentException("Null block argument.");

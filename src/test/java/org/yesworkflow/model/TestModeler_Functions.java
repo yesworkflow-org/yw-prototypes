@@ -13,16 +13,16 @@ import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestModeler_Functions extends YesWorkflowTestCase {
 
-    private YesWorkflowDB ywdb = null;
-	Extractor extractor = null;
-    Modeler modeler = null;
+    private YesWorkflowDB ywdb;
+	private Extractor extractor = null;
+    private Modeler modeler = null;
     
     @Override
     public void setUp() throws Exception {
         super.setUp();
         this.ywdb = YesWorkflowDB.createInMemoryDB();
-        extractor = new DefaultExtractor(this.ywdb, super.stdoutStream, super.stderrStream);
-        modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
+        this.extractor = new DefaultExtractor(this.ywdb, super.stdoutStream, super.stderrStream);
+        this.modeler = new DefaultModeler(this.ywdb, super.stdoutStream, super.stderrStream);
         
         extractor.configure("comment", "#");
     }

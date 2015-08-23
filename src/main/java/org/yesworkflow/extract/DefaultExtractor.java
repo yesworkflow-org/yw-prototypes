@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Reader;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -180,7 +181,7 @@ public class DefaultExtractor implements Extractor {
         return this;
     }
 
-    private void extractCommentsFromSources() throws IOException, YWToolUsageException {
+    private void extractCommentsFromSources() throws IOException, YWToolUsageException, SQLException {
 
         // read source code from reader if provided
         if (sourceReader != null) {
@@ -224,7 +225,7 @@ public class DefaultExtractor implements Extractor {
         return languageModel;
     }
     
-    private void extractLinesCommentsFromReader(Long sourceId, BufferedReader reader, LanguageModel languageModel) throws IOException {
+    private void extractLinesCommentsFromReader(Long sourceId, BufferedReader reader, LanguageModel languageModel) throws IOException, SQLException {
         if (languageModel == null)  languageModel = new LanguageModel(DEFAULT_LANGUAGE);
         lastLanguage = languageModel.getLanguage();
         CommentMatcher commentMatcher = new CommentMatcher(ywdb, languageModel);
@@ -278,8 +279,8 @@ public class DefaultExtractor implements Extractor {
         
         for (Record comment : rows) {
 
-            Long sourceId = (Long)comment.getValue(SOURCE_ID);
-            Long lineNumber = (Long)comment.getValue(LINE_NUMBER);
+            Long sourceId = ywdb.getLongValue(comment, SOURCE_ID);
+            Long lineNumber = ywdb.getLongValue(comment, LINE_NUMBER);
             String commentText = (String)comment.getValue(TEXT);
         	List<String> annotationStrings = findCommentsOnLine(commentText, keywordMatcher);
         	for (String annotationString: annotationStrings) {
@@ -322,7 +323,7 @@ public class DefaultExtractor implements Extractor {
                     primaryAnnotations.add(annotation);
                 }
                 
-                ywdb.insertAnnotation(annotation.id, qualifiedAnnotationId, (Long)comment.getValue(ID),
+                ywdb.insertAnnotation(qualifiedAnnotationId, ywdb.getLongValue(comment, ID),
                                       tag.toString(), annotation.keyword, annotation.name, 
                                       annotation.description());
 

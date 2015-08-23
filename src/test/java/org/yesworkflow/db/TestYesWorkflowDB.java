@@ -2,6 +2,7 @@ package org.yesworkflow.db;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.SQLException;
 
 import org.yesworkflow.db.Table;
 import org.yesworkflow.util.FileIO;
@@ -16,99 +17,296 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
     
     private Path testDirectoryPath;
     private Path testDBFilePath;
+    private YesWorkflowDB ywdb;
+    private boolean useInMemoryDB = true;
+    
+    private Long[] sourceId = new Long[4];
+    private Long[] codeId = new Long[5];
+    private Long[] commentId = new Long[5];
+    private Long[] annotationId = new Long[5];
+    private Long[] programId = new Long[3];
     
     @Override
     public void setUp() throws Exception {
-        testDirectoryPath = getTestDirectory("TestYesWorkflowDB");
-        testDBFilePath = testDirectoryPath.resolve("test.db");
-        if (testDBFilePath.toFile().exists()) {
-            Files.delete(testDBFilePath);
+        if (useInMemoryDB) {
+            ywdb = YesWorkflowDB.createInMemoryDB();
+        } else {
+            testDirectoryPath = getTestDirectory("TestYesWorkflowDB");
+            testDBFilePath = testDirectoryPath.resolve("test.db");
+            if (testDBFilePath.toFile().exists()) {
+                Files.delete(testDBFilePath);
+            }
+            ywdb = YesWorkflowDB.openFileDB(testDBFilePath);
         }
     }
-    
-    public void testCreateVolatileDB() throws Exception {
-        YesWorkflowDB ywdb = YesWorkflowDB.createInMemoryDB();
+
+    @Override
+    public void tearDown() throws SQLException {
         ywdb.close();
+    }
+    
+    private void insertSources() throws SQLException {
+        sourceId[1] = ywdb.insertSource("path1");
+        sourceId[2] = ywdb.insertSource("path2");
+        sourceId[3] = ywdb.insertSource("path3");
     }
 
-    public void testCreateFileDB() throws Exception {
-        YesWorkflowDB ywdb = YesWorkflowDB.openFileDB(testDBFilePath);
-        ywdb.close();
+    private void insertCode() throws SQLException {
+        codeId[1] = ywdb.insertCode(sourceId[1], 1L, "# @begin prog1");
+        codeId[2] = ywdb.insertCode(sourceId[1], 2L, "# @end prog1");
+        codeId[3] = ywdb.insertCode(sourceId[2], 1L, "# @begin prog2");
+        codeId[4] = ywdb.insertCode(sourceId[2], 2L, "# @end prog2");
     }
     
+    private void insertComments() throws SQLException {
+        commentId[1] = ywdb.insertComment(sourceId[1], 1L, 1L, "@begin prog1");
+        commentId[2] = ywdb.insertComment(sourceId[1], 2L, 1L, "@end prog1");
+        commentId[3] = ywdb.insertComment(sourceId[2], 1L, 1L, "@begin prog2");
+        commentId[4] = ywdb.insertComment(sourceId[2], 2L, 1L, "@end prog2");
+    }
+    
+    private void insertAnnotations() throws SQLException {
+        annotationId[1] = ywdb.insertAnnotation(null, commentId[1], "BEGIN", "@begin", "prog1", null);
+        annotationId[2] = ywdb.insertAnnotation(null, commentId[2], "END",   "@end",   "prog1", null);
+        annotationId[3] = ywdb.insertAnnotation( null, commentId[3], "BEGIN", "@begin", "prog2", null);
+        annotationId[4] = ywdb.insertAnnotation( null, commentId[4], "END",   "@end",   "prog2", null);
+    }
+
+    private void insertPrograms() throws SQLException {
+        programId[1] = ywdb.insertProgram(null, annotationId[1], annotationId[2], "prog1", "prog1", false, false);
+        programId[2] = ywdb.insertProgram(null, annotationId[3], annotationId[4], "prog2", "prog2", false, false);
+    }
+    
+    private void insertDefaultPrograms() throws SQLException {
+        programId[1] = ywdb.insertDefaultProgram(null);
+        programId[2] = ywdb.insertDefaultProgram(null);
+    }
+
+    private void updatePrograms() throws SQLException {
+         ywdb.updateProgram(programId[1], annotationId[1], annotationId[2], "prog1", "prog1", false, false);
+         ywdb.updateProgram(programId[2], annotationId[3], annotationId[4], "prog2", "prog2", false, false);
+    }
+
     public void testCreateDBTables() throws Exception {
-//        YesWorkflowDB ywdb = YesWorkflowDB.openFileDB(testDirectoryPath.resolve("schema.db"));
-        YesWorkflowDB ywdb = YesWorkflowDB.createInMemoryDB();
         assertTrue(ywdb.hasTable(Table.SOURCE));
-        ywdb.close();
     }
-
+    
     @SuppressWarnings("rawtypes")
-    public void testInsertSourceFile() throws Exception {
-        YesWorkflowDB ywdb = YesWorkflowDB.createInMemoryDB();
-        assertEquals(0, ywdb.getRowCount(Table.SOURCE));
-        ywdb.insertSource("source1");
-        assertEquals(1, ywdb.getRowCount(Table.SOURCE));
-        ywdb.insertSource("source2");
-        assertEquals(2, ywdb.getRowCount(Table.SOURCE));
-        ywdb.insertSource("source3");
+    public void testInsertSource() throws Exception {
+        
+        insertSources();
         assertEquals(3, ywdb.getRowCount(Table.SOURCE));
         
         Result r = ywdb.jooq.select(ID, PATH)
                             .from(Table.SOURCE)
                             .fetch();
         
-        assertEquals(3, r.size());
-        assertEquals(1, (long) r.getValue(0, ID));
-        assertEquals("source1", (String) r.getValue(0, PATH));
-        assertEquals(2, (long) r.getValue(1, ID));
-        assertEquals("source2", (String) r.getValue(1, PATH));
-        assertEquals(3, (long) r.getValue(2, ID));
-        assertEquals("source3", (String) r.getValue(2, PATH));
+        assertEquals(
+            "+----+-----+"  + EOL +
+            "|id  |path |"  + EOL +
+            "+----+-----+"  + EOL +
+            "|1   |path1|"  + EOL +
+            "|2   |path2|"  + EOL +
+            "|3   |path3|"  + EOL +
+            "+----+-----+",
+            FileIO.localizeLineEndings(r.toString()));
+    }
+    
+    @SuppressWarnings("rawtypes")
+    public void testInsertCode() throws Exception {
+        
+        insertSources();
+        insertCode();
+        
+        assertEquals(4, ywdb.getRowCount(Table.CODE));
+        
+        Result r = ywdb.jooq.select(ID, SOURCE_ID, LINE_NUMBER, LINE)
+                            .from(Table.CODE)
+                            .fetch();
+        
+        assertEquals(
+            "+----+---------+-----------+--------------+"   + EOL +
+            "|id  |source_id|line_number|line          |"   + EOL +
+            "+----+---------+-----------+--------------+"   + EOL +
+            "|1   |1        |1          |# @begin prog1|"   + EOL +
+            "|2   |1        |2          |# @end prog1  |"   + EOL +
+            "|3   |2        |1          |# @begin prog2|"   + EOL +
+            "|4   |2        |2          |# @end prog2  |"   + EOL +
+            "+----+---------+-----------+--------------+",
+            FileIO.localizeLineEndings(r.toString()));
+        
+        Result r2 = ywdb.jooq.select(CODE.ID, SOURCE.PATH, LINE_NUMBER, LINE)
+                .from(Table.CODE)
+                .join(Table.SOURCE).on(SOURCE.ID.equal(CODE.SOURCE_ID))
+                .fetch();
+    
+        assertEquals(
+            "+-------+-----------+-----------+--------------+"   + EOL +
+            "|code.id|source.path|line_number|line          |"   + EOL +
+            "+-------+-----------+-----------+--------------+"   + EOL +
+            "|1      |path1      |1          |# @begin prog1|"   + EOL +
+            "|2      |path1      |2          |# @end prog1  |"   + EOL +
+            "|3      |path2      |1          |# @begin prog2|"   + EOL +
+            "|4      |path2      |2          |# @end prog2  |"   + EOL +
+            "+-------+-----------+-----------+--------------+",
+            FileIO.localizeLineEndings(r2.toString()));
     }
 
-//    @SuppressWarnings("rawtypes")
-//    public void testInsertAnnotation() throws Exception {
-//        
-//        YesWorkflowDB ywdb = YesWorkflowDB.createInMemoryDB();
-//        
-//        ywdb.insertSource("source1");
-//        ywdb.insertSource("source2");
-//        ywdb.insertAnnotation(1L, 1L, 1L, "BEGIN", "begin", "p", null);
-//        ywdb.insertAnnotation(2L, 1L, 1L, "END",   "end",   "p", null);
-//        ywdb.insertAnnotation(3L, 2L, 1L, "BEGIN", "begin", "q", null);
-//        ywdb.insertAnnotation(4L, 2L, 1L, "END",   "end",   "q", null);
-//        
-//        assertEquals(2, ywdb.getRowCount(Table.SOURCE));
-//        assertEquals(4, ywdb.getRowCount(Table.ANNOTATION));
-//
-//        Result r = ywdb.jooq.select(ANNOTATION.ID, PATH, LINE_NUMBER, TAG, KEYWORD, VALUE)
-//                            .from(Table.ANNOTATION)
-//                            .join(Table.SOURCE)
-//                            .on(ANNOTATION.SOURCE_ID.equal(Column.SOURCE.ID))
-//                            .fetch();
-//
-//        assertEquals(4, r.size());
-//
-//        assertEquals(1L, r.getValue(0, ANNOTATION.ID));
-//        assertEquals("source1", r.getValue(0, PATH));
-//        assertEquals(10L, r.getValue(0, LINE_NUMBER));
-//        assertEquals("begin", r.getValue(0, KEYWORD));
-//        
-//        assertEquals(4L, r.getValue(3, ANNOTATION.ID));
-//        assertEquals("source2", r.getValue(3, PATH));
-//        assertEquals(15L, r.getValue(3, LINE_NUMBER));
-//        assertEquals("end", r.getValue(3, KEYWORD));
-//        
-//        assertEquals(
-//            "+-------------+-------+-----------+-----+-------+-----+"   + EOL +
-//            "|annotation.id|path   |line_number|tag  |keyword|value|"   + EOL +
-//            "+-------------+-------+-----------+-----+-------+-----+"   + EOL +
-//            "|1            |source1|10         |BEGIN|begin  |p    |"   + EOL +
-//            "|2            |source1|20         |END  |end    |p    |"   + EOL +
-//            "|3            |source2|5          |BEGIN|begin  |q    |"   + EOL +
-//            "|4            |source2|15         |END  |end    |q    |"   + EOL +
-//            "+-------------+-------+-----------+-----+-------+-----+",
-//            FileIO.localizeLineEndings(r.toString()));
-//    }
+    @SuppressWarnings("rawtypes")
+    public void testInsertComment() throws Exception {
+        
+        insertSources();
+        insertComments();
+        
+        assertEquals(4, ywdb.getRowCount(Table.COMMENT));
+        
+        Result r1 = ywdb.jooq.select(ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
+                            .from(Table.COMMENT)
+                            .fetch();
+        
+        assertEquals(
+            "+----+---------+-----------+----+------------+"    + EOL +
+            "|id  |source_id|line_number|rank|text        |"    + EOL +
+            "+----+---------+-----------+----+------------+"    + EOL +
+            "|1   |1        |1          |1   |@begin prog1|"    + EOL +
+            "|2   |1        |2          |1   |@end prog1  |"    + EOL +
+            "|3   |2        |1          |1   |@begin prog2|"    + EOL +
+            "|4   |2        |2          |1   |@end prog2  |"    + EOL +
+            "+----+---------+-----------+----+------------+",
+            FileIO.localizeLineEndings(r1.toString()));
+
+        Result r2 = ywdb.jooq.select(COMMENT.ID, PATH, LINE_NUMBER, RANK, TEXT)
+                    .from(Table.COMMENT)
+                    .join(Table.SOURCE).on(SOURCE_ID.equal(SOURCE.ID))
+                    .fetch();
+        
+        assertEquals(
+            "+----------+-----+-----------+----+------------+"    + EOL +
+            "|comment.id|path |line_number|rank|text        |"    + EOL +
+            "+----------+-----+-----------+----+------------+"    + EOL +
+            "|1         |path1|1          |1   |@begin prog1|"    + EOL +
+            "|2         |path1|2          |1   |@end prog1  |"    + EOL +
+            "|3         |path2|1          |1   |@begin prog2|"    + EOL +
+            "|4         |path2|2          |1   |@end prog2  |"    + EOL +
+            "+----------+-----+-----------+----+------------+",
+            FileIO.localizeLineEndings(r2.toString()));
+    }
+    
+    @SuppressWarnings("rawtypes")
+    public void testInsertAnnotation() throws Exception {
+        
+        insertSources();
+        insertComments();
+        insertAnnotations();
+        
+        assertEquals(4, ywdb.getRowCount(Table.ANNOTATION));
+        
+        Result r1 = ywdb.jooq.select(ID, QUALIFIES, COMMENT_ID, TAG, KEYWORD, VALUE, DESCRIPTION)
+                .from(Table.ANNOTATION)
+                .fetch();
+
+        assertEquals(
+            "+----+---------+----------+-----+-------+-----+-----------+"    + EOL +
+            "|id  |qualifies|comment_id|tag  |keyword|value|description|"    + EOL +
+            "+----+---------+----------+-----+-------+-----+-----------+"    + EOL +
+            "|1   |{null}   |1         |BEGIN|@begin |prog1|{null}     |"    + EOL +
+            "|2   |{null}   |2         |END  |@end   |prog1|{null}     |"    + EOL +
+            "|3   |{null}   |3         |BEGIN|@begin |prog2|{null}     |"    + EOL +
+            "|4   |{null}   |4         |END  |@end   |prog2|{null}     |"    + EOL +
+            "+----+---------+----------+-----+-------+-----+-----------+",
+            FileIO.localizeLineEndings(r1.toString()));
+    
+        Result r2 = ywdb.jooq.select(ANNOTATION.ID, QUALIFIES, SOURCE.PATH, LINE_NUMBER, 
+                                     COMMENT.RANK, COMMENT.TEXT, TAG, KEYWORD, 
+                                     VALUE, DESCRIPTION)
+                             .from(Table.ANNOTATION)
+                             .join(Table.COMMENT).on(ANNOTATION.COMMENT_ID.equal(COMMENT.ID))
+                             .join(Table.SOURCE).on(COMMENT.SOURCE_ID.equal(SOURCE.ID))
+                             .fetch();
+        assertEquals(
+            "+-------------+---------+-----------+-----------+------------+------------+-----+-------+-----+-----------+"    + EOL +
+            "|annotation.id|qualifies|source.path|line_number|comment.rank|comment.text|tag  |keyword|value|description|"    + EOL +
+            "+-------------+---------+-----------+-----------+------------+------------+-----+-------+-----+-----------+"    + EOL +
+            "|1            |{null}   |path1      |1          |1           |@begin prog1|BEGIN|@begin |prog1|{null}     |"    + EOL +
+            "|2            |{null}   |path1      |2          |1           |@end prog1  |END  |@end   |prog1|{null}     |"    + EOL +
+            "|3            |{null}   |path2      |1          |1           |@begin prog2|BEGIN|@begin |prog2|{null}     |"    + EOL +
+            "|4            |{null}   |path2      |2          |1           |@end prog2  |END  |@end   |prog2|{null}     |"    + EOL +
+            "+-------------+---------+-----------+-----------+------------+------------+-----+-------+-----+-----------+",
+            FileIO.localizeLineEndings(r2.toString()));
+    }
+    
+    @SuppressWarnings("rawtypes")
+    public void testInsertProgram() throws Exception {
+        
+        insertSources();
+        insertComments();
+        insertAnnotations();
+        insertPrograms();
+        
+        assertEquals(2, ywdb.getRowCount(Table.PROGRAM));
+        
+        Result r1 = ywdb.jooq.select(ID, PARENT_ID, BEGIN_ID, END_ID, NAME,
+                                     QUALIFIED_NAME, IS_WORKFLOW, IS_FUNCTION)
+                .from(Table.PROGRAM)
+                .fetch();
+
+        assertEquals(
+            "+----+---------+--------+------+-----+--------------+-----------+-----------+" + EOL +
+            "|id  |parent_id|begin_id|end_id|name |qualified_name|is_workflow|is_function|" + EOL +
+            "+----+---------+--------+------+-----+--------------+-----------+-----------+" + EOL +
+            "|1   |{null}   |1       |2     |prog1|prog1         |0          |0          |" + EOL +
+            "|2   |{null}   |3       |4     |prog2|prog2         |0          |0          |" + EOL +
+            "+----+---------+--------+------+-----+--------------+-----------+-----------+",
+            FileIO.localizeLineEndings(r1.toString()));
+    }
+    
+    @SuppressWarnings("rawtypes")
+    public void testInsertDefaultProgram() throws Exception {
+        
+        insertSources();
+        insertComments();
+        insertAnnotations();
+        insertDefaultPrograms();
+        
+        assertEquals(2, ywdb.getRowCount(Table.PROGRAM));
+        
+        Result r1 = ywdb.jooq.select(ID, PARENT_ID, BEGIN_ID, END_ID, NAME, 
+                                     QUALIFIED_NAME, IS_WORKFLOW, IS_FUNCTION)
+                .from(Table.PROGRAM)
+                .fetch();
+
+        assertEquals(
+            "+----+---------+--------+------+----+--------------+-----------+-----------+" + EOL +
+            "|id  |parent_id|begin_id|end_id|name|qualified_name|is_workflow|is_function|" + EOL +
+            "+----+---------+--------+------+----+--------------+-----------+-----------+" + EOL +
+            "|1   |{null}   |{null}  |{null}|    |              |FALSE      |FALSE      |" + EOL +
+            "|2   |{null}   |{null}  |{null}|    |              |FALSE      |FALSE      |" + EOL +
+            "+----+---------+--------+------+----+--------------+-----------+-----------+",
+            FileIO.localizeLineEndings(r1.toString()));
+    }
+    
+    @SuppressWarnings("rawtypes")
+    public void testUpdateProgram() throws Exception {
+        
+        insertSources();
+        insertComments();
+        insertAnnotations();
+        insertDefaultPrograms();
+        updatePrograms();
+        
+        assertEquals(2, ywdb.getRowCount(Table.PROGRAM));
+        
+        Result r1 = ywdb.jooq.select(ID, PARENT_ID, BEGIN_ID, END_ID, NAME, QUALIFIED_NAME, IS_WORKFLOW, IS_FUNCTION)
+                .from(Table.PROGRAM)
+                .fetch();
+
+        assertEquals(
+            "+----+---------+--------+------+-----+--------------+-----------+-----------+" + EOL +
+            "|id  |parent_id|begin_id|end_id|name |qualified_name|is_workflow|is_function|" + EOL +
+            "+----+---------+--------+------+-----+--------------+-----------+-----------+" + EOL +
+            "|1   |{null}   |1       |2     |prog1|prog1         |0          |0          |" + EOL +
+            "|2   |{null}   |3       |4     |prog2|prog2         |0          |0          |" + EOL +
+            "+----+---------+--------+------+-----+--------------+-----------+-----------+",
+            FileIO.localizeLineEndings(r1.toString()));
+    }
 }

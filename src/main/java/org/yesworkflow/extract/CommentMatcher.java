@@ -3,6 +3,7 @@ package org.yesworkflow.extract;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.sql.SQLException;
 
 import org.yesworkflow.LanguageModel;
 import org.yesworkflow.db.YesWorkflowDB;
@@ -41,8 +42,9 @@ public class CommentMatcher {
      * @param reader The BufferedReader used to read the source file.
      * @return  A List of Strings representing the comments in the source code.
      * @throws IOException 
+     * @throws SQLException 
      */
-    public void extractComments(Long sourceId, BufferedReader reader) throws IOException {
+    public void extractComments(Long sourceId, BufferedReader reader) throws IOException, SQLException {
 
         String line;
         Long lineNumber = 1L;
@@ -71,12 +73,13 @@ public class CommentMatcher {
         }
     }
         
-    public void extractComments(String code) throws IOException {
+    public void extractComments(String code) throws IOException, SQLException {
         extractComments(null, new BufferedReader(new StringReader(code)));
     }
         
-    /** Helper method for inserting non-blank comments in YesWorkflow DB */
-    private Long insertTrimmedComment(Long sourceId, Long lineNumber, Long rank, String commentText) {
+    /** Helper method for inserting non-blank comments in YesWorkflow DB 
+     * @throws SQLException */
+    private Long insertTrimmedComment(Long sourceId, Long lineNumber, Long rank, String commentText) throws SQLException {
         String trimmedCommentText = commentText.toString().trim();
         if (trimmedCommentText.length() > 0) {
             ywdb.insertComment(sourceId, lineNumber, rank++, trimmedCommentText);

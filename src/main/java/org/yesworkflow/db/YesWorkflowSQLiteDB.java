@@ -1,5 +1,6 @@
 package org.yesworkflow.db;
 
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -19,8 +20,8 @@ public class YesWorkflowSQLiteDB extends YesWorkflowDB {
         this.jooq = DSL.using(this.connection, SQLDialect.SQLITE);
     }
     
-    public static YesWorkflowDB createVolatileDB() throws Exception {
-        YesWorkflowDB ywdb = new YesWorkflowH2DB(DriverManager.getConnection(IN_MEMORY_DB_URL));
+    public static YesWorkflowDB createInMemoryDB() throws Exception {
+        YesWorkflowDB ywdb = new YesWorkflowSQLiteDB(DriverManager.getConnection(IN_MEMORY_DB_URL));
         ywdb.createDBTables(CREATE_TABLES_SCRIPT);
         return ywdb;
     }
@@ -45,5 +46,11 @@ public class YesWorkflowSQLiteDB extends YesWorkflowDB {
         }
         
         return ywdb;
+    }
+    
+    public Long getLong(Object value) {
+        if (value instanceof Long) {
+            return (Long)value;
+        } else return new Long((Integer)value); 
     }
 }

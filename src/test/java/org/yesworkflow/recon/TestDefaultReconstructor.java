@@ -26,7 +26,7 @@ public class TestDefaultReconstructor extends YesWorkflowTestCase {
         super.setUp();
         this.ywdb = YesWorkflowDB.createInMemoryDB();
         extractor = new DefaultExtractor(this.ywdb, super.stdoutStream, super.stderrStream);
-        modeler = new DefaultModeler(super.stdoutStream, super.stderrStream);
+        modeler = new DefaultModeler(this.ywdb, super.stdoutStream, super.stderrStream);
         reconstructor = new DefaultReconstructor(super.stdoutStream, super.stderrStream);
     }
    
