@@ -20,6 +20,7 @@ public class Column {
     public static Field NAME            = field("name");
     public static Field PARENT_ID       = field("parent_id");
     public static Field PATH            = field("path");
+    public static Field PROGRAM_ID      = field("program_id");
     public static Field QUALIFIED_NAME  = field("qualified_name");
     public static Field QUALIFIES       = field("qualifies");
     public static Field RANK            = field("rank");

@@ -57,7 +57,8 @@ CREATE TABLE program (
 CREATE TABLE data (
     id              IDENTITY        NOT NULL        PRIMARY KEY,
     name            VARCHAR         NOT NULL,
-    qualified_name  VARCHAR         NOT NULL
+    qualified_name  VARCHAR         NOT NULL,
+    program_id      BIGINT          NULL
 );
 
 CREATE TABLE port (

@@ -44,7 +44,6 @@ public class WorkflowBuilder {
         
         private static Integer nextChannelId = 1;
         private static Integer nextPortId = 1;
-        private static Integer nextDataId = 1;
         
         @SuppressWarnings("unused")
         private PrintStream stdoutStream = null;
@@ -118,24 +117,27 @@ public class WorkflowBuilder {
             parentBuilder.nestedOutPort(outPort);
         }
 
-        public void returnPort(Return returnAnnotation) {
+        public void returnPort(Return returnAnnotation) throws SQLException {
             Port returnPort = addPort(returnAnnotation);
             workflowReturnPorts.add(returnPort);
             nestedInPort(returnPort);
         }
         
-        private Port addPort(Flow portAnnotation) {
+        private Port addPort(Flow portAnnotation) throws SQLException {
             Data data = parentBuilder.addNestedData(portAnnotation.binding());
+//            Long portId = ywdb.insertPort();
             Port port = new Port(nextPortId++, data, portAnnotation, beginAnnotation);
             return port;
         }
 
-        private Data addNestedData(String binding) {
-            Data data = dataForBinding.get(binding);
+        private Data addNestedData(String name) throws SQLException {
+            Data data = dataForBinding.get(name);
             if (data == null) {
-                data = new Data(nextDataId++, binding);
+                String qualifiedName = (programId == null) ? name : this.name + "[" + name + "]";
+                Long dataId = ywdb.insertData(name, qualifiedName, programId);
+                data = new Data(dataId, name);
                 nestedData.add(data);
-                dataForBinding.put(binding, data);
+                dataForBinding.put(name, data);
             }
             return data;
         }
@@ -194,7 +196,7 @@ public class WorkflowBuilder {
             return this;
 		}
 		
-		public Program build() throws Exception {	
+		public Program build() throws Exception {
 		    if (workflowReturnPorts.size() > 0) return buildFunction();
             buildChannels();
             if (nestedChannels.size() > 0) return buildWorkflow();

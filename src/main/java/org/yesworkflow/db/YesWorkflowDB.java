@@ -191,6 +191,28 @@ public abstract class YesWorkflowDB {
             .execute();
     }
 
+    public Long insertData(String name, String qualifiedName, Long programId) throws SQLException {
+
+        jooq.insertInto(Table.DATA)
+            .set(NAME, name)
+            .set(QUALIFIED_NAME, qualifiedName)
+            .set(PROGRAM_ID, programId)
+            .execute();
+        
+        return getGeneratedId();
+    }
+    
+    public Long insertPort(String name, String qualifiedName, Long programId) throws SQLException {
+
+        jooq.insertInto(Table.DATA)
+            .set(NAME, name)
+            .set(QUALIFIED_NAME, qualifiedName)
+            .set(PROGRAM_ID, programId)
+            .execute();
+        
+        return getGeneratedId();
+    }
+
     
     public int getRowCount(org.jooq.Table<?> T) throws SQLException {
         

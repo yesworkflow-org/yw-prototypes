@@ -53,7 +53,8 @@ CREATE TABLE program (
 CREATE TABLE data (
     id              INTEGER         NOT NULL        PRIMARY KEY,
     name            TEXT            NOT NULL,
-    qualified_name  TEXT            NOT NULL
+    qualified_name  TEXT            NOT NULL,
+    program_id      INTEGER         NULL
 );
 
 CREATE TABLE port (

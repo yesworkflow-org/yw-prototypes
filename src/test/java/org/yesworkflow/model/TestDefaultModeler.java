@@ -48,7 +48,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         
         return ywdb.jooq().select(ID, PARENT_ID, BEGIN_ID, END_ID, NAME, 
                                   QUALIFIED_NAME, IS_WORKFLOW, IS_FUNCTION)
-                          .from(org.yesworkflow.db.Table.PROGRAM)
+                          .from(Table.PROGRAM)
                           .fetch();
     }
     
@@ -64,6 +64,13 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 .fetch();
     }
     
+    @SuppressWarnings({ "unchecked" })
+    private Result<Record> selectData() {
+        
+        return ywdb.jooq().select(ID, NAME, QUALIFIED_NAME, PROGRAM_ID)
+                          .from(Table.DATA)
+                          .fetch();
+    }
     
     public void testExtract_GetModel_OneProgram() throws Exception {
         
@@ -98,6 +105,12 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
             "|1   |{null}   |1       |2     |script|script        |0          |0          |"    + EOL +
             "+----+---------+--------+------+------+--------------+-----------+-----------+",
                 FileIO.localizeLineEndings(selectPrograms().toString()));
+
+        assertEquals(
+            "+----+----+--------------+----------+" + EOL +
+            "|id  |name|qualified_name|program_id|" + EOL +
+            "+----+----+--------------+----------+",
+            FileIO.localizeLineEndings(selectData().toString()));
     }
 
     public void testExtract_GetModel_OneProgram_OneComment() throws Exception {
@@ -140,6 +153,12 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "+--------------+-----------------+---------------+",
                     FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
 
+
+        assertEquals(
+            "+----+----+--------------+----------+" + EOL +
+            "|id  |name|qualified_name|program_id|" + EOL +
+            "+----+----+--------------+----------+",
+            FileIO.localizeLineEndings(selectData().toString()));
     }
 
     public void testExtract_GetModel_OneProgram_TwoCommentsOnOneLine() throws Exception {
@@ -180,6 +199,12 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|script        |1                |1              |"    + EOL +
                 "+--------------+-----------------+---------------+",
                     FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
+
+        assertEquals(
+            "+----+----+--------------+----------+" + EOL +
+            "|id  |name|qualified_name|program_id|" + EOL +
+            "+----+----+--------------+----------+",
+            FileIO.localizeLineEndings(selectData().toString()));
     }
 
     
@@ -234,6 +259,13 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|script.program|2                |3              |"    + EOL +
                 "+--------------+-----------------+---------------+",
                     FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
+        
+
+        assertEquals(
+            "+----+----+--------------+----------+" + EOL +
+            "|id  |name|qualified_name|program_id|" + EOL +
+            "+----+----+--------------+----------+",
+            FileIO.localizeLineEndings(selectData().toString()));
     }
 
     public void testExtract_GetModel_WorkflowWithOneProgram_TwoLines() throws Exception {
@@ -285,6 +317,12 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|script.program|1                |2              |"    + EOL +
                 "+--------------+-----------------+---------------+",
                     FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
+
+        assertEquals(
+            "+----+----+--------------+----------+" + EOL +
+            "|id  |name|qualified_name|program_id|" + EOL +
+            "+----+----+--------------+----------+",
+            FileIO.localizeLineEndings(selectData().toString()));
     }
 
     
@@ -415,6 +453,12 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|script.program1|4                |5              |"    + EOL +
                 "+---------------+-----------------+---------------+",
                     FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
+
+        assertEquals(
+            "+----+----+--------------+----------+" + EOL +
+            "|id  |name|qualified_name|program_id|" + EOL +
+            "+----+----+--------------+----------+",
+            FileIO.localizeLineEndings(selectData().toString()));
     }
 
     public void testExtract_GetModel_ProgramWithSubSubprogram() throws Exception {
@@ -484,6 +528,12 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
             "|program.subprogram.subsubprogram|3                |4              |" + EOL +
             "+--------------------------------+-----------------+---------------+",
             FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
+
+        assertEquals(
+            "+----+----+--------------+----------+" + EOL +
+            "|id  |name|qualified_name|program_id|" + EOL +
+            "+----+----+--------------+----------+",
+            FileIO.localizeLineEndings(selectData().toString()));
     }
     
     public void testExtract_GetModel_OneProgramTwoInsOneOut() throws Exception {
@@ -533,7 +583,17 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|script        |1                |6              |"    + EOL +
                 "+--------------+-----------------+---------------+",
                 FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
-    }
+
+        assertEquals(
+                "+----+----+--------------+----------+" + EOL +
+                "|id  |name|qualified_name|program_id|" + EOL +
+                "+----+----+--------------+----------+" + EOL +
+                "|1   |x   |x             |{null}    |" + EOL +
+                "|2   |y   |y             |{null}    |" + EOL +
+                "|3   |z   |z             |{null}    |" + EOL +
+                "+----+----+--------------+----------+",
+                    FileIO.localizeLineEndings(selectData().toString()));
+        }
     
     public void testExtract_GetModel_OneProgramTwoParamsOneOut() throws Exception {
         
@@ -585,6 +645,16 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|script        |1                |6              |"    + EOL +
                 "+--------------+-----------------+---------------+",
                 FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
+
+        assertEquals(
+                "+----+----+--------------+----------+" + EOL +
+                "|id  |name|qualified_name|program_id|" + EOL +
+                "+----+----+--------------+----------+" + EOL +
+                "|1   |x   |x             |{null}    |" + EOL +
+                "|2   |y   |y             |{null}    |" + EOL +
+                "|3   |z   |z             |{null}    |" + EOL +
+                "+----+----+--------------+----------+",
+                    FileIO.localizeLineEndings(selectData().toString()));
     }
 
     public void testExtract_GetModel_OneProgramInAndOut_TwoCommentLines() throws Exception {
@@ -628,6 +698,16 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|script        |1                |3              |"    + EOL +
                 "+--------------+-----------------+---------------+",
                 FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
+        
+        assertEquals(
+                "+----+----+--------------+----------+" + EOL +
+                "|id  |name|qualified_name|program_id|" + EOL +
+                "+----+----+--------------+----------+" + EOL +
+                "|1   |x   |x             |{null}    |" + EOL +
+                "|2   |y   |y             |{null}    |" + EOL +
+                "|3   |z   |z             |{null}    |" + EOL +
+                "+----+----+--------------+----------+",
+                    FileIO.localizeLineEndings(selectData().toString()));
     }
 
     
@@ -708,6 +788,14 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|script.program1|5                |7              |"   + EOL +
                 "+---------------+-----------------+---------------+",
                 FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
+        
+        assertEquals(
+                "+----+-------+---------------+----------+"   + EOL +
+                "|id  |name   |qualified_name |program_id|"   + EOL +
+                "+----+-------+---------------+----------+"   + EOL +
+                "|1   |channel|script[channel]|1         |"   + EOL +
+                "+----+-------+---------------+----------+",
+                    FileIO.localizeLineEndings(selectData().toString()));
     }
 
     public void testExtract_GetModel_TwoProgramsWithOneChannel_OutAndParam() throws Exception {
@@ -787,7 +875,15 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|script.program1|5                |7              |"   + EOL +
                 "+---------------+-----------------+---------------+",
                 FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
-    }
+        
+        assertEquals(
+                "+----+-------+---------------+----------+"   + EOL +
+                "|id  |name   |qualified_name |program_id|"   + EOL +
+                "+----+-------+---------------+----------+"   + EOL +
+                "|1   |channel|script[channel]|1         |"   + EOL +
+                "+----+-------+---------------+----------+",
+                    FileIO.localizeLineEndings(selectData().toString()));    
+        }
 
     
    public void testExtract_GetModel_TwoProgramsWithOneChannel_CombinedCommentLines() throws Exception {
@@ -869,6 +965,14 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|script.program1|9                |11             |"   + EOL +
                 "+---------------+-----------------+---------------+",
                     FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
+
+        assertEquals(
+                "+----+-------+---------------+----------+"   + EOL +
+                "|id  |name   |qualified_name |program_id|"   + EOL +
+                "+----+-------+---------------+----------+"   + EOL +
+                "|1   |channel|script[channel]|1         |"   + EOL +
+                "+----+-------+---------------+----------+",
+                    FileIO.localizeLineEndings(selectData().toString()));
    }
     
     
@@ -972,6 +1076,15 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|script.program2|12               |14             |"   + EOL +
                 "+---------------+-----------------+---------------+",
                     FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
+        
+        assertEquals(
+                "+----+--------+----------------+----------+"   + EOL +
+                "|id  |name    |qualified_name  |program_id|"   + EOL +
+                "+----+--------+----------------+----------+"   + EOL +
+                "|1   |channel0|script[channel0]|1         |"   + EOL +
+                "|2   |channel1|script[channel1]|1         |"   + EOL +
+                "+----+--------+----------------+----------+",
+                    FileIO.localizeLineEndings(selectData().toString()));
     }
    
    
