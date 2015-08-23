@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.jooq.SQLDialect;
+import org.jooq.conf.RenderNameStyle;
+import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
 
 public class YesWorkflowH2DB extends YesWorkflowDB {
@@ -14,7 +16,14 @@ public class YesWorkflowH2DB extends YesWorkflowDB {
 
     public YesWorkflowH2DB(Connection connection) throws SQLException {
         super(connection);
-        this.jooq = DSL.using(this.connection, SQLDialect.H2);
+        
+        // Note the disabling of quotes around schema/table/column names to avoid bug in H2.
+        // See http://stackoverflow.com/questions/25975401/jooq-error-with-alias-and-quotes
+        this.jooq = DSL.using(
+                this.connection, 
+                SQLDialect.H2, 
+                new Settings().withRenderNameStyle(RenderNameStyle.AS_IS)
+        );
     }
     
     public static YesWorkflowDB createInMemoryDB() throws Exception {
