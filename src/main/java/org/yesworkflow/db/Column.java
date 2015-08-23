@@ -67,5 +67,6 @@ public class Column {
         public static Field QUALIFIED_NAME  = field("program.qualified_name");
         public static Field IS_WORKFLOW     = field("program.is_workflow");
         public static Field IS_FUNCTION     = field("program.is_function");
+        public static Field BEGIN_ANNOTATION_ID = field("begin_annotation.id");
     }
 }

@@ -285,7 +285,6 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
             FileIO.localizeLineEndings(r1.toString()));
     }
     
-    @SuppressWarnings("rawtypes")
     public void testUpdateProgram() throws Exception {
         
         insertSources();
@@ -296,9 +295,9 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
         
         assertEquals(2, ywdb.getRowCount(Table.PROGRAM));
         
-        Result r1 = ywdb.jooq.select(ID, PARENT_ID, BEGIN_ID, END_ID, NAME, QUALIFIED_NAME, IS_WORKFLOW, IS_FUNCTION)
-                .from(Table.PROGRAM)
-                .fetch();
+        Result<?> r1 = ywdb.jooq.select(ID, PARENT_ID, BEGIN_ID, END_ID, NAME, QUALIFIED_NAME, IS_WORKFLOW, IS_FUNCTION)
+                                .from(Table.PROGRAM)
+                                .fetch();
 
         assertEquals(
             "+----+---------+--------+------+-----+--------------+-----------+-----------+" + EOL +
