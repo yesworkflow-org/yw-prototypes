@@ -46,8 +46,8 @@ CREATE TABLE program (
     end_id          INTEGER         NULL            REFERENCES annotation(id),
     name            TEXT            NOT NULL        DEFAULT '',
     qualified_name  TEXT            NOT NULL        DEFAULT '',
-    is_workflow     BOOLEAN         NOT NULL        DEFAULT FALSE,
-    is_function     BOOLEAN         NOT NULL        DEFAULT FALSE
+    is_workflow     INTEGER         NOT NULL        DEFAULT 0,
+    is_function     INTEGER         NOT NULL        DEFAULT 0
 );
 
 CREATE TABLE data (
@@ -65,8 +65,8 @@ CREATE TABLE port (
     qualified_name  TEXT            NOT NULL,
     alias           TEXT            NULL,
     uri_template    TEXT            NULL,
-    is_inport       BOOLEAN         NOT NULL,
-    is_outport      BOOLEAN         NOT NULL
+    is_inport       INTEGER         NOT NULL,
+    is_outport      INTEGER         NOT NULL
 );
 
 CREATE TABLE channel (
@@ -74,8 +74,8 @@ CREATE TABLE channel (
     data_id         INTEGER         NOT NULL        REFERENCES data(id),
     out_port_id     INTEGER         NOT NULL        REFERENCES port(id),
     in_port_id      INTEGER         NOT NULL        REFERENCES port(id),
-    is_inflow       BOOLEAN         NOT NULL,
-    is_outflow      BOOLEAN         NOT NULL
+    is_inflow       INTEGER         NOT NULL,
+    is_outflow      INTEGER         NOT NULL
 );
 
 CREATE TABLE uri_variable (

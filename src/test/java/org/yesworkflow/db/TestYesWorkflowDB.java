@@ -279,8 +279,8 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
             "+----+---------+--------+------+----+--------------+-----------+-----------+" + EOL +
             "|id  |parent_id|begin_id|end_id|name|qualified_name|is_workflow|is_function|" + EOL +
             "+----+---------+--------+------+----+--------------+-----------+-----------+" + EOL +
-            "|1   |{null}   |{null}  |{null}|    |              |FALSE      |FALSE      |" + EOL +
-            "|2   |{null}   |{null}  |{null}|    |              |FALSE      |FALSE      |" + EOL +
+            "|1   |{null}   |{null}  |{null}|    |              |0          |0          |" + EOL +
+            "|2   |{null}   |{null}  |{null}|    |              |0          |0          |" + EOL +
             "+----+---------+--------+------+----+--------------+-----------+-----------+",
             FileIO.localizeLineEndings(r1.toString()));
     }

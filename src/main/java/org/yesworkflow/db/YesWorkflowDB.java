@@ -112,8 +112,10 @@ public abstract class YesWorkflowDB {
 
     public Long insertCode(Long sourceId, Long lineNumber, String line) throws SQLException {
 
-        jooq.insertInto(Table.CODE, SOURCE_ID, LINE_NUMBER, LINE)
-            .values(sourceId, lineNumber, line)
+        jooq.insertInto(Table.CODE)
+            .set(SOURCE_ID, sourceId)
+            .set(LINE_NUMBER, lineNumber)
+            .set(LINE, line)
             .execute();
         
         return getGeneratedId();

@@ -50,8 +50,8 @@ CREATE TABLE program (
     end_id          BIGINT          NULL            REFERENCES annotation(id),
     name            VARCHAR         NOT NULL        DEFAULT '',
     qualified_name  VARCHAR         NOT NULL        DEFAULT '',
-    is_workflow     BOOLEAN         NOT NULL        DEFAULT FALSE,
-    is_function     BOOLEAN         NOT NULL        DEFAULT FALSE
+    is_workflow     TINYINT         NOT NULL        DEFAULT 0,
+    is_function     TINYINT         NOT NULL        DEFAULT 0
 );
 
 CREATE TABLE data (
@@ -69,8 +69,8 @@ CREATE TABLE port (
     qualified_name  VARCHAR         NOT NULL,
     alias           VARCHAR         NULL,
     uri_template    VARCHAR         NULL,
-    is_inport       BOOLEAN         NOT NULL,
-    is_outport      BOOLEAN         NOT NULL
+    is_inport       TINYINT         NOT NULL,
+    is_outport      TINYINT         NOT NULL
 );
 
 CREATE TABLE channel (
@@ -78,8 +78,8 @@ CREATE TABLE channel (
     data_id         BIGINT          NOT NULL        REFERENCES data(id),
     out_port_id     BIGINT          NOT NULL        REFERENCES port(id),
     in_port_id      BIGINT          NOT NULL        REFERENCES port(id),
-    is_inflow       BOOLEAN         NOT NULL,
-    is_outflow      BOOLEAN         NOT NULL
+    is_inflow       TINYINT         NOT NULL,
+    is_outflow      TINYINT         NOT NULL
 );
 
 CREATE TABLE uri_variable (

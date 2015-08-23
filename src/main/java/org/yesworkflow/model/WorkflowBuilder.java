@@ -20,7 +20,7 @@ import org.yesworkflow.db.YesWorkflowDB;
 
 public class WorkflowBuilder {
 		
-        public final Long programId;
+        public Long programId;
         public final String parentName;
         private final WorkflowBuilder parentBuilder;
         private String name;
@@ -62,8 +62,12 @@ public class WorkflowBuilder {
             this.parentBuilder = parentBuilder;
             this.stdoutStream = stdoutStream;
             this.stderrStream = stderrStream;
-            Long parentId = (parentBuilder == null) ? null : parentBuilder.programId;
-            this.programId = this.ywdb.insertDefaultProgram(parentId);
+            
+            if (parentBuilder == null) {
+                programId = null;
+            } else {
+                programId = ywdb.insertDefaultProgram(parentBuilder.programId);
+            }
         }
         
 		public WorkflowBuilder begin(Begin annotation) {
