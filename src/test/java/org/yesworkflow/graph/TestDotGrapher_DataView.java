@@ -1,4 +1,4 @@
-package org.yesworkflow.graph.tests;
+package org.yesworkflow.graph;
 
 import org.yesworkflow.graph.CommentVisibility;
 import org.yesworkflow.graph.GraphView;

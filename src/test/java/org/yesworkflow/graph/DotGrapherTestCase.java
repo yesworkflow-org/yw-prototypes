@@ -1,4 +1,4 @@
-package org.yesworkflow.graph.tests;
+package org.yesworkflow.graph;
 
 import java.io.BufferedReader;
 import java.io.IOException;
