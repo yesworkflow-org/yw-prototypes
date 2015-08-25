@@ -283,6 +283,7 @@ public class DefaultExtractor implements Extractor {
             Long lineNumber = ywdb.getLongValue(comment, LINE_NUMBER);
             String commentText = (String)comment.getValue(TEXT);
         	List<String> annotationStrings = findCommentsOnLine(commentText, keywordMatcher);
+        	Long rankInComment = 1L;
         	for (String annotationString: annotationStrings) {
 
         		Tag tag = KeywordMatcher.extractInitialKeyword(annotationString, keywordMapping);
@@ -323,7 +324,7 @@ public class DefaultExtractor implements Extractor {
                     primaryAnnotations.add(annotation);
                 }
                 
-                ywdb.insertAnnotation(qualifiedAnnotationId, ywdb.getLongValue(comment, ID),
+                ywdb.insertAnnotation(qualifiedAnnotationId, ywdb.getLongValue(comment, ID), rankInComment++,
                                       tag.toString(), annotation.keyword, annotation.name, 
                                       annotation.description());
 

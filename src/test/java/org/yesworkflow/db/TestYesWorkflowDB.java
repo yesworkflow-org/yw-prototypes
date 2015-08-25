@@ -9,7 +9,6 @@ import org.yesworkflow.db.Table;
 import org.yesworkflow.util.FileIO;
 
 import static org.yesworkflow.db.Column.*;
-import static org.jooq.impl.DSL.field;
 
 import org.jooq.Result;
 import org.yesworkflow.YesWorkflowTestCase;
@@ -68,10 +67,10 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
     }
     
     private void insertAnnotations() throws SQLException {
-        annotationId[1] = ywdb.insertAnnotation(null, commentId[1], "BEGIN", "@begin", "prog1", null);
-        annotationId[2] = ywdb.insertAnnotation(null, commentId[2], "END",   "@end",   "prog1", null);
-        annotationId[3] = ywdb.insertAnnotation( null, commentId[3], "BEGIN", "@begin", "prog2", null);
-        annotationId[4] = ywdb.insertAnnotation( null, commentId[4], "END",   "@end",   "prog2", null);
+        annotationId[1] = ywdb.insertAnnotation(null, commentId[1], 1L, "BEGIN", "@begin", "prog1", null);
+        annotationId[2] = ywdb.insertAnnotation(null, commentId[2], 1L, "END",   "@end",   "prog1", null);
+        annotationId[3] = ywdb.insertAnnotation( null, commentId[3], 1L, "BEGIN", "@begin", "prog2", null);
+        annotationId[4] = ywdb.insertAnnotation( null, commentId[4], 1L, "END",   "@end",   "prog2", null);
     }
 
     private void insertPrograms() throws SQLException {
@@ -203,19 +202,19 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
         
         assertEquals(4, ywdb.getRowCount(Table.ANNOTATION));
         
-        Result r1 = ywdb.jooq.select(ID, QUALIFIES, COMMENT_ID, TAG, KEYWORD, VALUE, DESCRIPTION)
+        Result r1 = ywdb.jooq.select(ID, QUALIFIES, COMMENT_ID, RANK_IN_COMMENT, TAG, KEYWORD, VALUE, DESCRIPTION)
                 .from(Table.ANNOTATION)
                 .fetch();
 
         assertEquals(
-            "+----+---------+----------+-----+-------+-----+-----------+"    + EOL +
-            "|id  |qualifies|comment_id|tag  |keyword|value|description|"    + EOL +
-            "+----+---------+----------+-----+-------+-----+-----------+"    + EOL +
-            "|1   |{null}   |1         |BEGIN|@begin |prog1|{null}     |"    + EOL +
-            "|2   |{null}   |2         |END  |@end   |prog1|{null}     |"    + EOL +
-            "|3   |{null}   |3         |BEGIN|@begin |prog2|{null}     |"    + EOL +
-            "|4   |{null}   |4         |END  |@end   |prog2|{null}     |"    + EOL +
-            "+----+---------+----------+-----+-------+-----+-----------+",
+            "+----+---------+----------+---------------+-----+-------+-----+-----------+"    + EOL +
+            "|id  |qualifies|comment_id|rank_in_comment|tag  |keyword|value|description|"    + EOL +
+            "+----+---------+----------+---------------+-----+-------+-----+-----------+"    + EOL +
+            "|1   |{null}   |1         |1              |BEGIN|@begin |prog1|{null}     |"    + EOL +
+            "|2   |{null}   |2         |1              |END  |@end   |prog1|{null}     |"    + EOL +
+            "|3   |{null}   |3         |1              |BEGIN|@begin |prog2|{null}     |"    + EOL +
+            "|4   |{null}   |4         |1              |END  |@end   |prog2|{null}     |"    + EOL +
+            "+----+---------+----------+---------------+-----+-------+-----+-----------+",
             FileIO.localizeLineEndings(r1.toString()));
     
         Result r2 = ywdb.jooq.select(ANNOTATION.ID, QUALIFIES, SOURCE.PATH, LINE_NUMBER, 

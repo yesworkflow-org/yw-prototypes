@@ -37,6 +37,7 @@ CREATE TABLE annotation (
     id              IDENTITY        NOT NULL        PRIMARY KEY,
     qualifies       BIGINT          NULL            REFERENCES annotation(id),
     comment_id      BIGINT          NOT NULL        REFERENCES comment(id),
+    rank_in_comment BIGINT          NOT NULL,
     tag             VARCHAR         NOT NULL,
     keyword         VARCHAR         NOT NULL,
     value           VARCHAR         NOT NULL,

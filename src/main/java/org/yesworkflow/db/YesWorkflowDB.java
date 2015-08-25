@@ -44,8 +44,8 @@ public abstract class YesWorkflowDB {
     }
     
     public static YesWorkflowDB createInMemoryDB() throws Exception {
-//        return YesWorkflowH2DB.createInMemoryDB();
-        return YesWorkflowSQLiteDB.createInMemoryDB();
+        return YesWorkflowH2DB.createInMemoryDB();
+//        return YesWorkflowSQLiteDB.createInMemoryDB();
     }
 
     public static YesWorkflowDB openFileDB(Path dbFilePath) throws Exception {
@@ -134,13 +134,14 @@ public abstract class YesWorkflowDB {
         return getGeneratedId();
     }
     
-    public Long insertAnnotation(Long qualifiedAnnotationId, Long commentId,
-                                 String tag, String keyword, String value, 
-                                 String description) throws SQLException {
+    public Long insertAnnotation(Long qualifiedAnnotationId, long commentId,
+                                 long rankInComment, String tag, String keyword, 
+                                 String value, String description) throws SQLException {
 
         jooq.insertInto(Table.ANNOTATION)
             .set(QUALIFIES, qualifiedAnnotationId)
             .set(COMMENT_ID, commentId)
+            .set(RANK_IN_COMMENT, rankInComment)
             .set(TAG, tag)
             .set(KEYWORD, keyword)
             .set(VALUE, value)

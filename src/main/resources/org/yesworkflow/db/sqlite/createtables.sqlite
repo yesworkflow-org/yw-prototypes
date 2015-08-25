@@ -33,6 +33,7 @@ CREATE TABLE annotation (
     id              INTEGER         NOT NULL        PRIMARY KEY,
     qualifies       INTEGER         NULL            REFERENCES annotation(id),
     comment_id      INTEGER         NOT NULL        REFERENCES comment(id),
+    rank_in_comment INTEGER         NOT NULL,
     tag             TEXT            NOT NULL,
     keyword         TEXT            NOT NULL,
     value           TEXT            NOT NULL,

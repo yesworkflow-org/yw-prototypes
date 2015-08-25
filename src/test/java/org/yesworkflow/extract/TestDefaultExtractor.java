@@ -47,13 +47,13 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
 
     private Result annotationJoinCommentJoinSourceFile() {
         
-        return ywdb.jooq().select(ANNOTATION.ID, PATH, QUALIFIES, LINE_NUMBER, TAG, KEYWORD, VALUE, DESCRIPTION)
+        return ywdb.jooq().select(ANNOTATION.ID, PATH, QUALIFIES, LINE_NUMBER, RANK_IN_COMMENT, TAG, KEYWORD, VALUE, DESCRIPTION)
                           .from(Table.ANNOTATION)
                           .join(Table.COMMENT)
                           .on(ANNOTATION.COMMENT_ID.equal(COMMENT.ID))
                           .join(Table.SOURCE)
                           .on(COMMENT.SOURCE_ID.equal(SOURCE.ID))
-                          .orderBy(SOURCE.ID, LINE_NUMBER)
+                          .orderBy(SOURCE.ID, LINE_NUMBER, RANK_IN_COMMENT)
                           .fetch();
     }
     
@@ -192,14 +192,14 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                  .extract();
         
         assertEquals(
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|annotation.id|path  |qualifies|line_number|tag  |keyword|value|description|"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|1            |{null}|{null}   |1          |BEGIN|@begin |step |{null}     |"  + EOL +
-            "|2            |{null}|{null}   |3          |IN   |@in    |x    |{null}     |"  + EOL +
-            "|3            |{null}|{null}   |6          |OUT  |@out   |y    |{null}     |"  + EOL +
-            "|4            |{null}|{null}   |9          |END  |@end   |step |{null}     |"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+" + EOL +
+            "|annotation.id|path  |qualifies|line_number|rank_in_comment|tag  |keyword|value|description|" + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+" + EOL +
+            "|1            |{null}|{null}   |1          |1              |BEGIN|@begin |step |{null}     |" + EOL +
+            "|2            |{null}|{null}   |3          |1              |IN   |@in    |x    |{null}     |" + EOL +
+            "|3            |{null}|{null}   |6          |1              |OUT  |@out   |y    |{null}     |" + EOL +
+            "|4            |{null}|{null}   |9          |1              |END  |@end   |step |{null}     |" + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+", 
             FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));
     }
 
@@ -225,14 +225,14 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                  .extract();
         
         assertEquals(
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|annotation.id|path  |qualifies|line_number|tag  |keyword|value|description|"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|1            |{null}|{null}   |1          |BEGIN|@begin |step |{null}     |"  + EOL +
-            "|2            |{null}|{null}   |3          |IN   |@in    |x    |{null}     |"  + EOL +
-            "|3            |{null}|{null}   |6          |OUT  |@out   |y    |{null}     |"  + EOL +
-            "|4            |{null}|{null}   |9          |END  |@end   |step |{null}     |"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+" + EOL +
+            "|annotation.id|path  |qualifies|line_number|rank_in_comment|tag  |keyword|value|description|" + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+" + EOL +
+            "|1            |{null}|{null}   |1          |1              |BEGIN|@begin |step |{null}     |" + EOL +
+            "|2            |{null}|{null}   |3          |1              |IN   |@in    |x    |{null}     |" + EOL +
+            "|3            |{null}|{null}   |6          |1              |OUT  |@out   |y    |{null}     |" + EOL +
+            "|4            |{null}|{null}   |9          |1              |END  |@end   |step |{null}     |" + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+", 
             FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));
     }
 
@@ -255,14 +255,14 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                  .extract();
 
         assertEquals(
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|annotation.id|path  |qualifies|line_number|tag  |keyword|value|description|"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|1            |{null}|{null}   |1          |BEGIN|@begin |step |{null}     |"  + EOL +
-            "|2            |{null}|{null}   |3          |IN   |@in    |x    |{null}     |"  + EOL +
-            "|3            |{null}|{null}   |6          |PARAM|@param |y    |{null}     |"  + EOL +
-            "|4            |{null}|{null}   |9          |END  |@end   |step |{null}     |"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+"  + EOL +
+            "|annotation.id|path  |qualifies|line_number|rank_in_comment|tag  |keyword|value|description|"  + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+"  + EOL +
+            "|1            |{null}|{null}   |1          |1              |BEGIN|@begin |step |{null}     |"  + EOL +
+            "|2            |{null}|{null}   |3          |1              |IN   |@in    |x    |{null}     |"  + EOL +
+            "|3            |{null}|{null}   |6          |1              |PARAM|@param |y    |{null}     |"  + EOL +
+            "|4            |{null}|{null}   |9          |1              |END  |@end   |step |{null}     |"  + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+", 
             FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));
     }
     
@@ -285,16 +285,16 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                  .extract();      
 
         assertEquals(
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|annotation.id|path  |qualifies|line_number|tag  |keyword|value|description|"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|1            |{null}|{null}   |1          |BEGIN|@begin |step |{null}     |"  + EOL +
-            "|2            |{null}|{null}   |3          |IN   |@in    |x    |{null}     |"  + EOL +
-            "|3            |{null}|2        |3          |AS   |@as    |horiz|{null}     |"  + EOL +
-            "|4            |{null}|{null}   |6          |PARAM|@param |y    |{null}     |"  + EOL +
-            "|5            |{null}|4        |6          |AS   |@as    |vert |{null}     |"  + EOL +
-            "|6            |{null}|{null}   |9          |END  |@end   |step |{null}     |"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+"  + EOL +
+            "|annotation.id|path  |qualifies|line_number|rank_in_comment|tag  |keyword|value|description|"  + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+"  + EOL +
+            "|1            |{null}|{null}   |1          |1              |BEGIN|@begin |step |{null}     |"  + EOL +
+            "|2            |{null}|{null}   |3          |1              |IN   |@in    |x    |{null}     |"  + EOL +
+            "|3            |{null}|2        |3          |2              |AS   |@as    |horiz|{null}     |"  + EOL +
+            "|4            |{null}|{null}   |6          |1              |PARAM|@param |y    |{null}     |"  + EOL +
+            "|5            |{null}|4        |6          |2              |AS   |@as    |vert |{null}     |"  + EOL +
+            "|6            |{null}|{null}   |9          |1              |END  |@end   |step |{null}     |"  + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+", 
             FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));
     }
     
@@ -320,16 +320,16 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                  .extract();       
 
         assertEquals(
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|annotation.id|path  |qualifies|line_number|tag  |keyword|value|description|"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|1            |{null}|{null}   |1          |BEGIN|@begin |step |{null}     |"  + EOL +
-            "|2            |{null}|{null}   |3          |IN   |@in    |x    |{null}     |"  + EOL +
-            "|3            |{null}|2        |4          |AS   |@as    |horiz|{null}     |"  + EOL +
-            "|4            |{null}|{null}   |7          |PARAM|@param |y    |{null}     |"  + EOL +
-            "|5            |{null}|4        |8          |AS   |@as    |vert |{null}     |"  + EOL +
-            "|6            |{null}|{null}   |11         |END  |@end   |step |{null}     |"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+"  + EOL +
+            "|annotation.id|path  |qualifies|line_number|rank_in_comment|tag  |keyword|value|description|"  + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+"  + EOL +
+            "|1            |{null}|{null}   |1          |1              |BEGIN|@begin |step |{null}     |"  + EOL +
+            "|2            |{null}|{null}   |3          |1              |IN   |@in    |x    |{null}     |"  + EOL +
+            "|3            |{null}|2        |4          |1              |AS   |@as    |horiz|{null}     |"  + EOL +
+            "|4            |{null}|{null}   |7          |1              |PARAM|@param |y    |{null}     |"  + EOL +
+            "|5            |{null}|4        |8          |1              |AS   |@as    |vert |{null}     |"  + EOL +
+            "|6            |{null}|{null}   |11         |1              |END  |@end   |step |{null}     |"  + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+", 
             FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));
     }
     
@@ -343,16 +343,16 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
                  .extract();
         
         assertEquals(
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|annotation.id|path  |qualifies|line_number|tag  |keyword|value|description|"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|1            |{null}|{null}   |1          |BEGIN|@begin |step |{null}     |"  + EOL +
-            "|2            |{null}|{null}   |1          |IN   |@in    |x    |{null}     |"  + EOL +
-            "|3            |{null}|2        |1          |AS   |@as    |horiz|{null}     |"  + EOL +
-            "|4            |{null}|{null}   |1          |PARAM|@param |y    |{null}     |"  + EOL +
-            "|5            |{null}|4        |1          |AS   |@as    |vert |{null}     |"  + EOL +
-            "|6            |{null}|{null}   |1          |END  |@end   |step |{null}     |"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+" + EOL +
+            "|annotation.id|path  |qualifies|line_number|rank_in_comment|tag  |keyword|value|description|" + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+" + EOL +
+            "|1            |{null}|{null}   |1          |1              |BEGIN|@begin |step |{null}     |" + EOL +
+            "|2            |{null}|{null}   |1          |2              |IN   |@in    |x    |{null}     |" + EOL +
+            "|3            |{null}|2        |1          |3              |AS   |@as    |horiz|{null}     |" + EOL +
+            "|4            |{null}|{null}   |1          |4              |PARAM|@param |y    |{null}     |" + EOL +
+            "|5            |{null}|4        |1          |5              |AS   |@as    |vert |{null}     |" + EOL +
+            "|6            |{null}|{null}   |1          |6              |END  |@end   |step |{null}     |" + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+", 
             FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));
         
         
@@ -399,14 +399,14 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertNull(end.description());
 
         assertEquals(
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|annotation.id|path  |qualifies|line_number|tag  |keyword|value|description|"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+"  + EOL +
-            "|1            |{null}|{null}   |1          |BEGIN|@begin |step |{null}     |"  + EOL +
-            "|2            |{null}|{null}   |3          |IN   |@in    |x    |{null}     |"  + EOL +
-            "|3            |{null}|{null}   |6          |OUT  |@out   |y    |{null}     |"  + EOL +
-            "|4            |{null}|{null}   |9          |END  |@end   |step |{null}     |"  + EOL +
-            "+-------------+------+---------+-----------+-----+-------+-----+-----------+", 
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+" + EOL +
+            "|annotation.id|path  |qualifies|line_number|rank_in_comment|tag  |keyword|value|description|" + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+" + EOL +
+            "|1            |{null}|{null}   |1          |1              |BEGIN|@begin |step |{null}     |" + EOL +
+            "|2            |{null}|{null}   |3          |1              |IN   |@in    |x    |{null}     |" + EOL +
+            "|3            |{null}|{null}   |6          |1              |OUT  |@out   |y    |{null}     |" + EOL +
+            "|4            |{null}|{null}   |9          |1              |END  |@end   |step |{null}     |" + EOL +
+            "+-------------+------+---------+-----------+---------------+-----+-------+-----+-----------+", 
             FileIO.localizeLineEndings(annotationJoinCommentJoinSourceFile().toString()));    
     }
 }

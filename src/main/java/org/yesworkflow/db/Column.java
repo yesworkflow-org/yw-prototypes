@@ -24,6 +24,7 @@ public class Column {
     public static Field QUALIFIED_NAME  = field("qualified_name");
     public static Field QUALIFIES       = field("qualifies");
     public static Field RANK_ON_LINE    = field("rank_on_line");
+    public static Field RANK_IN_COMMENT = field("rank_in_comment");
     public static Field SOURCE_ID       = field("source_id");
     public static Field TAG             = field("tag");
     public static Field TEXT            = field("text");
@@ -53,6 +54,7 @@ public class Column {
         public static Field ID              = field("annotation.id");
         public static Field QUALIFIES       = field("annotation.qualifies");
         public static Field COMMENT_ID      = field("annotation.comment_id");
+        public static Field RANK_IN_COMMENT = field("annotation.rank_in_comment");
         public static Field TAG             = field("annotation.tag");
         public static Field KEYWORD         = field("annotation.keyword");
         public static Field VALUE           = field("annotation.value");
