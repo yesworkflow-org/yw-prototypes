@@ -4,10 +4,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
 
+
 import org.yesworkflow.db.Table;
 import org.yesworkflow.util.FileIO;
 
 import static org.yesworkflow.db.Column.*;
+import static org.jooq.impl.DSL.field;
 
 import org.jooq.Result;
 import org.yesworkflow.YesWorkflowTestCase;
@@ -51,11 +53,11 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
         sourceId[3] = ywdb.insertSource("path3");
     }
 
-    private void insertCode() throws SQLException {
-        codeId[1] = ywdb.insertCode(sourceId[1], 1L, "# @begin prog1");
-        codeId[2] = ywdb.insertCode(sourceId[1], 2L, "# @end prog1");
-        codeId[3] = ywdb.insertCode(sourceId[2], 1L, "# @begin prog2");
-        codeId[4] = ywdb.insertCode(sourceId[2], 2L, "# @end prog2");
+    private void insertSourceLines() throws SQLException {
+        codeId[1] = ywdb.insertSourceLine(sourceId[1], 1L, "# @begin prog1");
+        codeId[2] = ywdb.insertSourceLine(sourceId[1], 2L, "# @end prog1");
+        codeId[3] = ywdb.insertSourceLine(sourceId[2], 1L, "# @begin prog2");
+        codeId[4] = ywdb.insertSourceLine(sourceId[2], 2L, "# @end prog2");
     }
     
     private void insertComments() throws SQLException {
@@ -113,20 +115,20 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
     }
     
     @SuppressWarnings("rawtypes")
-    public void testInsertCode() throws Exception {
+    public void testInsertSourceLine() throws Exception {
         
         insertSources();
-        insertCode();
+        insertSourceLines();
         
-        assertEquals(4, ywdb.getRowCount(Table.CODE));
+        assertEquals(4, ywdb.getRowCount(Table.SOURCE_LINE));
         
-        Result r = ywdb.jooq.select(ID, SOURCE_ID, LINE_NUMBER, LINE)
-                            .from(Table.CODE)
+        Result r = ywdb.jooq.select(ID, SOURCE_ID, LINE_NUMBER, LINE_TEXT)
+                            .from(Table.SOURCE_LINE)
                             .fetch();
         
         assertEquals(
             "+----+---------+-----------+--------------+"   + EOL +
-            "|id  |source_id|line_number|line          |"   + EOL +
+            "|id  |source_id|line_number|line_text     |"   + EOL +
             "+----+---------+-----------+--------------+"   + EOL +
             "|1   |1        |1          |# @begin prog1|"   + EOL +
             "|2   |1        |2          |# @end prog1  |"   + EOL +
@@ -135,20 +137,20 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
             "+----+---------+-----------+--------------+",
             FileIO.localizeLineEndings(r.toString()));
         
-        Result r2 = ywdb.jooq.select(CODE.ID, SOURCE.PATH, LINE_NUMBER, LINE)
-                .from(Table.CODE)
-                .join(Table.SOURCE).on(SOURCE.ID.equal(CODE.SOURCE_ID))
+        Result r2 = ywdb.jooq.select(SOURCE_LINE.ID, SOURCE.PATH, LINE_NUMBER, LINE_TEXT)
+                .from(Table.SOURCE_LINE)
+                .join(Table.SOURCE).on(SOURCE.ID.equal(SOURCE_LINE.SOURCE_ID))
                 .fetch();
     
         assertEquals(
-            "+-------+-----------+-----------+--------------+"   + EOL +
-            "|code.id|source.path|line_number|line          |"   + EOL +
-            "+-------+-----------+-----------+--------------+"   + EOL +
-            "|1      |path1      |1          |# @begin prog1|"   + EOL +
-            "|2      |path1      |2          |# @end prog1  |"   + EOL +
-            "|3      |path2      |1          |# @begin prog2|"   + EOL +
-            "|4      |path2      |2          |# @end prog2  |"   + EOL +
-            "+-------+-----------+-----------+--------------+",
+            "+--------------+-----------+-----------+--------------+"   + EOL + 
+            "|source_line.id|source.path|line_number|line_text     |"   + EOL + 
+            "+--------------+-----------+-----------+--------------+"   + EOL + 
+            "|1             |path1      |1          |# @begin prog1|"   + EOL + 
+            "|2             |path1      |2          |# @end prog1  |"   + EOL + 
+            "|3             |path2      |1          |# @begin prog2|"   + EOL + 
+            "|4             |path2      |2          |# @end prog2  |"   + EOL + 
+            "+--------------+-----------+-----------+--------------+",
             FileIO.localizeLineEndings(r2.toString()));
     }
 
@@ -160,35 +162,35 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
         
         assertEquals(4, ywdb.getRowCount(Table.COMMENT));
         
-        Result r1 = ywdb.jooq.select(ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
+        Result r1 = ywdb.jooq.select(ID, SOURCE_ID, LINE_NUMBER, RANK_ON_LINE, TEXT)
                             .from(Table.COMMENT)
                             .fetch();
         
         assertEquals(
-            "+----+---------+-----------+----+------------+"    + EOL +
-            "|id  |source_id|line_number|rank|text        |"    + EOL +
-            "+----+---------+-----------+----+------------+"    + EOL +
-            "|1   |1        |1          |1   |@begin prog1|"    + EOL +
-            "|2   |1        |2          |1   |@end prog1  |"    + EOL +
-            "|3   |2        |1          |1   |@begin prog2|"    + EOL +
-            "|4   |2        |2          |1   |@end prog2  |"    + EOL +
-            "+----+---------+-----------+----+------------+",
+            "+----+---------+-----------+------------+------------+"    + EOL +
+            "|id  |source_id|line_number|rank_on_line|text        |"    + EOL +
+            "+----+---------+-----------+------------+------------+"    + EOL +
+            "|1   |1        |1          |1           |@begin prog1|"    + EOL +
+            "|2   |1        |2          |1           |@end prog1  |"    + EOL +
+            "|3   |2        |1          |1           |@begin prog2|"    + EOL +
+            "|4   |2        |2          |1           |@end prog2  |"    + EOL +
+            "+----+---------+-----------+------------+------------+",
             FileIO.localizeLineEndings(r1.toString()));
 
-        Result r2 = ywdb.jooq.select(COMMENT.ID, PATH, LINE_NUMBER, RANK, TEXT)
+        Result r2 = ywdb.jooq.select(COMMENT.ID, PATH, LINE_NUMBER, RANK_ON_LINE, TEXT)
                     .from(Table.COMMENT)
                     .join(Table.SOURCE).on(SOURCE_ID.equal(SOURCE.ID))
                     .fetch();
         
         assertEquals(
-            "+----------+-----+-----------+----+------------+"    + EOL +
-            "|comment.id|path |line_number|rank|text        |"    + EOL +
-            "+----------+-----+-----------+----+------------+"    + EOL +
-            "|1         |path1|1          |1   |@begin prog1|"    + EOL +
-            "|2         |path1|2          |1   |@end prog1  |"    + EOL +
-            "|3         |path2|1          |1   |@begin prog2|"    + EOL +
-            "|4         |path2|2          |1   |@end prog2  |"    + EOL +
-            "+----------+-----+-----------+----+------------+",
+            "+----------+-----+-----------+------------+------------+"    + EOL +
+            "|comment.id|path |line_number|rank_on_line|text        |"    + EOL +
+            "+----------+-----+-----------+------------+------------+"    + EOL +
+            "|1         |path1|1          |1           |@begin prog1|"    + EOL +
+            "|2         |path1|2          |1           |@end prog1  |"    + EOL +
+            "|3         |path2|1          |1           |@begin prog2|"    + EOL +
+            "|4         |path2|2          |1           |@end prog2  |"    + EOL +
+            "+----------+-----+-----------+------------+------------+",
             FileIO.localizeLineEndings(r2.toString()));
     }
     
@@ -217,21 +219,21 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
             FileIO.localizeLineEndings(r1.toString()));
     
         Result r2 = ywdb.jooq.select(ANNOTATION.ID, QUALIFIES, SOURCE.PATH, LINE_NUMBER, 
-                                     COMMENT.RANK, COMMENT.TEXT, TAG, KEYWORD, 
+                                     COMMENT.RANK_ON_LINE, COMMENT.TEXT, TAG, KEYWORD, 
                                      VALUE, DESCRIPTION)
                              .from(Table.ANNOTATION)
                              .join(Table.COMMENT).on(ANNOTATION.COMMENT_ID.equal(COMMENT.ID))
                              .join(Table.SOURCE).on(COMMENT.SOURCE_ID.equal(SOURCE.ID))
                              .fetch();
         assertEquals(
-            "+-------------+---------+-----------+-----------+------------+------------+-----+-------+-----+-----------+"    + EOL +
-            "|annotation.id|qualifies|source.path|line_number|comment.rank|comment.text|tag  |keyword|value|description|"    + EOL +
-            "+-------------+---------+-----------+-----------+------------+------------+-----+-------+-----+-----------+"    + EOL +
-            "|1            |{null}   |path1      |1          |1           |@begin prog1|BEGIN|@begin |prog1|{null}     |"    + EOL +
-            "|2            |{null}   |path1      |2          |1           |@end prog1  |END  |@end   |prog1|{null}     |"    + EOL +
-            "|3            |{null}   |path2      |1          |1           |@begin prog2|BEGIN|@begin |prog2|{null}     |"    + EOL +
-            "|4            |{null}   |path2      |2          |1           |@end prog2  |END  |@end   |prog2|{null}     |"    + EOL +
-            "+-------------+---------+-----------+-----------+------------+------------+-----+-------+-----+-----------+",
+            "+-------------+---------+-----------+-----------+--------------------+------------+-----+-------+-----+-----------+"    + EOL +
+            "|annotation.id|qualifies|source.path|line_number|comment.rank_on_line|comment.text|tag  |keyword|value|description|"    + EOL +
+            "+-------------+---------+-----------+-----------+--------------------+------------+-----+-------+-----+-----------+"    + EOL +
+            "|1            |{null}   |path1      |1          |1                   |@begin prog1|BEGIN|@begin |prog1|{null}     |"    + EOL +
+            "|2            |{null}   |path1      |2          |1                   |@end prog1  |END  |@end   |prog1|{null}     |"    + EOL +
+            "|3            |{null}   |path2      |1          |1                   |@begin prog2|BEGIN|@begin |prog2|{null}     |"    + EOL +
+            "|4            |{null}   |path2      |2          |1                   |@end prog2  |END  |@end   |prog2|{null}     |"    + EOL +
+            "+-------------+---------+-----------+-----------+--------------------+------------+-----+-------+-----+-----------+",
             FileIO.localizeLineEndings(r2.toString()));
     }
     

@@ -25,9 +25,9 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
     
     @SuppressWarnings({ "unchecked" })
     private Result<Record> selectComments() {
-        return ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
+        return ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK_ON_LINE, TEXT)
                 .from(Table.COMMENT)
-                .orderBy(SOURCE_ID, LINE_NUMBER, RANK)
+                .orderBy(SOURCE_ID, LINE_NUMBER, RANK_ON_LINE)
                 .fetch();
     }
     
@@ -59,11 +59,11 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment" + EOL, DefaultExtractor.commentsAsString(ywdb));
         assertEquals(
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|id  |source_id|line_number|rank|text     |"   + EOL +
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|1   |1        |1          |1   |a comment|"   + EOL +
-                "+----+---------+-----------+----+---------+", 
+                "+----+---------+-----------+------------+---------+"   + EOL +
+                "|id  |source_id|line_number|rank_on_line|text     |"   + EOL +
+                "+----+---------+-----------+------------+---------+"   + EOL +
+                "|1   |1        |1          |1           |a comment|"   + EOL +
+                "+----+---------+-----------+------------+---------+", 
                 selectComments().toString());
     }
 
@@ -72,11 +72,11 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment" + EOL,  DefaultExtractor.commentsAsString(ywdb));
         assertEquals(
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|id  |source_id|line_number|rank|text     |"   + EOL +
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|1   |1        |1          |1   |a comment|"   + EOL +
-                "+----+---------+-----------+----+---------+", 
+                "+----+---------+-----------+------------+---------+"   + EOL +
+                "|id  |source_id|line_number|rank_on_line|text     |"   + EOL +
+                "+----+---------+-----------+------------+---------+"   + EOL +
+                "|1   |1        |1          |1           |a comment|"   + EOL +
+                "+----+---------+-----------+------------+---------+", 
                 selectComments().toString());
     }
     
@@ -88,12 +88,12 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                      "another comment"    + EOL, 
                      DefaultExtractor.commentsAsString(ywdb));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |1          |1   |a comment      |"   + EOL +
-                "|2   |1        |2          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+---------+-----------+------------+---------------+"   + EOL +
+                "|id  |source_id|line_number|rank_on_line|text           |"   + EOL +
+                "+----+---------+-----------+------------+---------------+"   + EOL +
+                "|1   |1        |1          |1           |a comment      |"   + EOL +
+                "|2   |1        |2          |1           |another comment|"   + EOL +
+                "+----+---------+-----------+------------+---------------+", 
                 selectComments().toString());
     }
 
@@ -106,12 +106,12 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                      "another comment"    + EOL, 
                      DefaultExtractor.commentsAsString(ywdb));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |1          |1   |a comment      |"   + EOL +
-                "|2   |1        |3          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+---------+-----------+------------+---------------+"   + EOL +
+                "|id  |source_id|line_number|rank_on_line|text           |"   + EOL +
+                "+----+---------+-----------+------------+---------------+"   + EOL +
+                "|1   |1        |1          |1           |a comment      |"   + EOL +
+                "|2   |1        |3          |1           |another comment|"   + EOL +
+                "+----+---------+-----------+------------+---------------+", 
                 selectComments().toString());
     }
 
@@ -128,12 +128,12 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                      DefaultExtractor.commentsAsString(ywdb));
 
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |3          |1   |a comment      |"   + EOL +
-                "|2   |1        |5          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+---------+-----------+------------+---------------+"   + EOL +
+                "|id  |source_id|line_number|rank_on_line|text           |"   + EOL +
+                "+----+---------+-----------+------------+---------------+"   + EOL +
+                "|1   |1        |3          |1           |a comment      |"   + EOL +
+                "|2   |1        |5          |1           |another comment|"   + EOL +
+                "+----+---------+-----------+------------+---------------+", 
                 selectComments().toString());
     }
 
@@ -149,12 +149,12 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                      "another comment"    + EOL, 
                      DefaultExtractor.commentsAsString(ywdb));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |3          |1   |a comment      |"   + EOL +
-                "|2   |1        |5          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+---------+-----------+------------+---------------+"   + EOL +
+                "|id  |source_id|line_number|rank_on_line|text           |"   + EOL +
+                "+----+---------+-----------+------------+---------------+"   + EOL +
+                "|1   |1        |3          |1           |a comment      |"   + EOL +
+                "|2   |1        |5          |1           |another comment|"   + EOL +
+                "+----+---------+-----------+------------+---------------+", 
                 selectComments().toString());
     }
     
@@ -164,11 +164,11 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
         matcher.extractComments(source);
         assertEquals("a comment" + EOL, DefaultExtractor.commentsAsString(ywdb));
         assertEquals(
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|id  |source_id|line_number|rank|text     |"   + EOL +
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|1   |1        |1          |1   |a comment|"   + EOL +
-                "+----+---------+-----------+----+---------+", 
+                "+----+---------+-----------+------------+---------+"   + EOL +
+                "|id  |source_id|line_number|rank_on_line|text     |"   + EOL +
+                "+----+---------+-----------+------------+---------+"   + EOL +
+                "|1   |1        |1          |1           |a comment|"   + EOL +
+                "+----+---------+-----------+------------+---------+", 
                 selectComments().toString());
     }
 
@@ -180,12 +180,12 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                      "another comment"    + EOL, 
                      DefaultExtractor.commentsAsString(ywdb));    
         assertEquals(
-                "+----+---------+-----------+----+---------------+"     + EOL +
-                "|id  |source_id|line_number|rank|text           |"     + EOL +
-                "+----+---------+-----------+----+---------------+"     + EOL +
-                "|1   |1        |1          |1   |a comment      |"     + EOL +
-                "|2   |1        |2          |1   |another comment|"     + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+---------+-----------+------------+---------------+"   + EOL +
+                "|id  |source_id|line_number|rank_on_line|text           |"   + EOL +
+                "+----+---------+-----------+------------+---------------+"   + EOL +
+                "|1   |1        |1          |1           |a comment      |"   + EOL +
+                "|2   |1        |2          |1           |another comment|"   + EOL +
+                "+----+---------+-----------+------------+---------------+", 
                 selectComments().toString());
     }
     

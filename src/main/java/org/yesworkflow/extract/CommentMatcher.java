@@ -56,7 +56,7 @@ public class CommentMatcher {
         if (sourceId == null) sourceId = ywdb.insertSource(null);
         
         while ((line = reader.readLine()) != null) {
-            ywdb.insertCode(sourceId, lineNumber, line);
+            ywdb.insertSourceLine(sourceId, lineNumber, line);
             StringBuffer commentText = new StringBuffer();
             Long rank = 1L;
             for (int i = 0; i < line.length(); ++i) {

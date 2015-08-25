@@ -1,11 +1,6 @@
 package org.yesworkflow.extract;
 
-import static org.yesworkflow.db.Column.ID;
-import static org.yesworkflow.db.Column.LINE;
-import static org.yesworkflow.db.Column.LINE_NUMBER;
-import static org.yesworkflow.db.Column.RANK;
-import static org.yesworkflow.db.Column.SOURCE_ID;
-import static org.yesworkflow.db.Column.TEXT;
+import static org.yesworkflow.db.Column.*;
 
 import org.jooq.Record;
 import org.jooq.Result;
@@ -15,6 +10,7 @@ import org.yesworkflow.YesWorkflowTestCase;
 import org.yesworkflow.db.Table;
 import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.util.FileIO;
+import static org.jooq.impl.DSL.field;
 
 public class TestCommentMatcher_Java extends YesWorkflowTestCase {
 
@@ -30,17 +26,17 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
 
     @SuppressWarnings("unchecked")
     private Result<Record> selectCode() {
-        return ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, LINE)
-                          .from(Table.CODE)
+        return ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, LINE_TEXT)
+                          .from(Table.SOURCE_LINE)
                           .orderBy(SOURCE_ID, LINE_NUMBER)
                           .fetch();
     }
     
     @SuppressWarnings({ "unchecked" })
     private Result<Record> selectComments() {
-        return ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
+        return ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK_ON_LINE.as(field("rank")), TEXT)
                           .from(Table.COMMENT)
-                          .orderBy(SOURCE_ID, LINE_NUMBER, RANK)
+                          .orderBy(SOURCE_ID, LINE_NUMBER, RANK_ON_LINE)
                           .fetch();
     }
     
@@ -69,7 +65,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments("  // a comment ");
         assertEquals(
                 "+----+---------+-----------+---------------+"   + EOL +
-                "|id  |source_id|line_number|line           |"   + EOL +
+                "|id  |source_id|line_number|line_text      |"   + EOL +
                 "+----+---------+-----------+---------------+"   + EOL +
                 "|1   |1        |1          |  // a comment |"   + EOL +
                 "+----+---------+-----------+---------------+",
@@ -90,7 +86,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  // another comment ");
         assertEquals(
                 "+----+---------+-----------+---------------------+"   + EOL +
-                "|id  |source_id|line_number|line                 |"   + EOL +
+                "|id  |source_id|line_number|line_text            |"   + EOL +
                 "+----+---------+-----------+---------------------+"   + EOL +
                 "|1   |1        |1          |  // a comment       |"   + EOL +
                 "|2   |1        |2          |  // another comment |"   + EOL +
@@ -116,7 +112,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  // another comment ");
         assertEquals(
                 "+----+---------+-----------+---------------------+"   + EOL +
-                "|id  |source_id|line_number|line                 |"   + EOL +
+                "|id  |source_id|line_number|line_text            |"   + EOL +
                 "+----+---------+-----------+---------------------+"   + EOL +
                 "|1   |1        |1          |  // a comment       |"   + EOL +
                 "|2   |1        |2          |  some code          |"   + EOL +
@@ -146,7 +142,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  a final bit of code");
         assertEquals(
                 "+----+---------+-----------+------------------------+"   + EOL +
-                "|id  |source_id|line_number|line                    |"   + EOL +
+                "|id  |source_id|line_number|line_text               |"   + EOL +
                 "+----+---------+-----------+------------------------+"   + EOL +
                 "|1   |1        |1          |  some initial code     |"   + EOL +
                 "|2   |1        |2          |  a second line of code |"   + EOL +
@@ -181,7 +177,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  a final bit of code");
         assertEquals(
                 "+----+---------+-----------+------------------------+"   + EOL +
-                "|id  |source_id|line_number|line                    |"   + EOL +
+                "|id  |source_id|line_number|line_text               |"   + EOL +
                 "+----+---------+-----------+------------------------+"   + EOL +
                 "|1   |1        |1          |  some initial code     |"   + EOL +
                 "|2   |1        |2          |  a second line of code |"   + EOL +
@@ -208,7 +204,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments("  some code // a comment ");
         assertEquals(
                 "+----+---------+-----------+-------------------------+"   + EOL +
-                "|id  |source_id|line_number|line                     |"   + EOL +
+                "|id  |source_id|line_number|line_text                |"   + EOL +
                 "+----+---------+-----------+-------------------------+"   + EOL +
                 "|1   |1        |1          |  some code // a comment |"   + EOL +
                 "+----+---------+-----------+-------------------------+",
@@ -229,7 +225,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  some more code  // another comment ");
         assertEquals(
                 "+----+---------+-----------+-------------------------------------+"   + EOL +
-                "|id  |source_id|line_number|line                                 |"   + EOL +
+                "|id  |source_id|line_number|line_text                            |"   + EOL +
                 "+----+---------+-----------+-------------------------------------+"   + EOL +
                 "|1   |1        |1          |  some code // a comment             |"   + EOL +
                 "|2   |1        |2          |  some more code  // another comment |"   + EOL +
@@ -253,7 +249,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments("  /* a comment */ ");
         assertEquals(
                 "+----+---------+-----------+------------------+"   + EOL +
-                "|id  |source_id|line_number|line              |"   + EOL +
+                "|id  |source_id|line_number|line_text         |"   + EOL +
                 "+----+---------+-----------+------------------+"   + EOL +
                 "|1   |1        |1          |  /* a comment */ |"   + EOL +
                 "+----+---------+-----------+------------------+",
@@ -274,7 +270,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  /* another comment */ ");
         assertEquals(
                 "+----+---------+-----------+------------------------+"   + EOL +
-                "|id  |source_id|line_number|line                    |"   + EOL +
+                "|id  |source_id|line_number|line_text               |"   + EOL +
                 "+----+---------+-----------+------------------------+"   + EOL +
                 "|1   |1        |1          |  /* a comment */       |"   + EOL +
                 "|2   |1        |2          |  /* another comment */ |"   + EOL +
@@ -299,7 +295,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "     another comment */ "  + EOL);
         assertEquals(
                 "+----+---------+-----------+------------------------+"   + EOL +
-                "|id  |source_id|line_number|line                    |"   + EOL +
+                "|id  |source_id|line_number|line_text               |"   + EOL +
                 "+----+---------+-----------+------------------------+"   + EOL +
                 "|1   |1        |1          |  /* a comment          |"   + EOL +
                 "|2   |1        |2          |     another comment */ |"   + EOL +
@@ -325,7 +321,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  /* another comment*/");
         assertEquals(
                 "+----+---------+-----------+----------------------+"   + EOL +
-                "|id  |source_id|line_number|line                  |"   + EOL +
+                "|id  |source_id|line_number|line_text             |"   + EOL +
                 "+----+---------+-----------+----------------------+"   + EOL +
                 "|1   |1        |1          |  /* a comment    */  |"   + EOL +
                 "|2   |1        |2          |  some code           |"   + EOL +
@@ -354,7 +350,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "     on two lines  */ "    + EOL);
         assertEquals(
                 "+----+---------+-----------+-------------------------+"   + EOL +
-                "|id  |source_id|line_number|line                     |"   + EOL +
+                "|id  |source_id|line_number|line_text                |"   + EOL +
                 "+----+---------+-----------+-------------------------+"   + EOL +
                 "|1   |1        |1          |  /* a comment           |"   + EOL +
                 "|2   |1        |2          |      on two lines */    |"   + EOL +
@@ -389,7 +385,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "                      */ " + EOL);
         assertEquals(
                 "+----+---------+-----------+-------------------------+"   + EOL +
-                "|id  |source_id|line_number|line                     |"   + EOL +
+                "|id  |source_id|line_number|line_text                |"   + EOL +
                 "+----+---------+-----------+-------------------------+"   + EOL +
                 "|1   |1        |1          |  /* a comment           |"   + EOL +
                 "|2   |1        |2          |                */       |"   + EOL +
@@ -421,7 +417,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  a final bit of code");
         assertEquals(
                 "+----+---------+-----------+-------------------------+"   + EOL +
-                "|id  |source_id|line_number|line                     |"   + EOL +
+                "|id  |source_id|line_number|line_text                |"   + EOL +
                 "+----+---------+-----------+-------------------------+"   + EOL +
                 "|1   |1        |1          |  some initial code      |"   + EOL +
                 "|2   |1        |2          |  a second line of code  |"   + EOL +
@@ -457,7 +453,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  a final bit of code");
         assertEquals(
                 "+----+---------+-----------+------------------------+"   + EOL +
-                "|id  |source_id|line_number|line                    |"   + EOL +
+                "|id  |source_id|line_number|line_text               |"   + EOL +
                 "+----+---------+-----------+------------------------+"   + EOL +
                 "|1   |1        |1          |  some initial code     |"   + EOL +
                 "|2   |1        |2          |  a second line of code |"   + EOL +
@@ -493,7 +489,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
         matcher.extractComments("  some code /* a comment*/ ");
         assertEquals(
                 "+----+---------+-----------+---------------------------+"   + EOL +
-                "|id  |source_id|line_number|line                       |"   + EOL +
+                "|id  |source_id|line_number|line_text                  |"   + EOL +
                 "+----+---------+-----------+---------------------------+"   + EOL +
                 "|1   |1        |1          |  some code /* a comment*/ |"   + EOL +
                 "+----+---------+-----------+---------------------------+",

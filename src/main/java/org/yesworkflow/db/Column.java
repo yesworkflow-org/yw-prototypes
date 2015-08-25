@@ -15,7 +15,7 @@ public class Column {
     public static Field IS_WORKFLOW     = field("is_workflow");
     public static Field IS_FUNCTION     = field("is_function");
     public static Field KEYWORD         = field("keyword");
-    public static Field LINE            = field("line");
+    public static Field LINE_TEXT       = field("line_text");
     public static Field LINE_NUMBER     = field("line_number");
     public static Field NAME            = field("name");
     public static Field PARENT_ID       = field("parent_id");
@@ -23,7 +23,7 @@ public class Column {
     public static Field PROGRAM_ID      = field("program_id");
     public static Field QUALIFIED_NAME  = field("qualified_name");
     public static Field QUALIFIES       = field("qualifies");
-    public static Field RANK            = field("rank");
+    public static Field RANK_ON_LINE    = field("rank_on_line");
     public static Field SOURCE_ID       = field("source_id");
     public static Field TAG             = field("tag");
     public static Field TEXT            = field("text");
@@ -34,18 +34,18 @@ public class Column {
         public static Field PATH            = field("source.path");
     }
 
-    public static class CODE {
-        public static Field ID              = field("code.id");
-        public static Field SOURCE_ID       = field("code.source_id");
-        public static Field LINE_NUMBER     = field("code.line_number");
-        public static Field LINE            = field("code.line");
+    public static class SOURCE_LINE {
+        public static Field ID              = field("source_line.id");
+        public static Field SOURCE_ID       = field("source_line.source_id");
+        public static Field LINE_NUMBER     = field("source_line.line_number");
+        public static Field LINE_TEXT       = field("source_line.line_text");
     }
 
     public static class COMMENT {
         public static Field ID              = field("comment.id");
         public static Field SOURCE_ID       = field("comment.source_id");
         public static Field LINE_NUMBER     = field("comment.line_number");
-        public static Field RANK            = field("comment.rank");
+        public static Field RANK_ON_LINE    = field("comment.rank_on_line");
         public static Field TEXT            = field("comment.text");
     }
     

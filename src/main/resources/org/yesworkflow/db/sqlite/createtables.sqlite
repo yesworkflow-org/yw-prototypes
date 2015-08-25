@@ -14,18 +14,18 @@ CREATE TABLE source (
     path            TEXT            NULL
 );
 
-CREATE TABLE code (
+CREATE TABLE source_line (
     id              INTEGER         NOT NULL        PRIMARY KEY,
     source_id       INTEGER         NOT NULL        REFERENCES source(id),
     line_number     INTEGER         NOT NULL,
-    line            TEXT            NOT NULL
+    line_text       TEXT            NOT NULL
 );
 
 CREATE TABLE comment (
     id              INTEGER         NOT NULL        PRIMARY KEY,
     source_id       INTEGER         NOT NULL        REFERENCES source(id),
     line_number     INTEGER         NOT NULL,
-    rank            INTEGER         NOT NULL,
+    rank_on_line    INTEGER         NOT NULL,
     text            VARCHAR         NOT NULL
 );
 

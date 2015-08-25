@@ -44,8 +44,8 @@ public abstract class YesWorkflowDB {
     }
     
     public static YesWorkflowDB createInMemoryDB() throws Exception {
-        return YesWorkflowH2DB.createInMemoryDB();
-//        return YesWorkflowSQLiteDB.createInMemoryDB();
+//        return YesWorkflowH2DB.createInMemoryDB();
+        return YesWorkflowSQLiteDB.createInMemoryDB();
     }
 
     public static YesWorkflowDB openFileDB(Path dbFilePath) throws Exception {
@@ -110,24 +110,24 @@ public abstract class YesWorkflowDB {
         return getGeneratedId();
     }
 
-    public Long insertCode(Long sourceId, Long lineNumber, String line) throws SQLException {
+    public Long insertSourceLine(Long sourceId, Long lineNumber, String line) throws SQLException {
 
-        jooq.insertInto(Table.CODE)
+        jooq.insertInto(Table.SOURCE_LINE)
             .set(SOURCE_ID, sourceId)
             .set(LINE_NUMBER, lineNumber)
-            .set(LINE, line)
+            .set(LINE_TEXT, line)
             .execute();
         
         return getGeneratedId();
     }
 
     public Long insertComment(Long sourceId, Long lineNumber, 
-                              Long rank, String text) throws SQLException {
+                              Long rankOnLine, String text) throws SQLException {
 
         jooq.insertInto(Table.COMMENT)
             .set(SOURCE_ID, sourceId)
             .set(LINE_NUMBER, lineNumber)
-            .set(RANK, rank)
+            .set(RANK_ON_LINE, rankOnLine)
             .set(TEXT, text)
             .execute();
         

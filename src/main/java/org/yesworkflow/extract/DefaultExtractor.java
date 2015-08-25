@@ -272,9 +272,9 @@ public class DefaultExtractor implements Extractor {
         primaryAnnotations = new LinkedList<Annotation>();
         Annotation primaryAnnotation = null;
         
-        Result<Record> rows = ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
+        Result<Record> rows = ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK_ON_LINE, TEXT)
                 .from(Table.COMMENT)
-                .orderBy(SOURCE_ID, LINE_NUMBER, RANK)
+                .orderBy(SOURCE_ID, LINE_NUMBER, RANK_ON_LINE)
                 .fetch();
         
         for (Record comment : rows) {
@@ -415,9 +415,9 @@ public class DefaultExtractor implements Extractor {
     @SuppressWarnings("unchecked")
     public static String commentsAsString(YesWorkflowDB ywdb) throws IOException {
         StringBuffer comments = new StringBuffer();
-        Result<Record> rows = ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK, TEXT)
+        Result<Record> rows = ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK_ON_LINE, TEXT)
                                          .from(Table.COMMENT)
-                                         .orderBy(ID, LINE_NUMBER, RANK)
+                                         .orderBy(ID, LINE_NUMBER, RANK_ON_LINE)
                                          .fetch();
         for (Record row : rows) {
             comments.append(row.getValue(TEXT));
