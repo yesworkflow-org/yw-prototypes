@@ -244,20 +244,20 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
         insertAnnotations();
         insertPrograms();
         
-        assertEquals(2, ywdb.getRowCount(Table.PROGRAM));
+        assertEquals(2, ywdb.getRowCount(Table.PROGRAM_BLOCK));
         
-        Result r1 = ywdb.jooq.select(ID, PARENT_ID, BEGIN_ID, END_ID, NAME,
+        Result r1 = ywdb.jooq.select(ID, CONTAINER_BLOCK, BEGIN_ID, END_ID, NAME,
                                      QUALIFIED_NAME, IS_WORKFLOW, IS_FUNCTION)
-                .from(Table.PROGRAM)
+                .from(Table.PROGRAM_BLOCK)
                 .fetch();
 
         assertEquals(
-            "+----+---------+--------+------+-----+--------------+-----------+-----------+" + EOL +
-            "|id  |parent_id|begin_id|end_id|name |qualified_name|is_workflow|is_function|" + EOL +
-            "+----+---------+--------+------+-----+--------------+-----------+-----------+" + EOL +
-            "|1   |{null}   |1       |2     |prog1|prog1         |0          |0          |" + EOL +
-            "|2   |{null}   |3       |4     |prog2|prog2         |0          |0          |" + EOL +
-            "+----+---------+--------+------+-----+--------------+-----------+-----------+",
+            "+----+---------------+--------+------+-----+--------------+-----------+-----------+"   + EOL +
+            "|id  |container_block|begin_id|end_id|name |qualified_name|is_workflow|is_function|"   + EOL +
+            "+----+---------------+--------+------+-----+--------------+-----------+-----------+"   + EOL +
+            "|1   |{null}         |1       |2     |prog1|prog1         |0          |0          |"   + EOL +
+            "|2   |{null}         |3       |4     |prog2|prog2         |0          |0          |"   + EOL +
+            "+----+---------------+--------+------+-----+--------------+-----------+-----------+",
             FileIO.localizeLineEndings(r1.toString()));
     }
     
@@ -269,20 +269,20 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
         insertAnnotations();
         insertDefaultPrograms();
         
-        assertEquals(2, ywdb.getRowCount(Table.PROGRAM));
+        assertEquals(2, ywdb.getRowCount(Table.PROGRAM_BLOCK));
         
-        Result r1 = ywdb.jooq.select(ID, PARENT_ID, BEGIN_ID, END_ID, NAME, 
+        Result r1 = ywdb.jooq.select(ID, CONTAINER_BLOCK, BEGIN_ID, END_ID, NAME, 
                                      QUALIFIED_NAME, IS_WORKFLOW, IS_FUNCTION)
-                .from(Table.PROGRAM)
+                .from(Table.PROGRAM_BLOCK)
                 .fetch();
 
         assertEquals(
-            "+----+---------+--------+------+----+--------------+-----------+-----------+" + EOL +
-            "|id  |parent_id|begin_id|end_id|name|qualified_name|is_workflow|is_function|" + EOL +
-            "+----+---------+--------+------+----+--------------+-----------+-----------+" + EOL +
-            "|1   |{null}   |{null}  |{null}|    |              |0          |0          |" + EOL +
-            "|2   |{null}   |{null}  |{null}|    |              |0          |0          |" + EOL +
-            "+----+---------+--------+------+----+--------------+-----------+-----------+",
+            "+----+---------------+--------+------+----+--------------+-----------+-----------+"   + EOL +
+            "|id  |container_block|begin_id|end_id|name|qualified_name|is_workflow|is_function|"   + EOL +
+            "+----+---------------+--------+------+----+--------------+-----------+-----------+"   + EOL +
+            "|1   |{null}         |{null}  |{null}|    |              |0          |0          |"   + EOL +
+            "|2   |{null}         |{null}  |{null}|    |              |0          |0          |"   + EOL +
+            "+----+---------------+--------+------+----+--------------+-----------+-----------+",
             FileIO.localizeLineEndings(r1.toString()));
     }
     
@@ -294,19 +294,19 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
         insertDefaultPrograms();
         updatePrograms();
         
-        assertEquals(2, ywdb.getRowCount(Table.PROGRAM));
+        assertEquals(2, ywdb.getRowCount(Table.PROGRAM_BLOCK));
         
-        Result<?> r1 = ywdb.jooq.select(ID, PARENT_ID, BEGIN_ID, END_ID, NAME, QUALIFIED_NAME, IS_WORKFLOW, IS_FUNCTION)
-                                .from(Table.PROGRAM)
+        Result<?> r1 = ywdb.jooq.select(ID, CONTAINER_BLOCK, BEGIN_ID, END_ID, NAME, QUALIFIED_NAME, IS_WORKFLOW, IS_FUNCTION)
+                                .from(Table.PROGRAM_BLOCK)
                                 .fetch();
 
         assertEquals(
-            "+----+---------+--------+------+-----+--------------+-----------+-----------+" + EOL +
-            "|id  |parent_id|begin_id|end_id|name |qualified_name|is_workflow|is_function|" + EOL +
-            "+----+---------+--------+------+-----+--------------+-----------+-----------+" + EOL +
-            "|1   |{null}   |1       |2     |prog1|prog1         |0          |0          |" + EOL +
-            "|2   |{null}   |3       |4     |prog2|prog2         |0          |0          |" + EOL +
-            "+----+---------+--------+------+-----+--------------+-----------+-----------+",
+            "+----+---------------+--------+------+-----+--------------+-----------+-----------+" + EOL +
+            "|id  |container_block|begin_id|end_id|name |qualified_name|is_workflow|is_function|" + EOL +
+            "+----+---------------+--------+------+-----+--------------+-----------+-----------+" + EOL +
+            "|1   |{null}         |1       |2     |prog1|prog1         |0          |0          |" + EOL +
+            "|2   |{null}         |3       |4     |prog2|prog2         |0          |0          |" + EOL +
+            "+----+---------------+--------+------+-----+--------------+-----------+-----------+",
             FileIO.localizeLineEndings(r1.toString()));
     }
 }

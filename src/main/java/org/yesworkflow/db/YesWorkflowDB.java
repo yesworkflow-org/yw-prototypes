@@ -153,8 +153,8 @@ public abstract class YesWorkflowDB {
 
     public Long insertDefaultProgram(Long parentId) throws SQLException {
 
-        jooq.insertInto(Table.PROGRAM)
-            .set(PARENT_ID, parentId)
+        jooq.insertInto(Table.PROGRAM_BLOCK)
+            .set(CONTAINER_BLOCK, parentId)
             .execute();
 
         return getGeneratedId();
@@ -164,8 +164,8 @@ public abstract class YesWorkflowDB {
                               String name, String qualifiedName, 
                               boolean isWorkflow, boolean isFunction) throws SQLException {
 
-        jooq.insertInto(Table.PROGRAM)
-            .set(PARENT_ID, parentId)
+        jooq.insertInto(Table.PROGRAM_BLOCK)
+            .set(CONTAINER_BLOCK, parentId)
             .set(BEGIN_ID, beginId)
             .set(END_ID, endId)
             .set(NAME, name)
@@ -181,7 +181,7 @@ public abstract class YesWorkflowDB {
                               String name, String qualifiedName, 
                               boolean isWorkflow, boolean isFunction) {
 
-        jooq.update(Table.PROGRAM)
+        jooq.update(Table.PROGRAM_BLOCK)
             .set(BEGIN_ID, beginId)
             .set(END_ID, endId)
             .set(NAME, name)

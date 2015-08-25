@@ -9,6 +9,7 @@ public class Column {
 
     public static Field BEGIN_ID        = field("begin_id");
     public static Field COMMENT_ID      = field("comment_id");
+    public static Field CONTAINER_BLOCK = field("container_block");
     public static Field DESCRIPTION     = field("description");
     public static Field END_ID          = field("end_id");
     public static Field ID              = field("id");
@@ -18,7 +19,6 @@ public class Column {
     public static Field LINE_TEXT       = field("line_text");
     public static Field LINE_NUMBER     = field("line_number");
     public static Field NAME            = field("name");
-    public static Field PARENT_ID       = field("parent_id");
     public static Field PATH            = field("path");
     public static Field PROGRAM_ID      = field("program_id");
     public static Field QUALIFIED_NAME  = field("qualified_name");
@@ -61,14 +61,15 @@ public class Column {
         public static Field DESCRIPTION     = field("annotation.description");
     }
 
-    public static class PROGRAM {
-        public static Field ID              = field("program.id");
-        public static Field PARENT_ID       = field("program.parent_id");
-        public static Field BEGIN_ID        = field("program.begin_id");
-        public static Field END_ID          = field("program.end_id");
-        public static Field NAME            = field("program.name");
-        public static Field QUALIFIED_NAME  = field("program.qualified_name");
-        public static Field IS_WORKFLOW     = field("program.is_workflow");
-        public static Field IS_FUNCTION     = field("program.is_function");
+    public static class PROGRAM_BLOCK {
+        public static Field CONTAINER_BLOCK = field("container_block");
+        public static Field ID              = field("program_block.id");
+        public static Field PARENT_ID       = field("program_block.parent_id");
+        public static Field BEGIN_ID        = field("program_block.begin_id");
+        public static Field END_ID          = field("program_block.end_id");
+        public static Field NAME            = field("program_block.name");
+        public static Field QUALIFIED_NAME  = field("program_block.qualified_name");
+        public static Field IS_WORKFLOW     = field("program_block.is_workflow");
+        public static Field IS_FUNCTION     = field("program_block.is_function");
     }
 }

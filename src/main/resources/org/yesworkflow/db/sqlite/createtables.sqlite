@@ -40,9 +40,9 @@ CREATE TABLE annotation (
     description     TEXT            NULL
 );
 
-CREATE TABLE program (
+CREATE TABLE program_block (
     id              INTEGER         NOT NULL        PRIMARY KEY,
-    parent_id       INTEGER         NULL            REFERENCES program(id),
+    container_block INTEGER         NULL            REFERENCES program_block(id),
     begin_id        INTEGER         NULL            REFERENCES annotation(id),
     end_id          INTEGER         NULL            REFERENCES annotation(id),
     name            TEXT            NOT NULL        DEFAULT '',
@@ -61,7 +61,7 @@ CREATE TABLE data (
 CREATE TABLE port (
     id              INTEGER         NOT NULL        PRIMARY KEY,
     annotation_id   INTEGER         NULL            REFERENCES annotation(id),
-    program_id      INTEGER         NOT NULL        REFERENCES program(id),
+    program_id      INTEGER         NOT NULL        REFERENCES program_block(id),
     data_id         INTEGER         NOT NULL        REFERENCES data(id),
     name            TEXT            NOT NULL,
     qualified_name  TEXT            NOT NULL,
