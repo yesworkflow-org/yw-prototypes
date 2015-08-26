@@ -9,6 +9,7 @@ import org.yesworkflow.LanguageModel;
 import org.yesworkflow.YesWorkflowTestCase;
 import org.yesworkflow.db.Table;
 import org.yesworkflow.db.YesWorkflowDB;
+import org.yesworkflow.util.FileIO;
 
 public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
 
@@ -64,7 +65,7 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                 "+----+------+-----------+------------+------------+"   + EOL +
                 "|1   |1     |1          |1           |a comment   |"   + EOL +
                 "+----+------+-----------+------------+------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
     }
 
     public void test_Bash_OneFullLineComment_SpaceOnEnds()  throws Exception {
@@ -77,7 +78,7 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                 "+----+------+-----------+------------+------------+"   + EOL +
                 "|1   |1     |1          |1           |a comment   |"   + EOL +
                 "+----+------+-----------+------------+------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
     }
     
     public void test_Bash_TwoFullLineComment()  throws Exception {
@@ -94,7 +95,7 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                 "|1   |1     |1          |1           |a comment      |"    + EOL +
                 "|2   |1     |2          |1           |another comment|"    + EOL +
                 "+----+------+-----------+------------+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
     }
 
     public void test_Bash_TwoSeparatedComments()  throws Exception {
@@ -112,7 +113,7 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                 "|1   |1     |1          |1           |a comment      |"    + EOL +
                 "|2   |1     |3          |1           |another comment|"    + EOL +
                 "+----+------+-----------+------------+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
     }
 
     public void test_Bash_MixedCodeAndOneLineComments() throws Exception {
@@ -134,7 +135,7 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                 "|1   |1     |3          |1           |a comment      |"    + EOL +
                 "|2   |1     |5          |1           |another comment|"    + EOL +
                 "+----+------+-----------+------------+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
     }
 
     public void test_Comment_MixedCodeAndOneLineComments() throws Exception {
@@ -155,7 +156,7 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                 "|1   |1     |3          |1           |a comment      |"   + EOL +
                 "|2   |1     |5          |1           |another comment|"   + EOL +
                 "+----+------+-----------+------------+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
     }
     
     
@@ -169,7 +170,7 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                 "+----+------+-----------+------------+------------+"   + EOL +
                 "|1   |1     |1          |1           |a comment   |"   + EOL +
                 "+----+------+-----------+------------+------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
     }
 
     public void test_Bash_TwoPartialLineComment()  throws Exception {
@@ -186,7 +187,6 @@ public class TestCommentMatcher_Bash extends YesWorkflowTestCase {
                 "|1   |1     |1          |1           |a comment      |"    + EOL + 
                 "|2   |1     |2          |1           |another comment|"    + EOL + 
                 "+----+------+-----------+------------+---------------+", 
-                selectComments().toString());
-    }
-    
+                FileIO.localizeLineEndings(selectComments().toString()));    
+        }
 }

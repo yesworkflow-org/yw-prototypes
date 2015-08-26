@@ -76,7 +76,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "+----+------+-----------+----+------------+"   + EOL +
                 "|1   |1     |1          |1   |a comment   |"   + EOL +
                 "+----+------+-----------+----+------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment"    + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
 
@@ -99,7 +99,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|1   |1     |1          |1   |a comment      |"   + EOL +
                 "|2   |1     |2          |1   |another comment|"   + EOL +
                 "+----+------+-----------+----+---------------+", 
-                selectComments().toString());    
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
                 DefaultExtractor.commentsAsString(ywdb));
@@ -126,7 +126,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|1   |1     |1          |1   |a comment      |"   + EOL +
                 "|2   |1     |3          |1   |another comment|"   + EOL +
                 "+----+------+-----------+----+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
                 DefaultExtractor.commentsAsString(ywdb));
@@ -159,7 +159,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|1   |1     |3          |1   |a comment      |"   + EOL +
                 "|2   |1     |5          |1   |another comment|"   + EOL +
                 "+----+------+-----------+----+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
                 DefaultExtractor.commentsAsString(ywdb));
@@ -194,7 +194,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|1   |1     |3          |1   |a comment      |"   + EOL +
                 "|2   |2     |2          |1   |another comment|"   + EOL +
                 "+----+------+-----------+----+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
                 DefaultExtractor.commentsAsString(ywdb));
@@ -215,7 +215,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "+----+------+-----------+----+------------+"   + EOL +
                 "|1   |1     |1          |1   |a comment   |"   + EOL +
                 "+----+------+-----------+----+------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment" + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
 
@@ -238,7 +238,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|1   |1     |1          |1   |a comment      |"     + EOL +
                 "|2   |1     |2          |1   |another comment|"     + EOL +
                 "+----+------+-----------+----+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals(
                 "a comment"        + EOL +
                 "another comment"  + EOL, 
@@ -260,7 +260,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "+----+------+-----------+----+------------+"   + EOL +
                 "|1   |1     |1          |1   |a comment   |"   + EOL +
                 "+----+------+-----------+----+------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment"    + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
     
@@ -283,7 +283,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|1   |1     |1          |1   |a comment      |"   + EOL +
                 "|2   |1     |2          |1   |another comment|"   + EOL +
                 "+----+------+-----------+----+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
                 DefaultExtractor.commentsAsString(ywdb));
@@ -308,7 +308,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|1   |1     |1          |1   |a comment      |"   + EOL +
                 "|2   |1     |2          |1   |another comment|"   + EOL +
                 "+----+------+-----------+----+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
                 DefaultExtractor.commentsAsString(ywdb));
@@ -335,7 +335,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|1   |1     |1          |1   |a comment      |"   + EOL +
                 "|2   |1     |3          |1   |another comment|"   + EOL +
                 "+----+------+-----------+----+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL,
                 DefaultExtractor.commentsAsString(ywdb));
@@ -368,7 +368,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|3   |1     |4          |1   |another comment|"   + EOL +
                 "|4   |1     |5          |1   |on two lines   |"   + EOL +
                 "+----+------+-----------+----+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment"        + EOL +
                 "on two lines"     + EOL +
                 "another comment"  + EOL +
@@ -401,7 +401,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|1   |1     |1          |1   |a comment      |"   + EOL +
                 "|2   |1     |4          |1   |another comment|"   + EOL +
                 "+----+------+-----------+----+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
                 DefaultExtractor.commentsAsString(ywdb));
@@ -434,7 +434,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|1   |1     |3          |1   |a comment      |"   + EOL +
                 "|2   |1     |5          |1   |another comment|"   + EOL +
                 "+----+------+-----------+----+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
                 DefaultExtractor.commentsAsString(ywdb));
@@ -476,7 +476,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|4   |1     |7          |1   |this one is on |"   + EOL +
                 "|5   |1     |8          |1   |three lines    |"   + EOL +
                 "+----+------+-----------+----+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment"        + EOL +
                 "on two lines"     + EOL +
                 "another comment"  + EOL +
@@ -500,7 +500,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "+----+------+-----------+----+------------+"   + EOL +
                 "|1   |1     |1          |1   |a comment   |"   + EOL +
                 "+----+------+-----------+----+------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment" + EOL,  DefaultExtractor.commentsAsString(ywdb));
     }
    
@@ -515,7 +515,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|1   |1     |1          |1   |a comment              |"   + EOL +
                 "|2   |1     |2          |1   |the rest of the comment|"   + EOL +
                 "+----+------+-----------+----+-----------------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment" + EOL +
                 "the rest of the comment" + EOL, 
                 DefaultExtractor.commentsAsString(ywdb));
@@ -532,7 +532,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|1   |1     |1          |1   |a comment      |"   + EOL +
                 "|2   |1     |2          |1   |another comment|"   + EOL +
                 "+----+------+-----------+----+---------------+", 
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
                 DefaultExtractor.commentsAsString(ywdb));
@@ -547,7 +547,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|1   |1     |1          |1   |a comment      |"   + EOL +
                 "|2   |1     |1          |2   |another comment|"   + EOL +
                 "+----+------+-----------+----+---------------+",
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("a comment" + EOL +
                 "another comment" + EOL,
                 DefaultExtractor.commentsAsString(ywdb));
@@ -563,7 +563,7 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "|2   |1     |1          |2   |two         |"   + EOL +
                 "|3   |1     |1          |3   |three       |"   + EOL +
                 "+----+------+-----------+----+------------+",
-                selectComments().toString());
+                FileIO.localizeLineEndings(selectComments().toString()));    
         assertEquals("one" + EOL +
                 "two" + EOL +
                 "three" + EOL,
