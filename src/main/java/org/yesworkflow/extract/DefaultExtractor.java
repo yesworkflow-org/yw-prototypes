@@ -197,10 +197,10 @@ public class DefaultExtractor implements Extractor {
         // else read source code from each file in the list of source paths
         } else {
             
-            for (String sourcePath : sourcePaths) {
-                Long sourceId = ywdb.insertSource(sourcePath);
-                LanguageModel languageModel = languageModelForSourceFile(sourcePath);
-                extractLinesCommentsFromReader(sourceId, fileReaderForPath(sourcePath), languageModel);
+            for (String path : sourcePaths) {
+                Long sourceId = ywdb.insertSource(path);
+                LanguageModel languageModel = languageModelForSourceFile(path);
+                extractLinesCommentsFromReader(sourceId, fileReaderForPath(path), languageModel);
             }
         }
     }
@@ -272,16 +272,16 @@ public class DefaultExtractor implements Extractor {
         primaryAnnotations = new LinkedList<Annotation>();
         Annotation primaryAnnotation = null;
         
-        Result<Record> rows = ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK_ON_LINE, TEXT)
-                .from(Table.COMMENT)
-                .orderBy(SOURCE_ID, LINE_NUMBER, RANK_ON_LINE)
-                .fetch();
+        Result<Record> rows = ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK_IN_LINE, COMMENT_TEXT)
+                                         .from(Table.COMMENT)
+                                         .orderBy(SOURCE_ID, LINE_NUMBER, RANK_IN_LINE)
+                                         .fetch();
         
         for (Record comment : rows) {
 
             Long sourceId = ywdb.getLongValue(comment, SOURCE_ID);
             Long lineNumber = ywdb.getLongValue(comment, LINE_NUMBER);
-            String commentText = (String)comment.getValue(TEXT);
+            String commentText = (String)comment.getValue(COMMENT_TEXT);
         	List<String> annotationStrings = findCommentsOnLine(commentText, keywordMatcher);
         	Long rankInComment = 1L;
         	for (String annotationString: annotationStrings) {
@@ -416,12 +416,12 @@ public class DefaultExtractor implements Extractor {
     @SuppressWarnings("unchecked")
     public static String commentsAsString(YesWorkflowDB ywdb) throws IOException {
         StringBuffer comments = new StringBuffer();
-        Result<Record> rows = ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK_ON_LINE, TEXT)
+        Result<Record> rows = ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK_IN_LINE, COMMENT_TEXT)
                                          .from(Table.COMMENT)
-                                         .orderBy(ID, LINE_NUMBER, RANK_ON_LINE)
+                                         .orderBy(ID, LINE_NUMBER, RANK_IN_LINE)
                                          .fetch();
         for (Record row : rows) {
-            comments.append(row.getValue(TEXT));
+            comments.append(row.getValue(COMMENT_TEXT));
             comments.append(CommentMatcher.EOL);
         }
         return comments.toString();

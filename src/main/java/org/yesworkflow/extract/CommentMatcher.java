@@ -46,7 +46,7 @@ public class CommentMatcher {
      */
     public void extractComments(Long sourceId, BufferedReader reader) throws IOException, SQLException {
 
-        String line;
+        String lineText;
         Long lineNumber = 1L;
         lastFullMatch = null;
         this.currentState = State.IN_CODE;
@@ -55,21 +55,21 @@ public class CommentMatcher {
         
         if (sourceId == null) sourceId = ywdb.insertSource(null);
         
-        while ((line = reader.readLine()) != null) {
-            ywdb.insertSourceLine(sourceId, lineNumber, line);
+        while ((lineText = reader.readLine()) != null) {
+            ywdb.insertSourceLine(sourceId, lineNumber, lineText);
             StringBuffer commentText = new StringBuffer();
-            Long rank = 1L;
-            for (int i = 0; i < line.length(); ++i) {
-                int c = line.charAt(i);
+            Long rankInLine = 1L;
+            for (int i = 0; i < lineText.length(); ++i) {
+                int c = lineText.charAt(i);
                 String newCommentChars = processNextChar((char)c);
                 commentText.append(newCommentChars);
                 if (newCommentChars.equals(EOL)) {
-                    rank = insertTrimmedComment(sourceId, lineNumber, rank, commentText.toString());
-                    commentText = new StringBuffer();            
+                    rankInLine = insertTrimmedComment(sourceId, lineNumber, rankInLine, commentText.toString());
+                    commentText = new StringBuffer();          
                 }
             }
             commentText.append(processNextChar('\n'));
-            insertTrimmedComment(sourceId, lineNumber++, rank, commentText.toString());
+            insertTrimmedComment(sourceId, lineNumber++, rankInLine, commentText.toString());
         }
     }
         
@@ -79,12 +79,12 @@ public class CommentMatcher {
         
     /** Helper method for inserting non-blank comments in YesWorkflow DB 
      * @throws SQLException */
-    private Long insertTrimmedComment(Long sourceId, Long lineNumber, Long rank, String commentText) throws SQLException {
+    private Long insertTrimmedComment(Long sourceId, Long lineNumber, Long rankInLine, String commentText) throws SQLException {
         String trimmedCommentText = commentText.toString().trim();
         if (trimmedCommentText.length() > 0) {
-            ywdb.insertComment(sourceId, lineNumber, rank++, trimmedCommentText);
+            ywdb.insertComment(sourceId, lineNumber, rankInLine++, trimmedCommentText);
         }
-        return rank;
+        return rankInLine;
     }
     
     /** Enumeration defining the three states of the comment-matching finite state machine */

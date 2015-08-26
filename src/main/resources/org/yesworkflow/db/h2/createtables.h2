@@ -14,94 +14,90 @@
 **************************************************************************************************/
 
 CREATE TABLE source (
-    id              IDENTITY        NOT NULL        PRIMARY KEY,
-    path            VARCHAR         NULL
+    id                  IDENTITY        NOT NULL        PRIMARY KEY,
+    path                VARCHAR         NULL
 );
 
 CREATE TABLE source_line (
-    id              IDENTITY        NOT NULL        PRIMARY KEY,
-    source_id       BIGINT          NOT NULL        REFERENCES source(id),
-    line_number     BIGINT          NOT NULL,
-    line_text       VARCHAR         NOT NULL
+    id                  IDENTITY        NOT NULL        PRIMARY KEY,
+    source              BIGINT          NOT NULL        REFERENCES source(id),
+    line_number         BIGINT          NOT NULL,
+    line_text           VARCHAR         NOT NULL
 );
 
 CREATE TABLE comment (
-    id              IDENTITY        NOT NULL        PRIMARY KEY,
-    source_id       BIGINT          NOT NULL        REFERENCES source(id),
-    line_number     BIGINT          NOT NULL,
-    rank_on_line    BIGINT          NOT NULL,
-    text            VARCHAR         NOT NULL
+    id                  IDENTITY        NOT NULL        PRIMARY KEY,
+    source              BIGINT          NOT NULL        REFERENCES source(id),
+    line_number         BIGINT          NOT NULL,
+    rank_in_line        BIGINT          NOT NULL,
+    comment_text        VARCHAR         NOT NULL
 );
 
 CREATE TABLE annotation (
-    id              IDENTITY        NOT NULL        PRIMARY KEY,
-    qualifies       BIGINT          NULL            REFERENCES annotation(id),
-    comment_id      BIGINT          NOT NULL        REFERENCES comment(id),
-    rank_in_comment BIGINT          NOT NULL,
-    tag             VARCHAR         NOT NULL,
-    keyword         VARCHAR         NOT NULL,
-    value           VARCHAR         NOT NULL,
-    description     VARCHAR         NULL
+    id                  IDENTITY        NOT NULL        PRIMARY KEY,
+    qualifies           BIGINT          NULL            REFERENCES annotation(id),
+    comment             BIGINT          NOT NULL        REFERENCES comment(id),
+    rank_in_comment     BIGINT          NOT NULL,
+    tag                 VARCHAR         NOT NULL,
+    keyword             VARCHAR         NOT NULL,
+    value               VARCHAR         NOT NULL,
+    description         VARCHAR         NULL
 );
 
 CREATE TABLE program_block (
-    id              IDENTITY        NOT NULL        PRIMARY KEY,
-    container_block BIGINT          NULL            REFERENCES program_block(id),
-    begin_id        BIGINT          NULL            REFERENCES annotation(id),
-    end_id          BIGINT          NULL            REFERENCES annotation(id),
-    name            VARCHAR         NOT NULL        DEFAULT '',
-    qualified_name  VARCHAR         NOT NULL        DEFAULT '',
-    is_workflow     TINYINT         NOT NULL        DEFAULT 0,
-    is_function     TINYINT         NOT NULL        DEFAULT 0
+    id                  IDENTITY        NOT NULL        PRIMARY KEY,
+    in_program_block    BIGINT          NULL            REFERENCES program_block(id),
+    begin_annotation    BIGINT          NULL            REFERENCES annotation(id),
+    end_annotation      BIGINT          NULL            REFERENCES annotation(id),
+    name                VARCHAR         NOT NULL        DEFAULT '',
+    qualified_name      VARCHAR         NOT NULL        DEFAULT '',
+    is_workflow         TINYINT         NOT NULL        DEFAULT 0,
+    is_function         TINYINT         NOT NULL        DEFAULT 0
 );
 
 CREATE TABLE data (
-    id              IDENTITY        NOT NULL        PRIMARY KEY,
-    name            VARCHAR         NOT NULL,
-    qualified_name  VARCHAR         NOT NULL,
-    program_id      BIGINT          NULL
+    id                  IDENTITY        NOT NULL        PRIMARY KEY,
+    in_program_block    BIGINT          NULL,
+    name                VARCHAR         NOT NULL,
+    qualified_name      VARCHAR         NOT NULL,
 );
 
 CREATE TABLE port (
-    id              IDENTITY        NOT NULL        PRIMARY KEY,
-    annotation_id   BIGINT          NULL            REFERENCES annotation(id),
-    program_id      BIGINT          NOT NULL        REFERENCES program_block(id),
-    data_id         BIGINT          NOT NULL        REFERENCES data(id),
-    name            VARCHAR         NOT NULL,
-    qualified_name  VARCHAR         NOT NULL,
-    alias           VARCHAR         NULL,
-    uri_template    VARCHAR         NULL,
-    is_inport       TINYINT         NOT NULL,
-    is_outport      TINYINT         NOT NULL
+    id                  IDENTITY        NOT NULL        PRIMARY KEY,
+    port_annotation     BIGINT          NULL            REFERENCES annotation(id),
+    on_program_block    BIGINT          NOT NULL        REFERENCES program_block(id),
+    data                BIGINT          NOT NULL        REFERENCES data(id),
+    name                VARCHAR         NOT NULL,
+    qualified_name      VARCHAR         NOT NULL,
+    alias               VARCHAR         NULL,
+    uri_template        VARCHAR         NULL,
+    is_inport           TINYINT         NOT NULL,
+    is_outport          TINYINT         NOT NULL
 );
 
 CREATE TABLE channel (
-    id              IDENTITY        NOT NULL        PRIMARY KEY,
-    data_id         BIGINT          NOT NULL        REFERENCES data(id),
-    out_port_id     BIGINT          NOT NULL        REFERENCES port(id),
-    in_port_id      BIGINT          NOT NULL        REFERENCES port(id),
-    is_inflow       TINYINT         NOT NULL,
-    is_outflow      TINYINT         NOT NULL
+    id                  IDENTITY        NOT NULL        PRIMARY KEY,
+    out_port            BIGINT          NOT NULL        REFERENCES port(id),
+    in_port             BIGINT          NOT NULL        REFERENCES port(id),
+    data                BIGINT          NOT NULL        REFERENCES data(id),
+    is_inflow           TINYINT         NOT NULL,
+    is_outflow          TINYINT         NOT NULL
 );
 
 CREATE TABLE uri_variable (
-    id              IDENTITY        NOT NULL        PRIMARY KEY,
-    port_id         BIGINT          NOT NULL        REFERENCES port(id),
-    name            VARCHAR         NOT NULL
+    id                  IDENTITY        NOT NULL        PRIMARY KEY,
+    port                BIGINT          NOT NULL        REFERENCES port(id),
+    name                VARCHAR         NOT NULL
 );
 
 CREATE TABLE resource (
-    id              IDENTITY        NOT NULL        PRIMARY KEY,
-    uri             VARCHAR         NOT NULL
-);
-
-CREATE TABLE data_resource (
-    data_id         IDENTITY        NOT NULL        REFERENCES data(id),
-    resource_id     BIGINT          NOT NULL        REFERENCES resource(id)
+    id                  IDENTITY        NOT NULL        PRIMARY KEY,
+    data                BIGINT          NOT NULL        REFERENCES data(id),
+    uri                 VARCHAR         NOT NULL
 );
 
 CREATE TABLE uri_variable_value (
-    resource_id     IDENTITY        NOT NULL        REFERENCES resource(id),
-    uri_variable_id BIGINT          NOT NULL        REFERENCES uri_variable(id),
-    value           VARCHAR         NOT NULL
+    uri_variable        BIGINT          NOT NULL        REFERENCES uri_variable(id),
+    resource            IDENTITY        NOT NULL        REFERENCES resource(id),
+    value               VARCHAR         NOT NULL
 );

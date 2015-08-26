@@ -44,8 +44,8 @@ public abstract class YesWorkflowDB {
     }
     
     public static YesWorkflowDB createInMemoryDB() throws Exception {
-        return YesWorkflowH2DB.createInMemoryDB();
-//        return YesWorkflowSQLiteDB.createInMemoryDB();
+//        return YesWorkflowH2DB.createInMemoryDB();
+        return YesWorkflowSQLiteDB.createInMemoryDB();
     }
 
     public static YesWorkflowDB openFileDB(Path dbFilePath) throws Exception {
@@ -110,25 +110,25 @@ public abstract class YesWorkflowDB {
         return getGeneratedId();
     }
 
-    public Long insertSourceLine(Long sourceId, Long lineNumber, String line) throws SQLException {
+    public Long insertSourceLine(Long sourceId, Long lineNumber, String lineText) throws SQLException {
 
         jooq.insertInto(Table.SOURCE_LINE)
             .set(SOURCE_ID, sourceId)
             .set(LINE_NUMBER, lineNumber)
-            .set(LINE_TEXT, line)
+            .set(LINE_TEXT, lineText)
             .execute();
         
         return getGeneratedId();
     }
 
     public Long insertComment(Long sourceId, Long lineNumber, 
-                              Long rankOnLine, String text) throws SQLException {
+                              Long rankInLine, String commentText) throws SQLException {
 
         jooq.insertInto(Table.COMMENT)
             .set(SOURCE_ID, sourceId)
             .set(LINE_NUMBER, lineNumber)
-            .set(RANK_ON_LINE, rankOnLine)
-            .set(TEXT, text)
+            .set(RANK_IN_LINE, rankInLine)
+            .set(COMMENT_TEXT, commentText)
             .execute();
         
         return getGeneratedId();
@@ -151,23 +151,23 @@ public abstract class YesWorkflowDB {
         return getGeneratedId();
     }
 
-    public Long insertDefaultProgram(Long parentId) throws SQLException {
+    public Long insertDefaultProgramBlock(Long inProgramBlockId) throws SQLException {
 
         jooq.insertInto(Table.PROGRAM_BLOCK)
-            .set(CONTAINER_BLOCK, parentId)
+            .set(IN_PROGRAM_BLOCK, inProgramBlockId)
             .execute();
 
         return getGeneratedId();
     }
 
-    public Long insertProgram(Long parentId, Long beginId, Long endId,
+    public Long insertProgramBlock(Long inProgramBlockId, Long beginAnnotationId, Long endAnnotationId,
                               String name, String qualifiedName, 
                               boolean isWorkflow, boolean isFunction) throws SQLException {
 
         jooq.insertInto(Table.PROGRAM_BLOCK)
-            .set(CONTAINER_BLOCK, parentId)
-            .set(BEGIN_ID, beginId)
-            .set(END_ID, endId)
+            .set(IN_PROGRAM_BLOCK, inProgramBlockId)
+            .set(BEGIN_ANNOTATION_ID, beginAnnotationId)
+            .set(END_ANNOTATION_ID, endAnnotationId)
             .set(NAME, name)
             .set(QUALIFIED_NAME, qualifiedName)
             .set(IS_WORKFLOW, isWorkflow)
@@ -177,13 +177,13 @@ public abstract class YesWorkflowDB {
         return getGeneratedId();
     }
 
-    public void updateProgram(long id, Long beginId, Long endId,
+    public void updateProgramBlock(long id, Long beginAnnotationId, Long endAnnotationId,
                               String name, String qualifiedName, 
                               boolean isWorkflow, boolean isFunction) {
 
         jooq.update(Table.PROGRAM_BLOCK)
-            .set(BEGIN_ID, beginId)
-            .set(END_ID, endId)
+            .set(BEGIN_ANNOTATION_ID, beginAnnotationId)
+            .set(END_ANNOTATION_ID, endAnnotationId)
             .set(NAME, name)
             .set(QUALIFIED_NAME, qualifiedName)
             .set(IS_WORKFLOW, isWorkflow)
@@ -192,12 +192,12 @@ public abstract class YesWorkflowDB {
             .execute();
     }
 
-    public Long insertData(String name, String qualifiedName, Long programId) throws SQLException {
+    public Long insertData(String name, String qualifiedName, Long inProgramBlockId) throws SQLException {
 
         jooq.insertInto(Table.DATA)
+            .set(IN_PROGRAM_BLOCK, inProgramBlockId)
             .set(NAME, name)
             .set(QUALIFIED_NAME, qualifiedName)
-            .set(PROGRAM_ID, programId)
             .execute();
         
         return getGeneratedId();

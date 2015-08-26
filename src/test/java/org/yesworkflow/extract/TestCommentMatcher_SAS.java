@@ -28,9 +28,9 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
 
     @SuppressWarnings("unchecked")
     private Result<Record> selectComment() {
-        return ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK_ON_LINE, TEXT)
+        return ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK_IN_LINE, COMMENT_TEXT)
                           .from(Table.COMMENT)
-                          .orderBy(SOURCE_ID, LINE_NUMBER, RANK_ON_LINE)
+                          .orderBy(SOURCE_ID, LINE_NUMBER, RANK_IN_LINE)
                           .fetch();
     }
     
@@ -62,13 +62,13 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         assertEquals("", DefaultExtractor.commentsAsString(ywdb));
         
         assertEquals(
-                "+----+---------+-----------+-----------+"  + EOL +
-                "|id  |source_id|line_number|line_text  |"  + EOL +
-                "+----+---------+-----------+-----------+"  + EOL +
-                "|1   |1        |1          |           |"  + EOL +
-                "|2   |1        |2          |           |"  + EOL +
-                "|3   |1        |3          |           |"  + EOL +
-                "+----+---------+-----------+-----------+",
+                "+----+------+-----------+-----------+"  + EOL +
+                "|id  |source|line_number|line_text  |"  + EOL +
+                "+----+------+-----------+-----------+"  + EOL +
+                "|1   |1     |1          |           |"  + EOL +
+                "|2   |1     |2          |           |"  + EOL +
+                "|3   |1     |3          |           |"  + EOL +
+                "+----+------+-----------+-----------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         
         assertEquals(0, ywdb.getRowCount(Table.COMMENT));
@@ -80,19 +80,19 @@ public class TestCommentMatcher_SAS extends YesWorkflowTestCase {
         assertEquals("a comment"    + EOL, DefaultExtractor.commentsAsString(ywdb));
                 
         assertEquals(
-                "+----+---------+-----------+------------------+"  + EOL +
-                "|id  |source_id|line_number|line_text         |"  + EOL +
-                "+----+---------+-----------+------------------+"  + EOL +
-                "|1   |1        |1          |  /* a comment */ |"  + EOL +
-                "+----+---------+-----------+------------------+",
+                "+----+------+-----------+------------------+"  + EOL +
+                "|id  |source|line_number|line_text         |"  + EOL +
+                "+----+------+-----------+------------------+"  + EOL +
+                "|1   |1     |1          |  /* a comment */ |"  + EOL +
+                "+----+------+-----------+------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
 
         assertEquals(
-                "+----+---------+-----------+------------+---------+"  + EOL +
-                "|id  |source_id|line_number|rank_on_line|text     |"  + EOL +
-                "+----+---------+-----------+------------+---------+"  + EOL +
-                "|1   |1        |1          |1           |a comment|"  + EOL +
-                "+----+---------+-----------+------------+---------+",
+                "+----+------+-----------+------------+------------+"  + EOL +
+                "|id  |source|line_number|rank_in_line|comment_text|"  + EOL +
+                "+----+------+-----------+------------+------------+"  + EOL +
+                "|1   |1     |1          |1           |a comment   |"  + EOL +
+                "+----+------+-----------+------------+------------+",
                 FileIO.localizeLineEndings(selectComment().toString()));
     }
 

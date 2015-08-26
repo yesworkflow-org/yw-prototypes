@@ -62,7 +62,7 @@ public class WorkflowBuilder {
             this.stdoutStream = stdoutStream;
             this.stderrStream = stderrStream;
             this.programId = (parentBuilder == null) ? null :
-                          ywdb.insertDefaultProgram(parentBuilder.programId);
+                          ywdb.insertDefaultProgramBlock(parentBuilder.programId);
         }
         
 		public WorkflowBuilder begin(Begin annotation) {
@@ -205,7 +205,7 @@ public class WorkflowBuilder {
 		
 		public Function buildFunction() throws Exception {
             buildChannels();
-            ywdb.updateProgram(programId, beginAnnotation.id, 
+            ywdb.updateProgramBlock(programId, beginAnnotation.id, 
                     endAnnotation.id, beginAnnotation.name, name, false, true);
 		    return new Function(
 		            programId,
@@ -223,7 +223,7 @@ public class WorkflowBuilder {
         }
 		
         private Program buildProgram() throws Exception {
-            ywdb.updateProgram(programId, beginAnnotation.id, 
+            ywdb.updateProgramBlock(programId, beginAnnotation.id, 
                     endAnnotation.id, beginAnnotation.name, name, false, false);
             return new Program(
                     programId,
@@ -239,7 +239,7 @@ public class WorkflowBuilder {
         }
 	            
         private Workflow buildWorkflow() throws Exception {
-            ywdb.updateProgram(programId, beginAnnotation.id, 
+            ywdb.updateProgramBlock(programId, beginAnnotation.id, 
                     endAnnotation.id, beginAnnotation.name, name, true, false);
 			return new Workflow(
                     programId,

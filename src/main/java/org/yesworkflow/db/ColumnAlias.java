@@ -9,12 +9,12 @@ public class ColumnAlias {
     
     public static class BEGIN_ANNOTATION {
         public static Field ID = field("begin_annotation.id");
-        public static Field COMMENT_ID = field("begin_annotation.comment_id");
+        public static Field COMMENT_ID = field("begin_annotation.comment");
     }
     
     public static class END_ANNOTATION {
         public static Field ID = field("end_annotation.id");        
-        public static Field COMMENT_ID = field("end_annotation.comment_id");
+        public static Field COMMENT_ID = field("end_annotation.comment");
     }
     
     public static class BEGIN_COMMENT {

@@ -34,9 +34,9 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
     
     @SuppressWarnings({ "unchecked" })
     private Result<Record> selectComments() {
-        return ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK_ON_LINE.as(field("rank")), TEXT)
+        return ywdb.jooq().select(ID, SOURCE_ID, LINE_NUMBER, RANK_IN_LINE.as(field("rank")), COMMENT_TEXT)
                           .from(Table.COMMENT)
-                          .orderBy(SOURCE_ID, LINE_NUMBER, RANK_ON_LINE)
+                          .orderBy(SOURCE_ID, LINE_NUMBER, RANK_IN_LINE)
                           .fetch();
     }
     
@@ -64,18 +64,18 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
     public void test_Java_OneFullLineComment()  throws Exception {
         matcher.extractComments("  // a comment ");
         assertEquals(
-                "+----+---------+-----------+---------------+"   + EOL +
-                "|id  |source_id|line_number|line_text      |"   + EOL +
-                "+----+---------+-----------+---------------+"   + EOL +
-                "|1   |1        |1          |  // a comment |"   + EOL +
-                "+----+---------+-----------+---------------+",
+                "+----+------+-----------+---------------+"   + EOL +
+                "|id  |source|line_number|line_text      |"   + EOL +
+                "+----+------+-----------+---------------+"   + EOL +
+                "|1   |1     |1          |  // a comment |"   + EOL +
+                "+----+------+-----------+---------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|id  |source_id|line_number|rank|text     |"   + EOL +
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|1   |1        |1          |1   |a comment|"   + EOL +
-                "+----+---------+-----------+----+---------+", 
+                "+----+------+-----------+----+------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text|"   + EOL +
+                "+----+------+-----------+----+------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment   |"   + EOL +
+                "+----+------+-----------+----+------------+", 
                 selectComments().toString());
         assertEquals("a comment"    + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
@@ -85,20 +85,20 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  // a comment " + EOL +
                 "  // another comment ");
         assertEquals(
-                "+----+---------+-----------+---------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text            |"   + EOL +
-                "+----+---------+-----------+---------------------+"   + EOL +
-                "|1   |1        |1          |  // a comment       |"   + EOL +
-                "|2   |1        |2          |  // another comment |"   + EOL +
-                "+----+---------+-----------+---------------------+",
+                "+----+------+-----------+---------------------+"   + EOL +
+                "|id  |source|line_number|line_text            |"   + EOL +
+                "+----+------+-----------+---------------------+"   + EOL +
+                "|1   |1     |1          |  // a comment       |"   + EOL +
+                "|2   |1     |2          |  // another comment |"   + EOL +
+                "+----+------+-----------+---------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |1          |1   |a comment      |"   + EOL +
-                "|2   |1        |2          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text   |"   + EOL +
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment      |"   + EOL +
+                "|2   |1     |2          |1   |another comment|"   + EOL +
+                "+----+------+-----------+----+---------------+", 
                 selectComments().toString());    
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
@@ -111,21 +111,21 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  some code"               + EOL +
                 "  // another comment ");
         assertEquals(
-                "+----+---------+-----------+---------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text            |"   + EOL +
-                "+----+---------+-----------+---------------------+"   + EOL +
-                "|1   |1        |1          |  // a comment       |"   + EOL +
-                "|2   |1        |2          |  some code          |"   + EOL +
-                "|3   |1        |3          |  // another comment |"   + EOL +
-                "+----+---------+-----------+---------------------+",
+                "+----+------+-----------+---------------------+"   + EOL +
+                "|id  |source|line_number|line_text            |"   + EOL +
+                "+----+------+-----------+---------------------+"   + EOL +
+                "|1   |1     |1          |  // a comment       |"   + EOL +
+                "|2   |1     |2          |  some code          |"   + EOL +
+                "|3   |1     |3          |  // another comment |"   + EOL +
+                "+----+------+-----------+---------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |1          |1   |a comment      |"   + EOL +
-                "|2   |1        |3          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text   |"   + EOL +
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment      |"   + EOL +
+                "|2   |1     |3          |1   |another comment|"   + EOL +
+                "+----+------+-----------+----+---------------+", 
                 selectComments().toString());
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
@@ -141,24 +141,24 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  // another comment "         + EOL +
                 "  a final bit of code");
         assertEquals(
-                "+----+---------+-----------+------------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text               |"   + EOL +
-                "+----+---------+-----------+------------------------+"   + EOL +
-                "|1   |1        |1          |  some initial code     |"   + EOL +
-                "|2   |1        |2          |  a second line of code |"   + EOL +
-                "|3   |1        |3          |  // a comment          |"   + EOL +
-                "|4   |1        |4          |  some more code        |"   + EOL +
-                "|5   |1        |5          |  // another comment    |"   + EOL +
-                "|6   |1        |6          |  a final bit of code   |"   + EOL +
-                "+----+---------+-----------+------------------------+",
+                "+----+------+-----------+------------------------+"   + EOL +
+                "|id  |source|line_number|line_text               |"   + EOL +
+                "+----+------+-----------+------------------------+"   + EOL +
+                "|1   |1     |1          |  some initial code     |"   + EOL +
+                "|2   |1     |2          |  a second line of code |"   + EOL +
+                "|3   |1     |3          |  // a comment          |"   + EOL +
+                "|4   |1     |4          |  some more code        |"   + EOL +
+                "|5   |1     |5          |  // another comment    |"   + EOL +
+                "|6   |1     |6          |  a final bit of code   |"   + EOL +
+                "+----+------+-----------+------------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |3          |1   |a comment      |"   + EOL +
-                "|2   |1        |5          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text   |"   + EOL +
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|1   |1     |3          |1   |a comment      |"   + EOL +
+                "|2   |1     |5          |1   |another comment|"   + EOL +
+                "+----+------+-----------+----+---------------+", 
                 selectComments().toString());
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
@@ -176,24 +176,24 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  // another comment "         + EOL +
                 "  a final bit of code");
         assertEquals(
-                "+----+---------+-----------+------------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text               |"   + EOL +
-                "+----+---------+-----------+------------------------+"   + EOL +
-                "|1   |1        |1          |  some initial code     |"   + EOL +
-                "|2   |1        |2          |  a second line of code |"   + EOL +
-                "|3   |1        |3          |  // a comment          |"   + EOL +
-                "|4   |2        |1          |  some more code        |"   + EOL +
-                "|5   |2        |2          |  // another comment    |"   + EOL +
-                "|6   |2        |3          |  a final bit of code   |"   + EOL +
-                "+----+---------+-----------+------------------------+",
+                "+----+------+-----------+------------------------+"   + EOL +
+                "|id  |source|line_number|line_text               |"   + EOL +
+                "+----+------+-----------+------------------------+"   + EOL +
+                "|1   |1     |1          |  some initial code     |"   + EOL +
+                "|2   |1     |2          |  a second line of code |"   + EOL +
+                "|3   |1     |3          |  // a comment          |"   + EOL +
+                "|4   |2     |1          |  some more code        |"   + EOL +
+                "|5   |2     |2          |  // another comment    |"   + EOL +
+                "|6   |2     |3          |  a final bit of code   |"   + EOL +
+                "+----+------+-----------+------------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |3          |1   |a comment      |"   + EOL +
-                "|2   |2        |2          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text   |"   + EOL +
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|1   |1     |3          |1   |a comment      |"   + EOL +
+                "|2   |2     |2          |1   |another comment|"   + EOL +
+                "+----+------+-----------+----+---------------+", 
                 selectComments().toString());
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
@@ -203,18 +203,18 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
     public void test_Java_OnePartialLineComment()  throws Exception {
         matcher.extractComments("  some code // a comment ");
         assertEquals(
-                "+----+---------+-----------+-------------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text                |"   + EOL +
-                "+----+---------+-----------+-------------------------+"   + EOL +
-                "|1   |1        |1          |  some code // a comment |"   + EOL +
-                "+----+---------+-----------+-------------------------+",
+                "+----+------+-----------+-------------------------+"   + EOL +
+                "|id  |source|line_number|line_text                |"   + EOL +
+                "+----+------+-----------+-------------------------+"   + EOL +
+                "|1   |1     |1          |  some code // a comment |"   + EOL +
+                "+----+------+-----------+-------------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|id  |source_id|line_number|rank|text     |"   + EOL +
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|1   |1        |1          |1   |a comment|"   + EOL +
-                "+----+---------+-----------+----+---------+", 
+                "+----+------+-----------+----+------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text|"   + EOL +
+                "+----+------+-----------+----+------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment   |"   + EOL +
+                "+----+------+-----------+----+------------+", 
                 selectComments().toString());
         assertEquals("a comment" + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
@@ -224,20 +224,20 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  some code // a comment " + EOL +
                 "  some more code  // another comment ");
         assertEquals(
-                "+----+---------+-----------+-------------------------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text                            |"   + EOL +
-                "+----+---------+-----------+-------------------------------------+"   + EOL +
-                "|1   |1        |1          |  some code // a comment             |"   + EOL +
-                "|2   |1        |2          |  some more code  // another comment |"   + EOL +
-                "+----+---------+-----------+-------------------------------------+",
+                "+----+------+-----------+-------------------------------------+"     + EOL +
+                "|id  |source|line_number|line_text                            |"     + EOL +
+                "+----+------+-----------+-------------------------------------+"     + EOL +
+                "|1   |1     |1          |  some code // a comment             |"     + EOL +
+                "|2   |1     |2          |  some more code  // another comment |"     + EOL +
+                "+----+------+-----------+-------------------------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"     + EOL +
-                "|id  |source_id|line_number|rank|text           |"     + EOL +
-                "+----+---------+-----------+----+---------------+"     + EOL +
-                "|1   |1        |1          |1   |a comment      |"     + EOL +
-                "|2   |1        |2          |1   |another comment|"     + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+------+-----------+----+---------------+"     + EOL +
+                "|id  |source|line_number|rank|comment_text   |"     + EOL +
+                "+----+------+-----------+----+---------------+"     + EOL +
+                "|1   |1     |1          |1   |a comment      |"     + EOL +
+                "|2   |1     |2          |1   |another comment|"     + EOL +
+                "+----+------+-----------+----+---------------+", 
                 selectComments().toString());
         assertEquals(
                 "a comment"        + EOL +
@@ -248,18 +248,18 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
     public void test_Java_OneFullLineComment_Delimited()  throws Exception {
         matcher.extractComments("  /* a comment */ ");
         assertEquals(
-                "+----+---------+-----------+------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text         |"   + EOL +
-                "+----+---------+-----------+------------------+"   + EOL +
-                "|1   |1        |1          |  /* a comment */ |"   + EOL +
-                "+----+---------+-----------+------------------+",
+                "+----+------+-----------+------------------+"   + EOL +
+                "|id  |source|line_number|line_text         |"   + EOL +
+                "+----+------+-----------+------------------+"   + EOL +
+                "|1   |1     |1          |  /* a comment */ |"   + EOL +
+                "+----+------+-----------+------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|id  |source_id|line_number|rank|text     |"   + EOL +
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|1   |1        |1          |1   |a comment|"   + EOL +
-                "+----+---------+-----------+----+---------+", 
+                "+----+------+-----------+----+------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text|"   + EOL +
+                "+----+------+-----------+----+------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment   |"   + EOL +
+                "+----+------+-----------+----+------------+", 
                 selectComments().toString());
         assertEquals("a comment"    + EOL, DefaultExtractor.commentsAsString(ywdb));
     }
@@ -269,20 +269,20 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  /* a comment */ " + EOL +
                 "  /* another comment */ ");
         assertEquals(
-                "+----+---------+-----------+------------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text               |"   + EOL +
-                "+----+---------+-----------+------------------------+"   + EOL +
-                "|1   |1        |1          |  /* a comment */       |"   + EOL +
-                "|2   |1        |2          |  /* another comment */ |"   + EOL +
-                "+----+---------+-----------+------------------------+",
+                "+----+------+-----------+------------------------+"   + EOL +
+                "|id  |source|line_number|line_text               |"   + EOL +
+                "+----+------+-----------+------------------------+"   + EOL +
+                "|1   |1     |1          |  /* a comment */       |"   + EOL +
+                "|2   |1     |2          |  /* another comment */ |"   + EOL +
+                "+----+------+-----------+------------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |1          |1   |a comment      |"   + EOL +
-                "|2   |1        |2          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text   |"   + EOL +
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment      |"   + EOL +
+                "|2   |1     |2          |1   |another comment|"   + EOL +
+                "+----+------+-----------+----+---------------+", 
                 selectComments().toString());
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
@@ -294,20 +294,20 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  /* a comment "           + EOL +
                 "     another comment */ "  + EOL);
         assertEquals(
-                "+----+---------+-----------+------------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text               |"   + EOL +
-                "+----+---------+-----------+------------------------+"   + EOL +
-                "|1   |1        |1          |  /* a comment          |"   + EOL +
-                "|2   |1        |2          |     another comment */ |"   + EOL +
-                "+----+---------+-----------+------------------------+",
+                "+----+------+-----------+------------------------+"   + EOL +
+                "|id  |source|line_number|line_text               |"   + EOL +
+                "+----+------+-----------+------------------------+"   + EOL +
+                "|1   |1     |1          |  /* a comment          |"   + EOL +
+                "|2   |1     |2          |     another comment */ |"   + EOL +
+                "+----+------+-----------+------------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |1          |1   |a comment      |"   + EOL +
-                "|2   |1        |2          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text   |"   + EOL +
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment      |"   + EOL +
+                "|2   |1     |2          |1   |another comment|"   + EOL +
+                "+----+------+-----------+----+---------------+", 
                 selectComments().toString());
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
@@ -320,21 +320,21 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  some code"               + EOL +
                 "  /* another comment*/");
         assertEquals(
-                "+----+---------+-----------+----------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text             |"   + EOL +
-                "+----+---------+-----------+----------------------+"   + EOL +
-                "|1   |1        |1          |  /* a comment    */  |"   + EOL +
-                "|2   |1        |2          |  some code           |"   + EOL +
-                "|3   |1        |3          |  /* another comment*/|"   + EOL +
-                "+----+---------+-----------+----------------------+",
+                "+----+------+-----------+----------------------+"   + EOL +
+                "|id  |source|line_number|line_text             |"   + EOL +
+                "+----+------+-----------+----------------------+"   + EOL +
+                "|1   |1     |1          |  /* a comment    */  |"   + EOL +
+                "|2   |1     |2          |  some code           |"   + EOL +
+                "|3   |1     |3          |  /* another comment*/|"   + EOL +
+                "+----+------+-----------+----------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |1          |1   |a comment      |"   + EOL +
-                "|2   |1        |3          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text   |"   + EOL +
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment      |"   + EOL +
+                "|2   |1     |3          |1   |another comment|"   + EOL +
+                "+----+------+-----------+----+---------------+", 
                 selectComments().toString());
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL,
@@ -349,25 +349,25 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  /* another comment     " + EOL +
                 "     on two lines  */ "    + EOL);
         assertEquals(
-                "+----+---------+-----------+-------------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text                |"   + EOL +
-                "+----+---------+-----------+-------------------------+"   + EOL +
-                "|1   |1        |1          |  /* a comment           |"   + EOL +
-                "|2   |1        |2          |      on two lines */    |"   + EOL +
-                "|3   |1        |3          |  some code              |"   + EOL +
-                "|4   |1        |4          |  /* another comment     |"   + EOL +
-                "|5   |1        |5          |     on two lines  */    |"   + EOL +
-                "+----+---------+-----------+-------------------------+",
+                "+----+------+-----------+-------------------------+"   + EOL +
+                "|id  |source|line_number|line_text                |"   + EOL +
+                "+----+------+-----------+-------------------------+"   + EOL +
+                "|1   |1     |1          |  /* a comment           |"   + EOL +
+                "|2   |1     |2          |      on two lines */    |"   + EOL +
+                "|3   |1     |3          |  some code              |"   + EOL +
+                "|4   |1     |4          |  /* another comment     |"   + EOL +
+                "|5   |1     |5          |     on two lines  */    |"   + EOL +
+                "+----+------+-----------+-------------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |1          |1   |a comment      |"   + EOL +
-                "|2   |1        |2          |1   |on two lines   |"   + EOL +
-                "|3   |1        |4          |1   |another comment|"   + EOL +
-                "|4   |1        |5          |1   |on two lines   |"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text   |"   + EOL +
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment      |"   + EOL +
+                "|2   |1     |2          |1   |on two lines   |"   + EOL +
+                "|3   |1     |4          |1   |another comment|"   + EOL +
+                "|4   |1     |5          |1   |on two lines   |"   + EOL +
+                "+----+------+-----------+----+---------------+", 
                 selectComments().toString());
         assertEquals("a comment"        + EOL +
                 "on two lines"     + EOL +
@@ -384,23 +384,23 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  /* another comment     " + EOL +
                 "                      */ " + EOL);
         assertEquals(
-                "+----+---------+-----------+-------------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text                |"   + EOL +
-                "+----+---------+-----------+-------------------------+"   + EOL +
-                "|1   |1        |1          |  /* a comment           |"   + EOL +
-                "|2   |1        |2          |                */       |"   + EOL +
-                "|3   |1        |3          |  some code              |"   + EOL +
-                "|4   |1        |4          |  /* another comment     |"   + EOL +
-                "|5   |1        |5          |                      */ |"   + EOL +
-                "+----+---------+-----------+-------------------------+",
+                "+----+------+-----------+-------------------------+"   + EOL +
+                "|id  |source|line_number|line_text                |"   + EOL +
+                "+----+------+-----------+-------------------------+"   + EOL +
+                "|1   |1     |1          |  /* a comment           |"   + EOL +
+                "|2   |1     |2          |                */       |"   + EOL +
+                "|3   |1     |3          |  some code              |"   + EOL +
+                "|4   |1     |4          |  /* another comment     |"   + EOL +
+                "|5   |1     |5          |                      */ |"   + EOL +
+                "+----+------+-----------+-------------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |1          |1   |a comment      |"   + EOL +
-                "|2   |1        |4          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text   |"   + EOL +
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment      |"   + EOL +
+                "|2   |1     |4          |1   |another comment|"   + EOL +
+                "+----+------+-----------+----+---------------+", 
                 selectComments().toString());
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
@@ -416,24 +416,24 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  /* another comment   */"     + EOL +
                 "  a final bit of code");
         assertEquals(
-                "+----+---------+-----------+-------------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text                |"   + EOL +
-                "+----+---------+-----------+-------------------------+"   + EOL +
-                "|1   |1        |1          |  some initial code      |"   + EOL +
-                "|2   |1        |2          |  a second line of code  |"   + EOL +
-                "|3   |1        |3          |  /* a comment  */       |"   + EOL +
-                "|4   |1        |4          |  some more code         |"   + EOL +
-                "|5   |1        |5          |  /* another comment   */|"   + EOL +
-                "|6   |1        |6          |  a final bit of code    |"   + EOL +
-                "+----+---------+-----------+-------------------------+",
+                "+----+------+-----------+-------------------------+"   + EOL +
+                "|id  |source|line_number|line_text                |"   + EOL +
+                "+----+------+-----------+-------------------------+"   + EOL +
+                "|1   |1     |1          |  some initial code      |"   + EOL +
+                "|2   |1     |2          |  a second line of code  |"   + EOL +
+                "|3   |1     |3          |  /* a comment  */       |"   + EOL +
+                "|4   |1     |4          |  some more code         |"   + EOL +
+                "|5   |1     |5          |  /* another comment   */|"   + EOL +
+                "|6   |1     |6          |  a final bit of code    |"   + EOL +
+                "+----+------+-----------+-------------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |3          |1   |a comment      |"   + EOL +
-                "|2   |1        |5          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text   |"   + EOL +
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|1   |1     |3          |1   |a comment      |"   + EOL +
+                "|2   |1     |5          |1   |another comment|"   + EOL +
+                "+----+------+-----------+----+---------------+", 
                 selectComments().toString());
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
@@ -452,30 +452,30 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  three lines*/"               + EOL +
                 "  a final bit of code");
         assertEquals(
-                "+----+---------+-----------+------------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text               |"   + EOL +
-                "+----+---------+-----------+------------------------+"   + EOL +
-                "|1   |1        |1          |  some initial code     |"   + EOL +
-                "|2   |1        |2          |  a second line of code |"   + EOL +
-                "|3   |1        |3          |  /* a comment          |"   + EOL +
-                "|4   |1        |4          |     on two lines */    |"   + EOL +
-                "|5   |1        |5          |  some more code        |"   + EOL +
-                "|6   |1        |6          |  /* another comment    |"   + EOL +
-                "|7   |1        |7          |     this one is on     |"   + EOL +
-                "|8   |1        |8          |  three lines*/         |"   + EOL +
-                "|9   |1        |9          |  a final bit of code   |"   + EOL +
-                "+----+---------+-----------+------------------------+",
+                "+----+------+-----------+------------------------+"   + EOL +
+                "|id  |source|line_number|line_text               |"   + EOL +
+                "+----+------+-----------+------------------------+"   + EOL +
+                "|1   |1     |1          |  some initial code     |"   + EOL +
+                "|2   |1     |2          |  a second line of code |"   + EOL +
+                "|3   |1     |3          |  /* a comment          |"   + EOL +
+                "|4   |1     |4          |     on two lines */    |"   + EOL +
+                "|5   |1     |5          |  some more code        |"   + EOL +
+                "|6   |1     |6          |  /* another comment    |"   + EOL +
+                "|7   |1     |7          |     this one is on     |"   + EOL +
+                "|8   |1     |8          |  three lines*/         |"   + EOL +
+                "|9   |1     |9          |  a final bit of code   |"   + EOL +
+                "+----+------+-----------+------------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |3          |1   |a comment      |"   + EOL +
-                "|2   |1        |4          |1   |on two lines   |"   + EOL +
-                "|3   |1        |6          |1   |another comment|"   + EOL +
-                "|4   |1        |7          |1   |this one is on |"   + EOL +
-                "|5   |1        |8          |1   |three lines    |"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text   |"   + EOL +
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|1   |1     |3          |1   |a comment      |"   + EOL +
+                "|2   |1     |4          |1   |on two lines   |"   + EOL +
+                "|3   |1     |6          |1   |another comment|"   + EOL +
+                "|4   |1     |7          |1   |this one is on |"   + EOL +
+                "|5   |1     |8          |1   |three lines    |"   + EOL +
+                "+----+------+-----------+----+---------------+", 
                 selectComments().toString());
         assertEquals("a comment"        + EOL +
                 "on two lines"     + EOL +
@@ -488,18 +488,18 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
     public void test_Java_OnePartialLineComment_Delimited()  throws Exception {
         matcher.extractComments("  some code /* a comment*/ ");
         assertEquals(
-                "+----+---------+-----------+---------------------------+"   + EOL +
-                "|id  |source_id|line_number|line_text                  |"   + EOL +
-                "+----+---------+-----------+---------------------------+"   + EOL +
-                "|1   |1        |1          |  some code /* a comment*/ |"   + EOL +
-                "+----+---------+-----------+---------------------------+",
+                "+----+------+-----------+---------------------------+"   + EOL +
+                "|id  |source|line_number|line_text                  |"   + EOL +
+                "+----+------+-----------+---------------------------+"   + EOL +
+                "|1   |1     |1          |  some code /* a comment*/ |"   + EOL +
+                "+----+------+-----------+---------------------------+",
                 FileIO.localizeLineEndings(selectCode().toString()));
         assertEquals(
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|id  |source_id|line_number|rank|text     |"   + EOL +
-                "+----+---------+-----------+----+---------+"   + EOL +
-                "|1   |1        |1          |1   |a comment|"   + EOL +
-                "+----+---------+-----------+----+---------+", 
+                "+----+------+-----------+----+------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text|"   + EOL +
+                "+----+------+-----------+----+------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment   |"   + EOL +
+                "+----+------+-----------+----+------------+", 
                 selectComments().toString());
         assertEquals("a comment" + EOL,  DefaultExtractor.commentsAsString(ywdb));
     }
@@ -509,12 +509,12 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                 "  some code /* a comment "                 + EOL +
                 "  the rest of the comment */ more code"    + EOL);
         assertEquals(
-                "+----+---------+-----------+----+-----------------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text                   |"   + EOL +
-                "+----+---------+-----------+----+-----------------------+"   + EOL +
-                "|1   |1        |1          |1   |a comment              |"   + EOL +
-                "|2   |1        |2          |1   |the rest of the comment|"   + EOL +
-                "+----+---------+-----------+----+-----------------------+", 
+                "+----+------+-----------+----+-----------------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text           |"   + EOL +
+                "+----+------+-----------+----+-----------------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment              |"   + EOL +
+                "|2   |1     |2          |1   |the rest of the comment|"   + EOL +
+                "+----+------+-----------+----+-----------------------+", 
                 selectComments().toString());
         assertEquals("a comment" + EOL +
                 "the rest of the comment" + EOL, 
@@ -526,12 +526,12 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
                  "  some code /* a comment */" + EOL +
                  "  some more code  /* another comment */");
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |1          |1   |a comment      |"   + EOL +
-                "|2   |1        |2          |1   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+", 
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text   |"   + EOL +
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment      |"   + EOL +
+                "|2   |1     |2          |1   |another comment|"   + EOL +
+                "+----+------+-----------+----+---------------+", 
                 selectComments().toString());
         assertEquals("a comment"        + EOL +
                 "another comment"  + EOL, 
@@ -541,12 +541,12 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
     public void test_Java_TwoPartialLineComments_OneOneLine()  throws Exception {
         matcher.extractComments("  code /* a comment */ more code // another comment" + EOL);
         assertEquals(
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|id  |source_id|line_number|rank|text           |"   + EOL +
-                "+----+---------+-----------+----+---------------+"   + EOL +
-                "|1   |1        |1          |1   |a comment      |"   + EOL +
-                "|2   |1        |1          |2   |another comment|"   + EOL +
-                "+----+---------+-----------+----+---------------+",
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text   |"   + EOL +
+                "+----+------+-----------+----+---------------+"   + EOL +
+                "|1   |1     |1          |1   |a comment      |"   + EOL +
+                "|2   |1     |1          |2   |another comment|"   + EOL +
+                "+----+------+-----------+----+---------------+",
                 selectComments().toString());
         assertEquals("a comment" + EOL +
                 "another comment" + EOL,
@@ -556,13 +556,13 @@ public class TestCommentMatcher_Java extends YesWorkflowTestCase {
     public void test_Java_ThreeCommentsOnOneLine()  throws Exception {
         matcher.extractComments(" /* one */ /* two */ /* three */" + EOL);
         assertEquals(
-                "+----+---------+-----------+----+-----+"   + EOL +
-                "|id  |source_id|line_number|rank|text |"   + EOL +
-                "+----+---------+-----------+----+-----+"   + EOL +
-                "|1   |1        |1          |1   |one  |"   + EOL +
-                "|2   |1        |1          |2   |two  |"   + EOL +
-                "|3   |1        |1          |3   |three|"   + EOL +
-                "+----+---------+-----------+----+-----+",
+                "+----+------+-----------+----+------------+"   + EOL +
+                "|id  |source|line_number|rank|comment_text|"   + EOL +
+                "+----+------+-----------+----+------------+"   + EOL +
+                "|1   |1     |1          |1   |one         |"   + EOL +
+                "|2   |1     |1          |2   |two         |"   + EOL +
+                "|3   |1     |1          |3   |three       |"   + EOL +
+                "+----+------+-----------+----+------------+",
                 selectComments().toString());
         assertEquals("one" + EOL +
                 "two" + EOL +
