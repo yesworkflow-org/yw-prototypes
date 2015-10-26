@@ -1,5 +1,6 @@
 package org.yesworkflow.db;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import org.yesworkflow.util.FileIO;
 
 import static org.yesworkflow.db.Column.*;
 
+import org.yesworkflow.db.View;
 import org.jooq.Result;
 import org.yesworkflow.YesWorkflowTestCase;
 
