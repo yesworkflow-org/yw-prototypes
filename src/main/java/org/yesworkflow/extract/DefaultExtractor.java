@@ -8,9 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.jooq.Record;
 import org.jooq.Result;
@@ -31,7 +29,9 @@ import org.yesworkflow.annotations.Qualification;
 import org.yesworkflow.annotations.Return;
 import org.yesworkflow.annotations.UriAnnotation;
 import org.yesworkflow.config.YWConfiguration;
+import org.yesworkflow.db.Column;
 import org.yesworkflow.db.Table;
+import org.yesworkflow.db.Signature;
 import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.query.QueryEngine;
@@ -168,7 +168,8 @@ public class DefaultExtractor implements Extractor {
         writeCommentListing();
         extractAnnotations();
         writeSkeletonFile();
-        
+        extractCodeBlock();
+
         if (ywdb.getRowCount(ANNOTATION) == 0) {
             stderrStream.println("WARNING: No YW comments found in source code.");
         }
@@ -179,6 +180,45 @@ public class DefaultExtractor implements Extractor {
         }
         
         return this;
+    }
+
+    private void extractCodeBlock() throws SQLException {
+        allAnnotations = new LinkedList<Annotation>();
+        primaryAnnotations = new LinkedList<Annotation>();
+        Annotation primaryAnnotation = null;
+
+        Result<Record> begin_rows = ywdb.jooq().select(ID, TAG, VALUE)
+                .from(Table.ANNOTATION)
+                .where("tag = ?", "BEGIN")
+                        //.where(Table.ANNOTATION.tag.equal("BEGIN"))// || TAG.equals("END"))
+                .orderBy(COMMENT_ID)
+                .fetch();
+
+        for (Record comment : begin_rows) {
+            Long id = ywdb.getLongValue(comment, ID);
+            String name = ywdb.getStringValue(comment, VALUE);
+
+            // get the @begin and @end line numbers
+            Result<Record> beginAndEndLineNumber = ywdb.jooq().select(Column.COMMENT.LINE_NUMBER, Column.ANNOTATION.TAG)
+                    .from(Table.COMMENT)
+                    .join(Table.ANNOTATION)
+                    .on(Column.COMMENT.ID.equal(Column.ANNOTATION.COMMENT_ID))
+                    .where(Column.ANNOTATION.VALUE + "= ?", name)
+                    .orderBy(COMMENT_ID)
+                    .fetch();
+
+            Long begin_line = null;
+            Long end_line = null;
+            for (Record line : beginAndEndLineNumber){
+                String tag = ywdb.getStringValue(line, Column.ANNOTATION.TAG);
+                Long line_number = ywdb.getLongValue(line, Column.COMMENT.LINE_NUMBER);
+                if(tag.equals("BEGIN")) begin_line = line_number;
+                else if(tag.equals("END")) end_line = line_number;
+                else System.out.println("tag: " + tag + "is neither BEGIN nor END in extractCodeBlock");
+            }
+
+            ywdb.insertCodeBlock(begin_line, end_line, name, null);
+        }
     }
 
     private void extractCommentsFromSources() throws IOException, YWToolUsageException, SQLException {
@@ -276,7 +316,8 @@ public class DefaultExtractor implements Extractor {
                                          .from(Table.COMMENT)
                                          .orderBy(SOURCE_ID, LINE_NUMBER, RANK_IN_LINE)
                                          .fetch();
-        
+
+        String block_name = null;
         for (Record comment : rows) {
 
             Long sourceId = ywdb.getLongValue(comment, SOURCE_ID);
@@ -284,6 +325,7 @@ public class DefaultExtractor implements Extractor {
             String commentText = (String)comment.getValue(COMMENT_TEXT);
         	List<String> annotationStrings = findCommentsOnLine(commentText, keywordMatcher);
         	Long rankInComment = 1L;
+            Signature sig = null;
         	for (String annotationString: annotationStrings) {
 
         		Tag tag = KeywordMatcher.extractInitialKeyword(annotationString, keywordMapping);
@@ -293,6 +335,7 @@ public class DefaultExtractor implements Extractor {
                 switch(tag) {
                 
                     case BEGIN:     annotation = new Begin(id, sourceId, lineNumber, annotationString);
+                                    block_name = annotation.name;
                                     break;
                     case CALL:      annotation = new Call(id, sourceId, lineNumber, annotationString);
                                     break;
@@ -301,17 +344,21 @@ public class DefaultExtractor implements Extractor {
                     case FILE:      annotation = new FileUri(id, sourceId, lineNumber, annotationString, primaryAnnotation);
                                     break;
                     case IN:        annotation = new In(id, sourceId, lineNumber, annotationString);
+                                    sig = new Signature(block_name).setTag(tag.toString()).setVariable(annotation.name);
                                     break;
                     case OUT:       annotation = new Out(id, sourceId, lineNumber, annotationString);
+                                    sig = new Signature(block_name).setTag(tag.toString()).setVariable(annotation.name);
                                     break;
                     case AS:        annotation = new As(id, sourceId, lineNumber, annotationString, primaryAnnotation);
+                                    sig.setAlias(annotation.name);
                                     break;
                     case PARAM:     annotation = new Param(id, sourceId, lineNumber, annotationString);
                                     break;
                     case RETURN:    annotation = new Return(id, sourceId, lineNumber, annotationString);
                                     break;
                     case URI:       annotation = new UriAnnotation(id, sourceId, lineNumber, annotationString, primaryAnnotation);
-                                    break;   
+                                    sig.setURI(annotation.name);
+                                    break;
                 }
                 
                 allAnnotations.add(annotation);
@@ -329,6 +376,8 @@ public class DefaultExtractor implements Extractor {
                                       annotation.description());
 
             }
+            if(sig != null) ywdb.insertSignature(sig.inputOrOutput, sig.variable, sig.alias, sig.uri, sig.inBlock);
+
         }
     }
     

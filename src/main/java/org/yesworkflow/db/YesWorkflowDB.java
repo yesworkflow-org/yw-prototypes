@@ -59,6 +59,10 @@ public abstract class YesWorkflowDB {
     public Long getLongValue(Record record, Field<?> field) {
         return getLong(record.getValue(field));
     }
+
+    public String getStringValue(Record record, Field<?> field) {
+        return (String)(record.getValue(field));
+    }
     
     public YesWorkflowDB(Connection connection) throws SQLException {
         this.connection = connection;
@@ -173,6 +177,31 @@ public abstract class YesWorkflowDB {
             .set(IS_WORKFLOW, isWorkflow)
             .set(IS_FUNCTION, isFunction)
             .execute();
+
+        return getGeneratedId();
+    }
+
+    public Long insertCodeBlock(Long beginLine, Long endLine, String name, String description) throws SQLException {
+
+        jooq.insertInto(Table.CODE_BLOCK)
+                .set(BEGIN_LINE, beginLine)
+                .set(END_LINE, endLine)
+                .set(NAME, name)
+                .set(DESCRIPTION, description)
+                .execute();
+
+        return getGeneratedId();
+    }
+
+    public Long insertSignature(String inputOrOutput, String variable, String alias, String uri, String inCodeBlock) throws SQLException {
+
+        jooq.insertInto(Table.SIGNATURE)
+                .set(INPUT_OR_OUTPUT, inputOrOutput)
+                .set(VARIABLE, variable)
+                .set(ALIAS, alias)
+                .set(URI, uri)
+                .set(IN_CODE_BLOCK, inCodeBlock)
+                .execute();
 
         return getGeneratedId();
     }
