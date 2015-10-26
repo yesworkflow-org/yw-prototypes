@@ -55,23 +55,6 @@ CREATE TABLE program_block (
     is_function         TINYINT         NOT NULL        DEFAULT 0
 );
 
-CREATE TABLE code_block (
-    id                  IDENTITY        NOT NULL        PRIMARY KEY,
-    begin_line          BIGINT          NULL            REFERENCES source_line(line_number),
-    end_line            BIGINT          NULL            REFERENCES source_line(line_number),
-    name                VARCHAR         NOT NULL        DEFAULT '',
-    description         VARCHAR         NULL            DEFAULT ''
-);
-
-CREATE TABLE signature (
-    id                  IDENTITY        NOT NULL        PRIMARY KEY,
-    input_or_output     VARCHAR         NOT NULL        DEFAULT '',
-    variable            VARCHAR         NULL            DEFAULT '',
-    alias               VARCHAR         NULL            DEFAULT '',
-    uri                 VARCHAR         NULL            DEFAULT '',
-    in_code_block       VARCHAR         NOT NULL        DEFAULT ''
-);
-
 CREATE TABLE data (
     id                  IDENTITY        NOT NULL        PRIMARY KEY,
     in_program_block    BIGINT          NULL,
