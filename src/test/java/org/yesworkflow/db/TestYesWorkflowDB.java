@@ -29,6 +29,8 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
     private Long[] commentId = new Long[5];
     private Long[] annotationId = new Long[5];
     private Long[] programBlockId = new Long[3];
+    private Long[] codeBlockId = new Long[3];
+    private Long[] signatureId = new Long[3];
     
     @Override
     public void setUp() throws Exception {
@@ -80,7 +82,17 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
         programBlockId[1] = ywdb.insertProgramBlock(null, annotationId[1], annotationId[2], "prog1", "prog1", false, false);
         programBlockId[2] = ywdb.insertProgramBlock(null, annotationId[3], annotationId[4], "prog2", "prog2", false, false);
     }
-    
+
+    private void insertCodeBlocks() throws SQLException {
+        codeBlockId[1] = ywdb.insertCodeBlock(1L, 2L, "prog1", null);
+        codeBlockId[2] = ywdb.insertCodeBlock(3L, 4L, "prog2", null);
+    }
+
+    private void insertSignature() throws SQLException {
+        signatureId[1] = ywdb.insertSignature("IN", "x", "x_value", null, "prog1");
+        signatureId[2] = ywdb.insertSignature("OUT", "y", "y_value", null, "prog1");
+    }
+
     private void insertDefaultProgramBlocks() throws SQLException {
         programBlockId[1] = ywdb.insertDefaultProgramBlock(null);
         programBlockId[2] = ywdb.insertDefaultProgramBlock(null);
@@ -262,6 +274,54 @@ public class TestYesWorkflowDB extends YesWorkflowTestCase {
             "|2   |{null}          |3               |4             |prog2|prog2         |0          |0          |"  + EOL +
             "+----+----------------+----------------+--------------+-----+--------------+-----------+-----------+",
             FileIO.localizeLineEndings(r1.toString()));
+    }
+
+    @SuppressWarnings("rawtypes")
+    public void testInsertCodeBlock() throws Exception {
+
+        insertSources();
+        insertComments();
+        insertAnnotations();
+        insertCodeBlocks();
+
+        assertEquals(2, ywdb.getRowCount(Table.CODE_BLOCK));
+
+        Result r1 = ywdb.jooq.select(ID, BEGIN_LINE, END_LINE, NAME, DESCRIPTION)
+                .from(Table.CODE_BLOCK)
+                .fetch();
+
+        assertEquals(
+                "+----+----------+--------+-----+-----------+"  + EOL +
+                "|id  |begin_line|end_line|name |description|"  + EOL +
+                "+----+----------+--------+-----+-----------+"  + EOL +
+                "|1   |1         |2       |prog1|{null}     |"  + EOL +
+                "|2   |3         |4       |prog2|{null}     |"  + EOL +
+                "+----+----------+--------+-----+-----------+",
+                FileIO.localizeLineEndings(r1.toString()));
+    }
+
+    @SuppressWarnings("rawtypes")
+    public void testInsertSignature() throws Exception {
+
+        insertSources();
+        insertComments();
+        insertAnnotations();
+        insertSignature();
+
+        assertEquals(2, ywdb.getRowCount(Table.SIGNATURE));
+
+        Result r1 = ywdb.jooq.select(ID, INPUT_OR_OUTPUT, VARIABLE, ALIAS, URI, IN_CODE_BLOCK)
+                .from(Table.SIGNATURE)
+                .fetch();
+
+        assertEquals(
+                "+----+---------------+--------+-------+------+-------------+"  + EOL +
+                "|id  |input_or_output|variable|alias  |uri   |in_code_block|"  + EOL +
+                "+----+---------------+--------+-------+------+-------------+"  + EOL +
+                "|1   |IN             |x       |x_value|{null}|prog1        |"  + EOL +
+                "|2   |OUT            |y       |y_value|{null}|prog1        |"  + EOL +
+                "+----+---------------+--------+-------+------+-------------+",
+                FileIO.localizeLineEndings(r1.toString()));
     }
     
     @SuppressWarnings("rawtypes")
