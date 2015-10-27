@@ -2,10 +2,11 @@ package org.yesworkflow.config;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -13,97 +14,294 @@ import java.util.Properties;
 import org.yaml.snakeyaml.Yaml;
 import org.yesworkflow.exceptions.YWToolUsageException;
 
-@SuppressWarnings("serial")
-public class YWConfiguration extends HashMap<String,Object> {
-
+/** 
+ * Class responsible for storing and retrieving configuration settings used for customizing
+ * runs of YesWorkflow.
+ *  
+ * <p>
+ * An instance of YWConfiguration can be thought of as a tree of configuration setting names 
+ * and values. It is represented as an arbitrarily nested table of setting lookup tables.
+ * Each node in the tree has a name and a value; a leaf node stores a single configuration 
+ * setting, and each internal node stores a set of configuration settings in a (more deeply) 
+ * nested setting table.
+ * </p>
+ * 
+ * <p>
+ * The full name of any configuration setting stored at a leaf node is the dot-delimited
+ * concatenation of individual node names leading from the root to the leaf.
+ * The root node has no name.
+ * </p>
+ * 
+ * <p>
+ * For example,  a value 'TB' assigned to the property 'graph.layout' is stored in 
+ * a setting table entry with key 'layout' and value 'TB'.  The setting table containing this entry
+ * is stored as the value of an entry in the root setting table and is associated with the key 'graph'.
+ * </p>
+ * 
+ * <p>
+ * Configuration items can be assigned by providing the full name of the configuration setting
+ * along with the value to assign to the setting. This class will create intermediate setting tables
+ * as needed to store the value at the correct position in the tree.  Configuration values can
+ * be retrieved in the same way, by providing the full name of the setting to be retrieved.
+ * The class will navigate the tree of setting tables to retrieve the setting value.
+ * </p>
+ * 
+ * <p>
+ * Configuration settings can be loaded in bulk either from a YAML file, via the 
+ * {@link #fromYamlFile(String) YWConfiguration.fromYamlFile()} static factory method, or from 
+ * Java-style properties files, via the {@link #applyPropertyFile(String) applyPropertyFile()} 
+ * instance method. The nested structure of an input YAML file is preserved and becomes the structure 
+ * of the YWConfiguration tree. Entries loaded from a Java property files are assigned individually to 
+ * the configuration when loaded. Because loading a YAML file will overwrite existing settings, 
+ * only one such file can be loaded, and only before configuration settings from other
+ * sources are applied.
+ * </p>
+ */
+public class YWConfiguration {
+    
+    /**
+     * Configuration setting value representing the presence of a setting with no value asssigned.
+     * This is used to represent settings values derived from command-line options that take
+     * no value argument.
+     */
     public static String EMPTY_VALUE = "";
     
-    public YWConfiguration() throws Exception {        
-    }
+    /** The root setting table */
+    private SettingTable root = new SettingTable();
 
-    public static YWConfiguration fromYamlFile(String yamlFile) throws Exception {
-        YWConfiguration config = new YWConfiguration();
-        if (yamlFile != null && new File(yamlFile).exists()) {
-            InputStream input = new FileInputStream(yamlFile);
-            Yaml yaml = new Yaml();
-            @SuppressWarnings("unchecked")
-            Map<String,Object> yamlDefinedMap = (Map<String, Object>) yaml.load(input);
-            config.putAll(yamlDefinedMap);
+    /**
+     * Static factory method for creating a YWConfiguration instance initialized with the contents 
+     * of the given YAML file.
+     * 
+     * @param yamlFile The name of the YAML file to load.
+     * @return The new YWConfiguration instance.
+     * @throws IllegalArgumentException If the yamlFile argument is null.
+     * @throws FileNotFoundException If the specified YAML file does not exist.
+     */
+    @SuppressWarnings("unchecked")
+    public static YWConfiguration fromYamlFile(String yamlFile) throws FileNotFoundException {
+        
+        // validate the input argument
+        if (yamlFile == null) {
+            throw new IllegalArgumentException("Null yamlFile argument.");
         }
+        if (! new File(yamlFile).exists()) {
+            throw new FileNotFoundException("YAML configuration file not found: " + yamlFile);
+        }
+
+        // read the specified yaml file into memory
+        Yaml yaml = new Yaml();
+        InputStream input = new FileInputStream(yamlFile);
+        Map<String,Object> yamlDefinedMap = (Map<String, Object>) yaml.load(input);
+
+        // load the yaml-defined data structure into a new YWConfiguration instance
+        YWConfiguration config = new YWConfiguration();
+        config.root.putAll(yamlDefinedMap);
+
+        // return the new instance
         return config;
     }
 
-    public void applyPropertyFile(String propertyFile) throws Exception {
-        if (propertyFile != null && new File(propertyFile).exists()) {
-            applyConfigProperties(new FileReader(propertyFile));
+    /**
+     * Loads configuration properties from a Java property file.
+     * 
+     * @param propertyFile The name of the property file to load.
+     * @throws IllegalArgumentException If the propertyFile argument is null.
+     * @throws FileNotFoundException If the specified property file does not exist.
+     * @throws IOException If an error occurs reading the property file.
+     */
+    public void applyPropertyFile(String propertyFile) throws IOException {
+        
+        // validate the input argument
+        if (propertyFile == null) {
+            throw new IllegalArgumentException("Null propertyFile argument.");
         }
+        if (! new File(propertyFile).exists()) {
+            throw new FileNotFoundException("Property file not found: " + propertyFile);
+        }
+
+        // load the properties from the file
+        applyProperties(new FileReader(propertyFile));
     }
     
-    public void applyConfigProperties(Reader reader) throws Exception {
+    /**
+     * Loads Java properties from a character stream {@link java.io.Reader Reader}.
+     * 
+     * @param reader The {@link java.io.Reader Reader} to read Java properties from.
+     * @throws IllegalArgumentException If the reader argument is null.
+     * @throws IOException If an error occurs reading from the {@link java.io.Reader Reader}.
+     */
+    public void applyProperties(Reader reader) throws IOException {
+
+        // validate the input argument
+        if (reader == null) {
+            throw new IllegalArgumentException("Null reader argument.");
+        }
+
+        // load the properties from the reader
         Properties properties = new Properties();
         properties.load(reader);
+        
+        // apply each property
         for (Map.Entry<Object, Object> entry: properties.entrySet()) {
-            applyConfigOption((String) entry.getKey(), (String) entry.getValue());
+            String settingName = (String) entry.getKey();
+            Object settingValue = entry.getValue();
+            set(settingName, settingValue);
         }
     }
     
-    public void applyConfigOptions(List<?> options) throws YWToolUsageException {        
-        for (Object option : options) {
-            applyConfigOption((String) option);
+    /**
+     * Applies a list of configuration options. Each element of the list must be
+     * a String representing a YW command-line configuration option and have the form
+     * <i>settingName</i> or <i>settingName=settingValue</i>.
+     * 
+     * @param options The list of configuration options to apply.
+     * @throws IllegalArgumentException If the options argument is null or not 
+     *                                  all elements of options are of type String.
+     * @throws YWToolUsageException If one of the option strings is not of the correct form.
+     */
+    public void applyOptions(List<?> options) throws YWToolUsageException {
+        
+        // validate the input argument
+        if (options == null) {
+            throw new IllegalArgumentException("Null options argument.");
         }
-    }
 
-    public void applyConfigOption(String name, Object value) {
-        ConfigAddress address = configurationAddress(name, true);
-        address.table.put(address.key, value);
+        // apply each option in the list
+        for (Object option : options) {
+            if (!(option instanceof String)) {
+                throw new IllegalArgumentException("Element of options argument not of type String: " + option);
+            }
+            applyOption((String) option);
+        }
     }
     
-    public void applyConfigOption(String option) throws YWToolUsageException {
+    /**
+     * Applies a single YW command-line configuration option.  Argument must be of 
+     * the form <i>settingName</i> or <i>settingName=settingValue</i>.
+     * 
+     * @param option The configuration option to apply.
+     * @throws IllegalArgumentException If the option argument is null.
+     * @throws YWToolUsageException If the option string is not of the correct form.
+     */
+    public void applyOption(String option) throws YWToolUsageException {
+        
+        // validate the input argument
+        if (option == null) {
+            throw new IllegalArgumentException("Null option argument.");
+        }
+
+        // split option string at the equal sign if present
         String[] optionParts = option.split("=");
+        
+        // detect disallowed option forms
         if (optionParts.length > 2) {
             throw new YWToolUsageException(
-                "Configuration options should be key-value pairs separated by equal signs.");
+                "Configuration option should be a name-value pair separated by an equal sign.");
         }
         
-        String name = optionParts[0];
-        String value = (optionParts.length == 2) ? optionParts[1] : EMPTY_VALUE;
-        ConfigAddress address = configurationAddress(name, true);
-        address.table.put(address.key, value);
+        // parse the configuration name and value from the option string
+        String settingName = optionParts[0];
+        String settingValue = (optionParts.length == 2) ? optionParts[1] : EMPTY_VALUE;
+        
+        // assign the setting value
+        set(settingName, settingValue);
+    }
+
+    /**
+     * Assign a single setting value.
+     * 
+     * @param settingName The full name of the configuration setting.
+     * @param settingValue The value to assign.
+     * @throws IllegalArgumentException If the settingName or settingValue argument is null.
+     */
+    public void set(String settingName, Object settingValue) {
+
+        // validate the input arguments
+        if (settingName == null) {
+            throw new IllegalArgumentException("Null settingName argument.");
+        }
+        if (settingValue == null) {
+            throw new IllegalArgumentException("Null settingValue argument.");
+        }
+        
+        // create the nested setting tables needed to store the configuration
+        SettingLocation location = SettingLocation.create(root, settingName);
+        
+        // store the configuration value in the setting table at the parent node 
+        location.settingParent.put(location.settingLeafName, settingValue);
     }
     
-    public String getConfigOptionValue(String optionName) {
-        ConfigAddress address = configurationAddress(optionName, false);
-        return address == null ? null : (String)address.table.get(address.key);
+    /**
+     * Gets the value for a configuration setting.
+     * 
+     * @param settingName The full name of the configuration setting.
+     * @return The value of the configuration setting or null if not found.
+     * @throws IllegalArgumentException If the settingName or settingValue argument is null.
+     */
+    public Object get(String settingName) {
+        
+        // validate the input arguments
+        if (settingName == null) {
+            throw new IllegalArgumentException("Null settingName argument.");
+        }
+        
+        // locate the configuration setting
+        SettingLocation location = SettingLocation.find(root, settingName);
+        
+        // return null if there is not setting table corresponding to the expected parent node
+        if (location.settingParent == null) {
+            return null;
+        }
+        
+        // return the setting value or null if not found in the setting table at the parent node
+        return location.settingParent.get(location.settingLeafName);
     }
     
-    private class ConfigAddress {
-        String key;
-        Map<String,Object> table;
+    /**
+     * Gets the value for a configuration setting as a String.
+     * 
+     * @param settingName The full name of the configuration setting.
+     * @return The value of the configuration setting or null if not found.
+     * @throws IllegalArgumentException If the settingName or settingValue argument is null.
+     */
+    public String getStringValue(String settingName) {        
+        Object value = this.get(settingName);
+        return value == null ? null : value.toString();
     }
-    
+
+    /**
+     * Gets a subtree of the full configuration.
+     * 
+     * @param sectionName The name of configuration subtree.
+     * @throws IllegalArgumentException If the settingName or settingValue argument is null.
+     */
     @SuppressWarnings("unchecked")
-    private ConfigAddress configurationAddress(String configName, boolean createMissingTables) {
-        String[] configNameParts = configName.split("\\.");
-        ConfigAddress address = new ConfigAddress();
-        address.key = configNameParts[configNameParts.length - 1];
-        address.table = this;
-        if (configNameParts.length > 0) {
-            for (int i = 0; i < configNameParts.length - 1; ++i) {
-                String partName = configNameParts[i];
-                Object tableObject =  address.table.get(partName);
-                if (tableObject == null) {
-                    if (!createMissingTables) return null;
-                    tableObject = new HashMap<String,Object>();
-                    address.table.put(partName, tableObject);
-                }
-                address.table = (Map<String, Object>)tableObject;
+    public Map<String,Object> getSection(String sectionName) {
+        Object section = this.get(sectionName);
+        if (section == null || (!(section instanceof SettingTable))) {
+            return null;
+        }
+        return (Map<String,Object>) section;
+    }
+    
+    /**
+     * Returns the total number of settings that have been assigned.
+     * @return The number of settings.
+     */
+    public int settingCount() {
+        return settingCount(root);
+    }
+    
+    private int settingCount(SettingTable table) {
+        int count = 0;
+        for (Object value : table.values()) {
+            if (value instanceof SettingTable) {
+                count += settingCount((SettingTable)value);
+            } else {
+                count += 1;
             }
         }
-        return address;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public Map<String,Object> getSection(String key) {
-        return (Map<String,Object>) get(key);
+        return count;
     }
 }
