@@ -119,14 +119,14 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
         String[] args = { "noop", "-c", "conf0=val0"};
         YWConfiguration config = new YWConfiguration();
-        assertEquals(0, config.size());
+        assertEquals(0, config.settingCount());
         
         ExitCode returnValue = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream)
                                    .config(config)
                                    .runForArgs(args);
 
         assertEquals(ExitCode.SUCCESS, returnValue);
-        assertEquals(1, config.size());
+        assertEquals(1, config.settingCount());
         assertEquals("val0", config.get("conf0"));
     }
 
@@ -135,14 +135,14 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
         String[] args = { "noop", "-c", "table1.conf1=val1"};
         YWConfiguration config = new YWConfiguration();
-        assertEquals(0, config.size());
+        assertEquals(0, config.settingCount());
         
         ExitCode returnValue = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream)
                                    .config(config)
                                    .runForArgs(args);
 
         assertEquals(ExitCode.SUCCESS, returnValue);
-        assertEquals(1, config.size());
+        assertEquals(1, config.settingCount());
         Map<String,Object> table1 = (Map<String,Object>)(config.get("table1"));
         assertEquals(1, table1.size());
         String value1 = (String)(table1.get("conf1"));
@@ -154,14 +154,14 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
         String[] args = { "noop", "-c", "table1.table2.conf2=val2"};
         YWConfiguration config = new YWConfiguration();
-        assertEquals(0, config.size());
+        assertEquals(0, config.settingCount());
         
         ExitCode returnValue = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream)
                                    .config(config)
                                    .runForArgs(args);
 
         assertEquals(ExitCode.SUCCESS, returnValue);
-        assertEquals(1, config.size());
+        assertEquals(1, config.settingCount());
         Map<String,Object> table1 = (Map<String,Object>)(config.get("table1"));
         assertEquals(1, table1.size());
         Map<String,Object> table2 = (Map<String,Object>)(table1.get("table2"));
@@ -179,7 +179,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
                 "-c", "table1.conf1=val1",
                 "-c", "table1.table2.conf2=val2"};
         YWConfiguration config = new YWConfiguration();
-        assertEquals(0, config.size());
+        assertEquals(0, config.settingCount());
         
         ExitCode returnValue = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream)
                                    .config(config)
@@ -187,7 +187,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
         assertEquals(ExitCode.SUCCESS, returnValue);
 
-        assertEquals(2, config.size());        
+        assertEquals(3, config.settingCount());        
         assertEquals("val0", config.get("conf0"));
 
         Map<String,Object> table1 = (Map<String,Object>)(config.get("table1"));

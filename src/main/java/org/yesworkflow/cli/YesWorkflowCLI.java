@@ -2,6 +2,7 @@ package org.yesworkflow.cli;
 
 import static java.util.Arrays.asList;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.LinkedList;
@@ -188,14 +189,22 @@ public class YesWorkflowCLI {
                 return ExitCode.SUCCESS;
             }
             
-            // load the configuration files
+            // load the configuration files if a configuration has not been assigned programmatically
             if (config == null) {
-                config = YWConfiguration.fromYamlFile(YAML_FILE_NAME);
-                config.applyPropertyFile(PROPERTY_FILE_NAME);
+                
+                if (new File(YAML_FILE_NAME).exists()) {
+                    config = YWConfiguration.fromYamlFile(YAML_FILE_NAME);
+                } else {
+                    config = new YWConfiguration();
+                }
+                
+                if (new File(PROPERTY_FILE_NAME).exists()) {
+                    config.applyPropertyFile(PROPERTY_FILE_NAME);
+                }
             }
             
             // apply command-line overrides of config file
-            config.applyConfigOptions(options.valuesOf("c"));
+            config.applyOptions(options.valuesOf("c"));
 
             // make sure at least one non-option argument was given
             List<?> nonOptionArguments = options.nonOptionArguments();            
@@ -217,14 +226,14 @@ public class YesWorkflowCLI {
                 for (int i = 1; i < nonOptionArguments.size(); ++i) {
                     sourceFiles.add((String) nonOptionArguments.get(i));
                 }
-                config.applyConfigOption("extract.sources", sourceFiles);
+                config.set("extract.sources", sourceFiles);
             }
             
-            String queryEngine = (String) config.getConfigOptionValue("query.engine");
+            String queryEngine = config.getStringValue("query.engine");
             if (queryEngine != null) {
-                if (config.getConfigOptionValue("extract.queryengine") == null) config.applyConfigOption("extract.queryengine", queryEngine);
-                if (config.getConfigOptionValue("model.queryengine") == null) config.applyConfigOption("model.queryengine", queryEngine);
-                if (config.getConfigOptionValue("recon.queryengine") == null) config.applyConfigOption("recon.queryengine", queryEngine);
+                if (config.get("extract.queryengine") == null) config.set("extract.queryengine", queryEngine);
+                if (config.get("model.queryengine") == null) config.set("model.queryengine", queryEngine);
+                if (config.get("recon.queryengine") == null) config.set("recon.queryengine", queryEngine);
             }
             
             // execute sequence of commands through the requested one
@@ -397,7 +406,7 @@ public class YesWorkflowCLI {
             reconstructor = new DefaultReconstructor(this.outStream, this.errStream);
         }
 
-        String runDirectory = config.getConfigOptionValue("recon.rundir");
+        String runDirectory = config.getStringValue("recon.rundir");
         Run run = (runDirectory == null) ? new Run(model) : new Run(model, runDirectory);
         
         reconstructor.configure(config.getSection("recon"))
