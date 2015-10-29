@@ -45,6 +45,7 @@ public abstract class YesWorkflowDB {
     
     public static YesWorkflowDB createInMemoryDB() throws Exception {
         return YesWorkflowH2DB.createInMemoryDB();
+//        return YesWorkflowSQLiteDB.createInMemoryDB();
     }
 
     public static YesWorkflowDB openFileDB(Path dbFilePath) throws Exception {
@@ -52,17 +53,13 @@ public abstract class YesWorkflowDB {
     }
 
     public Long getLong(Object value) {
-        return (Long)value;
+        return (Long)value; 
     }
 
     public Long getLongValue(Record record, Field<?> field) {
         return getLong(record.getValue(field));
     }
-
-    public String getStringValue(Record record, Field<?> field) {
-        return (String)(record.getValue(field));
-    }
-
+    
     public YesWorkflowDB(Connection connection) throws SQLException {
         this.connection = connection;
         this.statement = connection.createStatement();
@@ -72,16 +69,16 @@ public abstract class YesWorkflowDB {
         statement.close();
         connection.close();
     }
-
+    
     protected int createDBTables(String createTablesScriptPath) throws Exception {
         String sqlScript = FileIO.readTextFileOnClasspath(createTablesScriptPath);
         int statementCount = executeSqlScript(sqlScript);
         return statementCount;
     }
-
-    public int executeSqlScript(String sqlScript)
+    
+    public int executeSqlScript(String sqlScript) 
             throws SQLException {
-
+        
         int statementCount = 0;
 
         for (String sqlStatement : sqlScript.split(";")) {
@@ -103,13 +100,13 @@ public abstract class YesWorkflowDB {
         resultSet.next();
         return resultSet.getLong(1);
     }
-
+    
     public Long insertSource(String path) throws SQLException {
 
        jooq.insertInto(Table.SOURCE)
            .set(PATH, path)
            .execute();
-
+        
         return getGeneratedId();
     }
 
@@ -120,11 +117,11 @@ public abstract class YesWorkflowDB {
             .set(LINE_NUMBER, lineNumber)
             .set(LINE_TEXT, lineText)
             .execute();
-
+        
         return getGeneratedId();
     }
 
-    public Long insertComment(Long sourceId, Long lineNumber,
+    public Long insertComment(Long sourceId, Long lineNumber, 
                               Long rankInLine, String commentText) throws SQLException {
 
         jooq.insertInto(Table.COMMENT)
@@ -133,12 +130,12 @@ public abstract class YesWorkflowDB {
             .set(RANK_IN_LINE, rankInLine)
             .set(COMMENT_TEXT, commentText)
             .execute();
-
+        
         return getGeneratedId();
     }
-
+    
     public Long insertAnnotation(Long qualifiedAnnotationId, long commentId,
-                                 long rankInComment, String tag, String keyword,
+                                 long rankInComment, String tag, String keyword, 
                                  String value, String description) throws SQLException {
 
         jooq.insertInto(Table.ANNOTATION)
@@ -150,7 +147,7 @@ public abstract class YesWorkflowDB {
             .set(VALUE, value)
             .set(DESCRIPTION, description)
             .execute();
-
+        
         return getGeneratedId();
     }
 
@@ -164,7 +161,7 @@ public abstract class YesWorkflowDB {
     }
 
     public Long insertProgramBlock(Long inProgramBlockId, Long beginAnnotationId, Long endAnnotationId,
-                              String name, String qualifiedName,
+                              String name, String qualifiedName, 
                               boolean isWorkflow, boolean isFunction) throws SQLException {
 
         jooq.insertInto(Table.PROGRAM_BLOCK)
@@ -176,31 +173,6 @@ public abstract class YesWorkflowDB {
             .set(IS_WORKFLOW, isWorkflow)
             .set(IS_FUNCTION, isFunction)
             .execute();
-
-        return getGeneratedId();
-    }
-
-    public Long insertCodeBlock(Long beginLine, Long endLine, String name, String description) throws SQLException {
-
-        jooq.insertInto(Table.CODE_BLOCK)
-                .set(BEGIN_LINE, beginLine)
-                .set(END_LINE, endLine)
-                .set(NAME, name)
-                .set(DESCRIPTION, description)
-                .execute();
-
-        return getGeneratedId();
-    }
-
-    public Long insertSignature(String inputOrOutput, String variable, String alias, String uri, String inCodeBlock) throws SQLException {
-
-        jooq.insertInto(Table.SIGNATURE)
-                .set(INPUT_OR_OUTPUT, inputOrOutput)
-                .set(VARIABLE, variable)
-                .set(ALIAS, alias)
-                .set(URI, uri)
-                .set(IN_CODE_BLOCK, inCodeBlock)
-                .execute();
 
         return getGeneratedId();
     }
