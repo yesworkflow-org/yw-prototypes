@@ -1,6 +1,9 @@
 package org.yesworkflow.config;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.yesworkflow.exceptions.YWToolUsageException;
 
 /** 
  * Class representing the location of a particular setting
@@ -11,15 +14,17 @@ class SettingLocation {
     Map<String,Object> settingParent;
     String settingLeafName;
     
-    public static SettingLocation find(SettingTable root, String settingName) {
+    public static SettingLocation find(Map<String,Object> root, String settingName) throws YWToolUsageException {
         return new SettingLocation(root, settingName, false);
     }
 
-    public static SettingLocation create(SettingTable root, String settingName) {
+    public static SettingLocation create(Map<String,Object> root, String settingName) throws YWToolUsageException {
         return new SettingLocation(root, settingName, true);
     }
 
-    private SettingLocation (SettingTable root, String settingName, boolean createMissingTables) {
+    @SuppressWarnings("unchecked")
+    private SettingLocation (Map<String,Object> root, String settingName, 
+            boolean createMissingTables) throws YWToolUsageException {
         
         if (settingName == null) {
             throw new IllegalArgumentException("Null configName argument.");
@@ -34,16 +39,28 @@ class SettingLocation {
         if (settingNameParts.length > 0) {
             for (int i = 0; i < settingNameParts.length - 1; ++i) {
                 String partName = settingNameParts[i];
-                SettingTable tableObject =  (SettingTable) settingParent.get(partName);
-                if (tableObject == null) {
+                Object value =  settingParent.get(partName);
+                Map<String, Object> table;
+                if (value == null) {
                     if (!createMissingTables) {
                         settingParent = null;
                         return;
                     }
-                    tableObject = new SettingTable();
-                    settingParent.put(partName, tableObject);
+                    table = new LinkedHashMap<String,Object>();
+                    settingParent.put(partName, table);
+                } else {
+                    if (!(value instanceof LinkedHashMap)) {
+                        if (createMissingTables) {
+                            throw new YWToolUsageException(
+                                "Attempt to create a setting table that overwrites an existing setting value: " + settingName);
+                        } else {
+                            throw new YWToolUsageException(
+                                "Attempt to access a setting value as a setting table: " + settingName);
+                        }
+                    }
+                    table = (Map<String, Object>) value;
                 }
-                settingParent = (Map<String, Object>)tableObject;
+                settingParent = table;
             }
         }
     }

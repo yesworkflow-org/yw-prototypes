@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -39,22 +40,29 @@ import org.yesworkflow.exceptions.YWToolUsageException;
  * </p>
  * 
  * <p>
- * Configuration items can be assigned by providing the full name of the configuration setting
+ * Configuration settings can be assigned by providing the full name of the setting
  * along with the value to assign to the setting. This class will create intermediate setting tables
- * as needed to store the value at the correct position in the tree.  Configuration values can
+ * as needed to store the value at the correct position in the tree. Setting values can
  * be retrieved in the same way, by providing the full name of the setting to be retrieved.
  * The class will navigate the tree of setting tables to retrieve the setting value.
  * </p>
  * 
  * <p>
  * Configuration settings can be loaded in bulk either from a YAML file, via the 
- * {@link #fromYamlFile(String) YWConfiguration.fromYamlFile()} static factory method, or from 
+ * {@link #fromYamlFile(String) fromYamlFile()} static factory method, or from 
  * Java-style properties files, via the {@link #applyPropertyFile(String) applyPropertyFile()} 
  * instance method. The nested structure of an input YAML file is preserved and becomes the structure 
  * of the YWConfiguration tree. Entries loaded from a Java property files are assigned individually to 
  * the configuration when loaded. Because loading a YAML file will overwrite existing settings, 
  * only one such file can be loaded, and only before configuration settings from other
  * sources are applied.
+ * 
+ * <p><b>Limitations: </b> YWConfiguration uses instances of {@link java.util.LinkedHashMap LinkedHashMap} 
+ * to represent setting tables. Consequently, an instance of LinkedHashMap may not used as the value 
+ * for a setting. Further, because the {@link org.yaml.snakeyaml.Yaml} class used to read YAML files 
+ * also represents maps using LinkedHashMap, any maps defined in an input YAML file  are considered 
+ * to be setting tables rather than setting values.
+ * </p>
  * </p>
  */
 public class YWConfiguration {
@@ -67,10 +75,10 @@ public class YWConfiguration {
     public static String EMPTY_VALUE = "";
     
     /** The root setting table */
-    private SettingTable root = new SettingTable();
+    private Map<String,Object> root = new LinkedHashMap<String,Object>();
 
     /**
-     * Static factory method for creating a YWConfiguration instance initialized with the contents 
+     * Factory for creating a YWConfiguration instance initialized with the contents 
      * of the given YAML file.
      * 
      * @param yamlFile The name of the YAML file to load.
@@ -78,7 +86,6 @@ public class YWConfiguration {
      * @throws IllegalArgumentException If the yamlFile argument is null.
      * @throws FileNotFoundException If the specified YAML file does not exist.
      */
-    @SuppressWarnings("unchecked")
     public static YWConfiguration fromYamlFile(String yamlFile) throws FileNotFoundException {
         
         // validate the input argument
@@ -90,18 +97,39 @@ public class YWConfiguration {
         }
 
         // read the specified yaml file into memory
-        Yaml yaml = new Yaml();
         InputStream input = new FileInputStream(yamlFile);
-        Map<String,Object> yamlDefinedMap = (Map<String, Object>) yaml.load(input);
+        
+        return fromYamlStream(input);
+    }
 
+    /**
+     * Factory for creating a YWConfiguration instance initialized with YAML-formatted 
+     * text read from a provided input stream.
+     * 
+     * @param yamlStream The input stream from which to read the YAML.
+     * @return The new YWConfiguration instance.
+     * @throws IllegalArgumentException If the yamlStream argument is null.
+     */
+    @SuppressWarnings("unchecked")
+    public static YWConfiguration fromYamlStream(InputStream yamlStream) {
+
+        // validate the input argument
+        if (yamlStream == null) {
+            throw new IllegalArgumentException("Null yamlStream argument.");
+        }
+
+        //  parse the yaml stream
+        Yaml yaml = new Yaml();
+        Map<String,Object> yamlDefinedMap = (Map<String, Object>) yaml.load(yamlStream);
+    
         // load the yaml-defined data structure into a new YWConfiguration instance
         YWConfiguration config = new YWConfiguration();
         config.root.putAll(yamlDefinedMap);
-
+    
         // return the new instance
         return config;
     }
-
+    
     /**
      * Loads configuration properties from a Java property file.
      * 
@@ -109,8 +137,9 @@ public class YWConfiguration {
      * @throws IllegalArgumentException If the propertyFile argument is null.
      * @throws FileNotFoundException If the specified property file does not exist.
      * @throws IOException If an error occurs reading the property file.
+     * @throws YWToolUsageException If the setting name indicates a leaf node is internal.
      */
-    public void applyPropertyFile(String propertyFile) throws IOException {
+    public void applyPropertyFile(String propertyFile) throws IOException, YWToolUsageException {
         
         // validate the input argument
         if (propertyFile == null) {
@@ -130,8 +159,9 @@ public class YWConfiguration {
      * @param reader The {@link java.io.Reader Reader} to read Java properties from.
      * @throws IllegalArgumentException If the reader argument is null.
      * @throws IOException If an error occurs reading from the {@link java.io.Reader Reader}.
+     * @throws YWToolUsageException If the setting name indicates a leaf node is internal.
      */
-    public void applyProperties(Reader reader) throws IOException {
+    public void applyProperties(Reader reader) throws IOException, YWToolUsageException {
 
         // validate the input argument
         if (reader == null) {
@@ -213,9 +243,10 @@ public class YWConfiguration {
      * 
      * @param settingName The full name of the configuration setting.
      * @param settingValue The value to assign.
+     * @throws YWToolUsageException If the setting name indicates a leaf node is internal.
      * @throws IllegalArgumentException If the settingName or settingValue argument is null.
      */
-    public void set(String settingName, Object settingValue) {
+    public void set(String settingName, Object settingValue) throws YWToolUsageException {
 
         // validate the input arguments
         if (settingName == null) {
@@ -223,7 +254,10 @@ public class YWConfiguration {
         }
         if (settingValue == null) {
             throw new IllegalArgumentException("Null settingValue argument.");
-        }
+        } 
+        if (settingValue instanceof LinkedHashMap) {
+            throw new IllegalArgumentException("A LinkedHashMap may not be used as a setting value.");
+        } 
         
         // create the nested setting tables needed to store the configuration
         SettingLocation location = SettingLocation.create(root, settingName);
@@ -237,9 +271,10 @@ public class YWConfiguration {
      * 
      * @param settingName The full name of the configuration setting.
      * @return The value of the configuration setting or null if not found.
+     * @throws YWToolUsageException If the setting name indicates a leaf node is internal.
      * @throws IllegalArgumentException If the settingName or settingValue argument is null.
      */
-    public Object get(String settingName) {
+    public Object get(String settingName) throws YWToolUsageException {
         
         // validate the input arguments
         if (settingName == null) {
@@ -263,9 +298,10 @@ public class YWConfiguration {
      * 
      * @param settingName The full name of the configuration setting.
      * @return The value of the configuration setting or null if not found.
+     * @throws YWToolUsageException If the setting name indicates a leaf node is internal.
      * @throws IllegalArgumentException If the settingName or settingValue argument is null.
      */
-    public String getStringValue(String settingName) {        
+    public String getStringValue(String settingName) throws YWToolUsageException {        
         Object value = this.get(settingName);
         return value == null ? null : value.toString();
     }
@@ -274,12 +310,13 @@ public class YWConfiguration {
      * Gets a subtree of the full configuration.
      * 
      * @param sectionName The name of configuration subtree.
+     * @throws YWToolUsageException If the setting name indicates a leaf node is internal.
      * @throws IllegalArgumentException If the settingName or settingValue argument is null.
      */
     @SuppressWarnings("unchecked")
-    public Map<String,Object> getSection(String sectionName) {
+    public Map<String,Object> getSection(String sectionName) throws YWToolUsageException {
         Object section = this.get(sectionName);
-        if (section == null || (!(section instanceof SettingTable))) {
+        if (section == null || (!(section instanceof LinkedHashMap<?,?>))) {
             return null;
         }
         return (Map<String,Object>) section;
@@ -293,11 +330,12 @@ public class YWConfiguration {
         return settingCount(root);
     }
     
-    private int settingCount(SettingTable table) {
+    @SuppressWarnings("unchecked")
+    private int settingCount(Map<String,Object> table) {
         int count = 0;
         for (Object value : table.values()) {
-            if (value instanceof SettingTable) {
-                count += settingCount((SettingTable)value);
+            if (value instanceof LinkedHashMap<?,?>) {
+                count += settingCount((Map<String,Object>)value);
             } else {
                 count += 1;
             }
