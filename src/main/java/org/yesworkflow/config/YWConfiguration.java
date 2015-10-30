@@ -131,7 +131,7 @@ public class YWConfiguration {
     }
     
     /**
-     * Loads configuration properties from a Java property file.
+     * Load settings from a Java property file.
      * 
      * @param propertyFile The name of the property file to load.
      * @throws IllegalArgumentException If the propertyFile argument is null.
@@ -154,7 +154,7 @@ public class YWConfiguration {
     }
     
     /**
-     * Loads Java properties from a character stream {@link java.io.Reader Reader}.
+     * Loads settings from a Java-property formatted character stream {@link java.io.Reader Reader}.
      * 
      * @param reader The {@link java.io.Reader Reader} to read Java properties from.
      * @throws IllegalArgumentException If the reader argument is null.
@@ -172,6 +172,24 @@ public class YWConfiguration {
         Properties properties = new Properties();
         properties.load(reader);
         
+        // apply properties as settings
+        applyProperties(properties);
+    }
+    
+    /**
+     * Loads settings from Java properties.
+     * 
+     * @param properties The {@link java.util.Properties Properties} to take settings from.
+     * @throws IllegalArgumentException If the properties argument is null.
+     * @throws YWToolUsageException If the setting name indicates a leaf node is internal.
+     */
+    public void applyProperties(Properties properties) throws IOException, YWToolUsageException {
+
+        // validate the input argument
+        if (properties == null) {
+            throw new IllegalArgumentException("Null properties argument.");
+        }
+
         // apply each property
         for (Map.Entry<Object, Object> entry: properties.entrySet()) {
             String settingName = (String) entry.getKey();
@@ -338,6 +356,26 @@ public class YWConfiguration {
                 count += settingCount((Map<String,Object>)value);
             } else {
                 count += 1;
+            }
+        }
+        return count;
+    }
+    
+    /**
+     * Returns the total number of setting tables that have been created
+     * including the top-level table.
+     * @return The number of settings.
+     */
+    public int tableCount() {
+        return tableCount(root);
+    }
+
+    @SuppressWarnings("unchecked")
+    private int tableCount(Map<String,Object> table) {
+        int count = 1;
+        for (Object value : table.values()) {
+            if (value instanceof LinkedHashMap<?,?>) {
+                count += tableCount((Map<String,Object>)value);
             }
         }
         return count;

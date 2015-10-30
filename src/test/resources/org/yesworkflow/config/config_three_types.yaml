@@ -1,0 +1,4 @@
+settingA: 45
+settingB: 'b'
+settingC:
+  - 1
