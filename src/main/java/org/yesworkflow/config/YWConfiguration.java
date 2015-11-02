@@ -7,10 +7,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.yaml.snakeyaml.Yaml;
 import org.yesworkflow.exceptions.YWToolUsageException;
@@ -85,6 +87,7 @@ public class YWConfiguration {
      * @return The new YWConfiguration instance.
      * @throws IllegalArgumentException If the yamlFile argument is null.
      * @throws FileNotFoundException If the specified YAML file does not exist.
+     * @throws ParserException If the YAML is malformed.
      */
     public static YWConfiguration fromYamlFile(String yamlFile) throws FileNotFoundException {
         
@@ -109,6 +112,7 @@ public class YWConfiguration {
      * @param yamlStream The input stream from which to read the YAML.
      * @return The new YWConfiguration instance.
      * @throws IllegalArgumentException If the yamlStream argument is null.
+     * @throws ParserException If the YAML is malformed.
      */
     @SuppressWarnings("unchecked")
     public static YWConfiguration fromYamlStream(InputStream yamlStream) {
@@ -332,12 +336,12 @@ public class YWConfiguration {
      * @throws IllegalArgumentException If the settingName or settingValue argument is null.
      */
     @SuppressWarnings("unchecked")
-    public Map<String,Object> getSection(String sectionName) throws YWToolUsageException {
+    public Section getSection(String sectionName) throws YWToolUsageException {
         Object section = this.get(sectionName);
         if (section == null || (!(section instanceof LinkedHashMap<?,?>))) {
             return null;
         }
-        return (Map<String,Object>) section;
+        return new Section((Map<String,Object>)section);
     }
     
     /**
@@ -349,7 +353,7 @@ public class YWConfiguration {
     }
     
     @SuppressWarnings("unchecked")
-    private int settingCount(Map<String,Object> table) {
+    public static int settingCount(Map<String,Object> table) {
         int count = 0;
         for (Object value : table.values()) {
             if (value instanceof LinkedHashMap<?,?>) {
@@ -371,7 +375,7 @@ public class YWConfiguration {
     }
 
     @SuppressWarnings("unchecked")
-    private int tableCount(Map<String,Object> table) {
+    public static int tableCount(Map<String,Object> table) {
         int count = 1;
         for (Object value : table.values()) {
             if (value instanceof LinkedHashMap<?,?>) {
@@ -379,5 +383,28 @@ public class YWConfiguration {
             }
         }
         return count;
+    }
+    
+    private static class Section implements Map<String,Object> {
+
+        private Map<String,Object> table;
+        
+        public Section(Map<String,Object> section) {
+            this.table = section;
+        }
+        
+        public Object put(String key, Object value) { throw new UnsupportedOperationException("Configuration section may not be modified."); }
+        public Object remove(Object key) { throw new UnsupportedOperationException("Configuration section may not be modified."); }
+        public void putAll(Map<? extends String, ? extends Object> m) { throw new UnsupportedOperationException("Configuration section may not be modified."); }
+        public void clear() { throw new UnsupportedOperationException("Configuration section may not be modified.");}
+
+        public int size() { return table.size(); }
+        public boolean isEmpty() { return table.isEmpty(); }
+        public boolean containsKey(Object key) { return table.containsKey(key); }
+        public boolean containsValue(Object value) { return table.containsValue(value); }
+        public Object get(Object key) { return table.get(key); }
+        public Set<String> keySet() { return table.keySet(); } 
+        public Collection<Object> values() { return table.values(); }
+        public Set<java.util.Map.Entry<String, Object>> entrySet() { return table.entrySet(); }
     }
 }
