@@ -63,5 +63,10 @@ class SettingLocation {
                 settingParent = table;
             }
         }
+        
+        if (createMissingTables && settingParent.get(settingLeafName) instanceof LinkedHashMap) {
+            throw new YWToolUsageException(
+                    "Attempt to assign a setting value that overwrites an existing setting table: " + settingName);
+        }
     }
 }
