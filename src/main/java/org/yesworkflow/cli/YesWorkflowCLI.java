@@ -180,7 +180,7 @@ public class YesWorkflowCLI {
             try {
                 options = parser.parse(args);
             } catch (OptionException exception) {
-                throw new YWToolUsageException("ERROR: " + exception.getMessage());
+                throw new YWToolUsageException(exception.getMessage());
             }
 
             // print help and exit if requested
@@ -209,7 +209,7 @@ public class YesWorkflowCLI {
             // make sure at least one non-option argument was given
             List<?> nonOptionArguments = options.nonOptionArguments();            
             if (options.nonOptionArguments().size() == 0) {
-                throw new YWToolUsageException("ERROR: Command must be first non-option argument to YesWorkflow");
+                throw new YWToolUsageException("Command must be first non-option argument to YesWorkflow");
             }            
 
             // extract YesWorkflow command from first non-option argument
@@ -217,7 +217,7 @@ public class YesWorkflowCLI {
             try {
                 command = YWCommand.toYWCommand((String) nonOptionArguments.get(0));
             } catch(Exception e) {
-                throw new YWToolUsageException("ERROR: Unrecognized YW command: " + nonOptionArguments.get(0));
+                throw new YWToolUsageException("Unrecognized YW command: " + nonOptionArguments.get(0));
             }
 
             // extract source file paths from remaining non-option arguments
@@ -284,7 +284,7 @@ public class YesWorkflowCLI {
 
     private void printToolUsageErrors(String message) {
         errStream.println();
-        errStream.println(message);
+        errStream.println("ERROR: " + message);
         errStream.println();
         errStream.println("Use the -h option to display help for the YW command-line interface.");
     }

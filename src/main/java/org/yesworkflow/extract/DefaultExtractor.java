@@ -238,7 +238,7 @@ public class DefaultExtractor implements Extractor {
         try {
             reader = new BufferedReader(new FileReader(path));
         } catch (FileNotFoundException e) {
-            throw new YWToolUsageException("ERROR: Input file not found: " + path);
+            throw new YWToolUsageException("Input file not found: " + path);
         }
 
         return reader;
