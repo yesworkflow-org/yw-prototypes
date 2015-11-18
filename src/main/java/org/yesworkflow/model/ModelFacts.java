@@ -196,7 +196,7 @@ public class ModelFacts {
                 }
             }
             
-            if (portType.equals("in") || portType.equals("param")) {
+            if (portType.equalsIgnoreCase("in") || portType.equalsIgnoreCase("param")) {
                 hasInPortFacts.add(blockId, port.id);
             } else {
                 hasOutPortFacts.add(blockId, port.id);
