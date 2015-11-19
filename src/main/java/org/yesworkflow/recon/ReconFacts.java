@@ -1,14 +1,7 @@
 package org.yesworkflow.recon;
 
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.PathMatcher;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,7 +37,7 @@ public class ReconFacts {
         QueryEngineModel queryEngineModel = new QueryEngineModel(queryEngine);
 
         this.resourceFacts  = new FactsBuilder(queryEngineModel, "resource", "resource_id", "resource_uri");
-        this.dataResourceFacts = new FactsBuilder(queryEngineModel, "data_resource", "data_id", "resource_id"); 
+        this.dataResourceFacts = new FactsBuilder(queryEngineModel, "data_resource", "data_id", "resource_id");
         this.uriVariableValueFacts  = new FactsBuilder(queryEngineModel, "uri_variable_value", "resource_id", "uri_variable_id", "uri_variable_value");
     }
 
@@ -124,14 +117,20 @@ public class ReconFacts {
     private List<Resource> addMatchingResources(Port port) {
         
         Path resourceSearchBase = run.runDirectoryBase.resolve(port.uriTemplate.leadingPath);
-        FileVisitor<Path> resourceFinder = new FileResourceFinder(port.data, port.uriTemplate, run.runDirectoryBase);
+        FileResourceFinder resourceFinder = new FileResourceFinder(port.uriTemplate, run.runDirectoryBase);
 
         try {
             Files.walkFileTree(resourceSearchBase, resourceFinder);
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
-        return ((FileResourceFinder)resourceFinder).resources;
+        
+        List<Path> resourcePaths = resourceFinder.getResourcePaths();
+        List<Resource> resources = new LinkedList<Resource>();
+        for (Path path : resourcePaths) {
+            resources.add(addResource(port.data, path));
+        }
+        return resources;
     }
     
     private void buildUriVariableValueFacts(UriTemplate uriTemplate, Resource resource) throws Exception {
@@ -146,35 +145,4 @@ public class ReconFacts {
         return factsString;
     }
     
-    private final class FileResourceFinder extends SimpleFileVisitor<Path> {
-        
-        private final Data data;
-        private String pattern;
-        private final PathMatcher matcher;
-        private final Path runBase;
-        
-        public final List<Resource> resources = new LinkedList<Resource>();
-        
-        public FileResourceFinder(Data data, UriTemplate template, Path runDirectoryBase) {
-            super();
-            this.data = data;
-            this.runBase = runDirectoryBase;
-            this.pattern = template.getGlobPattern();
-            this.matcher = FileSystems.getDefault().getPathMatcher(pattern);
-        }
-        
-        @Override public FileVisitResult visitFile(Path filePath, BasicFileAttributes fileAttributes) throws IOException {
-          Path runRelativePath = runBase.relativize(filePath);
-          if (matcher.matches(runRelativePath)) {
-              Resource resource = addResource(data, runRelativePath);
-              resources.add(resource);
-          }
-          return FileVisitResult.CONTINUE;
-        }
-        
-        @Override  public FileVisitResult preVisitDirectory(Path directoryPath, BasicFileAttributes fileAttributes) throws IOException {
-          // TODO: Improve performance by detecting when directory cannot lead to a match for the template
-            return FileVisitResult.CONTINUE;
-        }
-    }
 }
