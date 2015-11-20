@@ -7,6 +7,7 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
+import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
@@ -19,15 +20,15 @@ public class FileResourceFinder extends SimpleFileVisitor<Path> implements Resou
     
     private FileSystem fileSystem = FileSystems.getDefault();
     private PathMatcher matcher;
-    private Path baseDirectory;
+    private Path basePath;
     private List<String> patternMatches;
     
-    public Collection<String> findResources(Path baseDirectory, UriTemplate uriTemplate) {
-        this.baseDirectory = baseDirectory;
+    public Collection<String> findResources(String baseUri, UriTemplate uriTemplate) {
+        this.basePath = Paths.get(baseUri);
         patternMatches = new LinkedList<String>();
-        Path resourceSearchBase = this.baseDirectory.resolve(uriTemplate.leadingPath);
+        Path resourceSearchBase = this.basePath.resolve(uriTemplate.leadingPath);
         if (Files.isRegularFile(resourceSearchBase)) {
-            patternMatches.add(this.baseDirectory.relativize(resourceSearchBase).toString());
+            patternMatches.add(this.basePath.relativize(resourceSearchBase).toString());
         } else {
             this.matcher = fileSystem.getPathMatcher(uriTemplate.getGlobPattern());
             try {
@@ -40,7 +41,7 @@ public class FileResourceFinder extends SimpleFileVisitor<Path> implements Resou
     }
         
     @Override public FileVisitResult visitFile(Path filePath, BasicFileAttributes fileAttributes) throws IOException {
-      Path runRelativePath = baseDirectory.relativize(filePath);
+      Path runRelativePath = basePath.relativize(filePath);
       if (matcher.matches(runRelativePath)) {
           patternMatches.add(runRelativePath.toString());
       }

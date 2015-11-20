@@ -95,7 +95,7 @@ public class ReconFacts {
         List<Resource> foundResources = new LinkedList<Resource>();
         
         if (port.uriTemplate != null) {
-            Collection<String> matchingResourceURIs = resourceFinder.findResources(run.runDirectoryBase, port.uriTemplate);
+            Collection<String> matchingResourceURIs = resourceFinder.findResources(run.runDirectoryBase.toString(), port.uriTemplate);
             for (String uri : matchingResourceURIs) {
                 Resource resource = addResource(port.data, uri);
                 foundResources.add(resource);
