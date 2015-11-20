@@ -47,7 +47,7 @@ public class DefaultReconstructor implements Reconstructor  {
             factsFile = (String)value;
         } else if (key.equalsIgnoreCase("queryengine")) {
             queryEngine = QueryEngine.toQueryEngine((String)value);
-        }  else if (key.equalsIgnoreCase("resourcefinder")) {
+        }  else if (key.equalsIgnoreCase("finderclass")) {
             resourceFinder = instantiateResourceFinder((String)value);
         }
         
