@@ -5,5 +5,5 @@ import java.util.Collection;
 import org.yesworkflow.data.UriTemplate;
 
 public interface ResourceFinder {
-    Collection<Path> findResources(Path baseDirectory, UriTemplate uriTemplate);
+    Collection<String> findResources(Path baseDirectory, UriTemplate uriTemplate);
 }

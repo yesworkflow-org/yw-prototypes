@@ -20,14 +20,14 @@ public class FileResourceFinder extends SimpleFileVisitor<Path> implements Resou
     private FileSystem fileSystem = FileSystems.getDefault();
     private PathMatcher matcher;
     private Path baseDirectory;
-    private List<Path> patternMatches;
+    private List<String> patternMatches;
     
-    public Collection<Path> findResources(Path baseDirectory, UriTemplate uriTemplate) {
+    public Collection<String> findResources(Path baseDirectory, UriTemplate uriTemplate) {
         this.baseDirectory = baseDirectory;
-        patternMatches = new LinkedList<Path>();
+        patternMatches = new LinkedList<String>();
         Path resourceSearchBase = this.baseDirectory.resolve(uriTemplate.leadingPath);
         if (Files.isRegularFile(resourceSearchBase)) {
-            patternMatches.add(this.baseDirectory.relativize(resourceSearchBase));
+            patternMatches.add(this.baseDirectory.relativize(resourceSearchBase).toString());
         } else {
             this.matcher = fileSystem.getPathMatcher(uriTemplate.getGlobPattern());
             try {
@@ -42,7 +42,7 @@ public class FileResourceFinder extends SimpleFileVisitor<Path> implements Resou
     @Override public FileVisitResult visitFile(Path filePath, BasicFileAttributes fileAttributes) throws IOException {
       Path runRelativePath = baseDirectory.relativize(filePath);
       if (matcher.matches(runRelativePath)) {
-          patternMatches.add(runRelativePath);
+          patternMatches.add(runRelativePath.toString());
       }
       return FileVisitResult.CONTINUE;
     }

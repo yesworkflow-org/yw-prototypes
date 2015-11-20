@@ -1,7 +1,5 @@
 package org.yesworkflow.recon;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -97,9 +95,9 @@ public class ReconFacts {
         List<Resource> foundResources = new LinkedList<Resource>();
         
         if (port.uriTemplate != null) {
-            Collection<Path> matchingResourcePaths = resourceFinder.findResources(run.runDirectoryBase, port.uriTemplate);
-            for (Path path : matchingResourcePaths) {
-                Resource resource = addResource(port.data, path);
+            Collection<String> matchingResourceURIs = resourceFinder.findResources(run.runDirectoryBase, port.uriTemplate);
+            for (String uri : matchingResourceURIs) {
+                Resource resource = addResource(port.data, uri);
                 foundResources.add(resource);
             }
         }
@@ -107,11 +105,10 @@ public class ReconFacts {
         return foundResources;
     }
     
-    private Resource addResource(Data data, Path path) {
-        String uri = path.toString();
+    private Resource addResource(Data data, String uri) {
         Resource resource = resourceForUri.get(uri);
         if (resource == null) {
-            resource = new Resource(nextResourceId++, path.toString());
+            resource = new Resource(nextResourceId++, uri.toString());
             resourceForUri.put(uri, resource);
             resourceFacts.add(resource.id, FileIO.normalizePathSeparator(uri));
         }
