@@ -18,6 +18,7 @@ public class DefaultReconstructor implements Reconstructor  {
     private String factsFile = null;
     private String reconFacts = null;
     private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;
+    private ResourceFinder resourceFinder = null;
 
     public DefaultReconstructor(PrintStream stdoutStream, PrintStream stderrStream) {
         this.stdoutStream = stdoutStream;
@@ -44,11 +45,46 @@ public class DefaultReconstructor implements Reconstructor  {
     public DefaultReconstructor configure(String key, Object value) throws Exception {
         if (key.equalsIgnoreCase("factsfile")) {
             factsFile = (String)value;
-         } else if (key.equalsIgnoreCase("queryengine")) {
-             queryEngine = QueryEngine.toQueryEngine((String)value);
-         }
+        } else if (key.equalsIgnoreCase("queryengine")) {
+            queryEngine = QueryEngine.toQueryEngine((String)value);
+        }  else if (key.equalsIgnoreCase("resourcefinder")) {
+            resourceFinder = instantiateResourceFinder((String)value);
+        }
+        
         return this;
     }
+    
+    private static ResourceFinder instantiateResourceFinder(String finderClassName) throws Exception {
+
+        Class resourceFinderClass;
+        try {
+            resourceFinderClass = Class.forName(finderClassName);
+        } catch (ClassNotFoundException cause) {
+            throw new Exception("ResourceFinder class " + finderClassName +
+                                                " not found.", cause);
+        }
+        
+        Object resourceFinderInstance;
+        try {
+            resourceFinderInstance = resourceFinderClass.newInstance();
+        } catch (Exception cause) {
+            throw new Exception(
+                    "Error instantiating instance of custom ResourceFinder " + 
+                            resourceFinderClass + ".", cause);
+        }
+        
+        ResourceFinder resourceFinder;
+        try {
+            resourceFinder = (ResourceFinder)resourceFinderInstance;
+        } catch (ClassCastException cause) {
+            throw new Exception(
+                    "Class " + finderClassName + " does not implement the ResourceFinder interface.",
+                    cause);
+        }
+        
+        return resourceFinder;
+    }
+    
 
     @Override
     public DefaultReconstructor recon() throws Exception {
@@ -60,8 +96,13 @@ public class DefaultReconstructor implements Reconstructor  {
     
     @Override
     public String getFacts() throws Exception {
+        
+        if (resourceFinder == null) {
+            resourceFinder= new FileResourceFinder();
+        }
+        
         if (reconFacts == null) {
-            reconFacts = new ReconFacts(queryEngine, run, new FileResourceFinder()).build().toString();
+            reconFacts = new ReconFacts(queryEngine, run, resourceFinder).build().toString();
         }
         return reconFacts;
     }
