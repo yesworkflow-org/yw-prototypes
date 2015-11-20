@@ -61,7 +61,7 @@ public class DefaultReconstructor implements Reconstructor  {
     @Override
     public String getFacts() throws Exception {
         if (reconFacts == null) {
-            reconFacts = new ReconFacts(queryEngine, run).build().toString();
+            reconFacts = new ReconFacts(queryEngine, run, new FileResourceFinder()).build().toString();
         }
         return reconFacts;
     }

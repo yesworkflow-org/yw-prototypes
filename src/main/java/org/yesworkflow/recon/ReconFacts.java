@@ -2,6 +2,7 @@ package org.yesworkflow.recon;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +30,9 @@ public class ReconFacts {
     private FactsBuilder uriVariableValueFacts;
     private Map<String,Resource> resourceForUri = new HashMap<String,Resource>();
 
-    public ReconFacts(QueryEngine queryEngine, Run run) {
+    private ResourceFinder resourceFinder;
+    
+    public ReconFacts(QueryEngine queryEngine, Run run, ResourceFinder resourceFinder) {
         if (queryEngine == null) throw new IllegalArgumentException("Null logicLanguage argument passed to ReconFacts constructor.");
         if (run == null) throw new IllegalArgumentException("Null run argument passed to ReconFacts constructor.");
         if (run.model == null) throw new IllegalArgumentException("Null model field in run argument to passed to ReconFacts constructor.");
@@ -39,6 +42,8 @@ public class ReconFacts {
         this.resourceFacts  = new FactsBuilder(queryEngineModel, "resource", "resource_id", "resource_uri");
         this.dataResourceFacts = new FactsBuilder(queryEngineModel, "data_resource", "data_id", "resource_id");
         this.uriVariableValueFacts  = new FactsBuilder(queryEngineModel, "uri_variable_value", "resource_id", "uri_variable_id", "uri_variable_value");
+
+        this.resourceFinder = resourceFinder;
     }
 
     public ReconFacts build() throws Exception {
@@ -80,26 +85,26 @@ public class ReconFacts {
    
     private void buildFactsForPortResources(Port[] ports) throws Exception {        
         for (Port port: ports) {
-            List<Resource> resourcesWithVariables = findResourcesForPort(port);
-            for (Resource resource : resourcesWithVariables) {
+            List<Resource> resources = findResourcesForPort(port);
+            for (Resource resource : resources) {
                 buildUriVariableValueFacts(port.uriTemplate, resource);
             }
         }
     }
     
     private List<Resource> findResourcesForPort(Port port) {
-        List<Resource> resourcesWithVariables = new LinkedList<Resource>();
+        
+        List<Resource> foundResources = new LinkedList<Resource>();
+        
         if (port.uriTemplate != null) {
-            Path resourcePath = run.runDirectoryBase.resolve(port.uriTemplate.leadingPath);
-            if (Files.isRegularFile(resourcePath)) {
-                addResource(port.data, run.runDirectoryBase.relativize(resourcePath));
-            } else {
-                List<Resource> matchingResources = addMatchingResources(port);
-                resourcesWithVariables.addAll(matchingResources);
+            Collection<Path> matchingResourcePaths = resourceFinder.findResources(run.runDirectoryBase, port.uriTemplate);
+            for (Path path : matchingResourcePaths) {
+                Resource resource = addResource(port.data, path);
+                foundResources.add(resource);
             }
         }
         
-        return resourcesWithVariables;
+        return foundResources;
     }
     
     private Resource addResource(Data data, Path path) {
@@ -114,25 +119,6 @@ public class ReconFacts {
         return resource;
     }
 
-    private List<Resource> addMatchingResources(Port port) {
-        
-        Path resourceSearchBase = run.runDirectoryBase.resolve(port.uriTemplate.leadingPath);
-        FileResourceFinder resourceFinder = new FileResourceFinder(port.uriTemplate, run.runDirectoryBase);
-
-        try {
-            Files.walkFileTree(resourceSearchBase, resourceFinder);
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-        
-        List<Path> resourcePaths = resourceFinder.getResourcePaths();
-        List<Resource> resources = new LinkedList<Resource>();
-        for (Path path : resourcePaths) {
-            resources.add(addResource(port.data, path));
-        }
-        return resources;
-    }
-    
     private void buildUriVariableValueFacts(UriTemplate uriTemplate, Resource resource) throws Exception {
         Map<String,String> variableValues = uriTemplate.extractValuesFromPath(resource.uri);
         for (UriVariable variable : uriTemplate.variables) {
