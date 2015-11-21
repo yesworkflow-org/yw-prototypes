@@ -13,6 +13,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.yesworkflow.data.UriTemplate;
 
@@ -23,7 +24,18 @@ public class FileResourceFinder extends SimpleFileVisitor<Path> implements Resou
     private Path basePath;
     private List<String> patternMatches;
     
-    public Collection<String> findResources(String baseUri, UriTemplate uriTemplate) {
+    @Override
+    public FileResourceFinder configure(Map<String, Object> config) throws Exception {
+        return this;
+    }
+
+    @Override
+    public FileResourceFinder configure(String key, Object value) throws Exception {
+        return this;
+    }
+
+    @Override
+    public Collection<String> findResources(String baseUri, UriTemplate uriTemplate, ResourceRole role) {
         this.basePath = Paths.get(baseUri);
         patternMatches = new LinkedList<String>();
         Path resourceSearchBase = this.basePath.resolve(uriTemplate.leadingPath);
@@ -52,5 +64,4 @@ public class FileResourceFinder extends SimpleFileVisitor<Path> implements Resou
       // TODO: Improve performance by detecting when directory cannot lead to a match for the template
         return FileVisitResult.CONTINUE;
     }
-    
 }

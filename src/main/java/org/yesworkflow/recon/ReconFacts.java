@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.yesworkflow.annotations.In;
 import org.yesworkflow.data.UriTemplate;
 import org.yesworkflow.data.UriVariable;
 import org.yesworkflow.model.Data;
@@ -15,6 +16,7 @@ import org.yesworkflow.model.Program;
 import org.yesworkflow.query.FactsBuilder;
 import org.yesworkflow.query.QueryEngine;
 import org.yesworkflow.query.QueryEngineModel;
+import org.yesworkflow.recon.ResourceFinder.ResourceRole;
 import org.yesworkflow.util.FileIO;
 
 public class ReconFacts {
@@ -94,8 +96,10 @@ public class ReconFacts {
         
         List<Resource> foundResources = new LinkedList<Resource>();
         
+        ResourceFinder.ResourceRole role = (port.flowAnnotation instanceof In) ? ResourceRole.INPUT : ResourceRole.OUTPUT;
+        
         if (port.uriTemplate != null) {
-            Collection<String> matchingResourceURIs = resourceFinder.findResources(run.runDirectoryBase.toString(), port.uriTemplate);
+            Collection<String> matchingResourceURIs = resourceFinder.findResources(run.runDirectoryBase.toString(), port.uriTemplate, role);
             for (String uri : matchingResourceURIs) {
                 Resource resource = addResource(port.data, uri);
                 foundResources.add(resource);
