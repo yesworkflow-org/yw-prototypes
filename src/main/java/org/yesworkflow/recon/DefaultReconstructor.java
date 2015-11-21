@@ -19,6 +19,7 @@ public class DefaultReconstructor implements Reconstructor  {
     private String reconFacts = null;
     private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;
     private ResourceFinder resourceFinder = null;
+    private Map<String,Object> finderConfiguration = null;
 
     public DefaultReconstructor(PrintStream stdoutStream, PrintStream stderrStream) {
         this.stdoutStream = stdoutStream;
@@ -42,6 +43,7 @@ public class DefaultReconstructor implements Reconstructor  {
         return this;
     }
     
+    @SuppressWarnings("unchecked")
     public DefaultReconstructor configure(String key, Object value) throws Exception {
         if (key.equalsIgnoreCase("factsfile")) {
             factsFile = (String)value;
@@ -49,6 +51,8 @@ public class DefaultReconstructor implements Reconstructor  {
             queryEngine = QueryEngine.toQueryEngine((String)value);
         }  else if (key.equalsIgnoreCase("finderclass")) {
             resourceFinder = instantiateResourceFinder((String)value);
+        } else if (key.equalsIgnoreCase("finder")) {
+            finderConfiguration = (Map<String,Object>)value;
         }
         
         return this;
@@ -56,7 +60,7 @@ public class DefaultReconstructor implements Reconstructor  {
     
     private static ResourceFinder instantiateResourceFinder(String finderClassName) throws Exception {
 
-        Class resourceFinderClass;
+        Class<?> resourceFinderClass;
         try {
             resourceFinderClass = Class.forName(finderClassName);
         } catch (ClassNotFoundException cause) {
@@ -99,6 +103,10 @@ public class DefaultReconstructor implements Reconstructor  {
         
         if (resourceFinder == null) {
             resourceFinder= new FileResourceFinder();
+        }
+        
+        if (finderConfiguration != null) {
+            resourceFinder.configure(finderConfiguration);
         }
         
         if (reconFacts == null) {
