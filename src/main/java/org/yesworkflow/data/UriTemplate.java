@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.yesworkflow.util.FileIO;
 
@@ -107,6 +108,17 @@ public class UriTemplate extends UriBase {
             globPatternBuilder.append(fragments[i+1]);
         }
         return globPatternBuilder.toString();
+    }
+
+	public Pattern getRegexpPattern() {
+	    StringBuilder regexpPatternBuilder = new StringBuilder("");
+        regexpPatternBuilder.append(fragments[0]);
+        for (int i = 0; i < fragments.length - 1; i++) {
+            regexpPatternBuilder.append("[\\S]+");
+            regexpPatternBuilder.append(fragments[i+1]);
+        }
+        Pattern pattern = Pattern.compile(regexpPatternBuilder.toString());
+        return pattern;
     }
 	
     public Map<String,String> extractValuesFromPath(String path) throws Exception {
