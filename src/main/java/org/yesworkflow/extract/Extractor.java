@@ -7,9 +7,10 @@ import java.util.Map;
 import org.yesworkflow.Language;
 import org.yesworkflow.YWStage;
 import org.yesworkflow.annotations.Annotation;
+import org.yesworkflow.config.Configurable;
 import org.yesworkflow.query.QueryEngineModel;
 
-public interface Extractor extends YWStage {
+public interface Extractor extends YWStage, Configurable {
     Extractor configure(String key, Object value) throws Exception;
     Extractor configure(Map<String, Object> config) throws Exception;
     Extractor reader(Reader reader);
