@@ -99,7 +99,7 @@ public class ReconFacts {
         ResourceFinder.ResourceRole role = (port.flowAnnotation instanceof In) ? ResourceRole.INPUT : ResourceRole.OUTPUT;
         
         if (port.uriTemplate != null) {
-            Collection<String> matchingResourceURIs = resourceFinder.findResources(run.runDirectoryBase.toString(), port.uriTemplate, role);
+            Collection<String> matchingResourceURIs = resourceFinder.findMatchingResources(run.runDirectoryBase.toString(), port.uriTemplate, role);
             for (String uri : matchingResourceURIs) {
                 Resource resource = addResource(port.data, uri);
                 foundResources.add(resource);

@@ -26,6 +26,11 @@ public class FileResourceFinder extends SimpleFileVisitor<Path> implements Resou
     
     @Override
     public FileResourceFinder configure(Map<String, Object> config) throws Exception {
+        if (config != null) {
+            for (Map.Entry<String, Object> entry : config.entrySet()) {
+                configure(entry.getKey(), entry.getValue());
+            }
+        }
         return this;
     }
 
@@ -35,7 +40,7 @@ public class FileResourceFinder extends SimpleFileVisitor<Path> implements Resou
     }
 
     @Override
-    public Collection<String> findResources(String baseUri, UriTemplate uriTemplate, ResourceRole role) {
+    public Collection<String> findMatchingResources(String baseUri, UriTemplate uriTemplate, ResourceRole role) {
         this.basePath = Paths.get(baseUri);
         patternMatches = new LinkedList<String>();
         Path resourceSearchBase = this.basePath.resolve(uriTemplate.leadingPath);
@@ -51,7 +56,7 @@ public class FileResourceFinder extends SimpleFileVisitor<Path> implements Resou
         }
         return patternMatches;
     }
-        
+    
     @Override public FileVisitResult visitFile(Path filePath, BasicFileAttributes fileAttributes) throws IOException {
       Path runRelativePath = basePath.relativize(filePath);
       if (matcher.matches(runRelativePath)) {
@@ -63,5 +68,10 @@ public class FileResourceFinder extends SimpleFileVisitor<Path> implements Resou
     @Override  public FileVisitResult preVisitDirectory(Path directoryPath, BasicFileAttributes fileAttributes) throws IOException {
       // TODO: Improve performance by detecting when directory cannot lead to a match for the template
         return FileVisitResult.CONTINUE;
+    }
+    
+    @Override
+    public Collection<String> findUnmatchedResources(String baseUri, ResourceRole role) {
+        return new LinkedList<String>();
     }
 }

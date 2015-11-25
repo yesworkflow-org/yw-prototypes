@@ -9,5 +9,6 @@ public interface ResourceFinder extends Configurable {
     
     enum ResourceRole { INPUT, OUTPUT, INPUT_OR_OUTPUT };
     
-    Collection<String> findResources(String baseUri, UriTemplate uriTemplate, ResourceRole role);
+    Collection<String> findMatchingResources(String baseUri, UriTemplate uriTemplate, ResourceRole role);
+    Collection<String> findUnmatchedResources(String baseUri, ResourceRole role);
 }
