@@ -6,10 +6,10 @@ XSB Version 3.6. (Gazpatcho) of April 22, 2015
 [i386-apple-darwin15.0.0 64 bits; mode: optimal; engine: slg-wam; scheduling: local]
 [Build date: 2015-11-16]
 
-| ?- [rules loaded]
+| ?- [rules loaded, cpu time used: 0.0010 seconds]
 
 yes
-| ?- [extractfacts loaded, cpu time used: 0.0010 seconds]
+| ?- [extractfacts loaded]
 
 yes
 | ?- [modelfacts loaded]
@@ -38,9 +38,6 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 eq2(ProgramName) - What are the names N of all program blocks?
 ---------------------------------------------------------------------------------------------------------------------------
-eq2(load_screening_results)
-eq2(collect_next_image)
-eq2(simulate_data_collection)
 eq2(initialize_run)
 eq2(log_rejected_sample)
 eq2(calculate_strategy)
@@ -48,6 +45,9 @@ eq2(transform_images)
 eq2(collect_data_set)
 eq2(transform_image)
 eq2(log_average_image_intensity)
+eq2(load_screening_results)
+eq2(collect_next_image)
+eq2(simulate_data_collection)
 
 yes
 | ?- 
@@ -205,15 +205,15 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 mq17(DownstreamDataName) - What data is downstream of accepted_sample?
 ---------------------------------------------------------------------------------------------------------------------------
+mq17(frame_number)
+mq17(pixel_count)
+mq17(collection_log)
+mq17(corrected_image)
 mq17(raw_image)
 mq17(sample_id)
 mq17(corrected_image_path)
 mq17(energy)
 mq17(total_intensity)
-mq17(frame_number)
-mq17(pixel_count)
-mq17(collection_log)
-mq17(corrected_image)
 
 yes
 | ?- 
@@ -295,4 +295,4 @@ rq5(q55)
 
 yes
 | ?- 
-End XSB (cputime 0.07 secs, elapsetime 0.07 secs)
+End XSB (cputime 0.07 secs, elapsetime 0.08 secs)

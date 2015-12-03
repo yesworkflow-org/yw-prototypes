@@ -2,6 +2,7 @@ package org.yesworkflow.recon;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.yesworkflow.config.YWConfiguration;
@@ -39,21 +40,25 @@ public class DefaultReconstructor implements Reconstructor  {
             for (Map.Entry<String, Object> entry : config.entrySet()) {
                 configure(entry.getKey(), entry.getValue());
             }
+            finderConfiguration = config;
         }
         return this;
     }
     
-    @SuppressWarnings("unchecked")
     public DefaultReconstructor configure(String key, Object value) throws Exception {
+        
         if (key.equalsIgnoreCase("factsfile")) {
             factsFile = (String)value;
         } else if (key.equalsIgnoreCase("queryengine")) {
             queryEngine = QueryEngine.toQueryEngine((String)value);
         }  else if (key.equalsIgnoreCase("finderclass")) {
             resourceFinder = instantiateResourceFinder((String)value);
-        } else if (key.equalsIgnoreCase("finder")) {
-            finderConfiguration = (Map<String,Object>)value;
         }
+        
+        if (finderConfiguration == null) {
+            finderConfiguration = new LinkedHashMap<String,Object>();
+        }
+        finderConfiguration.put(key, value);
         
         return this;
     }
