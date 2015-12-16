@@ -1,8 +1,10 @@
 package org.yesworkflow.annotations;
 
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.yesworkflow.YWKeywords.Tag;
+import org.yesworkflow.exceptions.YWMarkupException;
 
 public abstract class Annotation {
 
@@ -16,7 +18,7 @@ public abstract class Annotation {
     
     protected String description = null;
     
-    public Annotation(Long id, Long sourceId, Long lineNumber, String comment, Tag tag) throws Exception {
+    public Annotation(Long id, Long sourceId, Long lineNumber, String comment, Tag tag) throws YWMarkupException {
 
         this.id = id;
         this.sourceId = sourceId;
@@ -29,10 +31,14 @@ public abstract class Annotation {
         keyword = commentTokens.nextToken();
         String expectedKeyword = "@" + tag.toString();
         if (!keyword.equalsIgnoreCase(expectedKeyword)) {
-            throw new Exception("Wrong keyword for " + expectedKeyword.toLowerCase() + " annotation: " + keyword);
+            throw new YWMarkupException("Wrong keyword for " + expectedKeyword.toLowerCase() + " annotation: " + keyword);
         }
        
-        name = commentTokens.nextToken();
+        try {
+            name = commentTokens.nextToken();
+        } catch (NoSuchElementException e) {
+            throw new YWMarkupException("No argument provided to " + keyword + " keyword on line " + lineNumber);
+        }
         
         description = buildDescription(commentTokens);
     }

@@ -2,6 +2,7 @@ package org.yesworkflow.annotations;
 
 import org.yesworkflow.YesWorkflowTestCase;
 import org.yesworkflow.annotations.Out;
+import org.yesworkflow.exceptions.YWMarkupException;
 
 public class TestOut extends YesWorkflowTestCase {
         
@@ -62,5 +63,16 @@ public class TestOut extends YesWorkflowTestCase {
         assertEquals("x", out.name);
         assertEquals("longitude", out.binding());
         assertEquals("Half of the coordinates", out.description);
-    }    
+    }
+
+    public void testOutComment_NoArgument() throws Exception {
+        Exception caught = null;
+        try {
+            new Out(1L, 1L, 1L, "@out");
+        } catch (YWMarkupException e) {
+            caught = e;
+        }
+        assertNotNull(caught);
+        assertEquals("No argument provided to @out keyword on line 1", caught.getMessage());
+    }
 }

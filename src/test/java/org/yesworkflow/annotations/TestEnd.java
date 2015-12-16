@@ -2,6 +2,7 @@ package org.yesworkflow.annotations;
 
 import org.yesworkflow.YesWorkflowTestCase;
 import org.yesworkflow.annotations.End;
+import org.yesworkflow.exceptions.YWMarkupException;
 
 public class TestEnd extends YesWorkflowTestCase {
 
@@ -20,4 +21,16 @@ public class TestEnd extends YesWorkflowTestCase {
         assertEquals("main", end.name);
         assertEquals("extra stuff", end.description);
     }
+    
+    public void testEndComment_NoArgument() throws Exception {
+        Exception caught = null;
+        try {
+            new End(1L, 1L, 1L, "@end");
+        } catch (YWMarkupException e) {
+            caught = e;
+        }
+        assertNotNull(caught);
+        assertEquals("No argument provided to @end keyword on line 1", caught.getMessage());
+    }
+
 }

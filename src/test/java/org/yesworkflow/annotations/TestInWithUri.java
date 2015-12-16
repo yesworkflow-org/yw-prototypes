@@ -2,6 +2,7 @@ package org.yesworkflow.annotations;
 
 import org.yesworkflow.YesWorkflowTestCase;
 import org.yesworkflow.annotations.In;
+import org.yesworkflow.exceptions.YWMarkupException;
 
 public class TestInWithUri extends YesWorkflowTestCase {
         
@@ -43,5 +44,18 @@ public class TestInWithUri extends YesWorkflowTestCase {
         assertEquals("longitude", in.binding());
         assertEquals("longitude.txt", in.uriAnnotation().toString());
         assertNull(in.description);
-    }    
+    }
+    
+    public void testInCommentWithUri_NoArgumentToUri() throws Exception {
+        In in = (In) new In(1L, 1L, 1L, "@in x ");
+        Exception caught = null;
+        try {
+            new UriAnnotation(2L, 1L, 1L, "@uri", in);
+        } catch (YWMarkupException e) {
+            caught = e;
+        }
+        assertNotNull(caught);
+        assertEquals("No argument provided to @uri keyword on line 1", caught.getMessage());
+    }
+
 }

@@ -2,6 +2,7 @@ package org.yesworkflow.annotations;
 
 import org.yesworkflow.YesWorkflowTestCase;
 import org.yesworkflow.annotations.In;
+import org.yesworkflow.exceptions.YWMarkupException;
 
 public class TestIn extends YesWorkflowTestCase {
 
@@ -77,5 +78,15 @@ public class TestIn extends YesWorkflowTestCase {
         assertEquals("longitude", in.binding());
         assertEquals("Half of the coordinates", in.description);
     }
-    
+
+    public void testInComment_NoArgument() throws Exception {
+        Exception caught = null;
+        try {
+            new In(1L, 1L, 1L, "@in");
+        } catch (YWMarkupException e) {
+            caught = e;
+        }
+        assertNotNull(caught);
+        assertEquals("No argument provided to @in keyword on line 1", caught.getMessage());
+    }
 }

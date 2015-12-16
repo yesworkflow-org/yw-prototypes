@@ -2,6 +2,7 @@ package org.yesworkflow.annotations;
 
 import org.yesworkflow.YesWorkflowTestCase;
 import org.yesworkflow.annotations.Param;
+import org.yesworkflow.exceptions.YWMarkupException;
 
 public class TestParam extends YesWorkflowTestCase {
 
@@ -78,4 +79,14 @@ public class TestParam extends YesWorkflowTestCase {
         assertEquals("Half of the coordinates", param.description);
     }
     
+    public void testParamComment_NoArgument() throws Exception {
+        Exception caught = null;
+        try {
+            new Param(1L, 1L, 1L, "@param");
+        } catch (YWMarkupException e) {
+            caught = e;
+        }
+        assertNotNull(caught);
+        assertEquals("No argument provided to @param keyword on line 1", caught.getMessage());
+    }    
 }
