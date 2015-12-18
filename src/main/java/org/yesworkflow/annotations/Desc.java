@@ -5,27 +5,28 @@ import org.yesworkflow.YWKeywords;
 
 public class Desc extends Qualification {
     
-    protected String description = null;
+    protected String value = null;
     
     public Desc(Long id, Long sourceId, Long lineNumber,String comment, Annotation primaryAnnotation) throws Exception {
         super(id, sourceId, lineNumber, comment, YWKeywords.Tag.DESC, primaryAnnotation);
         StringTokenizer commentTokens = new StringTokenizer(comment);
         commentTokens.nextToken();
-        primaryAnnotation.description = buildDescription(commentTokens);
+        value = buildDescription(commentTokens);
+        primaryAnnotation.description = this;
     }
 
     public void appendDescription(String extraDescription) {
         if (extraDescription != null) {
-            if (description == null) {
-                description = extraDescription;
+            if (value == null) {
+                value = extraDescription;
             } else {
-                description += " " + extraDescription;
+                value += " " + extraDescription;
             }
         }
     }
     
     public String description() {
-        return description;
+        return value;
     }
     
     private String buildDescription(StringTokenizer commentTokens) {

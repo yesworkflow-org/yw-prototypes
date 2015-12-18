@@ -20,7 +20,7 @@ public class TestEnd extends YesWorkflowTestCase {
         End end = new End(1L, 1L, 1L, "@end main ");
         new Desc(2L, 1L, 1L, "@desc extra stuff", end);
         assertEquals("main", end.name);
-        assertEquals("extra stuff", end.description);
+        assertEquals("extra stuff", end.description());
     }
     
     public void testEndComment_NoArgument() throws Exception {

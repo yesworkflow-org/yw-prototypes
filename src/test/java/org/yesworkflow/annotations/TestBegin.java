@@ -20,7 +20,7 @@ public class TestBegin extends YesWorkflowTestCase {
         Begin begin = new Begin(1L, 1L, 1L, "@begin main ");
         new Desc(2L, 1L, 1L, "@desc my program", begin);
         assertEquals("main", begin.name);
-        assertEquals("my program", begin.description);
+        assertEquals("my program", begin.description());
     }
     
     public void testBeginComment_NoArgument() throws Exception {

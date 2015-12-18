@@ -15,8 +15,8 @@ public abstract class Annotation {
     public final String name;
     public final String comment;
     public final Tag tag;
-    
-    protected String description = null;
+
+    protected Desc description = null;
     
     public Annotation(Long id, Long sourceId, Long lineNumber, String comment, Tag tag) throws YWMarkupException {
 
@@ -42,12 +42,14 @@ public abstract class Annotation {
     }
 
 	public Annotation qualifyWith(Qualification qualification) throws Exception {		
-		return this;
+	    if (qualification instanceof Desc) {
+            this.description = (Desc)qualification;
+        }
+        return this;
 	}
-
 	
 	public String description() {
-		return description;
+	    return (description != null) ? description.value : null;
 	}
 
 }

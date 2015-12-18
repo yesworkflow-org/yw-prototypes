@@ -37,7 +37,7 @@ public class TestIn extends YesWorkflowTestCase {
         new Desc(2L, 1L, 1L, "@desc The longitude", in);
         assertEquals("x", in.name);
         assertEquals("x", in.binding());
-        assertEquals("The longitude", in.description);
+        assertEquals("The longitude", in.description());
     }
     
     public void testInComment_VariableAndLabel() throws Exception {
@@ -62,7 +62,7 @@ public class TestIn extends YesWorkflowTestCase {
         new Desc(3L, 1L, 1L, "@desc Half of  the coordinates", in);
         assertEquals("x", in.name);
         assertEquals("longitude", in.binding());
-        assertEquals("Half of the coordinates", in.description);
+        assertEquals("Half of the coordinates", in.description());
     }
 
     public void testInComment_NoArgument() throws Exception {

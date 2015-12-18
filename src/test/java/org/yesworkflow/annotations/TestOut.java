@@ -23,7 +23,7 @@ public class TestOut extends YesWorkflowTestCase {
         new Desc(2L, 1L, 1L, "@desc The longitude", out);
         assertEquals("x", out.name);
         assertEquals("x", out.binding());
-        assertEquals("The longitude", out.description);
+        assertEquals("The longitude", out.description());
     }
     
     public void testOutComment_NameAndAlias() throws Exception {
@@ -48,7 +48,7 @@ public class TestOut extends YesWorkflowTestCase {
         new Desc(3L, 1L, 1L, "@desc Half of the coordinates", out);
         assertEquals("x", out.name);
         assertEquals("longitude", out.binding());
-        assertEquals("Half of the coordinates", out.description);
+        assertEquals("Half of the coordinates", out.description());
     }
 
     public void testOutComment_NameAndAlias_DescriptionOnAlias() throws Exception {
@@ -57,7 +57,7 @@ public class TestOut extends YesWorkflowTestCase {
         new Desc(3L, 1L, 1L, "@desc Half of the coordinates", out);
         assertEquals("x", out.name);
         assertEquals("longitude", out.binding());
-        assertEquals("Half of the coordinates", out.description);
+        assertEquals("Half of the coordinates", out.description());
     }
 
     public void testOutComment_NoArgument() throws Exception {

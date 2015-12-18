@@ -15,7 +15,7 @@ public class TestDesc extends YesWorkflowTestCase {
         Begin begin = new Begin(1L, 1L, 1L, "@begin main");
         new Desc(2L, 1L, 1L, "@desc Distance calculator", begin);
         assertEquals("main", begin.name);
-        assertEquals("Distance calculator", begin.description);
+        assertEquals("Distance calculator", begin.description());
     }
     
     public void testInWithoutDesc() throws Exception {
