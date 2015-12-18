@@ -39,39 +39,15 @@ public abstract class Annotation {
         } catch (NoSuchElementException e) {
             throw new YWMarkupException("No argument provided to " + keyword + " keyword on line " + lineNumber);
         }
-        
-        description = buildDescription(commentTokens);
     }
 
 	public Annotation qualifyWith(Qualification qualification) throws Exception {		
 		return this;
 	}
 
-	public void appendDescription(String extraDescription) {
-		if (extraDescription != null) {
-			if (description == null) {
-				description = extraDescription;
-			} else {
-				description += " " + extraDescription;
-			}
-		}
-	}
 	
 	public String description() {
 		return description;
 	}
-	
-	private String buildDescription(StringTokenizer commentTokens) {
-        
-        StringBuilder descriptionBuilder = new StringBuilder();
-        
-        while (commentTokens.hasMoreTokens()) {
-            descriptionBuilder.append(' ').append(commentTokens.nextToken());
-        }
-        
-        String description = descriptionBuilder.toString().trim();
-        
-        return (description.length() > 0) ? description : null;
-    }
 
 }

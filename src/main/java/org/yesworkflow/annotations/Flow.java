@@ -15,7 +15,6 @@ public abstract class Flow extends AliasableAnnotation {
         
         if (qualification instanceof UriAnnotation) {
             this.uriAnnotation = (UriAnnotation)qualification;
-            appendDescription(qualification.description);
         } else {
             super.qualifyWith(qualification);
         }

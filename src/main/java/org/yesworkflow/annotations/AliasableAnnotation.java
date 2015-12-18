@@ -14,7 +14,6 @@ public abstract class AliasableAnnotation extends Annotation {
 		
 		if (qualification instanceof As) {
 			this.as = qualification;
-			appendDescription(qualification.description);
 		} else {
 			super.qualifyWith(qualification);
 		}

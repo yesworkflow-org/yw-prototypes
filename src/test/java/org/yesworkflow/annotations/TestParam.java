@@ -33,7 +33,8 @@ public class TestParam extends YesWorkflowTestCase {
     }
     
     public void testParamComment_VariableAndDescription() throws Exception {
-        Param param = new Param(1L, 1L, 1L, "@param x The longitude");
+        Param param = new Param(1L, 1L, 1L, "@param x");
+        new Desc(2L, 1L, 1L, "@desc The longitude", param);
         assertEquals("x", param.name);
         assertEquals("x", param.binding());
         assertEquals("The longitude", param.description);
@@ -56,24 +57,9 @@ public class TestParam extends YesWorkflowTestCase {
     }
 
     public void testParamComment_VariableLabelDescription_DescriptionOnName() throws Exception {
-        Param param  = (Param) new Param(1L, 1L, 1L, "@param x    Half of the coordinates ");
+        Param param  = (Param) new Param(1L, 1L, 1L, "@param x ");
         new As(2L, 1L, 1L, " @as  longitude", param);
-        assertEquals("x", param.name);
-        assertEquals("longitude", param.binding());
-        assertEquals("Half of the coordinates", param.description);
-    }
-
-    public void testParamComment_VariableLabelDescription_DescriptionOnAlias() throws Exception {
-        Param param = (Param) new Param(1L, 1L, 1L, "@param x   ");
-        new As(2L, 1L, 1L, " @as  longitude  Half of the coordinates", param);
-        assertEquals("x", param.name);
-        assertEquals("longitude", param.binding());
-        assertEquals("Half of the coordinates", param.description);
-    }
-
-    public void testParamComment_VariableLabelDescription_DescriptionOnNameAndAlias() throws Exception {
-        Param param = (Param) new Param(1L, 1L, 1L, "@param x Half of   ");
-        new As(2L, 1L, 1L, " @as  longitude   the coordinates", param);
+        new Desc(3L, 1L, 1L, "@desc Half of the coordinates", param);
         assertEquals("x", param.name);
         assertEquals("longitude", param.binding());
         assertEquals("Half of the coordinates", param.description);
