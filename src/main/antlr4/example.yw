@@ -1,0 +1,11 @@
+@begin A1
+@in x @in y 
+@as vert
+@out d @as dist
+@begin B_a
+@end B_a
+@end A1
+
+  @begin C
+  
+      @end    C
