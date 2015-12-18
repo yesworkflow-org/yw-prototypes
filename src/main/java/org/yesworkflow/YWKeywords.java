@@ -20,10 +20,10 @@ public class YWKeywords {
      * recognized YW keywords. 
      */
     public enum Tag {
-        
         AS,
         BEGIN,
         CALL,
+        DESC,
         END,
         FILE,
         IN,
@@ -41,6 +41,9 @@ public class YWKeywords {
     
     /** Definition of the standard keyword for the CALL tag. */
     public static final String STANDARD_CALL_KEYWORD            = "@call";
+
+    /** Definition of the standard keyword for the DESC tag. */
+    public static final String STANDARD_DESC_KEYWORD            = "@desc";
 
     /** Definition of the standard keyword for the END tag. */
     public static final String STANDARD_END_KEYWORD             = "@end";
@@ -74,6 +77,7 @@ public class YWKeywords {
         setStandardKeyword(    STANDARD_AS_KEYWORD,     Tag.AS      );
         setStandardKeyword(    STANDARD_BEGIN_KEYWORD,  Tag.BEGIN   );
         setStandardKeyword(    STANDARD_CALL_KEYWORD,   Tag.CALL    );
+        setStandardKeyword(    STANDARD_DESC_KEYWORD,   Tag.DESC    );
         setStandardKeyword(    STANDARD_END_KEYWORD,    Tag.END     );
         setStandardKeyword(    STANDARD_FILE_KEYWORD,   Tag.FILE    );
         setStandardKeyword(    STANDARD_IN_KEYWORD,     Tag.IN      );
