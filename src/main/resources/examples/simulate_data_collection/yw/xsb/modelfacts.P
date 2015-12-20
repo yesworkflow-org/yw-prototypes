@@ -1,15 +1,15 @@
 
 % FACT: program(program_id, program_name, qualified_program_name, begin_annotation_id, end_annotation_id).
-program(1, 'simulate_data_collection', 'simulate_data_collection', 1, 80).
-program(2, 'initialize_run', 'simulate_data_collection.initialize_run', 16, 19).
-program(3, 'load_screening_results', 'simulate_data_collection.load_screening_results', 20, 26).
-program(4, 'calculate_strategy', 'simulate_data_collection.calculate_strategy', 27, 35).
-program(5, 'log_rejected_sample', 'simulate_data_collection.log_rejected_sample', 36, 41).
-program(6, 'collect_data_set', 'simulate_data_collection.collect_data_set', 42, 54).
-program(7, 'transform_images', 'simulate_data_collection.transform_images', 55, 69).
-program(8, 'log_average_image_intensity', 'simulate_data_collection.log_average_image_intensity', 70, 79).
-program(9, 'collect_next_image', 'collect_next_image', 81, 91).
-program(10, 'transform_image', 'transform_image', 92, 98).
+program(1, 'simulate_data_collection', 'simulate_data_collection', 1, 86).
+program(2, 'initialize_run', 'simulate_data_collection.initialize_run', 22, 25).
+program(3, 'load_screening_results', 'simulate_data_collection.load_screening_results', 26, 32).
+program(4, 'calculate_strategy', 'simulate_data_collection.calculate_strategy', 33, 41).
+program(5, 'log_rejected_sample', 'simulate_data_collection.log_rejected_sample', 42, 47).
+program(6, 'collect_data_set', 'simulate_data_collection.collect_data_set', 48, 60).
+program(7, 'transform_images', 'simulate_data_collection.transform_images', 61, 75).
+program(8, 'log_average_image_intensity', 'simulate_data_collection.log_average_image_intensity', 76, 85).
+program(9, 'collect_next_image', 'collect_next_image', 87, 97).
+program(10, 'transform_image', 'transform_image', 98, 104).
 
 % FACT: workflow(program_id).
 workflow(1).
@@ -28,61 +28,61 @@ has_subprogram(1, 7).
 has_subprogram(1, 8).
 
 % FACT: port(port_id, port_type, port_name, qualified_port_name, port_annotation_id, data_id).
-port(1, 'param', 'cassette_id', 'simulate_data_collection<-cassette_id', 2, 1).
-port(2, 'param', 'sample_score_cutoff', 'simulate_data_collection<-sample_score_cutoff', 3, 2).
-port(3, 'in', 'sample_spreadsheet', 'simulate_data_collection<-sample_spreadsheet', 4, 3).
-port(4, 'in', 'calibration_image', 'simulate_data_collection<-calibration_image', 6, 4).
-port(5, 'out', 'corrected_image', 'simulate_data_collection->corrected_image', 8, 5).
-port(6, 'out', 'run_log', 'simulate_data_collection->run_log', 10, 6).
-port(7, 'out', 'collection_log', 'simulate_data_collection->collection_log', 12, 7).
-port(8, 'out', 'rejection_log', 'simulate_data_collection->rejection_log', 14, 8).
-port(9, 'out', 'run_log', 'simulate_data_collection.initialize_run->run_log', 17, 9).
-port(10, 'param', 'cassette_id', 'simulate_data_collection.load_screening_results<-cassette_id', 21, 10).
-port(11, 'in', 'sample_spreadsheet', 'simulate_data_collection.load_screening_results<-sample_spreadsheet', 22, 11).
-port(12, 'out', 'sample_name', 'simulate_data_collection.load_screening_results->sample_name', 24, 12).
-port(13, 'out', 'sample_quality', 'simulate_data_collection.load_screening_results->sample_quality', 25, 13).
-port(14, 'param', 'sample_score_cutoff', 'simulate_data_collection.calculate_strategy<-sample_score_cutoff', 28, 14).
-port(15, 'in', 'sample_name', 'simulate_data_collection.calculate_strategy<-sample_name', 29, 12).
-port(16, 'in', 'sample_quality', 'simulate_data_collection.calculate_strategy<-sample_quality', 30, 13).
-port(17, 'out', 'accepted_sample', 'simulate_data_collection.calculate_strategy->accepted_sample', 31, 15).
-port(18, 'out', 'rejected_sample', 'simulate_data_collection.calculate_strategy->rejected_sample', 32, 16).
-port(19, 'out', 'num_images', 'simulate_data_collection.calculate_strategy->num_images', 33, 17).
-port(20, 'out', 'energies', 'simulate_data_collection.calculate_strategy->energies', 34, 18).
-port(21, 'param', 'cassette_id', 'simulate_data_collection.log_rejected_sample<-cassette_id', 37, 10).
-port(22, 'in', 'rejected_sample', 'simulate_data_collection.log_rejected_sample<-rejected_sample', 38, 16).
-port(23, 'out', 'rejection_log', 'simulate_data_collection.log_rejected_sample->rejection_log', 39, 19).
-port(24, 'param', 'cassette_id', 'simulate_data_collection.collect_data_set<-cassette_id', 44, 10).
-port(25, 'in', 'accepted_sample', 'simulate_data_collection.collect_data_set<-accepted_sample', 45, 15).
-port(26, 'in', 'num_images', 'simulate_data_collection.collect_data_set<-num_images', 46, 17).
-port(27, 'in', 'energies', 'simulate_data_collection.collect_data_set<-energies', 47, 18).
-port(28, 'out', 'sample_id', 'simulate_data_collection.collect_data_set->sample_id', 48, 20).
-port(29, 'out', 'energy', 'simulate_data_collection.collect_data_set->energy', 49, 21).
-port(30, 'out', 'frame_number', 'simulate_data_collection.collect_data_set->frame_number', 50, 22).
-port(31, 'out', 'raw_image_path', 'simulate_data_collection.collect_data_set->raw_image_path', 51, 23).
-port(32, 'in', 'sample_id', 'simulate_data_collection.transform_images<-sample_id', 57, 20).
-port(33, 'in', 'energy', 'simulate_data_collection.transform_images<-energy', 58, 21).
-port(34, 'in', 'frame_number', 'simulate_data_collection.transform_images<-frame_number', 59, 22).
-port(35, 'in', 'raw_image_path', 'simulate_data_collection.transform_images<-raw_image_path', 60, 23).
-port(36, 'in', 'calibration_image', 'simulate_data_collection.transform_images<-calibration_image', 62, 24).
-port(37, 'out', 'corrected_image', 'simulate_data_collection.transform_images->corrected_image', 64, 25).
-port(38, 'out', 'corrected_image_path', 'simulate_data_collection.transform_images->corrected_image_path', 66, 26).
-port(39, 'out', 'total_intensity', 'simulate_data_collection.transform_images->total_intensity', 67, 27).
-port(40, 'out', 'pixel_count', 'simulate_data_collection.transform_images->pixel_count', 68, 28).
-port(41, 'param', 'cassette_id', 'simulate_data_collection.log_average_image_intensity<-cassette_id', 71, 10).
-port(42, 'param', 'sample_id', 'simulate_data_collection.log_average_image_intensity<-sample_id', 72, 20).
-port(43, 'param', 'frame_number', 'simulate_data_collection.log_average_image_intensity<-frame_number', 73, 22).
-port(44, 'in', 'corrected_image_path', 'simulate_data_collection.log_average_image_intensity<-corrected_image_path', 74, 26).
-port(45, 'in', 'total_intensity', 'simulate_data_collection.log_average_image_intensity<-total_intensity', 75, 27).
-port(46, 'in', 'pixel_count', 'simulate_data_collection.log_average_image_intensity<-pixel_count', 76, 28).
-port(47, 'out', 'collection_log', 'simulate_data_collection.log_average_image_intensity->collection_log', 77, 29).
-port(48, 'param', 'cassette_id', 'collect_next_image<-cassette_id', 82, 10).
-port(49, 'param', 'sample_id', 'collect_next_image<-sample_id', 83, 20).
-port(50, 'param', 'num_images', 'collect_next_image<-num_images', 84, 17).
-port(51, 'param', 'energies', 'collect_next_image<-energies', 85, 18).
-port(52, 'param', 'image_path_template', 'collect_next_image<-image_path_template', 86, 30).
-port(57, 'param', 'raw_image_path', 'transform_image<-raw_image_path', 93, 32).
-port(58, 'param', 'corrected_image_path', 'transform_image<-corrected_image_path', 94, 26).
-port(59, 'param', 'calibration_image_path', 'transform_image<-calibration_image_path', 95, 33).
+port(1, 'param', 'cassette_id', 'simulate_data_collection<-cassette_id', 3, 1).
+port(2, 'param', 'sample_score_cutoff', 'simulate_data_collection<-sample_score_cutoff', 5, 2).
+port(3, 'in', 'sample_spreadsheet', 'simulate_data_collection<-sample_spreadsheet', 7, 3).
+port(4, 'in', 'calibration_image', 'simulate_data_collection<-calibration_image', 10, 4).
+port(5, 'out', 'corrected_image', 'simulate_data_collection->corrected_image', 13, 5).
+port(6, 'out', 'run_log', 'simulate_data_collection->run_log', 16, 6).
+port(7, 'out', 'collection_log', 'simulate_data_collection->collection_log', 18, 7).
+port(8, 'out', 'rejection_log', 'simulate_data_collection->rejection_log', 20, 8).
+port(9, 'out', 'run_log', 'simulate_data_collection.initialize_run->run_log', 23, 9).
+port(10, 'param', 'cassette_id', 'simulate_data_collection.load_screening_results<-cassette_id', 27, 10).
+port(11, 'in', 'sample_spreadsheet', 'simulate_data_collection.load_screening_results<-sample_spreadsheet', 28, 11).
+port(12, 'out', 'sample_name', 'simulate_data_collection.load_screening_results->sample_name', 30, 12).
+port(13, 'out', 'sample_quality', 'simulate_data_collection.load_screening_results->sample_quality', 31, 13).
+port(14, 'param', 'sample_score_cutoff', 'simulate_data_collection.calculate_strategy<-sample_score_cutoff', 34, 14).
+port(15, 'in', 'sample_name', 'simulate_data_collection.calculate_strategy<-sample_name', 35, 12).
+port(16, 'in', 'sample_quality', 'simulate_data_collection.calculate_strategy<-sample_quality', 36, 13).
+port(17, 'out', 'accepted_sample', 'simulate_data_collection.calculate_strategy->accepted_sample', 37, 15).
+port(18, 'out', 'rejected_sample', 'simulate_data_collection.calculate_strategy->rejected_sample', 38, 16).
+port(19, 'out', 'num_images', 'simulate_data_collection.calculate_strategy->num_images', 39, 17).
+port(20, 'out', 'energies', 'simulate_data_collection.calculate_strategy->energies', 40, 18).
+port(21, 'param', 'cassette_id', 'simulate_data_collection.log_rejected_sample<-cassette_id', 43, 10).
+port(22, 'in', 'rejected_sample', 'simulate_data_collection.log_rejected_sample<-rejected_sample', 44, 16).
+port(23, 'out', 'rejection_log', 'simulate_data_collection.log_rejected_sample->rejection_log', 45, 19).
+port(24, 'param', 'cassette_id', 'simulate_data_collection.collect_data_set<-cassette_id', 50, 10).
+port(25, 'in', 'accepted_sample', 'simulate_data_collection.collect_data_set<-accepted_sample', 51, 15).
+port(26, 'in', 'num_images', 'simulate_data_collection.collect_data_set<-num_images', 52, 17).
+port(27, 'in', 'energies', 'simulate_data_collection.collect_data_set<-energies', 53, 18).
+port(28, 'out', 'sample_id', 'simulate_data_collection.collect_data_set->sample_id', 54, 20).
+port(29, 'out', 'energy', 'simulate_data_collection.collect_data_set->energy', 55, 21).
+port(30, 'out', 'frame_number', 'simulate_data_collection.collect_data_set->frame_number', 56, 22).
+port(31, 'out', 'raw_image_path', 'simulate_data_collection.collect_data_set->raw_image_path', 57, 23).
+port(32, 'in', 'sample_id', 'simulate_data_collection.transform_images<-sample_id', 63, 20).
+port(33, 'in', 'energy', 'simulate_data_collection.transform_images<-energy', 64, 21).
+port(34, 'in', 'frame_number', 'simulate_data_collection.transform_images<-frame_number', 65, 22).
+port(35, 'in', 'raw_image_path', 'simulate_data_collection.transform_images<-raw_image_path', 66, 23).
+port(36, 'in', 'calibration_image', 'simulate_data_collection.transform_images<-calibration_image', 68, 24).
+port(37, 'out', 'corrected_image', 'simulate_data_collection.transform_images->corrected_image', 70, 25).
+port(38, 'out', 'corrected_image_path', 'simulate_data_collection.transform_images->corrected_image_path', 72, 26).
+port(39, 'out', 'total_intensity', 'simulate_data_collection.transform_images->total_intensity', 73, 27).
+port(40, 'out', 'pixel_count', 'simulate_data_collection.transform_images->pixel_count', 74, 28).
+port(41, 'param', 'cassette_id', 'simulate_data_collection.log_average_image_intensity<-cassette_id', 77, 10).
+port(42, 'param', 'sample_id', 'simulate_data_collection.log_average_image_intensity<-sample_id', 78, 20).
+port(43, 'param', 'frame_number', 'simulate_data_collection.log_average_image_intensity<-frame_number', 79, 22).
+port(44, 'in', 'corrected_image_path', 'simulate_data_collection.log_average_image_intensity<-corrected_image_path', 80, 26).
+port(45, 'in', 'total_intensity', 'simulate_data_collection.log_average_image_intensity<-total_intensity', 81, 27).
+port(46, 'in', 'pixel_count', 'simulate_data_collection.log_average_image_intensity<-pixel_count', 82, 28).
+port(47, 'out', 'collection_log', 'simulate_data_collection.log_average_image_intensity->collection_log', 83, 29).
+port(48, 'param', 'cassette_id', 'collect_next_image<-cassette_id', 88, 10).
+port(49, 'param', 'sample_id', 'collect_next_image<-sample_id', 89, 20).
+port(50, 'param', 'num_images', 'collect_next_image<-num_images', 90, 17).
+port(51, 'param', 'energies', 'collect_next_image<-energies', 91, 18).
+port(52, 'param', 'image_path_template', 'collect_next_image<-image_path_template', 92, 30).
+port(57, 'param', 'raw_image_path', 'transform_image<-raw_image_path', 99, 32).
+port(58, 'param', 'corrected_image_path', 'transform_image<-corrected_image_path', 100, 26).
+port(59, 'param', 'calibration_image_path', 'transform_image<-calibration_image_path', 101, 33).
 
 % FACT: port_alias(port_id, alias).
 port_alias(31, 'raw_image').

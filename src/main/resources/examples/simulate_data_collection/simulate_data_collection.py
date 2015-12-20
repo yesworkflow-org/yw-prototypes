@@ -6,12 +6,12 @@ import time
 from datetime import datetime
 
 """
-@begin simulate_data_collection
-@param cassette_id 
-@param sample_score_cutoff
-@in sample_spreadsheet @uri file:cassette_{cassette_id}_spreadsheet.csv
-@in calibration_image  @uri file:calibration.img 
-@out corrected_image   @uri file:run/data/{}/{}_{}eV_{}.img
+@begin simulate_data_collection @desc Workflow for collecting diffraction data from high quality crystals in a cassette
+@param cassette_id @desc The unique ID of the cassette containing the crystals
+@param sample_score_cutoff @desc The minimum quality score required of crystals
+@in sample_spreadsheet @uri file:cassette_{cassette_id}_spreadsheet.csv @desc CSV file giving quality score for each crystal.
+@in calibration_image  @uri file:calibration.img @desc File used to correct raw diffraction images.
+@out corrected_image   @uri file:run/data/{}/{}_{}eV_{}.img @desc The corrected diffraction images collected on all crystals.
 @out run_log           @uri file:run/run_log.txt
 @out collection_log    @uri file:run/collected_images.csv
 @out rejection_log     @uri file:run/rejected_samples.txt
