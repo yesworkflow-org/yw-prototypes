@@ -3,11 +3,12 @@
 mq1(SourceFile, StartLine, EndLine) :-
     program_source('simulate_data_collection.collect_data_set', SourceFile, StartLine, EndLine).
     
-% MQ2:  What is the name of the top-level workflow?
+% MQ2:  What is the name and description of the top-level workflow?
 :- table mq2/1.
-mq2(WorkflowName) :-
+mq2(WorkflowName,Description) :-
     top_workflow(W),
-    program(W, _, WorkflowName, _, _).
+    program(W, _, WorkflowName, _, _),
+    description(W, Description).
     
 % MQ3:  What are the names of any top-level functions?
 :- table mq3/1.

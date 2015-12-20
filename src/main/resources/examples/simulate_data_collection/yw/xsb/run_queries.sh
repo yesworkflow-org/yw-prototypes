@@ -17,7 +17,7 @@ printall('eq2(ProgramName) - What are the names N of all program blocks?', eq2(_
 printall('eq3(PortName) - What out ports are qualified with URIs?', eq3(_)).
 
 printall('mq1(SourceFile,StartLine,EndLine) - Where is the definition of block simulate_data_collection.collect_data_set?', mq1(_,_,_)).
-printall('mq2(WorkflowName) - What is the name of the top-level workflow?', mq2(_)).
+printall('mq2(WorkflowName,Description) - What is the name and description of the top-level workflow?', mq2(_,_)).
 printall('mq3(FunctionName) - What are the names of any top-level functions?', mq3(_)).
 printall('mq4(ProgramName) -  What are the names of the programs comprising the top-level workflow?', mq4(_)).
 printall('mq5(DataName) - What are the inputs to the top-level workflow?', mq5(_)).

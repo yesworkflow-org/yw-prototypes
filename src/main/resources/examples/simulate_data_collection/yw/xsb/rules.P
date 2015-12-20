@@ -17,6 +17,13 @@ count(Goal, Count) :-
     findall(_, Goal, List),
     llength(List, Count).
 
+:- table description/2.
+% Program P has description D.
+description(P,D) :-
+    program(P, _, _, BA, _),
+    annotation_qualifies(DA, BA),
+    annotation(DA, _, _, 'desc', _, D).
+
 % Program with qualified name QN is defined in source file SF from first line F to last line L.
 :- table program_source/4.
 program_source(QN, SF, F, L) :-
