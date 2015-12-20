@@ -12,7 +12,7 @@ public abstract class Annotation {
     public final Long sourceId;
     public final Long lineNumber;
     public final String keyword;
-    public final String name;
+    protected String value;
     public final String comment;
     public final Tag tag;
 
@@ -35,7 +35,7 @@ public abstract class Annotation {
         }
        
         try {
-            name = commentTokens.nextToken();
+            value = commentTokens.nextToken();
         } catch (NoSuchElementException e) {
             throw new YWMarkupException("No argument provided to " + keyword + " keyword on line " + lineNumber);
         }
@@ -46,6 +46,10 @@ public abstract class Annotation {
             this.description = (Desc)qualification;
         }
         return this;
+	}
+	
+	public String value() {
+	    return value;
 	}
 	
 	public String description() {

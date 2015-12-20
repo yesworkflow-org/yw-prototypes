@@ -21,7 +21,6 @@ public class ExtractFacts {
     private String factsString = null;
     private FactsBuilder sourceFileFacts;
     private FactsBuilder annotationFacts;
-    private FactsBuilder descriptionFacts;
     private FactsBuilder qualificationFacts;
 
     public ExtractFacts(YesWorkflowDB ywdb, QueryEngineModel queryEngineModel, List<Annotation> annotations) {
@@ -31,7 +30,6 @@ public class ExtractFacts {
         
         this.sourceFileFacts  = new FactsBuilder(queryEngineModel, "extract_source", "source_id", "source_path");
         this.annotationFacts  = new FactsBuilder(queryEngineModel, "annotation", "annotation_id", "source_id", "line_number", "tag", "keyword", "value");
-        this.descriptionFacts  = new FactsBuilder(queryEngineModel, "annotation_description", "annotation_id", "description");
         this.qualificationFacts = new FactsBuilder(queryEngineModel, "annotation_qualifies", "qualifying_annotation_id", "primary_annotation_id");
     }
 
@@ -43,7 +41,6 @@ public class ExtractFacts {
         StringBuilder sb = new StringBuilder();
         sb.append(sourceFileFacts)
           .append(annotationFacts)
-          .append(descriptionFacts)
           .append(qualificationFacts);
         
         factsString = sb.toString();
@@ -80,15 +77,8 @@ public class ExtractFacts {
                     annotation.lineNumber, 
                     annotation.tag.toString().toLowerCase(),
                     annotation.keyword, 
-                    annotation.name
+                    annotation.value()
             );
-            
-            if (annotation.description() != null) {
-                descriptionFacts.add(
-                        annotation.id, 
-                        annotation.description()
-                );
-            }
             
             if (annotation instanceof Qualification) {
                 qualificationFacts.add(

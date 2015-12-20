@@ -14,7 +14,7 @@ public class UriAnnotation extends Qualification {
     }
     
     public String toString() {
-        return name;
+        return value;
     }
 }
 

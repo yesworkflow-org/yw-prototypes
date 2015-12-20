@@ -42,6 +42,6 @@ public class Model {
 	
 	@Override
 	public String toString() {
-	    return "Model(program=" + program.beginAnnotation.name + ")";
+	    return "Model(program=" + program.beginAnnotation.value() + ")";
 	}
 }

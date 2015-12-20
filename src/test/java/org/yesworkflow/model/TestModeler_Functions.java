@@ -50,16 +50,16 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
                                  .getModel();
         
         assertEquals("script", model.program.name);
-        assertEquals("script", model.program.beginAnnotation.name);
-        assertEquals("script", model.program.endAnnotation.name);
+        assertEquals("script", model.program.beginAnnotation.value());
+        assertEquals("script", model.program.endAnnotation.value());
         assertEquals(0, model.program.inPorts.length);
         assertEquals(0, model.program.outPorts.length);
         assertEquals(0, model.program.channels.length);
 
         assertEquals(1, model.functions.length);
         assertEquals("function", model.functions[0].name);
-        assertEquals("function", model.functions[0].beginAnnotation.name);
-        assertEquals("function", model.functions[0].endAnnotation.name);
+        assertEquals("function", model.functions[0].beginAnnotation.value());
+        assertEquals("function", model.functions[0].endAnnotation.value());
         assertEquals(0, model.functions[0].channels.length);
     }
 
@@ -87,8 +87,8 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
                              .getModel();
 
         assertEquals("workflow", model.program.name);
-        assertEquals("workflow", model.program.beginAnnotation.name);
-        assertEquals("workflow", model.program.endAnnotation.name);
+        assertEquals("workflow", model.program.beginAnnotation.value());
+        assertEquals("workflow", model.program.endAnnotation.value());
         assertEquals(0, model.program.inPorts.length);
         assertEquals(0, model.program.outPorts.length);
         assertEquals(0, model.program.channels.length);
@@ -96,14 +96,14 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
         assertEquals(1, model.program.programs.length);
         assertFalse(model.program.programs[0] instanceof Workflow);
         assertEquals("workflow.program1", model.program.programs[0].name);
-        assertEquals("program1", model.program.programs[0].beginAnnotation.name);
+        assertEquals("program1", model.program.programs[0].beginAnnotation.value());
         
         assertEquals(1, model.functions.length);
         assertEquals("function", model.functions[0].name);
-        assertEquals("function", model.functions[0].beginAnnotation.name);
+        assertEquals("function", model.functions[0].beginAnnotation.value());
         assertEquals(1, model.functions[0].programs.length);
         assertEquals("function.program2", model.functions[0].programs[0].name);
-        assertEquals("program2", model.functions[0].programs[0].beginAnnotation.name);
+        assertEquals("program2", model.functions[0].programs[0].beginAnnotation.value());
         assertEquals(0, model.functions[0].channels.length);
     }
 
@@ -136,8 +136,8 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
                              .getModel();
 
         assertEquals("workflow", model.program.name);
-        assertEquals("workflow", model.program.beginAnnotation.name);
-        assertEquals("workflow", model.program.endAnnotation.name);
+        assertEquals("workflow", model.program.beginAnnotation.value());
+        assertEquals("workflow", model.program.endAnnotation.value());
         assertEquals(0, model.program.inPorts.length);
         assertEquals(0, model.program.outPorts.length);
         assertEquals(0, model.program.channels.length);
@@ -145,16 +145,16 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
         assertEquals(1, model.program.programs.length);
         assertFalse(model.program.programs[0] instanceof Workflow);
         assertEquals("workflow.program1", model.program.programs[0].name);
-        assertEquals("program1", model.program.programs[0].beginAnnotation.name);
+        assertEquals("program1", model.program.programs[0].beginAnnotation.value());
         
         assertEquals(1, model.functions.length);
         assertEquals("function", model.functions[0].name);
-        assertEquals("function", model.functions[0].beginAnnotation.name);
+        assertEquals("function", model.functions[0].beginAnnotation.value());
         assertEquals(2, model.functions[0].programs.length);
         assertEquals("function.program2", model.functions[0].programs[0].name);
-        assertEquals("program2", model.functions[0].programs[0].beginAnnotation.name);
+        assertEquals("program2", model.functions[0].programs[0].beginAnnotation.value());
         assertEquals("function.program3", model.functions[0].programs[1].name);
-        assertEquals("program3", model.functions[0].programs[1].beginAnnotation.name);
+        assertEquals("program3", model.functions[0].programs[1].beginAnnotation.value());
         assertEquals(1, model.functions[0].channels.length);
         assertEquals("channel1", model.functions[0].channels[0].sourcePort.flowAnnotation.binding());        
     }
@@ -184,8 +184,8 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
                              .getModel();
 
         assertEquals("workflow", model.program.name);
-        assertEquals("workflow", model.program.beginAnnotation.name);
-        assertEquals("workflow", model.program.endAnnotation.name);
+        assertEquals("workflow", model.program.beginAnnotation.value());
+        assertEquals("workflow", model.program.endAnnotation.value());
         assertEquals(0, model.program.inPorts.length);
         assertEquals(0, model.program.outPorts.length);
         assertEquals(0, model.program.channels.length);
@@ -193,16 +193,16 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
         assertEquals(1, model.program.programs.length);
         assertFalse(model.program.programs[0] instanceof Workflow);
         assertEquals("workflow.program1", model.program.programs[0].name);
-        assertEquals("program1", model.program.programs[0].beginAnnotation.name);
+        assertEquals("program1", model.program.programs[0].beginAnnotation.value());
 
         assertEquals(2, model.functions.length);
         assertEquals("function1", model.functions[0].name);
-        assertEquals("function1", model.functions[0].beginAnnotation.name);
+        assertEquals("function1", model.functions[0].beginAnnotation.value());
         assertEquals(0, model.functions[0].programs.length);
         assertEquals(0, model.functions[0].channels.length);
 
         assertEquals("function2", model.functions[1].name);
-        assertEquals("function2", model.functions[1].beginAnnotation.name);
+        assertEquals("function2", model.functions[1].beginAnnotation.value());
         assertEquals(0, model.functions[1].programs.length);
         assertEquals(0, model.functions[1].channels.length);
     }
@@ -235,8 +235,8 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
                              .getModel();
 
         assertEquals("workflow", model.program.name);
-        assertEquals("workflow", model.program.beginAnnotation.name);
-        assertEquals("workflow", model.program.endAnnotation.name);
+        assertEquals("workflow", model.program.beginAnnotation.value());
+        assertEquals("workflow", model.program.endAnnotation.value());
         assertEquals(0, model.program.inPorts.length);
         assertEquals(0, model.program.outPorts.length);
         assertEquals(0, model.program.channels.length);
@@ -244,16 +244,16 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
         assertEquals(1, model.program.programs.length);
         assertFalse(model.program.programs[0] instanceof Workflow);
         assertEquals("workflow.program1", model.program.programs[0].name);
-        assertEquals("program1", model.program.programs[0].beginAnnotation.name);
+        assertEquals("program1", model.program.programs[0].beginAnnotation.value());
 
         assertEquals(2, model.functions.length);
         assertEquals("function1", model.functions[0].name);
-        assertEquals("function1", model.functions[0].beginAnnotation.name);
+        assertEquals("function1", model.functions[0].beginAnnotation.value());
         assertEquals(0, model.functions[0].programs.length);
         assertEquals(0, model.functions[0].channels.length);
 
         assertEquals("function2", model.functions[1].name);
-        assertEquals("function2", model.functions[1].beginAnnotation.name);
+        assertEquals("function2", model.functions[1].beginAnnotation.value());
         assertEquals(0, model.functions[1].programs.length);
         assertEquals(0, model.functions[1].channels.length);
     }
@@ -306,13 +306,13 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
                              .getModel();
 
         assertEquals("function1", model.program.name);
-        assertEquals("function1", model.program.beginAnnotation.name);
+        assertEquals("function1", model.program.beginAnnotation.value());
         assertEquals(0, model.program.programs.length);
         assertEquals(0, model.program.channels.length);
 
         assertEquals(1, model.functions.length);
         assertEquals("function2", model.functions[0].name);
-        assertEquals("function2", model.functions[0].beginAnnotation.name);
+        assertEquals("function2", model.functions[0].beginAnnotation.value());
         assertEquals(0, model.functions[0].programs.length);
         assertEquals(0, model.functions[0].channels.length);
     }
@@ -338,12 +338,12 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
         assertEquals(0, model.functions.length);
         
         assertEquals("workflow", model.program.name);
-        assertEquals("workflow", model.program.beginAnnotation.name);
+        assertEquals("workflow", model.program.beginAnnotation.value());
         assertEquals(0, model.program.inPorts.length);
         assertEquals(0, model.program.outPorts.length);
         assertEquals(0, model.program.channels.length);
         assertEquals(1, ((Function)(model.program)).returnPorts.length);
-        assertEquals("result", ((Function)(model.program)).returnPorts[0].flowAnnotation.name);
+        assertEquals("result", ((Function)(model.program)).returnPorts[0].flowAnnotation.value());
         
         assertEquals(0, model.program.programs.length);
         assertEquals(0, model.program.functions.length);
@@ -372,7 +372,7 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
         assertEquals(0, model.functions.length);
         
         assertEquals("workflow", model.program.name);
-        assertEquals("workflow", model.program.beginAnnotation.name);
+        assertEquals("workflow", model.program.beginAnnotation.value());
         assertEquals(0, model.program.inPorts.length);
         assertEquals(0, model.program.outPorts.length);
         assertEquals(0, model.program.channels.length);
@@ -380,7 +380,7 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
         assertEquals(0, model.program.programs.length);
         assertEquals(1, model.program.functions.length);
         assertEquals("workflow.function", model.program.functions[0].name);
-        assertEquals("function", model.program.functions[0].beginAnnotation.name);
+        assertEquals("function", model.program.functions[0].beginAnnotation.value());
     }
 
     public void testExtract_FunctionWithReturnInWorkflow() throws Exception {
@@ -406,7 +406,7 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
         assertEquals(0, model.functions.length);
         
         assertEquals("workflow", model.program.name);
-        assertEquals("workflow", model.program.beginAnnotation.name);
+        assertEquals("workflow", model.program.beginAnnotation.value());
         assertEquals(0, model.program.inPorts.length);
         assertEquals(0, model.program.outPorts.length);
         assertEquals(0, model.program.channels.length);
@@ -414,6 +414,6 @@ public class TestModeler_Functions extends YesWorkflowTestCase {
         assertEquals(0, model.program.programs.length);
         assertEquals(1, model.program.functions.length);
         assertEquals("workflow.function", model.program.functions[0].name);
-        assertEquals("function", model.program.functions[0].beginAnnotation.name);
+        assertEquals("function", model.program.functions[0].beginAnnotation.value());
     }
 }

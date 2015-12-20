@@ -103,8 +103,8 @@ public class ModelFacts {
         if (program.programs == null) throw new IllegalArgumentException("Null programs field in program argument.");
         if (program.functions == null) throw new IllegalArgumentException("Null functions field in program argument.");
         
-        String qualifiedProgramName = qualifiedName(parentName, ".", program.beginAnnotation.name, "");
-        programFacts.add(program.id, program.beginAnnotation.name, qualifiedProgramName, program.beginAnnotation.id, program.endAnnotation.id);
+        String qualifiedProgramName = qualifiedName(parentName, ".", program.beginAnnotation.value(), "");
+        programFacts.add(program.id, program.beginAnnotation.value(), qualifiedProgramName, program.beginAnnotation.id, program.endAnnotation.id);
         
         if (program.channels.length > 0) {
             workflowFacts.add(program.id);
@@ -172,7 +172,7 @@ public class ModelFacts {
             if (port.flowAnnotation == null) throw new NullPointerException("Null flowAnnotation field in port.");
             if (port.flowAnnotation.keyword == null) throw new NullPointerException("Null tag field in port.flowAnnotation.");
             
-            String portName = port.flowAnnotation.name;
+            String portName = port.flowAnnotation.value();
             String portType = port.flowAnnotation.keyword.substring(1);
             String infix = (port.flowAnnotation instanceof In) ? "<-" : "->";
             String qualifiedPortName = qualifiedName(programName, infix, portName, "");

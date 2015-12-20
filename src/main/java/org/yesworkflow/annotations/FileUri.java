@@ -9,7 +9,7 @@ public class FileUri extends UriAnnotation {
     }
     
     public String toString() {
-        return name;
+        return value;
     }
 }
 

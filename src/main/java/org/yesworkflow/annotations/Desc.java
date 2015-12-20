@@ -5,8 +5,6 @@ import org.yesworkflow.YWKeywords;
 
 public class Desc extends Qualification {
     
-    protected String value = null;
-    
     public Desc(Long id, Long sourceId, Long lineNumber,String comment, Annotation primaryAnnotation) throws Exception {
         super(id, sourceId, lineNumber, comment, YWKeywords.Tag.DESC, primaryAnnotation);
         StringTokenizer commentTokens = new StringTokenizer(comment);
@@ -29,7 +27,7 @@ public class Desc extends Qualification {
     }
     
     public String toString() {
-        return name;
+        return value;
     }
 }
 

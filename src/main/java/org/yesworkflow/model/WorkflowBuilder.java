@@ -67,7 +67,7 @@ public class WorkflowBuilder {
         
 		public WorkflowBuilder begin(Begin annotation) {
 			this.beginAnnotation = annotation;
-			this.name = (parentName == null) ? annotation.name : parentName + "." + annotation.name; 
+			this.name = (parentName == null) ? annotation.value() : parentName + "." + annotation.value(); 
 			return this;
 		}
 
@@ -80,7 +80,7 @@ public class WorkflowBuilder {
         }
 
 		public String getProgramName() {
-			return beginAnnotation.name;
+			return beginAnnotation.value();
 		}
 		
 		public Begin getBeginAnnotation() {
@@ -93,13 +93,13 @@ public class WorkflowBuilder {
 		
 		public WorkflowBuilder nestedProgram(Program program) {
 			this.nestedPrograms.add(program);
-			this.programForName.put(program.beginAnnotation.name, program);
+			this.programForName.put(program.beginAnnotation.value(), program);
 			return this;
 		}
 
         public WorkflowBuilder nestedFunction(Function function) {
             this.nestedFunctions.add(function);
-            this.functionForName.put(function.beginAnnotation.name, function);
+            this.functionForName.put(function.beginAnnotation.value(), function);
             return this;
         }
 		
@@ -206,7 +206,7 @@ public class WorkflowBuilder {
 		public Function buildFunction() throws Exception {
             buildChannels();
             ywdb.updateProgramBlock(programId, beginAnnotation.id, 
-                    endAnnotation.id, beginAnnotation.name, name, false, true);
+                    endAnnotation.id, beginAnnotation.value(), name, false, true);
 		    return new Function(
 		            programId,
 		            name,
@@ -224,7 +224,7 @@ public class WorkflowBuilder {
 		
         private Program buildProgram() throws Exception {
             ywdb.updateProgramBlock(programId, beginAnnotation.id, 
-                    endAnnotation.id, beginAnnotation.name, name, false, false);
+                    endAnnotation.id, beginAnnotation.value(), name, false, false);
             return new Program(
                     programId,
                     name,
@@ -240,7 +240,7 @@ public class WorkflowBuilder {
 	            
         private Workflow buildWorkflow() throws Exception {
             ywdb.updateProgramBlock(programId, beginAnnotation.id, 
-                    endAnnotation.id, beginAnnotation.name, name, true, false);
+                    endAnnotation.id, beginAnnotation.value(), name, true, false);
 			return new Workflow(
                     programId,
 			        name,
@@ -291,10 +291,10 @@ public class WorkflowBuilder {
                 List<Port> boundInPorts = entry.getValue();
                 Port boundOutPort = nestedProgramOutPorts.get(binding);
                 if (boundOutPort == null) throw new Exception("No @out corresponding to @in " + binding);
-                String outProgramName = boundOutPort.beginAnnotation.name;
+                String outProgramName = boundOutPort.beginAnnotation.value();
                 Program outProgram = programForName.get(outProgramName);
                 for (Port inPort : boundInPorts) {
-                    String inProgramName = inPort.beginAnnotation.name;
+                    String inProgramName = inPort.beginAnnotation.value();
                     Program inProgram = programForName.get(inProgramName);
                     Channel channel = new Channel(nextChannelId++, inPort.data, outProgram, boundOutPort, inProgram, inPort);
                     nestedChannels.add(channel);
@@ -308,7 +308,7 @@ public class WorkflowBuilder {
                 Collection<Port> matchingInPorts = nestedProgramInPorts.get(binding);
                 if (matchingInPorts != null) {
                     for (Port inPort : matchingInPorts) {
-                        String inProgramName = inPort.beginAnnotation.name;
+                        String inProgramName = inPort.beginAnnotation.value();
                         Program inProgram = programForName.get(inProgramName);
                         Channel channel = new Channel(nextChannelId++, workflowPort.data, null, workflowPort, inProgram, inPort);
                         nestedChannels.add(channel);
@@ -322,7 +322,7 @@ public class WorkflowBuilder {
                 String binding = workflowPort.flowAnnotation.binding();
                 Port matchingOutPort = nestedProgramOutPorts.get(binding);
                 if (matchingOutPort != null) {
-                    String outProgramName = matchingOutPort.beginAnnotation.name;
+                    String outProgramName = matchingOutPort.beginAnnotation.value();
                     Program outProgram = programForName.get(outProgramName);
                     Channel channel = new Channel(nextChannelId++, matchingOutPort.data, outProgram, matchingOutPort, null, workflowPort);
                     nestedChannels.add(channel);

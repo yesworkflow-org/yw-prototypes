@@ -289,7 +289,7 @@ public class DotGrapher implements Grapher  {
         dot.comment("Nodes representing atomic programs in workflow");
         for (Program p : workflow.programs) {
             if (! (p.isWorkflow())) {
-                dot.node(p.beginAnnotation.name);
+                dot.node(p.beginAnnotation.value());
                 if (paramVisibility != ParamVisibility.HIDE) {
                     channelBindings.addAll(p.outerBindings());
                 } else {
@@ -315,7 +315,7 @@ public class DotGrapher implements Grapher  {
         dot.comment("Nodes representing composite programs (sub-workflows) in workflow");
         for (Program p : workflow.programs) {
             if (p.isWorkflow()) {
-                dot.node(p.beginAnnotation.name);
+                dot.node(p.beginAnnotation.value());
                 if (paramVisibility == ParamVisibility.SHOW) {
                     channelBindings.addAll(p.outerBindings());
                 } else {
@@ -514,7 +514,7 @@ public class DotGrapher implements Grapher  {
                         dot.edge(
                             in.flowAnnotation.binding(), 
                             out.flowAnnotation.binding(), 
-                            edgeLabel(p.beginAnnotation.name)
+                            edgeLabel(p.beginAnnotation.value())
                         );
                     }
                 }
@@ -540,8 +540,8 @@ public class DotGrapher implements Grapher  {
             
             // draw edge for the channel if both source and sink are progams (not ports)
             if (c.sourceProgram != null && c.sinkProgram != null) {
-                dot.edge(c.sourceProgram.beginAnnotation.name,
-                         c.sinkProgram.beginAnnotation.name,
+                dot.edge(c.sourceProgram.beginAnnotation.value(),
+                         c.sinkProgram.beginAnnotation.value(),
                          edgeLabel(c.sourcePort.flowAnnotation.binding()));
             }
         }
@@ -568,7 +568,7 @@ public class DotGrapher implements Grapher  {
             if (c.sourceProgram == null) {
                 if (portLayout != PortLayout.HIDE) {
                     dot.edge(c.sinkPort.flowAnnotation.binding() + "_input_port",
-                             c.sinkProgram.beginAnnotation.name,
+                             c.sinkProgram.beginAnnotation.value(),
                              edgeLabel(c.sinkPort.flowAnnotation.binding()));
                 }
             }             
@@ -595,7 +595,7 @@ public class DotGrapher implements Grapher  {
             // draw edge from source program to output port if sink is not a program
             if (c.sinkProgram == null) {
                 if (portLayout != PortLayout.HIDE) {
-                    dot.edge(c.sourceProgram.beginAnnotation.name,
+                    dot.edge(c.sourceProgram.beginAnnotation.value(),
                          c.sourcePort.flowAnnotation.binding() + "_output_port",
                          edgeLabel(c.sourcePort.flowAnnotation.binding()));
                 }
@@ -613,14 +613,14 @@ public class DotGrapher implements Grapher  {
             for (Port out : p.outPorts) {
                 String binding = out.flowAnnotation.binding();
                 if (channelBindings.contains(binding)) {
-                    dot.edge(p.beginAnnotation.name, binding);
+                    dot.edge(p.beginAnnotation.value(), binding);
                 }
             }
 
             for (Port in : p.inPorts) {
                 String binding = in.flowAnnotation.binding();
                 if (channelBindings.contains(binding)) {
-                    dot.edge(binding, p.beginAnnotation.name);
+                    dot.edge(binding, p.beginAnnotation.value());
                 }
             }
         }

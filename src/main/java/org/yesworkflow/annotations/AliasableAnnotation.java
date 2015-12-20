@@ -22,10 +22,10 @@ public abstract class AliasableAnnotation extends Annotation {
 	}
 	
 	public String alias() {
-		return as == null ? null : as.name;
+		return as == null ? null : as.value;
 	}
 
 	public String binding() {
-		return as == null ? name : as.name;
+		return as == null ? value : as.value;
 	}
 }

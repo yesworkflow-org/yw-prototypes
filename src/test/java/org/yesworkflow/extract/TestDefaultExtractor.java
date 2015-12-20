@@ -381,21 +381,21 @@ public class TestDefaultExtractor extends YesWorkflowTestCase {
         assertEquals(4, annotations.size());
         
         Begin begin = (Begin) annotations.get(0);
-        assertEquals("step", begin.name);
+        assertEquals("step", begin.value());
         assertNull(begin.description());
 
         In in = (In) annotations.get(1);
-        assertEquals("x", in.name);
+        assertEquals("x", in.value());
         assertEquals("x", in.binding());
         assertNull(in.description());
 
         Out out = (Out) annotations.get(2);
-        assertEquals("y", out.name);
+        assertEquals("y", out.value());
         assertEquals("y", out.binding());
         assertNull(out.description());
 
         End end = (End) annotations.get(3);
-        assertEquals("step", end.name);
+        assertEquals("step", end.value());
         assertNull(end.description());
 
         assertEquals(

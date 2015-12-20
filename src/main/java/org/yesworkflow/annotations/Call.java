@@ -19,8 +19,8 @@ public class Call extends Annotation {
         StringBuffer sb = new StringBuffer();
         
         sb.append(keyword)
-          .append("{name=")
-          .append(name);
+          .append("{value=")
+          .append(value);
 
         if (description() != null) {
           sb.append(",description=")

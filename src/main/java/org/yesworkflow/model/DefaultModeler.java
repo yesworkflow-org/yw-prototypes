@@ -136,7 +136,7 @@ public class DefaultModeler implements Modeler {
                 workflowBuilder.begin((Begin)annotation);
                 
                 if (topWorkflowBuilder == null) { 
-                    String blockName = ((Begin)annotation).name;
+                    String blockName = ((Begin)annotation).value();
                     if (topWorkflowName == null || topWorkflowName.equals(blockName)) {
                         topWorkflowBuilder = workflowBuilder;
                     }

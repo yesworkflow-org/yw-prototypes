@@ -33,12 +33,12 @@ public abstract class Flow extends AliasableAnnotation {
         StringBuffer sb = new StringBuffer();
         
         sb.append(keyword)
-          .append("{name=")
-          .append(name);
+          .append("{value=")
+          .append(value);
 
         if (as != null) {
             sb.append(",alias=")
-              .append(as.name);
+              .append(as.value);
         }
         
         if (this.description() != null) {

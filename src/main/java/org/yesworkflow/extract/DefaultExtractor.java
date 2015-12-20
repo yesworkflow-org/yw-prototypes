@@ -328,7 +328,7 @@ public class DefaultExtractor implements Extractor {
                 }
                 
                 ywdb.insertAnnotation(qualifiedAnnotationId, ywdb.getLongValue(comment, ID), rankInComment++,
-                                      tag.toString(), annotation.keyword, annotation.name, 
+                                      tag.toString(), annotation.keyword, annotation.value(), 
                                       annotation.description());
 
             }

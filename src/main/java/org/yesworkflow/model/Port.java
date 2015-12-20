@@ -21,11 +21,11 @@ public class Port {
 		this.beginAnnotation = beginAnnotation;
 		
 		UriAnnotation uriAnnotation = this.flowAnnotation.uriAnnotation();
-		this.uriTemplate = (uriAnnotation != null) ? new UriTemplate(uriAnnotation.name) : null;
+		this.uriTemplate = (uriAnnotation != null) ? new UriTemplate(uriAnnotation.value()) : null;
 	}
 	
 	@Override
     public String toString() {
-        return String.format("%s:%s", this.beginAnnotation.name, this.flowAnnotation.binding());
+        return String.format("%s:%s", this.beginAnnotation.value(), this.flowAnnotation.binding());
     }
 }
