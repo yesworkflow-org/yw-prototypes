@@ -16,7 +16,7 @@ public abstract class Annotation {
     public final String comment;
     public final Tag tag;
 
-    protected Desc description = null;
+    private Desc description = null;
     
     public Annotation(Long id, Long sourceId, Long lineNumber, String comment, Tag tag) throws YWMarkupException {
 

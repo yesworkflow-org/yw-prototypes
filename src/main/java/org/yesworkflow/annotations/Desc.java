@@ -12,19 +12,9 @@ public class Desc extends Qualification {
         StringTokenizer commentTokens = new StringTokenizer(comment);
         commentTokens.nextToken();
         value = buildDescription(commentTokens);
-        primaryAnnotation.description = this;
+        primaryAnnotation.qualifyWith(this);
     }
 
-    public void appendDescription(String extraDescription) {
-        if (extraDescription != null) {
-            if (value == null) {
-                value = extraDescription;
-            } else {
-                value += " " + extraDescription;
-            }
-        }
-    }
-    
     public String description() {
         return value;
     }

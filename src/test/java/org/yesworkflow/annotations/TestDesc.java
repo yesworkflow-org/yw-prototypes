@@ -8,7 +8,7 @@ public class TestDesc extends YesWorkflowTestCase {
     public void testBeginWithouDesc() throws Exception {
         Begin begin = new Begin(1L, 1L, 1L, "@begin main");
         assertEquals("main", begin.name);
-        assertNull(begin.description);
+        assertNull(begin.description());
     }    
 
     public void testBeginComment_NameAndOneWordDescription() throws Exception {

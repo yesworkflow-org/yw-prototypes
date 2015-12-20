@@ -41,9 +41,9 @@ public abstract class Flow extends AliasableAnnotation {
               .append(as.name);
         }
         
-        if (this.description != null) {
+        if (this.description() != null) {
           sb.append(",description=")
-            .append(description);
+            .append(description());
         }
         
         sb.append("}");

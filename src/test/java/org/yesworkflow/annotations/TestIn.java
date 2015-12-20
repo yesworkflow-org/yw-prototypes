@@ -15,21 +15,21 @@ public class TestIn extends YesWorkflowTestCase {
         In in = new In(1L, 1L, 1L, "@in x");
         assertEquals("x", in.name);
         assertEquals("x", in.binding());
-        assertNull(in.description);
+        assertNull(in.description());
     }
     
     public void testInComment_LiteralNumberOnly() throws Exception {
         In in = new In(1L, 1L, 1L, "@in 30.7");
         assertEquals("30.7", in.name);
         assertEquals("30.7", in.binding());
-        assertNull(in.description);
+        assertNull(in.description());
     }
 
     public void testInComment_LiteralStringOnly() throws Exception {
         In in = new In(1L, 1L, 1L, "@in \"datafile.csv\"");
         assertEquals("\"datafile.csv\"", in.name);
         assertEquals("\"datafile.csv\"", in.binding());
-        assertNull(in.description);
+        assertNull(in.description());
     }
     
     public void testInComment_VariableAndDescription() throws Exception {
@@ -45,7 +45,7 @@ public class TestIn extends YesWorkflowTestCase {
         new As(2L, 1L, 1L, "@as longitude", in);
         assertEquals("x", in.name);
         assertEquals("longitude", in.binding());
-        assertNull(in.description);
+        assertNull(in.description());
     }
 
     public void testInComment_VariableAndLabel_ExtraSpaces() throws Exception {
@@ -53,7 +53,7 @@ public class TestIn extends YesWorkflowTestCase {
         new As(2L, 1L, 1L, "  @as  longitude", in);
         assertEquals("x", in.name);
         assertEquals("longitude", in.binding());
-        assertNull(in.description);
+        assertNull(in.description());
     }
 
     public void testInComment_VariableLabelDescription_DescriptionOnNameAndAlias() throws Exception {

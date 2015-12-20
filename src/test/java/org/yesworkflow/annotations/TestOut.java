@@ -15,7 +15,7 @@ public class TestOut extends YesWorkflowTestCase {
         Out out = new Out(1L, 1L, 1L, "@out x");
         assertEquals("x", out.name);
         assertEquals("x", out.binding());
-        assertNull(out.description);
+        assertNull(out.description());
     }
     
     public void testOutComment_NameAndDescription() throws Exception {
@@ -31,7 +31,7 @@ public class TestOut extends YesWorkflowTestCase {
         new As(2L, 1L, 1L, "@as longitude", out);
         assertEquals("x", out.name);
         assertEquals("longitude", out.binding());
-        assertNull(out.description);
+        assertNull(out.description());
     }
 
     public void testOutComment_NameAndAlias_ExtraSpaces() throws Exception {
@@ -39,7 +39,7 @@ public class TestOut extends YesWorkflowTestCase {
         new As(2L, 1L, 1L, "  @as  longitude", out);
         assertEquals("x", out.name);
         assertEquals("longitude", out.binding());
-        assertNull(out.description);
+        assertNull(out.description());
     }
 
     public void testOutComment_NameAndAlias_DescriptionOnName() throws Exception {

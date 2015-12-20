@@ -13,7 +13,7 @@ public class TestBegin extends YesWorkflowTestCase {
     public void testBeginComment_NameOnly() throws Exception {
         Begin begin = new Begin(1L, 1L, 1L, "@begin main");
         assertEquals("main", begin.name);
-        assertNull(begin.description);
+        assertNull(begin.description());
     }
 
     public void testBeginComment_NameAndTwoWordDescription() throws Exception {

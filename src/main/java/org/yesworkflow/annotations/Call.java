@@ -22,9 +22,9 @@ public class Call extends Annotation {
           .append("{name=")
           .append(name);
 
-        if (description != null) {
+        if (description() != null) {
           sb.append(",description=")
-            .append(description);
+            .append(description());
         }
         
         sb.append("}");

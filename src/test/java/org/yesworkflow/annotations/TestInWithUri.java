@@ -15,7 +15,7 @@ public class TestInWithUri extends YesWorkflowTestCase {
         In in = (In) new In(1L, 1L, 1L, "@in x ");
         assertEquals("x", in.name);
         assertNull(in.uriAnnotation());
-        assertNull(in.description);
+        assertNull(in.description());
     }
 
     public void testInComment_WithUri() throws Exception {
@@ -23,7 +23,7 @@ public class TestInWithUri extends YesWorkflowTestCase {
         new UriAnnotation(2L, 1L, 1L, "@uri longitude.txt", in);
         assertEquals("x", in.name);
         assertEquals("longitude.txt", in.uriAnnotation().toString());
-        assertNull(in.description);
+        assertNull(in.description());
     }
 
     public void testInComment_AliasThenUri() throws Exception {
@@ -33,7 +33,7 @@ public class TestInWithUri extends YesWorkflowTestCase {
         assertEquals("x", in.name);
         assertEquals("longitude", in.binding());
         assertEquals("longitude.txt", in.uriAnnotation().toString());
-        assertNull(in.description);
+        assertNull(in.description());
     }
 
     public void testInComment_UriThenAlias() throws Exception {
@@ -43,7 +43,7 @@ public class TestInWithUri extends YesWorkflowTestCase {
         assertEquals("x", in.name);
         assertEquals("longitude", in.binding());
         assertEquals("longitude.txt", in.uriAnnotation().toString());
-        assertNull(in.description);
+        assertNull(in.description());
     }
     
     public void testInCommentWithUri_NoArgumentToUri() throws Exception {
