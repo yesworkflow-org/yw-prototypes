@@ -17,11 +17,18 @@ count(Goal, Count) :-
     findall(_, Goal, List),
     llength(List, Count).
 
-:- table description/2.
 % Program P has description D.
-description(P,D) :-
+:- table program_description/2.
+program_description(P,D) :-
     program(P, _, _, BA, _),
     annotation_qualifies(DA, BA),
+    annotation(DA, _, _, 'desc', _, D).
+
+% Port P has description D.
+:- table port_description/2.
+port_description(P,D) :-
+    port(P, _, _, _, PA, _),
+    annotation_qualifies(DA, PA),
     annotation(DA, _, _, 'desc', _, D).
 
 % Program with qualified name QN is defined in source file SF from first line F to last line L.

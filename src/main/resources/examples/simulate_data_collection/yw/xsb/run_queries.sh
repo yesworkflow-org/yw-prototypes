@@ -20,8 +20,8 @@ printall('mq1(SourceFile,StartLine,EndLine) - Where is the definition of block s
 printall('mq2(WorkflowName,Description) - What is the name and description of the top-level workflow?', mq2(_,_)).
 printall('mq3(FunctionName) - What are the names of any top-level functions?', mq3(_)).
 printall('mq4(ProgramName) -  What are the names of the programs comprising the top-level workflow?', mq4(_)).
-printall('mq5(DataName) - What are the inputs to the top-level workflow?', mq5(_)).
-printall('mq6(DataName) - What data is output by program block simulate_data_collection.collect_data_set?', mq6(_)).
+printall('mq5(DataName) - What are the names and descriptions of the inputs to the top-level workflow?', mq5(_,_)).
+printall('mq6(DataName,Description) - What data is output by program block simulate_data_collection.collect_data_set?', mq6(_,_)).
 printall('mq7(ProgramName) - What program blocks provide input directly to simulate_data_collection.collect_data_set?', mq7(_)).
 printall('mq8(ProgramName) - What programs have input ports that receive data simulate_data_collection[cassette_id]', mq8(_)).
 printall('mq9(PortCount) - How many ports read data simulate_data_collection[frame_number]?', mq9(_)).

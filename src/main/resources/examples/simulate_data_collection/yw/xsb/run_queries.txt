@@ -9,7 +9,7 @@ XSB Version 3.6. (Gazpatcho) of April 22, 2015
 | ?- [rules loaded]
 
 yes
-| ?- [extractfacts loaded]
+| ?- [extractfacts loaded, cpu time used: 0.0010 seconds]
 
 yes
 | ?- [modelfacts loaded]
@@ -38,16 +38,16 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 eq2(ProgramName) - What are the names N of all program blocks?
 ---------------------------------------------------------------------------------------------------------------------------
-eq2(simulate_data_collection)
-eq2(transform_images)
-eq2(collect_data_set)
-eq2(transform_image)
-eq2(log_average_image_intensity)
 eq2(load_screening_results)
 eq2(collect_next_image)
 eq2(initialize_run)
 eq2(log_rejected_sample)
 eq2(calculate_strategy)
+eq2(simulate_data_collection)
+eq2(transform_images)
+eq2(collect_data_set)
+eq2(transform_image)
+eq2(log_average_image_intensity)
 
 yes
 | ?- 
@@ -65,14 +65,14 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 mq1(SourceFile,StartLine,EndLine) - Where is the definition of block simulate_data_collection.collect_data_set?
 ---------------------------------------------------------------------------------------------------------------------------
-mq1(../simulate_data_collection.py,89,108)
+mq1(../simulate_data_collection.py,94,114)
 
 yes
 | ?- 
 ---------------------------------------------------------------------------------------------------------------------------
 mq2(WorkflowName,Description) - What is the name and description of the top-level workflow?
 ---------------------------------------------------------------------------------------------------------------------------
-mq2(simulate_data_collection,Workflow for collecting diffraction data from high quality crystals in a cassette)
+mq2(simulate_data_collection,Workflow for collecting diffraction data from high quality crystals in a cassette.)
 
 yes
 | ?- 
@@ -98,22 +98,22 @@ mq4(initialize_run)
 yes
 | ?- 
 ---------------------------------------------------------------------------------------------------------------------------
-mq5(DataName) - What are the inputs to the top-level workflow?
+mq5(DataName) - What are the names and descriptions of the inputs to the top-level workflow?
 ---------------------------------------------------------------------------------------------------------------------------
-mq5(calibration_image)
-mq5(sample_spreadsheet)
-mq5(sample_score_cutoff)
-mq5(cassette_id)
+mq5(calibration_image,File used to correct raw diffraction images.)
+mq5(sample_spreadsheet,CSV file giving quality score for each crystal.)
+mq5(sample_score_cutoff,The minimum quality score required of crystals.)
+mq5(cassette_id,The unique ID of the cassette containing the crystals.)
 
 yes
 | ?- 
 ---------------------------------------------------------------------------------------------------------------------------
-mq6(DataName) - What data is output by program block simulate_data_collection.collect_data_set?
+mq6(DataName,Description) - What data is output by program block simulate_data_collection.collect_data_set?
 ---------------------------------------------------------------------------------------------------------------------------
-mq6(raw_image)
-mq6(frame_number)
-mq6(energy)
-mq6(sample_id)
+mq6(raw_image,Path of file storing the raw diffraction image.)
+mq6(frame_number,Index of diffraction image within data set.)
+mq6(energy,Energy (in eV) at which the diffraction image was collected.)
+mq6(sample_id,The crystal that the diffraction image was collected from.)
 
 yes
 | ?- 
@@ -205,15 +205,15 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 mq17(DownstreamDataName) - What data is downstream of accepted_sample?
 ---------------------------------------------------------------------------------------------------------------------------
-mq17(pixel_count)
-mq17(corrected_image)
-mq17(collection_log)
-mq17(raw_image)
+mq17(frame_number)
 mq17(sample_id)
 mq17(corrected_image_path)
-mq17(energy)
+mq17(raw_image)
 mq17(total_intensity)
-mq17(frame_number)
+mq17(corrected_image)
+mq17(collection_log)
+mq17(energy)
+mq17(pixel_count)
 
 yes
 | ?- 
@@ -295,4 +295,4 @@ rq5(q55)
 
 yes
 | ?- 
-End XSB (cputime 0.07 secs, elapsetime 0.08 secs)
+End XSB (cputime 0.07 secs, elapsetime 0.07 secs)

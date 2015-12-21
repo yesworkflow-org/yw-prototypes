@@ -1,15 +1,15 @@
 
 % FACT: program(program_id, program_name, qualified_program_name, begin_annotation_id, end_annotation_id).
-program(1, 'simulate_data_collection', 'simulate_data_collection', 1, 86).
+program(1, 'simulate_data_collection', 'simulate_data_collection', 1, 90).
 program(2, 'initialize_run', 'simulate_data_collection.initialize_run', 22, 25).
 program(3, 'load_screening_results', 'simulate_data_collection.load_screening_results', 26, 32).
 program(4, 'calculate_strategy', 'simulate_data_collection.calculate_strategy', 33, 41).
 program(5, 'log_rejected_sample', 'simulate_data_collection.log_rejected_sample', 42, 47).
-program(6, 'collect_data_set', 'simulate_data_collection.collect_data_set', 48, 60).
-program(7, 'transform_images', 'simulate_data_collection.transform_images', 61, 75).
-program(8, 'log_average_image_intensity', 'simulate_data_collection.log_average_image_intensity', 76, 85).
-program(9, 'collect_next_image', 'collect_next_image', 87, 97).
-program(10, 'transform_image', 'transform_image', 98, 104).
+program(6, 'collect_data_set', 'simulate_data_collection.collect_data_set', 48, 64).
+program(7, 'transform_images', 'simulate_data_collection.transform_images', 65, 79).
+program(8, 'log_average_image_intensity', 'simulate_data_collection.log_average_image_intensity', 80, 89).
+program(9, 'collect_next_image', 'collect_next_image', 91, 101).
+program(10, 'transform_image', 'transform_image', 102, 108).
 
 % FACT: workflow(program_id).
 workflow(1).
@@ -56,33 +56,33 @@ port(25, 'in', 'accepted_sample', 'simulate_data_collection.collect_data_set<-ac
 port(26, 'in', 'num_images', 'simulate_data_collection.collect_data_set<-num_images', 52, 17).
 port(27, 'in', 'energies', 'simulate_data_collection.collect_data_set<-energies', 53, 18).
 port(28, 'out', 'sample_id', 'simulate_data_collection.collect_data_set->sample_id', 54, 20).
-port(29, 'out', 'energy', 'simulate_data_collection.collect_data_set->energy', 55, 21).
-port(30, 'out', 'frame_number', 'simulate_data_collection.collect_data_set->frame_number', 56, 22).
-port(31, 'out', 'raw_image_path', 'simulate_data_collection.collect_data_set->raw_image_path', 57, 23).
-port(32, 'in', 'sample_id', 'simulate_data_collection.transform_images<-sample_id', 63, 20).
-port(33, 'in', 'energy', 'simulate_data_collection.transform_images<-energy', 64, 21).
-port(34, 'in', 'frame_number', 'simulate_data_collection.transform_images<-frame_number', 65, 22).
-port(35, 'in', 'raw_image_path', 'simulate_data_collection.transform_images<-raw_image_path', 66, 23).
-port(36, 'in', 'calibration_image', 'simulate_data_collection.transform_images<-calibration_image', 68, 24).
-port(37, 'out', 'corrected_image', 'simulate_data_collection.transform_images->corrected_image', 70, 25).
-port(38, 'out', 'corrected_image_path', 'simulate_data_collection.transform_images->corrected_image_path', 72, 26).
-port(39, 'out', 'total_intensity', 'simulate_data_collection.transform_images->total_intensity', 73, 27).
-port(40, 'out', 'pixel_count', 'simulate_data_collection.transform_images->pixel_count', 74, 28).
-port(41, 'param', 'cassette_id', 'simulate_data_collection.log_average_image_intensity<-cassette_id', 77, 10).
-port(42, 'param', 'sample_id', 'simulate_data_collection.log_average_image_intensity<-sample_id', 78, 20).
-port(43, 'param', 'frame_number', 'simulate_data_collection.log_average_image_intensity<-frame_number', 79, 22).
-port(44, 'in', 'corrected_image_path', 'simulate_data_collection.log_average_image_intensity<-corrected_image_path', 80, 26).
-port(45, 'in', 'total_intensity', 'simulate_data_collection.log_average_image_intensity<-total_intensity', 81, 27).
-port(46, 'in', 'pixel_count', 'simulate_data_collection.log_average_image_intensity<-pixel_count', 82, 28).
-port(47, 'out', 'collection_log', 'simulate_data_collection.log_average_image_intensity->collection_log', 83, 29).
-port(48, 'param', 'cassette_id', 'collect_next_image<-cassette_id', 88, 10).
-port(49, 'param', 'sample_id', 'collect_next_image<-sample_id', 89, 20).
-port(50, 'param', 'num_images', 'collect_next_image<-num_images', 90, 17).
-port(51, 'param', 'energies', 'collect_next_image<-energies', 91, 18).
-port(52, 'param', 'image_path_template', 'collect_next_image<-image_path_template', 92, 30).
-port(57, 'param', 'raw_image_path', 'transform_image<-raw_image_path', 99, 32).
-port(58, 'param', 'corrected_image_path', 'transform_image<-corrected_image_path', 100, 26).
-port(59, 'param', 'calibration_image_path', 'transform_image<-calibration_image_path', 101, 33).
+port(29, 'out', 'energy', 'simulate_data_collection.collect_data_set->energy', 56, 21).
+port(30, 'out', 'frame_number', 'simulate_data_collection.collect_data_set->frame_number', 58, 22).
+port(31, 'out', 'raw_image_path', 'simulate_data_collection.collect_data_set->raw_image_path', 60, 23).
+port(32, 'in', 'sample_id', 'simulate_data_collection.transform_images<-sample_id', 67, 20).
+port(33, 'in', 'energy', 'simulate_data_collection.transform_images<-energy', 68, 21).
+port(34, 'in', 'frame_number', 'simulate_data_collection.transform_images<-frame_number', 69, 22).
+port(35, 'in', 'raw_image_path', 'simulate_data_collection.transform_images<-raw_image_path', 70, 23).
+port(36, 'in', 'calibration_image', 'simulate_data_collection.transform_images<-calibration_image', 72, 24).
+port(37, 'out', 'corrected_image', 'simulate_data_collection.transform_images->corrected_image', 74, 25).
+port(38, 'out', 'corrected_image_path', 'simulate_data_collection.transform_images->corrected_image_path', 76, 26).
+port(39, 'out', 'total_intensity', 'simulate_data_collection.transform_images->total_intensity', 77, 27).
+port(40, 'out', 'pixel_count', 'simulate_data_collection.transform_images->pixel_count', 78, 28).
+port(41, 'param', 'cassette_id', 'simulate_data_collection.log_average_image_intensity<-cassette_id', 81, 10).
+port(42, 'param', 'sample_id', 'simulate_data_collection.log_average_image_intensity<-sample_id', 82, 20).
+port(43, 'param', 'frame_number', 'simulate_data_collection.log_average_image_intensity<-frame_number', 83, 22).
+port(44, 'in', 'corrected_image_path', 'simulate_data_collection.log_average_image_intensity<-corrected_image_path', 84, 26).
+port(45, 'in', 'total_intensity', 'simulate_data_collection.log_average_image_intensity<-total_intensity', 85, 27).
+port(46, 'in', 'pixel_count', 'simulate_data_collection.log_average_image_intensity<-pixel_count', 86, 28).
+port(47, 'out', 'collection_log', 'simulate_data_collection.log_average_image_intensity->collection_log', 87, 29).
+port(48, 'param', 'cassette_id', 'collect_next_image<-cassette_id', 92, 10).
+port(49, 'param', 'sample_id', 'collect_next_image<-sample_id', 93, 20).
+port(50, 'param', 'num_images', 'collect_next_image<-num_images', 94, 17).
+port(51, 'param', 'energies', 'collect_next_image<-energies', 95, 18).
+port(52, 'param', 'image_path_template', 'collect_next_image<-image_path_template', 96, 30).
+port(57, 'param', 'raw_image_path', 'transform_image<-raw_image_path', 103, 32).
+port(58, 'param', 'corrected_image_path', 'transform_image<-corrected_image_path', 104, 26).
+port(59, 'param', 'calibration_image_path', 'transform_image<-calibration_image_path', 105, 33).
 
 % FACT: port_alias(port_id, alias).
 port_alias(31, 'raw_image').

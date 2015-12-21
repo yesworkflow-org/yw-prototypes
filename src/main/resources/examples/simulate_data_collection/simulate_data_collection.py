@@ -6,12 +6,17 @@ import time
 from datetime import datetime
 
 """
-@begin simulate_data_collection @desc Workflow for collecting diffraction data from high quality crystals in a cassette
-@param cassette_id @desc The unique ID of the cassette containing the crystals
-@param sample_score_cutoff @desc The minimum quality score required of crystals
-@in sample_spreadsheet @uri file:cassette_{cassette_id}_spreadsheet.csv @desc CSV file giving quality score for each crystal.
-@in calibration_image  @uri file:calibration.img @desc File used to correct raw diffraction images.
-@out corrected_image   @uri file:run/data/{}/{}_{}eV_{}.img @desc The corrected diffraction images collected on all crystals.
+@begin simulate_data_collection @desc Workflow for collecting diffraction data from high quality crystals in a cassette.
+
+@param cassette_id         @desc The unique ID of the cassette containing the crystals.
+@param sample_score_cutoff @desc The minimum quality score required of crystals.
+@in sample_spreadsheet     @desc CSV file giving quality score for each crystal.
+                           @uri file:cassette_{cassette_id}_spreadsheet.csv  
+@in calibration_image      @desc File used to correct raw diffraction images.
+                           @uri file:calibration.img   
+
+@out corrected_image   @desc The corrected diffraction images collected on all crystals.
+                       @uri file:run/data/{}/{}_{}eV_{}.img 
 @out run_log           @uri file:run/run_log.txt
 @out collection_log    @uri file:run/collected_images.csv
 @out rejection_log     @uri file:run/rejected_samples.txt
@@ -92,11 +97,12 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
             @in accepted_sample
             @in num_images
             @in energies
-            @out sample_id
-            @out energy 
-            @out frame_number
-            @out raw_image_path @as raw_image 
-                 @uri file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw            
+            @out sample_id      @desc The crystal that the diffraction image was collected from.
+            @out energy         @desc Energy (in eV) at which the diffraction image was collected.
+            @out frame_number   @desc Index of diffraction image within data set.
+            @out raw_image_path @desc Path of file storing the raw diffraction image.
+                                @uri file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw            
+                                @as raw_image                  
             """
             run_log.write("Collecting data set for sample {0}".format(accepted_sample))
             sample_id = accepted_sample

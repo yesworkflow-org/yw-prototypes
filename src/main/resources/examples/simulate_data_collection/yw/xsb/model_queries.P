@@ -4,11 +4,11 @@ mq1(SourceFile, StartLine, EndLine) :-
     program_source('simulate_data_collection.collect_data_set', SourceFile, StartLine, EndLine).
     
 % MQ2:  What is the name and description of the top-level workflow?
-:- table mq2/1.
+:- table mq2/2.
 mq2(WorkflowName,Description) :-
     top_workflow(W),
     program(W, _, WorkflowName, _, _),
-    description(W, Description).
+    program_description(W, Description).
     
 % MQ3:  What are the names of any top-level functions?
 :- table mq3/1.
@@ -24,19 +24,21 @@ mq4(ProgramName) :-
     has_subprogram(W, P),
     program(P, ProgramName, _, _, _).
 
-% MQ5:  What are the inputs to the top-level workflow?
-:- table mq5/1.
-mq5(InputPortName) :-
+% MQ5:  What are the names and descriptions of the inputs to the top-level workflow?
+:- table mq5/2.
+mq5(InputPortName,Description) :-
     top_workflow(W),
     has_in_port(W, P),
-    port(P, _, InputPortName, _, _, _).
+    port(P, _, InputPortName, _, _, _),
+    port_description(P, Description).
 
 % MQ6:  What data is output by program block simulate_data_collection.collect_data_set?
-:- table mq6/1.
-mq6(DataName) :-
+:- table mq6/2.
+mq6(DataName,Description) :-
     program(P, _, 'simulate_data_collection.collect_data_set', _, _),
     has_out_port(P, OUT),
-    port_data(OUT, DataName, _).
+    port_data(OUT, DataName, _),
+    port_description(OUT,Description).
     
 % MQ7: What program blocks provide input directly to simulate_data_collection.collect_data_set?
 :- table mq7/1.
