@@ -6,7 +6,7 @@ public enum DataLabelMode {
     URI,
     BOTH;
     
-    public static DataLabelMode toUriDisplayMode(Object dlm) throws Exception {
+    public static DataLabelMode toDataLabelMode(Object dlm) throws Exception {
                 
         if (dlm instanceof DataLabelMode) return (DataLabelMode)dlm;
         
@@ -17,6 +17,6 @@ public enum DataLabelMode {
             if (dlmstring.equalsIgnoreCase("both")) return DataLabelMode.BOTH;
         }
         
-        throw new Exception("Unrecognized LayoutDirection: " + dlm);
+        throw new Exception("Unrecognized DataLabelMode: " + dlm);
     }
 }

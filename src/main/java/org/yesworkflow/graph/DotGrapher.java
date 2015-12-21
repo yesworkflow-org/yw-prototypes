@@ -24,7 +24,8 @@ public class DotGrapher implements Grapher  {
     public static LayoutDirection DEFAULT_LAYOUT_DIRECTION = LayoutDirection.LR;
     public static WorkflowBoxMode DEFAULT_WORKFLOW_BOX_MODE = WorkflowBoxMode.SHOW;
     public static PortLayout DEFAULT_PORT_LAYOUT = PortLayout.GROUP;
-    public static DataLabelMode DEFAULT_URI_DISPLAY_MODE = DataLabelMode.BOTH;
+    public static ProgramLabelMode DEFAULT_PROGRAM_LABEL_MODE = ProgramLabelMode.BOTH;
+    public static DataLabelMode DEFAULT_DATA_LABEL_MODE = DataLabelMode.BOTH;
     public static EdgeLabelMode DEFAULT_EDGE_LABEL_MODE = EdgeLabelMode.SHOW;
     public static TitlePosition DEFAULT_TITLE_POSITION = TitlePosition.TOP;
     public static String  DEFAULT_PROGRAM_SHAPE = "box";
@@ -57,7 +58,8 @@ public class DotGrapher implements Grapher  {
     private LayoutDirection layoutDirection = DEFAULT_LAYOUT_DIRECTION;
     private WorkflowBoxMode workflowBoxMode = DEFAULT_WORKFLOW_BOX_MODE;
     private PortLayout portLayout = DEFAULT_PORT_LAYOUT;
-    private DataLabelMode uriDisplayMode = DEFAULT_URI_DISPLAY_MODE;
+    private ProgramLabelMode programLabelMode = DEFAULT_PROGRAM_LABEL_MODE;
+    private DataLabelMode dataLabelMode = DEFAULT_DATA_LABEL_MODE;
     private EdgeLabelMode edgeLabelMode = DEFAULT_EDGE_LABEL_MODE;
     private TitlePosition titlePosition = DEFAULT_TITLE_POSITION;
     private String programFont = DEFAULT_PROGRAM_FONT;
@@ -138,8 +140,10 @@ public class DotGrapher implements Grapher  {
             workflowBoxMode = WorkflowBoxMode.toWorkflowBoxMode(value);
         } else if (key.equalsIgnoreCase("portlayout")) {
             portLayout = PortLayout.toPortLayout(value);
+        } else if (key.equalsIgnoreCase("programlabel")) {
+            programLabelMode = ProgramLabelMode.toProgramLabelMode(value);
         } else if (key.equalsIgnoreCase("datalabel")) {
-            uriDisplayMode = DataLabelMode.toUriDisplayMode(value);
+            dataLabelMode = DataLabelMode.toDataLabelMode(value);
         } else if (key.equalsIgnoreCase("edgelabels")) {
             edgeLabelMode = EdgeLabelMode.toEdgeLabelMode(value);
         } else if (key.equalsIgnoreCase("subworkflow")) {
@@ -289,7 +293,7 @@ public class DotGrapher implements Grapher  {
         dot.comment("Nodes representing atomic programs in workflow");
         for (Program p : workflow.programs) {
             if (! (p.isWorkflow())) {
-                dot.node(p.beginAnnotation.value());
+                drawProgramNode(p);
                 if (paramVisibility != ParamVisibility.HIDE) {
                     channelBindings.addAll(p.outerBindings());
                 } else {
@@ -315,12 +319,28 @@ public class DotGrapher implements Grapher  {
         dot.comment("Nodes representing composite programs (sub-workflows) in workflow");
         for (Program p : workflow.programs) {
             if (p.isWorkflow()) {
-                dot.node(p.beginAnnotation.value());
+                drawProgramNode(p);
                 if (paramVisibility == ParamVisibility.SHOW) {
                     channelBindings.addAll(p.outerBindings());
                 } else {
                     channelBindings.addAll(p.outerDataBindings());
                 }
+            }
+        }
+    }
+
+    private void drawProgramNode(Program p) {
+        
+        String name = p.beginAnnotation.value();
+        String description = p.beginAnnotation.description();
+        
+        if (description == null) {
+            dot.node(name);
+        } else {
+            switch(programLabelMode) {
+                case NAME:          dot.node(name);                          break;
+                case DESCRIPTION:   dot.node(name, description);             break;
+                case BOTH:          dot.recordNode(name, name, description); break;
             }
         }
     }
@@ -394,7 +414,7 @@ public class DotGrapher implements Grapher  {
             dot.node(binding);
         } else {
             String uriLabel = uri.toString();
-            switch(uriDisplayMode) {
+            switch(dataLabelMode) {
                 case NAME: dot.node(binding);                          break;
                 case URI:  dot.node(binding, uriLabel);                break;
                 case BOTH: dot.recordNode(binding, binding, uriLabel); break;

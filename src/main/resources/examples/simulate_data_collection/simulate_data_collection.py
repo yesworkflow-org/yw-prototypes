@@ -25,7 +25,7 @@ from datetime import datetime
 def simulate_data_collection(cassette_id, sample_score_cutoff):
 
     """
-    @begin initialize_run
+    @begin initialize_run @desc Create the run log file.
     @out run_log  @uri file:run/run_log.txt
     """
     if not os.path.exists('run'):
@@ -39,7 +39,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
         """
 
         """     
-        @begin load_screening_results
+        @begin load_screening_results @desc Load sample information from spreadsheet.
         @param cassette_id
         @in sample_spreadsheet  @uri file:cassette_{cassette_id}_spreadsheet.csv
         @out sample_name 
@@ -53,7 +53,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
             """
 
             """
-            @begin calculate_strategy
+            @begin calculate_strategy @desc Reject unsuitable crystals and compute best data set to collect for accepted crystals.
             @param sample_score_cutoff
             @in sample_name 
             @in sample_quality
@@ -75,7 +75,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
             """
     
             """
-            @begin log_rejected_sample 
+            @begin log_rejected_sample @desc Record which samples were rejected.
             @param cassette_id 
             @in rejected_sample
             @out rejection_log @uri file:run/rejected_samples.txt
@@ -91,7 +91,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
             """
 
             """ 
-            @begin collect_data_set
+            @begin collect_data_set @desc Collect data set using the given data collection parameters.
             @call collect_next_image
             @param cassette_id
             @in accepted_sample
@@ -115,7 +115,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                 """
     
                 """
-                @begin transform_images
+                @begin transform_images @desc Correct raw image using the detector calibration image.
                 @call transform_image
                 @in sample_id 
                 @in energy 
@@ -137,7 +137,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
                 """
                 
                 """
-                @begin log_average_image_intensity
+                @begin log_average_image_intensity @desc Record statistics about each diffraction image.
                 @param cassette_id 
                 @param sample_id 
                 @param frame_number

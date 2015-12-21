@@ -15,13 +15,13 @@ subgraph cluster_workflow_box_inner { label=""; color=white
 node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
 
 /* Nodes representing atomic programs in workflow */
-initialize_run
-load_screening_results
-calculate_strategy
-log_rejected_sample
-collect_data_set
-transform_images
-log_average_image_intensity
+initialize_run [shape=record rankdir=LR label="{<f0> initialize_run |<f1> Create the run log file.}"];
+load_screening_results [shape=record rankdir=LR label="{<f0> load_screening_results |<f1> Load sample information from spreadsheet.}"];
+calculate_strategy [shape=record rankdir=LR label="{<f0> calculate_strategy |<f1> Reject unsuitable crystals and compute best data set to collect for accepted crystals.}"];
+log_rejected_sample [shape=record rankdir=LR label="{<f0> log_rejected_sample |<f1> Record which samples were rejected.}"];
+collect_data_set [shape=record rankdir=LR label="{<f0> collect_data_set |<f1> Collect data set using the given data collection parameters.}"];
+transform_images [shape=record rankdir=LR label="{<f0> transform_images |<f1> Correct raw image using the detector calibration image.}"];
+log_average_image_intensity [shape=record rankdir=LR label="{<f0> log_average_image_intensity |<f1> Record statistics about each diffraction image.}"];
 
 /* Style for nodes representing non-parameter data channels in workflow */
 node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
