@@ -141,7 +141,9 @@ public class YWKeywords {
         tagForKeyword.put(lowercaseKeyword, tag);
     }
     
-    /** Returns the keywords defined for this configuration of YW */
+    /** Returns the keywords defined for this configuration of YW 
+     * @return The set of defined keywords.
+     * */
     public Set<String> getKeywords() {
         return tagForKeyword.keySet();
     }

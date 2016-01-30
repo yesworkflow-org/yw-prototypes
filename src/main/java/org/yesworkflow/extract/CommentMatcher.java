@@ -27,6 +27,7 @@ public class CommentMatcher {
     
     /**
      * Constructs a CommentMatcher for the given programming language model.
+     * @param ywdb The YesWorkflow database.
      * @param languageModel The programming language model for the source code to be analyzed.
      */
     public CommentMatcher(YesWorkflowDB ywdb, LanguageModel languageModel) {
@@ -39,9 +40,10 @@ public class CommentMatcher {
      *  and returns each line of each comment as a string.  Comments that span multiple lines
      *  in the source are represented as multiple strings in the return value.
      * 
+     * @param sourceId Unique ID of the source file.
      * @param reader The BufferedReader used to read the source file.
-     * @throws IOException 
-     * @throws SQLException 
+     * @throws IOException If an error occurs reading the source file.
+     * @throws SQLException If an error occurs inserting comments into the YW database.
      */
     public void extractComments(Long sourceId, BufferedReader reader) throws IOException, SQLException {
 

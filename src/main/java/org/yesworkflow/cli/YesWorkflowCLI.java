@@ -99,7 +99,7 @@ public class YesWorkflowCLI {
     /** 
      * Default constructor.  Used when YesWorkflow should use the
      * system-provided System.out and System.err streams.
-     * @throws Exception 
+     * @throws Exception If errors occur creating the YW database.
      */
     public YesWorkflowCLI() throws Exception {
         this(System.out, System.err);
@@ -111,13 +111,13 @@ public class YesWorkflowCLI {
      * of System.out and System.err.
      * @param outStream The PrintStream to use instead of System.out.
      * @param errStream The PrintStream to use instead of System.err.
-     * @throws Exception 
+     * @throws Exception If errors occur creating the YW database.
      */
     public YesWorkflowCLI(PrintStream outStream, PrintStream errStream) throws Exception {
         this(YesWorkflowDB.getGlobalInstance(), outStream, errStream);
     }
 
-    public YesWorkflowCLI(YesWorkflowDB ywdb, PrintStream outStream, PrintStream errStream) throws Exception {
+    public YesWorkflowCLI(YesWorkflowDB ywdb, PrintStream outStream, PrintStream errStream) {
         this.ywdb = ywdb;
         this.outStream = outStream;
         this.errStream = errStream;

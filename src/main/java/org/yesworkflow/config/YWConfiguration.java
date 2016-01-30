@@ -184,7 +184,7 @@ public class YWConfiguration {
      * @throws IllegalArgumentException If the properties argument is null.
      * @throws YWToolUsageException If the setting name indicates a leaf node is internal.
      */
-    public void applyProperties(Properties properties) throws IOException, YWToolUsageException {
+    public void applyProperties(Properties properties) throws YWToolUsageException {
 
         // validate the input argument
         if (properties == null) {
@@ -331,6 +331,7 @@ public class YWConfiguration {
      * @param sectionName The name of configuration subtree.
      * @throws YWToolUsageException If the setting name indicates a leaf node is internal.
      * @throws IllegalArgumentException If the settingName or settingValue argument is null.
+     * @return The configuration sub-tree.
      */
     @SuppressWarnings("unchecked")
     public Section getSection(String sectionName) throws YWToolUsageException {

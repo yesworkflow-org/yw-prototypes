@@ -154,6 +154,7 @@ public class UriTemplate extends UriBase {
 	}
 
 	/** 
+	 * @param otherTemplate The URI template to compare reduced path against.
 	 * @return true if the reduced paths of the two templates are identical, otherwise false
 	 */
 	public boolean matches(UriTemplate otherTemplate) {
@@ -222,6 +223,7 @@ public class UriTemplate extends UriBase {
 	 *  
 	 * @param fullTemplate A URI template including variable names.
 	 * @param variables A list in which the method stores the names of the variables extracted from the full template.
+	 * @param fragments A list the constant fragments of the URI template.
 	 * @return A reduced template with variable names removed.
 	 */
 	public static String reduceTemplateAndExtractVariables(String fullTemplate, List<String> variables, 
