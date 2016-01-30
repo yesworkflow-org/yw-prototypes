@@ -60,8 +60,8 @@ public abstract class UriBase {
 	 * Extracts the scheme and path portions of the passed expression.
 	 * Does not trim the terminal slash from the path.
 	 * 
-	 * @param expression			A string representation of the full 
-	 *                           	URI or URI template to construct.
+	 * @param uriString			A string representation of the full 
+	 *                        	URI or URI template to construct.
 	 */
 	public UriBase(String uriString) {
 		this(uriString, false);

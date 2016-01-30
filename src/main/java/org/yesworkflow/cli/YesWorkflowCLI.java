@@ -29,7 +29,7 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
 /** 
- * Class that provides the default command-line interface (CLI) for YesWorkflow.
+ * <p>Class that provides the default command-line interface (CLI) for YesWorkflow.
  * The CLI takes one argument (or option) representing the operation to 
  * be carried out (currently <i>extract</i>, <i>model</i>, or <i>graph</i>),
  * along with additional options that specify desired outputs and formats.  

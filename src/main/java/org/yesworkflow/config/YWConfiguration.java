@@ -65,7 +65,6 @@ import org.yesworkflow.exceptions.YWToolUsageException;
  * also represents maps using LinkedHashMap, any maps defined in an input YAML file  are considered 
  * to be setting tables rather than setting values.
  * </p>
- * </p>
  */
 public class YWConfiguration {
     
@@ -87,7 +86,6 @@ public class YWConfiguration {
      * @return The new YWConfiguration instance.
      * @throws IllegalArgumentException If the yamlFile argument is null.
      * @throws FileNotFoundException If the specified YAML file does not exist.
-     * @throws ParserException If the YAML is malformed.
      */
     public static YWConfiguration fromYamlFile(String yamlFile) throws FileNotFoundException {
         
@@ -112,7 +110,6 @@ public class YWConfiguration {
      * @param yamlStream The input stream from which to read the YAML.
      * @return The new YWConfiguration instance.
      * @throws IllegalArgumentException If the yamlStream argument is null.
-     * @throws ParserException If the YAML is malformed.
      */
     @SuppressWarnings("unchecked")
     public static YWConfiguration fromYamlStream(InputStream yamlStream) {

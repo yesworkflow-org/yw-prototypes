@@ -40,7 +40,6 @@ public class CommentMatcher {
      *  in the source are represented as multiple strings in the return value.
      * 
      * @param reader The BufferedReader used to read the source file.
-     * @return  A List of Strings representing the comments in the source code.
      * @throws IOException 
      * @throws SQLException 
      */
