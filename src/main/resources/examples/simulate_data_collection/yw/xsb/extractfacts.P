@@ -38,7 +38,7 @@ annotation(32, 1, 45, 'out', '@out', 'sample_name').
 annotation(33, 1, 46, 'out', '@out', 'sample_quality').
 annotation(34, 1, 52, 'end', '@end', 'load_screening_results').
 annotation(35, 1, 56, 'begin', '@begin', 'calculate_strategy').
-annotation(36, 1, 56, 'desc', '@desc', 'Reject unsuitable crystals and compute best data set to collect for accepted crystals.').
+annotation(36, 1, 56, 'desc', '@desc', 'Reject unsuitable crystals and compute \n best data set to collect for accepted crystals.').
 annotation(37, 1, 57, 'param', '@param', 'sample_score_cutoff').
 annotation(38, 1, 58, 'in', '@in', 'sample_name').
 annotation(39, 1, 59, 'in', '@in', 'sample_quality').

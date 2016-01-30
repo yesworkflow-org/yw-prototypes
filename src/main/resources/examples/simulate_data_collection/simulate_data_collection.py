@@ -53,7 +53,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff):
             """
 
             """
-            @begin calculate_strategy @desc Reject unsuitable crystals and compute best data set to collect for accepted crystals.
+            @begin calculate_strategy @desc Reject unsuitable crystals and compute \n best data set to collect for accepted crystals.
             @param sample_score_cutoff
             @in sample_name 
             @in sample_quality
