@@ -1,22 +1,12 @@
 package org.yesworkflow.db;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
 
-import static org.jooq.impl.DSL.field;
-
 import org.yesworkflow.db.Table;
-import org.yesworkflow.util.FileIO;
-
-import static org.yesworkflow.db.Column.*;
-
-import org.yesworkflow.db.View;
-import org.jooq.Result;
 import org.yesworkflow.YesWorkflowTestCase;
 
-@SuppressWarnings("unchecked")
 public class TestYesWorkflowDBViews extends YesWorkflowTestCase {
     
     private Path testDirectoryPath;
@@ -44,6 +34,7 @@ public class TestYesWorkflowDBViews extends YesWorkflowTestCase {
         ywdb.close();
     }
 
+    @SuppressWarnings("unused")
     private void insertNestedProgramBlocks() throws SQLException {
         programBlockId[1] = ywdb.insertProgramBlock(null, null, null, "A", "A", false, false);
         programBlockId[2] = ywdb.insertProgramBlock(programBlockId[1], null, null, "B", "A.B", false, false);

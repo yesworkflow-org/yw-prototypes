@@ -66,10 +66,6 @@ public class DefaultExtractor implements Extractor {
 
     private Long nextAnnotationId = 1L;
 
-    public DefaultExtractor() throws Exception {
-        this(YesWorkflowDB.getGlobalInstance(), System.out, System.err);
-    }
-
     public DefaultExtractor(YesWorkflowDB ywdb) {
         this(ywdb, System.out, System.err);
     }

@@ -223,7 +223,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     public void testYesWorkflow_CommentCharacters_Python_ExplicitOption() throws Exception{
         
     	Extractor extractor = new DefaultExtractor(this.ywdb, stderrStream, stderrStream);
-        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
+        YesWorkflowCLI cli = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream);
         cli.extractor(extractor);        
         cli.runForArgs(new String[] {"extract", "-c", "extract.comment=#", TEST_RESOURCE_DIR + "pythonFileLowercase.py"});        
         assertEquals(Language.GENERIC, extractor.getLanguage());
@@ -233,7 +233,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     public void testYesWorkflow_CommentCharacters_PythonLowercase() throws Exception{
         
     	Extractor extractor = new DefaultExtractor(this.ywdb, stderrStream, stderrStream);
-        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
+        YesWorkflowCLI cli = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream);
         cli.extractor(extractor);
         cli.runForArgs(new String[] {"extract", TEST_RESOURCE_DIR + "pythonFileLowercase.py"});
         assertEquals(Language.PYTHON, extractor.getLanguage());
@@ -242,7 +242,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     public void testYesWorkflow_CommentCharacters_PythonUppercase() throws Exception{
         
     	Extractor extractor = new DefaultExtractor(this.ywdb, stderrStream, stderrStream);
-        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
+        YesWorkflowCLI cli = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream);
         cli.extractor(extractor);
         cli.runForArgs(new String[] {"extract", TEST_RESOURCE_DIR + "pythonFileUppercase.PY"});
         assertEquals(Language.PYTHON, extractor.getLanguage());
@@ -250,7 +250,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     
     public void testYesWorkflow_CommentCharacters_RUppercase() throws Exception{
     	Extractor extractor = new DefaultExtractor(this.ywdb, stderrStream, stderrStream);
-        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
+        YesWorkflowCLI cli = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream);
         cli.extractor(extractor);
         cli.runForArgs(new String[] {"extract", TEST_RESOURCE_DIR + "rFileUppercaseExtension.R"});
         assertEquals(Language.R, extractor.getLanguage());
@@ -301,7 +301,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     public void testYesWorkflow_CommentCharacters_NoExtension() throws Exception{
         
     	Extractor extractor = new DefaultExtractor(this.ywdb, stderrStream, stderrStream);
-        YesWorkflowCLI cli = new YesWorkflowCLI(stdoutStream, stderrStream);
+        YesWorkflowCLI cli = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream);
         cli.extractor(extractor);
         cli.runForArgs(new String[] {"extract", TEST_RESOURCE_DIR + "extensionlessSource"});        
         assertEquals(Language.GENERIC, extractor.getLanguage());

@@ -30,13 +30,7 @@ public class DefaultModeler implements Modeler {
     private PrintStream stderrStream = null;
     private String factsFile = null;
     private String modelFacts = null;
-    private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;
-    
-    
-    public DefaultModeler() throws Exception {
-        this(YesWorkflowDB.getGlobalInstance(), System.out, System.err);
-    }
-
+    private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;    
     
     public DefaultModeler(YesWorkflowDB ywdb) throws Exception {
         this(ywdb, System.out, System.err);

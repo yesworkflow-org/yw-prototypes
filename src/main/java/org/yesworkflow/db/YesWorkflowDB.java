@@ -27,22 +27,10 @@ public abstract class YesWorkflowDB {
     protected Statement statement;
     protected DSLContext jooq;
         
-    private static YesWorkflowDB globalInstance = null;
-
-    public static YesWorkflowDB getGlobalInstance() throws Exception {
-        if (globalInstance == null) {
-            globalInstance = YesWorkflowH2DB.createInMemoryDB();
-        }
-        return globalInstance;
+    public static YesWorkflowDB createInstance() throws Exception {
+        return createInMemoryDB();
     }
 
-    public static void dropGlobalInstance() throws Exception {
-        if (globalInstance != null) {
-            globalInstance.close();
-            globalInstance = null;
-        }
-    }
-    
     public static YesWorkflowDB createInMemoryDB() throws Exception {
         return YesWorkflowH2DB.createInMemoryDB();
 //        return YesWorkflowSQLiteDB.createInMemoryDB();

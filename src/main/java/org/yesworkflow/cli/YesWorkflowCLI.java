@@ -98,26 +98,24 @@ public class YesWorkflowCLI {
 
     /** 
      * Default constructor.  Used when YesWorkflow should use the
-     * system-provided System.out and System.err streams.
+     * system-provided System.out and System.err streams and an 
+     * automatically created YesWorkflowDB instance.
      * @throws Exception If errors occur creating the YW database.
      */
     public YesWorkflowCLI() throws Exception {
-        this(System.out, System.err);
+        this(YesWorkflowDB.createInstance(), System.out, System.err);
     }
 
     /** 
      * Constructor that injects custom output streams. Used when 
      * YesWorkflow should use the streams provided as parameters instead 
      * of System.out and System.err.
+     * @param ywdb The YesWorkflowDB instance to use.
      * @param outStream The PrintStream to use instead of System.out.
      * @param errStream The PrintStream to use instead of System.err.
      * @throws Exception If errors occur creating the YW database.
      */
-    public YesWorkflowCLI(PrintStream outStream, PrintStream errStream) throws Exception {
-        this(YesWorkflowDB.getGlobalInstance(), outStream, errStream);
-    }
-
-    public YesWorkflowCLI(YesWorkflowDB ywdb, PrintStream outStream, PrintStream errStream) {
+      public YesWorkflowCLI(YesWorkflowDB ywdb, PrintStream outStream, PrintStream errStream) {
         this.ywdb = ywdb;
         this.outStream = outStream;
         this.errStream = errStream;
