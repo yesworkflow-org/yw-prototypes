@@ -52,7 +52,7 @@ import joptsimple.OptionSet;
  * using the {@link #extractor(Extractor) extractor()}, {@link #modeler(Modeler) modeler()},
  * and {@link #grapher(Grapher) grapher()} methods before calling 
  * {@link #runForArgs(String[]) runForArgs()}.  A 
- * {@link #YesWorkflowCLI(PrintStream, PrintStream) non-default constructor} allows 
+ * {@link #YesWorkflowCLI(YesWorkflowDB, PrintStream, PrintStream) non-default constructor} allows 
  * the output streams used by YesWorkflow to be assigned.</p>
  */
 public class YesWorkflowCLI {
@@ -113,7 +113,6 @@ public class YesWorkflowCLI {
      * @param ywdb The YesWorkflowDB instance to use.
      * @param outStream The PrintStream to use instead of System.out.
      * @param errStream The PrintStream to use instead of System.err.
-     * @throws Exception If errors occur creating the YW database.
      */
       public YesWorkflowCLI(YesWorkflowDB ywdb, PrintStream outStream, PrintStream errStream) {
         this.ywdb = ywdb;
