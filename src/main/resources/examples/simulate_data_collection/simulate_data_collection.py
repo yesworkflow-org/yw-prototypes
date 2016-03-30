@@ -27,10 +27,13 @@ from datetime import datetime
 """
 
 def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
-
     """
     @begin initialize_run @desc Create run directory and initialize log files.
-    @out run_log  @uri file:run/run_log.txt
+    @param cassette_id
+    @param sample_score_cutoff
+    @out run_log
+        @log '{19:timestamp} Processing samples in cassette {cassette_id}'
+        @log 'Sample quality cutoff: {sample_score_cutoff}'
     """
     if not os.path.exists('run'):
         os.makedirs('run')
@@ -51,6 +54,8 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
         @in sample_spreadsheet  @uri file:cassette_{cassette_id}_spreadsheet.csv
         @out sample_name
         @out sample_quality
+        @out run_log
+            @log '{19:timestamp} Sample {sample_id} had score of {sample_quality}'
         """
         sample_spreadsheet = 'cassette_{0}_spreadsheet.csv'.format(cassette_id)
         for sample_name, sample_quality in spreadsheet_rows(sample_spreadsheet):
@@ -81,6 +86,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
             @param cassette_id
             @in rejected_sample
             @out rejection_log @uri file:run/rejected_samples.txt
+                @log 'Rejected sample {rejected_sample} in cassette {cassette_id}}'
             """
             if (rejected_sample is not None):
                 run_log.write("Rejected sample {0}".format(rejected_sample))
@@ -105,6 +111,9 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
             @out raw_image_path @desc Path of file storing the raw diffraction image.
                                 @uri file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw
                                 @as raw_image
+            @out run_log
+                @log '{19:timestamp} Collecting data set for sample {sample_id}'
+                @log '{19:timestamp} Collecting image {raw_image_path.uri}'
             """
             run_log.write("Collecting data set for sample {0}".format(accepted_sample))
             sample_id = accepted_sample
@@ -128,6 +137,8 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
                 @out corrected_image_path
                 @out total_intensity
                 @out pixel_count
+                @out run_log
+                    @log '{19:timestamp} Wrote transformed image {corrected_image.uri}'
                 """
                 corrected_image_path = 'run/data/{0}/{0}_{1}eV_{2:03d}.img'.format(
                                         sample_id, energy, frame_number)
@@ -147,6 +158,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
                 @in total_intensity
                 @in pixel_count
                 @out collection_log @uri file:run/collected_images.csv
+                @log {cassette_id},{sample_id},{energy},run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img
                 """
                 average_intensity = total_intensity / pixel_count
                 with open('run/collected_images.csv', 'at') as collection_log_file:

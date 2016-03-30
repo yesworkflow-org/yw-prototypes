@@ -28,7 +28,7 @@ node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname
 
 /* Nodes for non-parameter data channels in workflow */
 corrected_image [shape=record rankdir=LR label="{<f0> corrected_image |<f1> file\:run/data/\{sample_id\}/\{sample_id\}_\{energy\}eV_\{frame_number\}.img}"];
-run_log [shape=record rankdir=LR label="{<f0> run_log |<f1> file\:run/run_log.txt}"];
+run_log
 collection_log [shape=record rankdir=LR label="{<f0> collection_log |<f1> file\:run/collected_images.csv}"];
 rejection_log [shape=record rankdir=LR label="{<f0> rejection_log |<f1> file\:run/rejected_samples.txt}"];
 sample_spreadsheet [shape=record rankdir=LR label="{<f0> sample_spreadsheet |<f1> file\:cassette_\{cassette_id\}_spreadsheet.csv}"];
@@ -57,8 +57,11 @@ num_images
 
 /* Edges representing connections between programs and channels */
 initialize_run -> run_log
+cassette_id -> initialize_run
+sample_score_cutoff -> initialize_run
 load_screening_results -> sample_name
 load_screening_results -> sample_quality
+load_screening_results -> run_log
 cassette_id -> load_screening_results
 sample_spreadsheet -> load_screening_results
 calculate_strategy -> accepted_sample
@@ -76,6 +79,7 @@ collect_data_set -> sample_id
 collect_data_set -> energy
 collect_data_set -> frame_number
 collect_data_set -> raw_image
+collect_data_set -> run_log
 cassette_id -> collect_data_set
 num_images -> collect_data_set
 accepted_sample -> collect_data_set
@@ -84,6 +88,7 @@ transform_images -> corrected_image
 transform_images -> corrected_image_path
 transform_images -> total_intensity
 transform_images -> pixel_count
+transform_images -> run_log
 sample_id -> transform_images
 energy -> transform_images
 frame_number -> transform_images

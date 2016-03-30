@@ -613,8 +613,7 @@ data_resource(6, 202).
 data_resource(7, 203).
 data_resource(8, 204).
 data_resource(9, 205).
-data_resource(10, 203).
-data_resource(12, 1).
+data_resource(13, 1).
 data_resource(21, 205).
 data_resource(25, 206).
 data_resource(25, 207).

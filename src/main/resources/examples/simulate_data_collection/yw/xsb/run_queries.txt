@@ -1,15 +1,15 @@
-[xsb_configuration loaded]
+[xsb_configuration loaded, cpu time used: 0.0010 seconds]
 [sysinitrc loaded]
 [xsbbrat loaded]
 
 XSB Version 3.6. (Gazpatcho) of April 22, 2015
-[i386-apple-darwin15.2.0 64 bits; mode: optimal; engine: slg-wam; scheduling: local]
-[Build date: 2015-12-20]
+[i386-apple-darwin15.3.0 64 bits; mode: optimal; engine: slg-wam; scheduling: local]
+[Build date: 2016-03-11]
 
 | ?- [rules loaded]
 
 yes
-| ?- [extractfacts loaded]
+| ?- [extractfacts loaded, cpu time used: 0.0010 seconds]
 
 yes
 | ?- [modelfacts loaded]
@@ -38,16 +38,16 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 eq2(ProgramName) - What are the names N of all program blocks?
 ---------------------------------------------------------------------------------------------------------------------------
+eq2(initialize_run)
+eq2(collect_data_set)
+eq2(transform_images)
+eq2(calculate_strategy)
+eq2(simulate_data_collection)
 eq2(load_screening_results)
 eq2(log_rejected_sample)
 eq2(collect_next_image)
 eq2(transform_image)
 eq2(log_average_image_intensity)
-eq2(initialize_run)
-eq2(simulate_data_collection)
-eq2(collect_data_set)
-eq2(transform_images)
-eq2(calculate_strategy)
 
 yes
 | ?- 
@@ -65,7 +65,7 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 mq1(SourceFile,StartLine,EndLine) - Where is the definition of block simulate_data_collection.collect_data_set?
 ---------------------------------------------------------------------------------------------------------------------------
-mq1(../simulate_data_collection.py,94,114)
+mq1(../simulate_data_collection.py,102,125)
 
 yes
 | ?- 
@@ -81,6 +81,7 @@ mq3(FunctionName) - What are the names of any top-level functions?
 ---------------------------------------------------------------------------------------------------------------------------
 mq3(transform_image)
 mq3(collect_next_image)
+mq3(calculate_strategy)
 
 yes
 | ?- 
@@ -102,6 +103,7 @@ mq5(DataName) - What are the names and descriptions of the inputs to the top-lev
 ---------------------------------------------------------------------------------------------------------------------------
 mq5(calibration_image,File used to correct raw diffraction images.)
 mq5(sample_spreadsheet,CSV file giving quality score for each crystal.)
+mq5(data_redundancy,The desired redundancy of the data sets collected.)
 mq5(sample_score_cutoff,The minimum quality score required of crystals.)
 mq5(cassette_id,The unique ID of the cassette containing the crystals.)
 
@@ -131,6 +133,7 @@ mq8(simulate_data_collection.log_average_image_intensity)
 mq8(simulate_data_collection.collect_data_set)
 mq8(simulate_data_collection.log_rejected_sample)
 mq8(simulate_data_collection.load_screening_results)
+mq8(simulate_data_collection.initialize_run)
 
 yes
 | ?- 
@@ -144,7 +147,7 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 mq10(DataCount) - How many data are read by more than port in workflow simulate_data_collection?
 ---------------------------------------------------------------------------------------------------------------------------
-mq10(4)
+mq10(6)
 
 yes
 | ?- 
@@ -188,6 +191,7 @@ mq15(DownstreamDataName) - What data is immediately downstream of raw_image?
 mq15(pixel_count)
 mq15(total_intensity)
 mq15(corrected_image_path)
+mq15(run_log)
 mq15(corrected_image)
 
 yes
@@ -205,8 +209,6 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 mq17(DownstreamDataName) - What data is downstream of accepted_sample?
 ---------------------------------------------------------------------------------------------------------------------------
-mq17(pixel_count)
-mq17(frame_number)
 mq17(sample_id)
 mq17(corrected_image)
 mq17(collection_log)
@@ -214,20 +216,24 @@ mq17(raw_image)
 mq17(corrected_image_path)
 mq17(energy)
 mq17(total_intensity)
+mq17(pixel_count)
+mq17(run_log)
+mq17(frame_number)
 
 yes
 | ?- 
 ---------------------------------------------------------------------------------------------------------------------------
 mq18(UpstreamDataName) - What data is upstream of raw_image?
 ---------------------------------------------------------------------------------------------------------------------------
-mq18(energies)
-mq18(num_images)
+mq18(sample_score_cutoff)
 mq18(accepted_sample)
-mq18(sample_quality)
 mq18(sample_name)
 mq18(sample_spreadsheet)
-mq18(sample_score_cutoff)
 mq18(cassette_id)
+mq18(sample_quality)
+mq18(data_redundancy)
+mq18(num_images)
+mq18(energies)
 
 yes
 | ?- 
@@ -284,7 +290,7 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 rq4(RawImageFile) - Are there any raw images for which there are no corresponding corrected images?
 ---------------------------------------------------------------------------------------------------------------------------
-rq4(run/raw/q55/DRT240/e10000/image_031.raw)
+rq4(run/raw/q55/DRT240/e12000/image_002.raw)
 
 yes
 | ?- 
@@ -295,4 +301,4 @@ rq5(q55)
 
 yes
 | ?- 
-End XSB (cputime 0.06 secs, elapsetime 0.07 secs)
+End XSB (cputime 0.12 secs, elapsetime 0.12 secs)
