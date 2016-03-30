@@ -1147,7 +1147,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
 
         List<Annotation> annotations = extractor
                .configure("language", "python")
-               .reader(new FileReader("src/main/resources/examples/simulate_data_collection/simulate_data_collection.py"))
+               .reader(new FileReader("examples/simulate_data_collection/simulate_data_collection.py"))
                .extract()
                .getAnnotations();
         
