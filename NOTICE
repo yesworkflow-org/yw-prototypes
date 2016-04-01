@@ -1,41 +1,40 @@
 YesWorkflow
-Copyright 2015 The YesWorkflow Contributors
+
+Copyright 2015-2016 The YesWorkflow Contributors
 
 This product includes software developed by the contributors listed on
-the web page http://yesworkflow.org/contributors.  All source code in 
+the web page http://yesworkflow.org/contributors.  All source code in
 this repository is distributed under an Apache 2.0 license as described
 in the LICENSE file.
 
 YesWorkflow depends on a number of software packages that are developed
 and distributed by others.  Binary distributions of these third-party
 packages are necessary for building, testing, or running YesWorkflow,
-and are included in some binary distributions of YesWorkflow.  
+and are included in some binary distributions of YesWorkflow.
 YesWorkflow also includes adaptations of source files from other
 software distributions. The remainder of this file includes license
 information for each binary and source-code dependency.
 
 Note that where any terms of the license under which YesWorkflow is
 distributed differ from the licenses for the third-party packages
-comprising or distributed with YesWorkflow, the terms of the 
-YesWorkflow license are offered by the distibutors of YesWorkflow
+comprising or distributed with YesWorkflow, the terms of the
+YesWorkflow license are offered by the distributors of YesWorkflow
 alone, and not by the initial developer or any contributor to the
 third-party packages.
 
 Copyright and license notices for third-party dependencies:
 
------------------------------------------------------------------------
-Several source files in YesWorkflow are adaptations of source files 
-from the RestFlow software distribution.  The full source code for 
-RestFlow is available at https://github.com/restflow-org/restflow.  
+-------------------------------------------------------------------------------
+Several source files in YesWorkflow are adaptations of source files
+from the RestFlow software distribution.  The full source code for
+RestFlow is available at https://github.com/restflow-org/restflow.
 The copyright notice and MIT license for RestFlow are included here:
------------------------------------------------------------------------
-
+-------------------------------------------------------------------------------
                     Copyright 2010 - 2013
                              by
-                The Board of Trustees of the 
+                The Board of Trustees of the
               Leland Stanford Junior University
                      All rights reserved.
-
 
                       Disclaimer Notice
 
@@ -53,8 +52,7 @@ items for any purpose whatsoever.                       Notice 91 02 01
 
   Work supported by the U.S. Department of Energy under contract
   DE-AC02-76SF00515; and the National Institutes of Health, National
-  Center for Research Resources, grant P41RR001209. 
-
+  Center for Research Resources, grant P41RR001209.
 
                       Permission Notice
 
@@ -75,29 +73,26 @@ EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
 DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
 THE USE OR OTHER DEALINGS IN THE SOFTWARE.
------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
-
------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 YesWorkflow uses the JOpt Simple (http://pholser.github.io/jopt-simple/)
 library for parsing command line options.  A binary distribution of
-JOpt Simple is included in some YesWorkflow distributions.  See the 
+JOpt Simple is included in some YesWorkflow distributions.  See the
 copyright and MIT license for JOpt Simple at:
-
 https://github.com/pholser/jopt-simple/blob/master/LICENSE.txt
------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
-
------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 YesWorkflow depends indirectly on the Java Hamcrest library
 (http://hamcrest.org/JavaHamcrest).  A binary distribution of
-Java Hamcrest is included in some YesWorkflow distributions. The 
+Java Hamcrest is included in some YesWorkflow distributions. The
 3-clause BSD license for Java Hamcrest may be found at:
 
 https://github.com/hamcrest/JavaHamcrest/blob/master/LICENSE.txt
 
 The copyright and license for Java HamCrest also are included here:
------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Copyright (c) 2000-2015 www.hamcrest.org
 All rights reserved.
 
@@ -123,4 +118,42 @@ BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
 WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 DAMAGE.
------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+YesWorkflow uses the H2 database engine (http://h2database.com) and
+some YesWorkflow distributions contain unmodified binary redistributions
+for the H2 database engine (http://www.h2database.com/), which is dual
+licensed and available under the MPL 2.0 (Mozilla Public License) or under
+the EPL 1.0 (Eclipse Public License). An original copy of the license
+agreement can be found at: http://www.h2database.com/html/license.html
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+YesWorkflow uses the SQLite database engine (http://sqlite.org) and
+some YesWorkflow distributions contain unmodified binary redistributions
+of SQLite. All of the code and documentation in SQLite has been dedicated
+to the public domain by the authors. All code authors, and representatives
+of the companies they work for, have signed affidavits dedicating their
+contributions to the public domain and originals of those signed affidavits
+are stored in a firesafe at the main offices of Hwaci. Anyone is free to
+copy, modify, publish, use, compile, sell, or distribute the original SQLite
+code, either in source code form or as a compiled binary, for any purpose,
+commercial or non-commercial, and by any means. See http://sqlite.org/copyright.html
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+YesWorkflow uses the jOOQ library (http:http://www.jooq.org/). Some YesWorkflow
+distributions contain unmodified binary redistributions for the jOOQ library,
+which is licensed and available under the Apache 2.0 license.  jOOQ
+distributions contain third-party tools including JSON Simple, CSVParser,
+Apache Commons, JOOR, and JOOU which also are licensed and available under the
+Apache 2.0 license. See http://www.jooq.org/legal/licensing.
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+YesWorkflow uses the SnakeYAML (https://bitbucket.org/asomov/snakeyaml)
+and some YesWorkflow distributions contain unmodified binary redistributions
+for SnakeYAML, which is licensed and available under the Apache 2.0 License.
+See https://github.com/asomov/snakeyaml.
+-------------------------------------------------------------------------------
