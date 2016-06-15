@@ -1,6 +1,8 @@
 package org.yesworkflow.model;
 
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.yesworkflow.annotations.In;
@@ -11,8 +13,7 @@ import org.yesworkflow.query.QueryEngine;
 public class ModelFacts {
 
     private final Model model;
-    private String factsString = null;
-    
+    private Map<String,String> facts = new LinkedHashMap<String,String>();
     
     private DataExportBuilder programFacts ;
     private DataExportBuilder workflowFacts;
@@ -71,24 +72,21 @@ public class ModelFacts {
             buildProgramFactsRecursively(function, null, null);
         }
         
-        StringBuilder sb = new StringBuilder();
-        sb.append(programFacts)
-          .append(workflowFacts)
-          .append(functionFacts)
-          .append(subprogramFacts)
-          .append(portFacts)
-          .append(portAliasFacts)
-          .append(portUriFacts)
-          .append(hasInPortFacts)
-          .append(hasOutPortFacts)
-          .append(dataFacts)
-          .append(channelFacts)
-          .append(portConnectionFacts)
-          .append(inflowConnectionFacts)
-          .append(outflowConnectionFacts)
-          .append(portUriVariableFacts);
-
-        factsString = sb.toString();
+        facts.put(programFacts.name, programFacts.toString());
+        facts.put(workflowFacts.name, workflowFacts.toString());
+        facts.put(functionFacts.name, functionFacts.toString());
+        facts.put(subprogramFacts.name, subprogramFacts.toString());
+        facts.put(portFacts.name, portFacts.toString());
+        facts.put(portAliasFacts.name, portAliasFacts.toString());
+        facts.put(portUriFacts.name, portUriFacts.toString());
+        facts.put(hasInPortFacts.name, hasInPortFacts.toString());
+        facts.put(hasOutPortFacts.name, hasOutPortFacts.toString());
+        facts.put(dataFacts.name, dataFacts.toString());
+        facts.put(channelFacts.name, channelFacts.toString());
+        facts.put(portConnectionFacts.name, portConnectionFacts.toString());
+        facts.put(inflowConnectionFacts.name, inflowConnectionFacts.toString());
+        facts.put(outflowConnectionFacts.name, outflowConnectionFacts.toString());
+        facts.put(portUriVariableFacts.name, portUriVariableFacts.toString());
         
         return this;
     }
@@ -201,7 +199,7 @@ public class ModelFacts {
         }
     }
 
-    public String toString() {
-        return factsString;
+    public Map<String,String> facts() {
+        return facts;
     }
 }

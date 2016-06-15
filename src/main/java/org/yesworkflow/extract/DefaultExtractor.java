@@ -59,7 +59,7 @@ public class DefaultExtractor implements Extractor {
     private String factsFile = null;
     private String skeletonFile = null;
     private String skeleton = null;
-    private String extractFacts = null;
+    private Map<String, String> extractFacts = null;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
 
@@ -150,9 +150,9 @@ public class DefaultExtractor implements Extractor {
     }
 	
 	@Override
-    public String getFacts() {
+    public Map<String, String>  getFacts() {
         if (extractFacts == null) {
-            extractFacts = new ExtractFacts(ywdb, this.queryEngine, allAnnotations).build().toString();
+            extractFacts = new ExtractFacts(ywdb, this.queryEngine, allAnnotations).build().facts();
         }
         return extractFacts;
     }	
@@ -170,7 +170,7 @@ public class DefaultExtractor implements Extractor {
         }
 
         if (factsFile != null) {;
-            writeTextToFileOrStdout(factsFile, getFacts());
+            writeTextsToFilesOrStdout(factsFile, getFacts());
         }
         
         return this;
@@ -251,6 +251,18 @@ public class DefaultExtractor implements Extractor {
         }
     }
 
+    private void writeTextsToFilesOrStdout(String path, Map<String,String> texts) throws IOException {
+        PrintStream stream = (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
+                             this.stdoutStream : new PrintStream(path);
+        for (Map.Entry<String, String> entry : texts.entrySet()) {
+            stream.print(entry.getValue());            
+        }
+        
+        if (stream != this.stdoutStream) {
+            stream.close();
+        }
+    }
+    
     private void writeTextToFileOrStdout(String path, String text) throws IOException {  
         PrintStream stream = (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
                              this.stdoutStream : new PrintStream(path);

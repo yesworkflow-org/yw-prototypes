@@ -3,7 +3,7 @@ package org.yesworkflow.query;
 public abstract class DataExportBuilder {
 	
     protected static final String EOL = System.getProperty("line.separator");
-    protected final String name;
+    public final String name;
     protected final int fieldCount;
     protected StringBuilder _buffer = new StringBuilder();
     protected QueryEngineModel queryEngineModel;
@@ -29,6 +29,9 @@ public abstract class DataExportBuilder {
         
         switch(engine) {
             
+            case CSV:
+                return new CSVExportBuilder(name, fields);                
+                
             case DLV:
                 qem = new QueryEngineModel()
                           .showComments(true)

@@ -2,6 +2,7 @@ package org.yesworkflow.recon;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ import org.yesworkflow.util.FileIO;
 public class ReconFacts {
 
     private final Run run;
-    private String factsString = null;
+    private Map<String,String> facts = new LinkedHashMap<String,String>();
     private Integer nextResourceId = 1;
     
     private DataExportBuilder resourceFacts;
@@ -53,12 +54,10 @@ public class ReconFacts {
             buildReconFactsRecursively(function);
         }
         
-        factsString = new StringBuilder()
-          .append(resourceFacts)
-          .append(dataResourceFacts)
-          .append(uriVariableValueFacts)
-          .toString();
-
+        facts.put(resourceFacts.name, resourceFacts.toString());
+        facts.put(dataResourceFacts.name, dataResourceFacts.toString());
+        facts.put(uriVariableValueFacts.name, uriVariableValueFacts.toString());
+ 
         return this;
     }
 
@@ -127,8 +126,7 @@ public class ReconFacts {
         }
     }
     
-    public String toString() {
-        return factsString;
+    public Map<String,String> facts() {
+        return facts;
     }
-    
 }

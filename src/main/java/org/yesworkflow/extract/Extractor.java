@@ -17,6 +17,6 @@ public interface Extractor extends YWStage, Configurable {
     Language getLanguage();
     String getSkeleton();
     List<Annotation> getAnnotations();
-    String getFacts();
+    Map<String, String> getFacts();
 }
 

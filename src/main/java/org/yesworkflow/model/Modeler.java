@@ -13,5 +13,5 @@ public interface Modeler extends YWStage, Configurable {
     Modeler annotations(List<Annotation> annotations);
     Modeler model() throws Exception;
     Model getModel();
-    String getFacts();
+    Map<String, String> getFacts();
 }

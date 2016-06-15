@@ -29,7 +29,7 @@ public class DefaultModeler implements Modeler {
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
     private String factsFile = null;
-    private String modelFacts = null;
+    private Map<String, String> modelFacts = null;
     private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;    
     
     public DefaultModeler(YesWorkflowDB ywdb) throws Exception {
@@ -74,7 +74,7 @@ public class DefaultModeler implements Modeler {
     public Modeler model() throws Exception {	
     	buildModel();
     	if (factsFile != null) {
-    	    writeTextToFileOrStdout(factsFile, getFacts());
+    	    writeTextsToFilesOrStdout(factsFile, getFacts());
     	}
     	return this;
     }
@@ -85,13 +85,26 @@ public class DefaultModeler implements Modeler {
     }
 
     @Override
-    public String getFacts() {
+    public Map<String, String> getFacts() {
         if (modelFacts == null) {
-            modelFacts = new ModelFacts(queryEngine, model).build().toString();
+            modelFacts = new ModelFacts(queryEngine, model).build().facts();
         }
         return modelFacts;
     }
 
+    private void writeTextsToFilesOrStdout(String path, Map<String,String> texts) throws IOException {
+        PrintStream stream = (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
+                             this.stdoutStream : new PrintStream(path);
+        for (Map.Entry<String, String> entry : texts.entrySet()) {
+            stream.print(entry.getValue());            
+        }
+        
+        if (stream != this.stdoutStream) {
+            stream.close();
+        }
+    }
+
+    
     private void writeTextToFileOrStdout(String path, String text) throws IOException {  
         PrintStream stream = (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
                              this.stdoutStream : new PrintStream(path);

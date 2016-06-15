@@ -17,7 +17,7 @@ public class DefaultReconstructor implements Reconstructor  {
     private PrintStream stderrStream = null;
     private Run run = null;
     private String factsFile = null;
-    private String reconFacts = null;
+    private Map<String, String> reconFacts = null;
     private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;
     private ResourceFinder resourceFinder = null;
     private Map<String,Object> finderConfiguration = null;
@@ -98,13 +98,13 @@ public class DefaultReconstructor implements Reconstructor  {
     @Override
     public DefaultReconstructor recon() throws Exception {
         if (factsFile != null) {
-            writeTextToFileOrStdout(factsFile, getFacts());
+            writeTextsToFilesOrStdout(factsFile, getFacts());
         }
         return this;
     }
     
     @Override
-    public String getFacts() throws Exception {
+    public Map<String, String> getFacts() throws Exception {
         
         if (resourceFinder == null) {
             resourceFinder= new FileResourceFinder();
@@ -115,11 +115,23 @@ public class DefaultReconstructor implements Reconstructor  {
         }
         
         if (reconFacts == null) {
-            reconFacts = new ReconFacts(queryEngine, run, resourceFinder).build().toString();
+            reconFacts = new ReconFacts(queryEngine, run, resourceFinder).build().facts();
         }
         return reconFacts;
     }
     
+    private void writeTextsToFilesOrStdout(String path, Map<String,String> texts) throws IOException {
+        PrintStream stream = (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
+                             this.stdoutStream : new PrintStream(path);
+        for (Map.Entry<String, String> entry : texts.entrySet()) {
+            stream.print(entry.getValue());            
+        }
+        
+        if (stream != this.stdoutStream) {
+            stream.close();
+        }
+    }
+
     private void writeTextToFileOrStdout(String path, String text) throws IOException {  
         PrintStream stream = (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
                              this.stdoutStream : new PrintStream(path);

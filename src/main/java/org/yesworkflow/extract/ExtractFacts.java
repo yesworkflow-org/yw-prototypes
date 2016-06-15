@@ -3,7 +3,9 @@ package org.yesworkflow.extract;
 import static org.yesworkflow.db.Column.ID;
 import static org.yesworkflow.db.Column.PATH;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jooq.Record;
 import org.jooq.Result;
@@ -18,7 +20,7 @@ public class ExtractFacts {
 
     private YesWorkflowDB ywdb;
     private final List<Annotation> annotations;
-    private String factsString = null;
+    private Map<String,String> facts = new LinkedHashMap<String,String>();
     private DataExportBuilder sourceFileFacts;
     private DataExportBuilder annotationFacts;
     private DataExportBuilder qualificationFacts;
@@ -38,18 +40,15 @@ public class ExtractFacts {
         buildSourceFileFacts();
         buildAnnotationFacts();
         
-        StringBuilder sb = new StringBuilder();
-        sb.append(sourceFileFacts)
-          .append(annotationFacts)
-          .append(qualificationFacts);
-        
-        factsString = sb.toString();
+        facts.put(sourceFileFacts.name, sourceFileFacts.toString());
+        facts.put(annotationFacts.name, annotationFacts.toString());
+        facts.put(qualificationFacts.name, qualificationFacts.toString());
         
         return this;
     }
 
-    public String toString() {
-        return factsString;
+    public Map<String,String> facts() {
+        return facts;
     }
 
     @SuppressWarnings("unchecked")

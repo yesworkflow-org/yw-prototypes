@@ -10,5 +10,5 @@ public interface Reconstructor extends YWStage, Configurable {
     Reconstructor configure(Map<String, Object> config) throws Exception;
     Reconstructor run(Run run);
     Reconstructor recon() throws Exception;
-    String getFacts() throws Exception;
+    Map<String, String> getFacts() throws Exception;
 }
