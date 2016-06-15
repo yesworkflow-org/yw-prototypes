@@ -1,5 +1,6 @@
 package org.yesworkflow.model;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class ModelFacts {
     private DataExportBuilder outflowConnectionFacts;
     private DataExportBuilder portUriVariableFacts;
 
-    public ModelFacts(QueryEngine queryEngine, Model model) {
+    public ModelFacts(QueryEngine queryEngine, Model model) throws IOException {
 
         if (queryEngine == null) throw new IllegalArgumentException("Null logicLanguage argument passed to ModelFacts constructor.");
         if (model == null) throw new IllegalArgumentException("Null model argument passed to ModelFacts constructor.");
@@ -56,7 +57,7 @@ public class ModelFacts {
         this.portUriVariableFacts = DataExportBuilder.create(queryEngine, "uri_variable", "uri_variable_id", "variable_name", "port_id");
     }
 
-    public ModelFacts build() {
+    public ModelFacts build() throws IOException {
         
         if (model.program == null) throw new NullPointerException("Null program field in ModelFacts.model.");
         if (model.functions == null) throw new NullPointerException("Null functions field in ModelFacts.model.");
@@ -91,7 +92,7 @@ public class ModelFacts {
         return this;
     }
 
-    private void buildProgramFactsRecursively(Program program, String parentName, Long parentId) {
+    private void buildProgramFactsRecursively(Program program, String parentName, Long parentId) throws IOException {
 
         if (program == null) throw new IllegalArgumentException("Null program argument.");
         if (program.channels == null) throw new IllegalArgumentException("Null channels field in program argument.");
@@ -156,7 +157,7 @@ public class ModelFacts {
         return (parentName == null) ? name : parentName + infix + name + suffix;
     }
     
-    private void buildPortFacts(Port[] ports, Program block, Long blockId, String programName) {
+    private void buildPortFacts(Port[] ports, Program block, Long blockId, String programName) throws IOException {
         
         if (ports == null) throw new IllegalArgumentException("Null ports argument.");
         if (block == null) throw new IllegalArgumentException("Null block argument.");

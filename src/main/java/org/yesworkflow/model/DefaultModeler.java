@@ -85,7 +85,7 @@ public class DefaultModeler implements Modeler {
     }
 
     @Override
-    public Map<String, String> getFacts() {
+    public Map<String, String> getFacts() throws IOException {
         if (modelFacts == null) {
             modelFacts = new ModelFacts(queryEngine, model).build().facts();
         }

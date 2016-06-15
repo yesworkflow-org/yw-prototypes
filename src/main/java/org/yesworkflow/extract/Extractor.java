@@ -1,5 +1,6 @@
 package org.yesworkflow.extract;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,6 @@ public interface Extractor extends YWStage, Configurable {
     Language getLanguage();
     String getSkeleton();
     List<Annotation> getAnnotations();
-    Map<String, String> getFacts();
+    Map<String, String> getFacts() throws IOException;
 }
 

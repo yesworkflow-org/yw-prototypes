@@ -1,57 +1,52 @@
 package org.yesworkflow.query;
 
+import java.io.IOException;
+import java.io.StringWriter;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.QuoteMode;
+
 public class CSVExportBuilder extends DataExportBuilder {
 	
-    private String fieldSeparator = ",";
-    private String quote = "'";
+    private char fieldSeparator = ',';
+    private char quote = '"';
+    private CSVPrinter csvPrinter = null;
+    private StringWriter writer = new StringWriter();
     
-    public CSVExportBuilder(String name, String... fields) {
+    public CSVExportBuilder(String name, String... fields) throws IOException {
 	    super(null, name, fields);
-	    addHeader(fields);
+	    createCsvPrinter(fields);
 	}
+    
+    private void createCsvPrinter(String fields[]) throws IOException {
+            
+        CSVFormat csvFormat = CSVFormat.newFormat(fieldSeparator)
+                .withQuoteMode(QuoteMode.MINIMAL)
+                .withQuote(quote)
+                .withRecordSeparator(System.getProperty("line.separator"))
+                .withSkipHeaderRecord(false)
+                .withHeader(fields);
+        
+        csvPrinter = new CSVPrinter(writer, csvFormat);
+    }    
 
     @Override
     public DataExportBuilder addHeader(String... headers) {
-
-        _buffer.append(  headers[0]  );
-	    
-	    for (int i = 1; i < fieldCount; ++i) {
-	        _buffer.append(  fieldSeparator  )
-	               .append(  headers[i]      );
-	    }
-	    
-        _buffer.append(EOL);
-	    
 	    return this;
     }
 	
-	public DataExportBuilder addRow(Object... values) {
-	    
-	    _buffer.append(    quote(values[0])    );
-	    
-	    for (int i = 1; i < fieldCount; ++i) {
-	        _buffer.append(    fieldSeparator      )
-                   .append(    quote(values[i])    );
-	    }
-
-	    _buffer.append(EOL);
-	    
+	public DataExportBuilder addRow(Object values[]) throws IOException {
+	    csvPrinter.printRecord(values);
 	    return this;
 	}
-	
-    public CSVExportBuilder comment(String c) {      
-        return this;
-    }
-
-    private String quote(Object value) {
-        if (value instanceof Number) {
-            return value.toString();
-        } else {
-            return quote + value.toString() + quote;
-        }
-    }  
     
 	public String toString() {
-		return _buffer.toString();
+		return writer.toString();
 	}
+
+    @Override
+    public DataExportBuilder comment(String c) {
+        return this;
+    }
 }

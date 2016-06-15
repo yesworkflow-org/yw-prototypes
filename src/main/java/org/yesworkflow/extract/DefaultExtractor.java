@@ -150,7 +150,7 @@ public class DefaultExtractor implements Extractor {
     }
 	
 	@Override
-    public Map<String, String>  getFacts() {
+    public Map<String, String>  getFacts() throws IOException {
         if (extractFacts == null) {
             extractFacts = new ExtractFacts(ywdb, this.queryEngine, allAnnotations).build().facts();
         }

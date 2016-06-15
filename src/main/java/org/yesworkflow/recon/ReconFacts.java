@@ -1,5 +1,6 @@
 package org.yesworkflow.recon;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -32,7 +33,7 @@ public class ReconFacts {
 
     private ResourceFinder resourceFinder;
     
-    public ReconFacts(QueryEngine queryEngine, Run run, ResourceFinder resourceFinder) {
+    public ReconFacts(QueryEngine queryEngine, Run run, ResourceFinder resourceFinder) throws IOException {
         
         if (queryEngine == null) throw new IllegalArgumentException("Null logicLanguage argument passed to ReconFacts constructor.");
         if (run == null) throw new IllegalArgumentException("Null run argument passed to ReconFacts constructor.");
@@ -90,7 +91,7 @@ public class ReconFacts {
         }
     }
     
-    private List<Resource> findResourcesForPort(Port port) {
+    private List<Resource> findResourcesForPort(Port port) throws IOException {
         
         List<Resource> foundResources = new LinkedList<Resource>();
         
@@ -107,7 +108,7 @@ public class ReconFacts {
         return foundResources;
     }
     
-    private Resource addResource(Data data, String uri) {
+    private Resource addResource(Data data, String uri) throws IOException {
         Resource resource = resourceForUri.get(uri);
         if (resource == null) {
             resource = new Resource(nextResourceId++, uri.toString());

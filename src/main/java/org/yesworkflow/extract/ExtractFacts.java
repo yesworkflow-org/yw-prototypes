@@ -3,6 +3,7 @@ package org.yesworkflow.extract;
 import static org.yesworkflow.db.Column.ID;
 import static org.yesworkflow.db.Column.PATH;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class ExtractFacts {
     private DataExportBuilder annotationFacts;
     private DataExportBuilder qualificationFacts;
 
-    public ExtractFacts(YesWorkflowDB ywdb, QueryEngine queryEngine, List<Annotation> annotations) {
+    public ExtractFacts(YesWorkflowDB ywdb, QueryEngine queryEngine, List<Annotation> annotations) throws IOException {
         
         this.ywdb = ywdb;
         this.annotations = annotations;
@@ -35,7 +36,7 @@ public class ExtractFacts {
         this.qualificationFacts = DataExportBuilder.create(queryEngine, "annotation_qualifies", "qualifying_annotation_id", "primary_annotation_id");
     }
 
-    public ExtractFacts build() {
+    public ExtractFacts build() throws IOException {
                 
         buildSourceFileFacts();
         buildAnnotationFacts();
@@ -52,7 +53,7 @@ public class ExtractFacts {
     }
 
     @SuppressWarnings("unchecked")
-    private void buildSourceFileFacts() {
+    private void buildSourceFileFacts() throws IOException {
         
         Result<Record> results = ywdb.jooq().select(ID, PATH)
                                      .from(Table.SOURCE)
@@ -66,7 +67,7 @@ public class ExtractFacts {
         }
     }
     
-    private void buildAnnotationFacts() {
+    private void buildAnnotationFacts() throws IOException {
         
         for (Annotation annotation : annotations) {   
             

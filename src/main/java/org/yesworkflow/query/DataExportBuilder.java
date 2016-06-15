@@ -1,5 +1,7 @@
 package org.yesworkflow.query;
 
+import java.io.IOException;
+
 public abstract class DataExportBuilder {
 	
     protected static final String EOL = System.getProperty("line.separator");
@@ -15,10 +17,10 @@ public abstract class DataExportBuilder {
 	}
 
     public abstract DataExportBuilder addHeader(String... headers);
-	public abstract DataExportBuilder addRow(Object... values);
+	public abstract DataExportBuilder addRow(Object... values) throws IOException;
     public abstract DataExportBuilder comment(String c);
     
-    public static DataExportBuilder create(QueryEngine engine, String name, String... fields) {
+    public static DataExportBuilder create(QueryEngine engine, String name, String... fields) throws IOException {
 
         if (engine == null) {
             engine = QueryEngine.DEFAULT;
