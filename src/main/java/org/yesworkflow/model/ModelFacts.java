@@ -9,7 +9,7 @@ import java.util.Set;
 import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Log;
 import org.yesworkflow.annotations.Out;
-import org.yesworkflow.data.UriVariable;
+import org.yesworkflow.data.TemplateVariable;
 import org.yesworkflow.query.DataExportBuilder;
 import org.yesworkflow.query.QueryEngine;
 
@@ -34,7 +34,10 @@ public class ModelFacts {
     private DataExportBuilder outflowConnectionFacts;
     private DataExportBuilder portUriVariableFacts;
     private DataExportBuilder portLogFacts;
+    private DataExportBuilder logTemplateVariableFacts;
     private Long nextLogId = 1L;
+   private Long nextLogTemplateVariableId = 1L;
+
 
     public ModelFacts(QueryEngine queryEngine, Model model) throws IOException {
 
@@ -60,6 +63,7 @@ public class ModelFacts {
         this.outflowConnectionFacts = DataExportBuilder.create(queryEngine, "outflow_connects_to_channel", "port_id", "channel_id");
         this.portUriVariableFacts = DataExportBuilder.create(queryEngine, "uri_variable", "uri_variable_id", "variable_name", "port_id");
         this.portLogFacts = DataExportBuilder.create(queryEngine, "log_template", "log_template_id", "port_id", "entry_template", "log_annotation_id");
+        this.logTemplateVariableFacts = DataExportBuilder.create(queryEngine, "log_template_variable", "log_variable_id", "variable_name", "log_template_id");
     }
 
     public ModelFacts build() throws IOException {
@@ -94,7 +98,8 @@ public class ModelFacts {
         facts.put(outflowConnectionFacts.name, outflowConnectionFacts.toString());
         facts.put(portUriVariableFacts.name, portUriVariableFacts.toString());
         facts.put(portLogFacts.name, portLogFacts.toString());
-        
+        facts.put(logTemplateVariableFacts.name, logTemplateVariableFacts.toString());
+
         return this;
     }
 
@@ -141,8 +146,7 @@ public class ModelFacts {
             } else {
                 portConnectionFacts.addRow(channel.sourcePort.id, channel.id);
             }
-            
-            
+                        
             if (channel.sinkProgram == null) {
                 outflowConnectionFacts.addRow(channel.sinkPort.id, channel.id);
             } else {
@@ -188,7 +192,7 @@ public class ModelFacts {
             if (port.uriTemplate != null) {
                 portUriFacts.addRow(port.id, port.uriTemplate.toString());
                 Set<String> uniqueVariableNames = new HashSet<String>();
-                for (UriVariable variable : port.uriTemplate.variables) {
+                for (TemplateVariable variable : port.uriTemplate.variables) {
                     if (! variable.name.trim().isEmpty()) {
                         if (!uniqueVariableNames.contains(variable.name)) {
                             uniqueVariableNames.add(variable.name);
@@ -202,6 +206,10 @@ public class ModelFacts {
                 for (Log logAnnotation : ((Out)(port.flowAnnotation)).logAnnotations()) {
                     Long logTemplateId = nextLogId++;
                     portLogFacts.addRow(logTemplateId, port.id, logAnnotation.value(), logAnnotation.id);
+                    for (TemplateVariable variable : logAnnotation.entryTemplate.variables) {
+                        Long templateVariableId = this.nextLogTemplateVariableId++;
+                        logTemplateVariableFacts.addRow(templateVariableId, variable.name, logTemplateId);
+                    }
                 }
             }
             

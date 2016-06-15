@@ -10,7 +10,7 @@ import java.util.Map;
 
 import org.yesworkflow.annotations.In;
 import org.yesworkflow.data.UriTemplate;
-import org.yesworkflow.data.UriVariable;
+import org.yesworkflow.data.TemplateVariable;
 import org.yesworkflow.model.Data;
 import org.yesworkflow.model.Function;
 import org.yesworkflow.model.Port;
@@ -121,7 +121,7 @@ public class ReconFacts {
 
     private void buildUriVariableValueFacts(UriTemplate uriTemplate, Resource resource) throws Exception {
         Map<String,String> variableValues = uriTemplate.extractValuesFromPath(resource.uri);
-        for (UriVariable variable : uriTemplate.variables) {
+        for (TemplateVariable variable : uriTemplate.variables) {
             String variableValue = variableValues.get(variable.name);
             uriVariableValueFacts.addRow(resource.id, variable.id, variableValue);
         }

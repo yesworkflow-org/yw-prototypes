@@ -3,17 +3,21 @@ package org.yesworkflow.annotations;
 import java.util.StringTokenizer;
 
 import org.yesworkflow.YWKeywords;
+import org.yesworkflow.data.LogEntryTemplate;
 
 public class Log extends Qualification {
+    
+    public final LogEntryTemplate entryTemplate;
     
     public Log(Long id, Long sourceId, Long lineNumber, String comment, Out primaryAnnotation) throws Exception {
         super(id, sourceId, lineNumber, comment, YWKeywords.Tag.LOG, primaryAnnotation);
         StringTokenizer commentTokens = new StringTokenizer(comment);
         commentTokens.nextToken();
-        value = buildTemplate(commentTokens);
+        value = buildTemplateString(commentTokens);
+        entryTemplate = new LogEntryTemplate(value);
     }
 
-    private String buildTemplate(StringTokenizer commentTokens) {
+    private String buildTemplateString(StringTokenizer commentTokens) {
         StringBuilder templateBuilder = new StringBuilder();
         while (commentTokens.hasMoreTokens()) {
             templateBuilder.append(' ').append(commentTokens.nextToken());

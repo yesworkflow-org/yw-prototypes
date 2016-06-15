@@ -10,51 +10,37 @@ import java.util.regex.Pattern;
 
 import org.yesworkflow.util.FileIO;
 
-/**
- * <p> This class represents a URI template that can be matched
- * directly against other URI templates without expanding 
- * either template to a concrete URI.  Two URI templates match
- * if the path portions are identical other than the names
- * given to variables in the template.  I.e., for two templates to match,
- * the <i>positions</i> of the variables in the templates must match, 
- * but the <i>names</i> of the 
- * variables need not match.  Variable names also may be completely left 
- * out the templates, with variable positions represented by empty 
- * pairs of curly braces. </p>
- * 
- * This file is derived from UriTemplate.java in the org.restflow.data package
- * as of 28Apr2015.
- */
-public class UriTemplate extends UriBase {
+public class LogEntryTemplate {
 
-    private static Integer nextUriVariableId = 1;
+    private static Integer nextVariableId = 1;
     
 	///////////////////////////////////////////////////////////////////
 	////                    private data fields                    ////
 
-	public final String reducedPath;       // Fully reduced, directly matchable representation of the URI template
-	public final Path leadingPath;         // Portion of path preceding any path element that contains variables
-	public final TemplateVariable[] variables;  // Array of uri variables named in the URI template in order of their first appearnce
-    public final TemplateVariable[] instances;   // Array of references to URI variables in order of each occurrence in the template
-	public final String[] fragments;       // Array of strings representing non-variable portions of the template path
+    public final String template;
+    public final String reducedPath;           // Fully reduced, directly matchable representation of the template
+	public final Path leadingPath;             // Portion of path preceding any path element that contains variables
+	public final TemplateVariable[] variables; // Array of uri variables named in the template in order of their first appearnce
+    public final TemplateVariable[] instances; // Array of references to variables in order of each occurrence in the template
+	public final String[] fragments;           // Array of strings representing non-variable portions of the template path
 	
 	///////////////////////////////////////////////////////////////////
 	////                     public constructors                   ////
 
 	/**
-	 * Creates a new MatchableUriTemplate object.
+	 * Creates a new MatchableTemplate object.
 	 * 
-	 * @param template	A string representation of the full URI template to construct.
+	 * @param template	A string representation of the full template to construct.
 	 */
-	public UriTemplate(String template) {
+	public LogEntryTemplate(String template) {
 
-		super(template, true);
-
+	    this.template = template;
+	    
 		// store a reduced version of the path with the variable names deleted
 		// and extract the variable names and fixed portions of the template path
 		List<String> variableNames = new LinkedList<String>();
 		List<String> constantFragments = new LinkedList<String>();
-		reducedPath = reduceTemplateAndExtractVariables(path, variableNames, constantFragments);
+		reducedPath = reduceTemplateAndExtractVariables(template, variableNames, constantFragments);
 		instances = new TemplateVariable[variableNames.size()];
 		Map<String,TemplateVariable> uriVariableForName = new LinkedHashMap<String,TemplateVariable>();
 		int position = 0;
@@ -62,7 +48,7 @@ public class UriTemplate extends UriBase {
 		    TemplateVariable uriVariable = uriVariableForName.get(name);
 		    if (!name.isEmpty()) {
     		    if (uriVariable == null) {
-    		        uriVariable = new TemplateVariable(nextUriVariableId++, name);
+    		        uriVariable = new TemplateVariable(nextVariableId++, name);
     		        uriVariableForName.put(name, uriVariable);
     		    }
 		    }
@@ -88,7 +74,7 @@ public class UriTemplate extends UriBase {
 		    if (lastSlashInFirstFragment == -1) {
 		        leadingPathString = "";
 		    } else {
-		        leadingPathString = path.substring(0, lastSlashInFirstFragment);		        
+		        leadingPathString = template.substring(0, lastSlashInFirstFragment);		        
 		    }
 		}
 		
@@ -157,7 +143,7 @@ public class UriTemplate extends UriBase {
 	 * @param otherTemplate The URI template to compare reduced path against.
 	 * @return true if the reduced paths of the two templates are identical, otherwise false
 	 */
-	public boolean matches(UriTemplate otherTemplate) {
+	public boolean matches(LogEntryTemplate otherTemplate) {
 		return this.reducedPath.equals(otherTemplate.reducedPath);
 	}
 	
@@ -188,8 +174,8 @@ public class UriTemplate extends UriBase {
 			// get the next variable name and make sure it isn't an empty string
 			String name = variables[i].name;
 			if (name.isEmpty()) {
-				throw new Exception("Cannot expand a URI template with missing variable names: " 
-						+ expression);
+				throw new Exception("Cannot expand a template with missing variable names: " 
+						+ template);
 			}
 			
 			// look up the variable value in the value map and make sure there is one
@@ -266,5 +252,21 @@ public class UriTemplate extends UriBase {
 		
 		// return the reduced path
 		return reducedPathBuffer.toString();
-	}	
+	}
+	
+	public static String encodeString(String unescapedString) {
+        
+        StringBuffer escapedString = new StringBuffer(unescapedString);
+        
+        for (int index = 0; index < escapedString.length(); index++) {
+            Character c = escapedString.charAt(index);
+            if ((!Character.isLetterOrDigit(c)) && (c != '-') && (c != '.') && (c != '_') && (c != '~')) {
+                String hexCode = String.format("%02x", (int)c);
+                escapedString.replace(index, index+1, "%" + hexCode);
+                index += hexCode.length();
+            }
+        }
+        
+        return escapedString.toString();
+	}
 }

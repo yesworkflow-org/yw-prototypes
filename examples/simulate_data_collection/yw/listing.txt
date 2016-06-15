@@ -16,8 +16,8 @@ Workflow for collecting diffraction data from high quality crystals in a cassett
 @param cassette_id
 @param sample_score_cutoff
 @out run_log
-@log '{19:timestamp} Processing samples in cassette {cassette_id}'
-@log 'Sample quality cutoff: {sample_score_cutoff}'
+@log {timestamp} Processing samples in cassette {cassette_id}
+@log Sample quality cutoff: {sample_score_cutoff}
 @end initialize_run
 @begin load_screening_results @desc Load sample information from spreadsheet.
 @param cassette_id
@@ -25,7 +25,7 @@ Workflow for collecting diffraction data from high quality crystals in a cassett
 @out sample_name
 @out sample_quality
 @out run_log
-@log '{19:timestamp} Sample {sample_id} had score of {sample_quality}'
+@log {timestamp} Sample {sample_id} had score of {sample_quality}
 @end load_screening_results
 @begin calculate_strategy @desc Reject unsuitable crystals and compute \n best data sets to collect for accepted crystals.
 @param sample_score_cutoff
@@ -41,7 +41,7 @@ Workflow for collecting diffraction data from high quality crystals in a cassett
 @param cassette_id
 @in rejected_sample
 @out rejection_log @uri file:run/rejected_samples.txt
-@log 'Rejected sample {rejected_sample} in cassette {cassette_id}}'
+@log Rejected sample {rejected_sample} in cassette {cassette_id}
 @end log_rejected_sample
 @begin collect_data_set @desc Collect data set using the given data collection parameters.
 @call collect_next_image
@@ -56,8 +56,8 @@ Workflow for collecting diffraction data from high quality crystals in a cassett
 @uri file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw
 @as raw_image
 @out run_log
-@log {19:timestamp} Collecting data set for sample {sample_id}
-@log {19:timestamp} Collecting image {raw_image_path.uri}
+@log {timestamp} Collecting data set for sample {sample_id}
+@log {timestamp} Collecting image {raw_image_path.uri}
 @end collect_data_set
 @begin transform_images @desc Correct raw image using the detector calibration image.
 @call transform_image
@@ -71,7 +71,7 @@ Workflow for collecting diffraction data from high quality crystals in a cassett
 @out total_intensity
 @out pixel_count
 @out run_log
-@log '{19:timestamp} Wrote transformed image {corrected_image.uri}'
+@log {timestamp} Wrote transformed image {corrected_image.uri}
 @end transform_images
 @begin log_average_image_intensity @desc Record statistics about each diffraction image.
 @param cassette_id
