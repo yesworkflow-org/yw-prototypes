@@ -252,13 +252,20 @@ public class DefaultExtractor implements Extractor {
     }
 
     private void writeTextsToFilesOrStdout(String path, Map<String,String> texts) throws IOException {
-        PrintStream stream = (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
-                             this.stdoutStream : new PrintStream(path);
-        for (Map.Entry<String, String> entry : texts.entrySet()) {
-            stream.print(entry.getValue());            
-        }
-        
-        if (stream != this.stdoutStream) {
+    
+        if (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) {
+            for (Map.Entry<String, String> entry : texts.entrySet()) {
+                this.stdoutStream.print(entry.getValue());            
+            }
+        } else if (queryEngine == QueryEngine.CSV) {
+             for (Map.Entry<String, String> entry : texts.entrySet()) {
+                writeTextToFileOrStdout(path + "_" + entry.getKey() + ".csv", entry.getValue());            
+            }
+        } else {
+            PrintStream stream = new PrintStream(path);
+            for (Map.Entry<String, String> entry : texts.entrySet()) {
+                stream.print(entry.getValue());            
+            }
             stream.close();
         }
     }

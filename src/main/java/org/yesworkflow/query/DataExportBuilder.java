@@ -25,7 +25,6 @@ public abstract class DataExportBuilder {
         }
         
         QueryEngineModel qem = null;
-        DataExportBuilder deb = null;
         
         switch(engine) {
             

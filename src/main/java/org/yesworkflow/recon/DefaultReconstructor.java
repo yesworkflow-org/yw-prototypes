@@ -121,22 +121,22 @@ public class DefaultReconstructor implements Reconstructor  {
     }
     
     private void writeTextsToFilesOrStdout(String path, Map<String,String> texts) throws IOException {
-        PrintStream stream = (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
-                             this.stdoutStream : new PrintStream(path);
-        for (Map.Entry<String, String> entry : texts.entrySet()) {
-            stream.print(entry.getValue());            
-        }
         
-        if (stream != this.stdoutStream) {
-            stream.close();
-        }
-    }
-
-    private void writeTextToFileOrStdout(String path, String text) throws IOException {  
-        PrintStream stream = (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
-                             this.stdoutStream : new PrintStream(path);
-        stream.print(text);
-        if (stream != this.stdoutStream) {
+        if (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) {
+            for (Map.Entry<String, String> entry : texts.entrySet()) {
+                this.stdoutStream.print(entry.getValue());            
+            }
+        } else if (queryEngine == QueryEngine.CSV) {
+             for (Map.Entry<String, String> entry : texts.entrySet()) {
+                PrintStream stream = new PrintStream(path + "_" + entry.getKey() + ".csv");
+                stream.print(entry.getValue());
+                stream.close();
+            }
+        } else {
+            PrintStream stream = new PrintStream(path);
+            for (Map.Entry<String, String> entry : texts.entrySet()) {
+                stream.print(entry.getValue());            
+            }
             stream.close();
         }
     }
