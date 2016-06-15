@@ -26,6 +26,7 @@ import org.yesworkflow.annotations.Desc;
 import org.yesworkflow.annotations.End;
 import org.yesworkflow.annotations.FileUri;
 import org.yesworkflow.annotations.In;
+import org.yesworkflow.annotations.Log;
 import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Param;
 import org.yesworkflow.annotations.Qualification;
@@ -317,6 +318,8 @@ public class DefaultExtractor implements Extractor {
                     case FILE:      annotation = new FileUri(id, sourceId, lineNumber, annotationString, primaryAnnotation);
                                     break;
                     case IN:        annotation = new In(id, sourceId, lineNumber, annotationString);
+                                    break;
+                    case LOG:       annotation = new Log(id, sourceId, lineNumber, annotationString, (Out) primaryAnnotation);
                                     break;
                     case OUT:       annotation = new Out(id, sourceId, lineNumber, annotationString);
                                     break;
