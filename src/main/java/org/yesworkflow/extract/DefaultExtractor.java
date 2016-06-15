@@ -36,7 +36,6 @@ import org.yesworkflow.db.Table;
 import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.query.QueryEngine;
-import org.yesworkflow.query.QueryEngineModel;
 
 import static org.yesworkflow.db.Table.*;
 import static org.yesworkflow.db.Column.*;
@@ -151,9 +150,9 @@ public class DefaultExtractor implements Extractor {
     }
 	
 	@Override
-    public String getFacts(QueryEngineModel queryEngineModel) {
+    public String getFacts() {
         if (extractFacts == null) {
-            extractFacts = new ExtractFacts(ywdb, queryEngineModel, allAnnotations).build().toString();
+            extractFacts = new ExtractFacts(ywdb, this.queryEngine, allAnnotations).build().toString();
         }
         return extractFacts;
     }	
@@ -170,9 +169,8 @@ public class DefaultExtractor implements Extractor {
             stderrStream.println("WARNING: No YW comments found in source code.");
         }
 
-        if (factsFile != null) {
-            QueryEngineModel queryEngineModel = new QueryEngineModel(queryEngine);
-            writeTextToFileOrStdout(factsFile, getFacts(queryEngineModel));
+        if (factsFile != null) {;
+            writeTextToFileOrStdout(factsFile, getFacts());
         }
         
         return this;

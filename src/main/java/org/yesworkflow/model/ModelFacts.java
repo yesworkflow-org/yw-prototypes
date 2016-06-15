@@ -5,9 +5,8 @@ import java.util.Set;
 
 import org.yesworkflow.annotations.In;
 import org.yesworkflow.data.UriVariable;
-import org.yesworkflow.query.FactsBuilder;
+import org.yesworkflow.query.DataExportBuilder;
 import org.yesworkflow.query.QueryEngine;
-import org.yesworkflow.query.QueryEngineModel;
 
 public class ModelFacts {
 
@@ -15,21 +14,21 @@ public class ModelFacts {
     private String factsString = null;
     
     
-    private FactsBuilder programFacts ;
-    private FactsBuilder workflowFacts;
-    private FactsBuilder functionFacts;
-    private FactsBuilder subprogramFacts;
-    private FactsBuilder portFacts;
-    private FactsBuilder portAliasFacts;
-    private FactsBuilder portUriFacts;
-    private FactsBuilder hasInPortFacts;
-    private FactsBuilder hasOutPortFacts;
-    private FactsBuilder channelFacts;
-    private FactsBuilder dataFacts;
-    private FactsBuilder portConnectionFacts;
-    private FactsBuilder inflowConnectionFacts;
-    private FactsBuilder outflowConnectionFacts;
-    private FactsBuilder portUriVariableFacts;
+    private DataExportBuilder programFacts ;
+    private DataExportBuilder workflowFacts;
+    private DataExportBuilder functionFacts;
+    private DataExportBuilder subprogramFacts;
+    private DataExportBuilder portFacts;
+    private DataExportBuilder portAliasFacts;
+    private DataExportBuilder portUriFacts;
+    private DataExportBuilder hasInPortFacts;
+    private DataExportBuilder hasOutPortFacts;
+    private DataExportBuilder channelFacts;
+    private DataExportBuilder dataFacts;
+    private DataExportBuilder portConnectionFacts;
+    private DataExportBuilder inflowConnectionFacts;
+    private DataExportBuilder outflowConnectionFacts;
+    private DataExportBuilder portUriVariableFacts;
 
     public ModelFacts(QueryEngine queryEngine, Model model) {
 
@@ -39,23 +38,21 @@ public class ModelFacts {
         
         this.model = model;
 
-        QueryEngineModel queryEngineModel = new QueryEngineModel(queryEngine);
-
-        this.programFacts  = new FactsBuilder(queryEngineModel, "program", "program_id", "program_name", "qualified_program_name", "begin_annotation_id", "end_annotation_id");
-        this.workflowFacts = new FactsBuilder(queryEngineModel, "workflow", "program_id");
-        this.functionFacts = new FactsBuilder(queryEngineModel, "function", "program_id");
-        this.subprogramFacts = new FactsBuilder(queryEngineModel, "has_subprogram", "program_id", "subprogram_id");
-        this.portFacts = new FactsBuilder(queryEngineModel, "port", "port_id", "port_type", "port_name", "qualified_port_name", "port_annotation_id", "data_id");
-        this.portAliasFacts = new FactsBuilder(queryEngineModel, "port_alias", "port_id", "alias");
-        this.portUriFacts = new FactsBuilder(queryEngineModel, "port_uri_template", "port_id", "uri");
-        this.hasInPortFacts = new FactsBuilder(queryEngineModel, "has_in_port", "block_id", "port_id");
-        this.hasOutPortFacts = new FactsBuilder(queryEngineModel, "has_out_port", "block_id", "port_id");
-        this.channelFacts = new FactsBuilder(queryEngineModel, "channel", "channel_id", "data_id");
-        this.dataFacts = new FactsBuilder(queryEngineModel, "data", "data_id", "data_name", "qualified_data_name");
-        this.portConnectionFacts = new FactsBuilder(queryEngineModel, "port_connects_to_channel", "port_id", "channel_id");
-        this.inflowConnectionFacts = new FactsBuilder(queryEngineModel, "inflow_connects_to_channel", "port_id", "channel_id");
-        this.outflowConnectionFacts = new FactsBuilder(queryEngineModel, "outflow_connects_to_channel", "port_id", "channel_id");
-        this.portUriVariableFacts = new FactsBuilder(queryEngineModel, "uri_variable", "uri_variable_id", "variable_name", "port_id");
+        this.programFacts  = DataExportBuilder.create(queryEngine, "program", "program_id", "program_name", "qualified_program_name", "begin_annotation_id", "end_annotation_id");
+        this.workflowFacts = DataExportBuilder.create(queryEngine, "workflow", "program_id");
+        this.functionFacts = DataExportBuilder.create(queryEngine, "function", "program_id");
+        this.subprogramFacts = DataExportBuilder.create(queryEngine, "has_subprogram", "program_id", "subprogram_id");
+        this.portFacts = DataExportBuilder.create(queryEngine, "port", "port_id", "port_type", "port_name", "qualified_port_name", "port_annotation_id", "data_id");
+        this.portAliasFacts = DataExportBuilder.create(queryEngine, "port_alias", "port_id", "alias");
+        this.portUriFacts = DataExportBuilder.create(queryEngine, "port_uri_template", "port_id", "uri");
+        this.hasInPortFacts = DataExportBuilder.create(queryEngine, "has_in_port", "block_id", "port_id");
+        this.hasOutPortFacts = DataExportBuilder.create(queryEngine, "has_out_port", "block_id", "port_id");
+        this.channelFacts = DataExportBuilder.create(queryEngine, "channel", "channel_id", "data_id");
+        this.dataFacts = DataExportBuilder.create(queryEngine, "data", "data_id", "data_name", "qualified_data_name");
+        this.portConnectionFacts = DataExportBuilder.create(queryEngine, "port_connects_to_channel", "port_id", "channel_id");
+        this.inflowConnectionFacts = DataExportBuilder.create(queryEngine, "inflow_connects_to_channel", "port_id", "channel_id");
+        this.outflowConnectionFacts = DataExportBuilder.create(queryEngine, "outflow_connects_to_channel", "port_id", "channel_id");
+        this.portUriVariableFacts = DataExportBuilder.create(queryEngine, "uri_variable", "uri_variable_id", "variable_name", "port_id");
     }
 
     public ModelFacts build() {
@@ -65,7 +62,7 @@ public class ModelFacts {
 
         for (Data data : model.data) {
             String qualifiedDataName = qualifiedName("", "[", data.name, "]");
-            dataFacts.add(data.id, data.name, qualifiedDataName);
+            dataFacts.addRow(data.id, data.name, qualifiedDataName);
         }
 
         buildProgramFactsRecursively(model.program, null, null);
@@ -104,23 +101,23 @@ public class ModelFacts {
         if (program.functions == null) throw new IllegalArgumentException("Null functions field in program argument.");
         
         String qualifiedProgramName = qualifiedName(parentName, ".", program.beginAnnotation.value(), "");
-        programFacts.add(program.id, program.beginAnnotation.value(), qualifiedProgramName, program.beginAnnotation.id, program.endAnnotation.id);
+        programFacts.addRow(program.id, program.beginAnnotation.value(), qualifiedProgramName, program.beginAnnotation.id, program.endAnnotation.id);
         
         if (program.channels.length > 0) {
-            workflowFacts.add(program.id);
+            workflowFacts.addRow(program.id);
         }
         
         if (program instanceof Function) {            
-            functionFacts.add(program.id);
+            functionFacts.addRow(program.id);
         }
         
         if (parentId != null) {
-            subprogramFacts.add(parentId, program.id);
+            subprogramFacts.addRow(parentId, program.id);
         }
         
         for (Data data : program.data) {
             String qualifiedDataName = qualifiedName(qualifiedProgramName, "[", data.name, "]");
-            dataFacts.add(data.id, data.name, qualifiedDataName);
+            dataFacts.addRow(data.id, data.name, qualifiedDataName);
         }
         
         buildPortFacts(program.inPorts, program, program.id, qualifiedProgramName);
@@ -132,19 +129,19 @@ public class ModelFacts {
             if (channel.sinkPort == null) throw new NullPointerException("Null sinkPort field in channel.");
             if (channel.sourcePort.flowAnnotation == null) throw new NullPointerException("Null flowAnnotation field in sourcePort.");
 
-            channelFacts.add(channel.id, channel.data.id);
+            channelFacts.addRow(channel.id, channel.data.id);
             
             if (channel.sourceProgram == null) {
-                inflowConnectionFacts.add(channel.sourcePort.id, channel.id);
+                inflowConnectionFacts.addRow(channel.sourcePort.id, channel.id);
             } else {
-                portConnectionFacts.add(channel.sourcePort.id, channel.id);
+                portConnectionFacts.addRow(channel.sourcePort.id, channel.id);
             }
             
             
             if (channel.sinkProgram == null) {
-                outflowConnectionFacts.add(channel.sinkPort.id, channel.id);
+                outflowConnectionFacts.addRow(channel.sinkPort.id, channel.id);
             } else {
-                portConnectionFacts.add(channel.sinkPort.id, channel.id);
+                portConnectionFacts.addRow(channel.sinkPort.id, channel.id);
             }
         }
         
@@ -176,30 +173,30 @@ public class ModelFacts {
             String portType = port.flowAnnotation.keyword.substring(1);
             String infix = (port.flowAnnotation instanceof In) ? "<-" : "->";
             String qualifiedPortName = qualifiedName(programName, infix, portName, "");
-            portFacts.add(port.id, portType, portName, qualifiedPortName, port.flowAnnotation.id, port.data.id);
+            portFacts.addRow(port.id, portType, portName, qualifiedPortName, port.flowAnnotation.id, port.data.id);
 
             String portAlias = port.flowAnnotation.alias();
             if (portAlias != null) {
-                portAliasFacts.add(port.id, portAlias);
+                portAliasFacts.addRow(port.id, portAlias);
             }
             
             if (port.uriTemplate != null) {
-                portUriFacts.add(port.id, port.uriTemplate.toString());
+                portUriFacts.addRow(port.id, port.uriTemplate.toString());
                 Set<String> uniqueVariableNames = new HashSet<String>();
                 for (UriVariable variable : port.uriTemplate.variables) {
                     if (! variable.name.trim().isEmpty()) {
                         if (!uniqueVariableNames.contains(variable.name)) {
                             uniqueVariableNames.add(variable.name);
-                            portUriVariableFacts.add(variable.id, variable.name, port.id);
+                            portUriVariableFacts.addRow(variable.id, variable.name, port.id);
                         }
                     }
                 }
             }
             
             if (portType.equalsIgnoreCase("in") || portType.equalsIgnoreCase("param")) {
-                hasInPortFacts.add(blockId, port.id);
+                hasInPortFacts.addRow(blockId, port.id);
             } else {
-                hasOutPortFacts.add(blockId, port.id);
+                hasOutPortFacts.addRow(blockId, port.id);
             }
         }
     }

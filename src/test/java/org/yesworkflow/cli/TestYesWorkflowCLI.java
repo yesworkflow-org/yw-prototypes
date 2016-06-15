@@ -16,7 +16,7 @@ import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
-import org.yesworkflow.query.QueryEngineModel;
+import org.yesworkflow.query.QueryEngine;
 import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestYesWorkflowCLI extends YesWorkflowTestCase {
@@ -426,7 +426,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         @Override public Extractor configure(Map<String, Object> config) throws Exception { return this; }
         @Override public Extractor configure(String key, Object value) throws Exception { return this; }
         @Override public Extractor reader(Reader reader) { return this; }
-        @Override public String getFacts(QueryEngineModel qem) { return null; }
+        @Override public String getFacts() { return null; }
         @Override public String getSkeleton() { return null; }
+        public Extractor queryEngine(QueryEngine ge) { return null; }
     }
 }

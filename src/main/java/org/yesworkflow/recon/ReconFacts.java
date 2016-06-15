@@ -13,9 +13,8 @@ import org.yesworkflow.model.Data;
 import org.yesworkflow.model.Function;
 import org.yesworkflow.model.Port;
 import org.yesworkflow.model.Program;
-import org.yesworkflow.query.FactsBuilder;
+import org.yesworkflow.query.DataExportBuilder;
 import org.yesworkflow.query.QueryEngine;
-import org.yesworkflow.query.QueryEngineModel;
 import org.yesworkflow.recon.ResourceFinder.ResourceRole;
 import org.yesworkflow.util.FileIO;
 
@@ -25,23 +24,23 @@ public class ReconFacts {
     private String factsString = null;
     private Integer nextResourceId = 1;
     
-    private FactsBuilder resourceFacts;
-    private FactsBuilder dataResourceFacts;
-    private FactsBuilder uriVariableValueFacts;
+    private DataExportBuilder resourceFacts;
+    private DataExportBuilder dataResourceFacts;
+    private DataExportBuilder uriVariableValueFacts;
     private Map<String,Resource> resourceForUri = new HashMap<String,Resource>();
 
     private ResourceFinder resourceFinder;
     
     public ReconFacts(QueryEngine queryEngine, Run run, ResourceFinder resourceFinder) {
+        
         if (queryEngine == null) throw new IllegalArgumentException("Null logicLanguage argument passed to ReconFacts constructor.");
         if (run == null) throw new IllegalArgumentException("Null run argument passed to ReconFacts constructor.");
         if (run.model == null) throw new IllegalArgumentException("Null model field in run argument to passed to ReconFacts constructor.");
         this.run = run;
-        QueryEngineModel queryEngineModel = new QueryEngineModel(queryEngine);
 
-        this.resourceFacts  = new FactsBuilder(queryEngineModel, "resource", "resource_id", "resource_uri");
-        this.dataResourceFacts = new FactsBuilder(queryEngineModel, "data_resource", "data_id", "resource_id");
-        this.uriVariableValueFacts  = new FactsBuilder(queryEngineModel, "uri_variable_value", "resource_id", "uri_variable_id", "uri_variable_value");
+        this.resourceFacts  = DataExportBuilder.create(queryEngine, "resource", "resource_id", "resource_uri");
+        this.dataResourceFacts = DataExportBuilder.create(queryEngine, "data_resource", "data_id", "resource_id");
+        this.uriVariableValueFacts = DataExportBuilder.create(queryEngine, "uri_variable_value", "resource_id", "uri_variable_id", "uri_variable_value");
 
         this.resourceFinder = resourceFinder;
     }
@@ -114,9 +113,9 @@ public class ReconFacts {
         if (resource == null) {
             resource = new Resource(nextResourceId++, uri.toString());
             resourceForUri.put(uri, resource);
-            resourceFacts.add(resource.id, FileIO.normalizePathSeparator(uri));
+            resourceFacts.addRow(resource.id, FileIO.normalizePathSeparator(uri));
         }
-        dataResourceFacts.add(data.id, resource.id);
+        dataResourceFacts.addRow(data.id, resource.id);
         return resource;
     }
 
@@ -124,7 +123,7 @@ public class ReconFacts {
         Map<String,String> variableValues = uriTemplate.extractValuesFromPath(resource.uri);
         for (UriVariable variable : uriTemplate.variables) {
             String variableValue = variableValues.get(variable.name);
-            uriVariableValueFacts.add(resource.id, variable.id, variableValue);
+            uriVariableValueFacts.addRow(resource.id, variable.id, variableValue);
         }
     }
     

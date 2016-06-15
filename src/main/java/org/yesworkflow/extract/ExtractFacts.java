@@ -11,26 +11,26 @@ import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.annotations.Qualification;
 import org.yesworkflow.db.Table;
 import org.yesworkflow.db.YesWorkflowDB;
-import org.yesworkflow.query.FactsBuilder;
-import org.yesworkflow.query.QueryEngineModel;
+import org.yesworkflow.query.DataExportBuilder;
+import org.yesworkflow.query.QueryEngine;
 
 public class ExtractFacts {
 
     private YesWorkflowDB ywdb;
     private final List<Annotation> annotations;
     private String factsString = null;
-    private FactsBuilder sourceFileFacts;
-    private FactsBuilder annotationFacts;
-    private FactsBuilder qualificationFacts;
+    private DataExportBuilder sourceFileFacts;
+    private DataExportBuilder annotationFacts;
+    private DataExportBuilder qualificationFacts;
 
-    public ExtractFacts(YesWorkflowDB ywdb, QueryEngineModel queryEngineModel, List<Annotation> annotations) {
+    public ExtractFacts(YesWorkflowDB ywdb, QueryEngine queryEngine, List<Annotation> annotations) {
         
         this.ywdb = ywdb;
         this.annotations = annotations;
         
-        this.sourceFileFacts  = new FactsBuilder(queryEngineModel, "extract_source", "source_id", "source_path");
-        this.annotationFacts  = new FactsBuilder(queryEngineModel, "annotation", "annotation_id", "source_id", "line_number", "tag", "keyword", "value");
-        this.qualificationFacts = new FactsBuilder(queryEngineModel, "annotation_qualifies", "qualifying_annotation_id", "primary_annotation_id");
+        this.sourceFileFacts  = DataExportBuilder.create(queryEngine, "extract_source", "source_id", "source_path");
+        this.annotationFacts  = DataExportBuilder.create(queryEngine, "annotation", "annotation_id", "source_id", "line_number", "tag", "keyword", "value");
+        this.qualificationFacts = DataExportBuilder.create(queryEngine, "annotation_qualifies", "qualifying_annotation_id", "primary_annotation_id");
     }
 
     public ExtractFacts build() {
@@ -63,7 +63,7 @@ public class ExtractFacts {
             long id = ywdb.getLongValue(record, ID);
             String path = (String)record.getValue(PATH);
             if (path == null) path = "";
-            sourceFileFacts.add(id, path);
+            sourceFileFacts.addRow(id, path);
         }
     }
     
@@ -71,7 +71,7 @@ public class ExtractFacts {
         
         for (Annotation annotation : annotations) {   
             
-            annotationFacts.add(
+            annotationFacts.addRow(
                     annotation.id, 
                     annotation.sourceId, 
                     annotation.lineNumber, 
@@ -81,7 +81,7 @@ public class ExtractFacts {
             );
             
             if (annotation instanceof Qualification) {
-                qualificationFacts.add(
+                qualificationFacts.addRow(
                         annotation.id, 
                         ((Qualification)annotation).primaryAnnotation.id
                 );
