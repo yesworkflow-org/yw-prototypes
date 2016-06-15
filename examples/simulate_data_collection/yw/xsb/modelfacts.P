@@ -365,3 +365,13 @@ uri_variable(6, 'frame_number', 36).
 uri_variable(7, 'sample_id', 43).
 uri_variable(8, 'energy', 43).
 uri_variable(9, 'frame_number', 43).
+
+% FACT: log_template(log_template_id, port_id, entry_template, log_annotation_id).
+log_template(1, 12, ''{19:timestamp} Processing samples in cassette {cassette_id}'', 29).
+log_template(2, 12, ''Sample quality cutoff: {sample_score_cutoff}'', 30).
+log_template(3, 17, ''{19:timestamp} Sample {sample_id} had score of {sample_quality}'', 40).
+log_template(4, 28, ''Rejected sample {rejected_sample} in cassette {cassette_id}}'', 59).
+log_template(5, 37, '{19:timestamp} Collecting data set for sample {sample_id}', 79).
+log_template(6, 37, '{19:timestamp} Collecting image {raw_image_path.uri}', 80).
+log_template(7, 47, ''{19:timestamp} Wrote transformed image {corrected_image.uri}'', 98).
+log_template(8, 54, '{cassette_id},{sample_id},{energy},run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img', 110).

@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.yesworkflow.annotations.In;
+import org.yesworkflow.annotations.Log;
+import org.yesworkflow.annotations.Out;
 import org.yesworkflow.data.UriVariable;
 import org.yesworkflow.query.DataExportBuilder;
 import org.yesworkflow.query.QueryEngine;
@@ -31,6 +33,8 @@ public class ModelFacts {
     private DataExportBuilder inflowConnectionFacts;
     private DataExportBuilder outflowConnectionFacts;
     private DataExportBuilder portUriVariableFacts;
+    private DataExportBuilder portLogFacts;
+    private Long nextLogId = 1L;
 
     public ModelFacts(QueryEngine queryEngine, Model model) throws IOException {
 
@@ -55,6 +59,7 @@ public class ModelFacts {
         this.inflowConnectionFacts = DataExportBuilder.create(queryEngine, "inflow_connects_to_channel", "port_id", "channel_id");
         this.outflowConnectionFacts = DataExportBuilder.create(queryEngine, "outflow_connects_to_channel", "port_id", "channel_id");
         this.portUriVariableFacts = DataExportBuilder.create(queryEngine, "uri_variable", "uri_variable_id", "variable_name", "port_id");
+        this.portLogFacts = DataExportBuilder.create(queryEngine, "log_template", "log_template_id", "port_id", "entry_template", "log_annotation_id");
     }
 
     public ModelFacts build() throws IOException {
@@ -88,6 +93,7 @@ public class ModelFacts {
         facts.put(inflowConnectionFacts.name, inflowConnectionFacts.toString());
         facts.put(outflowConnectionFacts.name, outflowConnectionFacts.toString());
         facts.put(portUriVariableFacts.name, portUriVariableFacts.toString());
+        facts.put(portLogFacts.name, portLogFacts.toString());
         
         return this;
     }
@@ -189,6 +195,13 @@ public class ModelFacts {
                             portUriVariableFacts.addRow(variable.id, variable.name, port.id);
                         }
                     }
+                }
+            }
+            
+            if (port.flowAnnotation instanceof Out) {
+                for (Log logAnnotation : ((Out)(port.flowAnnotation)).logAnnotations()) {
+                    Long logTemplateId = nextLogId++;
+                    portLogFacts.addRow(logTemplateId, port.id, logAnnotation.value(), logAnnotation.id);
                 }
             }
             

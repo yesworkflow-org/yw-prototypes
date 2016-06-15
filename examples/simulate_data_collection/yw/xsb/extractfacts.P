@@ -31,8 +31,8 @@ annotation(25, 1, 31, 'desc', '@desc', 'Create run directory and initialize log 
 annotation(26, 1, 32, 'param', '@param', 'cassette_id').
 annotation(27, 1, 33, 'param', '@param', 'sample_score_cutoff').
 annotation(28, 1, 34, 'out', '@out', 'run_log').
-annotation(29, 1, 35, 'log', '@log', ''{19:timestamp}').
-annotation(30, 1, 36, 'log', '@log', ''Sample').
+annotation(29, 1, 35, 'log', '@log', ''{19:timestamp} Processing samples in cassette {cassette_id}'').
+annotation(30, 1, 36, 'log', '@log', ''Sample quality cutoff: {sample_score_cutoff}'').
 annotation(31, 1, 48, 'end', '@end', 'initialize_run').
 annotation(32, 1, 52, 'begin', '@begin', 'load_screening_results').
 annotation(33, 1, 52, 'desc', '@desc', 'Load sample information from spreadsheet.').
@@ -42,7 +42,7 @@ annotation(36, 1, 54, 'uri', '@uri', 'file:cassette_{cassette_id}_spreadsheet.cs
 annotation(37, 1, 55, 'out', '@out', 'sample_name').
 annotation(38, 1, 56, 'out', '@out', 'sample_quality').
 annotation(39, 1, 57, 'out', '@out', 'run_log').
-annotation(40, 1, 58, 'log', '@log', ''{19:timestamp}').
+annotation(40, 1, 58, 'log', '@log', ''{19:timestamp} Sample {sample_id} had score of {sample_quality}'').
 annotation(41, 1, 64, 'end', '@end', 'load_screening_results').
 annotation(42, 1, 68, 'begin', '@begin', 'calculate_strategy').
 annotation(43, 1, 68, 'desc', '@desc', 'Reject unsuitable crystals and compute \n best data sets to collect for accepted crystals.').
@@ -61,7 +61,7 @@ annotation(55, 1, 86, 'param', '@param', 'cassette_id').
 annotation(56, 1, 87, 'in', '@in', 'rejected_sample').
 annotation(57, 1, 88, 'out', '@out', 'rejection_log').
 annotation(58, 1, 88, 'uri', '@uri', 'file:run/rejected_samples.txt').
-annotation(59, 1, 89, 'log', '@log', ''Rejected').
+annotation(59, 1, 89, 'log', '@log', ''Rejected sample {rejected_sample} in cassette {cassette_id}}'').
 annotation(60, 1, 98, 'end', '@end', 'log_rejected_sample').
 annotation(61, 1, 102, 'begin', '@begin', 'collect_data_set').
 annotation(62, 1, 102, 'desc', '@desc', 'Collect data set using the given data collection parameters.').
@@ -81,8 +81,8 @@ annotation(75, 1, 111, 'desc', '@desc', 'Path of file storing the raw diffractio
 annotation(76, 1, 112, 'uri', '@uri', 'file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw').
 annotation(77, 1, 113, 'as', '@as', 'raw_image').
 annotation(78, 1, 114, 'out', '@out', 'run_log').
-annotation(79, 1, 115, 'log', '@log', ''{19:timestamp}').
-annotation(80, 1, 116, 'log', '@log', ''{19:timestamp}').
+annotation(79, 1, 115, 'log', '@log', '{19:timestamp} Collecting data set for sample {sample_id}').
+annotation(80, 1, 116, 'log', '@log', '{19:timestamp} Collecting image {raw_image_path.uri}').
 annotation(81, 1, 125, 'end', '@end', 'collect_data_set').
 annotation(82, 1, 129, 'begin', '@begin', 'transform_images').
 annotation(83, 1, 129, 'desc', '@desc', 'Correct raw image using the detector calibration image.').
@@ -100,7 +100,7 @@ annotation(94, 1, 137, 'out', '@out', 'corrected_image_path').
 annotation(95, 1, 138, 'out', '@out', 'total_intensity').
 annotation(96, 1, 139, 'out', '@out', 'pixel_count').
 annotation(97, 1, 140, 'out', '@out', 'run_log').
-annotation(98, 1, 141, 'log', '@log', ''{19:timestamp}').
+annotation(98, 1, 141, 'log', '@log', ''{19:timestamp} Wrote transformed image {corrected_image.uri}'').
 annotation(99, 1, 149, 'end', '@end', 'transform_images').
 annotation(100, 1, 153, 'begin', '@begin', 'log_average_image_intensity').
 annotation(101, 1, 153, 'desc', '@desc', 'Record statistics about each diffraction image.').

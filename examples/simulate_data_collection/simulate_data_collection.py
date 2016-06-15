@@ -112,8 +112,8 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
                                 @uri file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw
                                 @as raw_image
             @out run_log
-                @log '{19:timestamp} Collecting data set for sample {sample_id}'
-                @log '{19:timestamp} Collecting image {raw_image_path.uri}'
+                @log {19:timestamp} Collecting data set for sample {sample_id}
+                @log {19:timestamp} Collecting image {raw_image_path.uri}
             """
             run_log.write("Collecting data set for sample {0}".format(accepted_sample))
             sample_id = accepted_sample

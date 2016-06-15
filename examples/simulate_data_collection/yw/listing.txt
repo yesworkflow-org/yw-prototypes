@@ -56,8 +56,8 @@ Workflow for collecting diffraction data from high quality crystals in a cassett
 @uri file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw
 @as raw_image
 @out run_log
-@log '{19:timestamp} Collecting data set for sample {sample_id}'
-@log '{19:timestamp} Collecting image {raw_image_path.uri}'
+@log {19:timestamp} Collecting data set for sample {sample_id}
+@log {19:timestamp} Collecting image {raw_image_path.uri}
 @end collect_data_set
 @begin transform_images @desc Correct raw image using the detector calibration image.
 @call transform_image
