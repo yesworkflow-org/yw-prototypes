@@ -31,9 +31,8 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
     @begin initialize_run @desc Create run directory and initialize log files.
     @param cassette_id
     @param sample_score_cutoff
-    @out run_log
-        @log {timestamp} Processing samples in cassette {cassette_id}
-        @log Sample quality cutoff: {sample_score_cutoff}
+    @out run_log @log {timestamp} Processing samples in cassette {cassette_id}
+                 @log Sample quality cutoff: {sample_score_cutoff}
     """
     if not os.path.exists('run'):
         os.makedirs('run')
@@ -54,8 +53,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
         @in sample_spreadsheet  @uri file:cassette_{cassette_id}_spreadsheet.csv
         @out sample_name
         @out sample_quality
-        @out run_log
-            @log {timestamp} Sample {sample_id} had score of {sample_quality}
+        @out run_log @log {timestamp} Sample {sample_id} had score of {sample_quality}
         """
         sample_spreadsheet = 'cassette_{0}_spreadsheet.csv'.format(cassette_id)
         for sample_name, sample_quality in spreadsheet_rows(sample_spreadsheet):
@@ -85,8 +83,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
             @begin log_rejected_sample @desc Record which samples were rejected.
             @param cassette_id
             @in rejected_sample
-            @out rejection_log @uri file:run/rejected_samples.txt
-                @log Rejected sample {rejected_sample} in cassette {cassette_id}
+            @out rejection_log @uri file:run/rejected_samples.txt @log Rejected sample {rejected_sample} in cassette {cassette_id}
             """
             if (rejected_sample is not None):
                 run_log.write("Rejected sample {0}".format(rejected_sample))
@@ -111,9 +108,8 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
             @out raw_image_path @desc Path of file storing the raw diffraction image.
                                 @uri file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw
                                 @as raw_image
-            @out run_log
-                @log {timestamp} Collecting data set for sample {sample_id}
-                @log {timestamp} Collecting image {raw_image_path.uri}
+            @out run_log @log {timestamp} Collecting data set for sample {sample_id}
+                         @log {timestamp} Collecting image {raw_image_path}
             """
             run_log.write("Collecting data set for sample {0}".format(accepted_sample))
             sample_id = accepted_sample
@@ -137,8 +133,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
                 @out corrected_image_path
                 @out total_intensity
                 @out pixel_count
-                @out run_log
-                    @log {timestamp} Wrote transformed image {corrected_image.uri}
+                @out run_log @log {timestamp} Wrote transformed image {corrected_image_path}
                 """
                 corrected_image_path = 'run/data/{0}/{0}_{1}eV_{2:03d}.img'.format(
                                         sample_id, energy, frame_number)

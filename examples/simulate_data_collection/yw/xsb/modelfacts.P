@@ -372,8 +372,8 @@ log_template(2, 12, 'Sample quality cutoff: {sample_score_cutoff}', 30).
 log_template(3, 17, '{timestamp} Sample {sample_id} had score of {sample_quality}', 40).
 log_template(4, 28, 'Rejected sample {rejected_sample} in cassette {cassette_id}', 59).
 log_template(5, 37, '{timestamp} Collecting data set for sample {sample_id}', 79).
-log_template(6, 37, '{timestamp} Collecting image {raw_image_path.uri}', 80).
-log_template(7, 47, '{timestamp} Wrote transformed image {corrected_image.uri}', 98).
+log_template(6, 37, '{timestamp} Collecting image {raw_image_path}', 80).
+log_template(7, 47, '{timestamp} Wrote transformed image {corrected_image_path}', 98).
 log_template(8, 54, '{cassette_id},{sample_id},{energy},run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img', 110).
 
 % FACT: log_template_variable(log_variable_id, variable_name, log_template_id).
@@ -388,9 +388,9 @@ log_template_variable(8, 'cassette_id', 4).
 log_template_variable(9, 'timestamp', 5).
 log_template_variable(10, 'sample_id', 5).
 log_template_variable(11, 'timestamp', 6).
-log_template_variable(12, 'raw_image_path.uri', 6).
+log_template_variable(12, 'raw_image_path', 6).
 log_template_variable(13, 'timestamp', 7).
-log_template_variable(14, 'corrected_image.uri', 7).
+log_template_variable(14, 'corrected_image_path', 7).
 log_template_variable(15, 'cassette_id', 8).
 log_template_variable(16, 'sample_id', 8).
 log_template_variable(17, 'energy', 8).
