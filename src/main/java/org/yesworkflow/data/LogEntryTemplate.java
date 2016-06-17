@@ -18,9 +18,9 @@ public class LogEntryTemplate {
 	////                    private data fields                    ////
 
     public final String template;
-    public final String reducedPath;           // Fully reduced, directly matchable representation of the template
+    public final String reducedTemplate;           // Fully reduced, directly matchable representation of the template
 	public final Path leadingPath;             // Portion of path preceding any path element that contains variables
-	public final TemplateVariable[] variables; // Array of uri variables named in the template in order of their first appearnce
+	public final TemplateVariable[] variables; // Array of template variables in order of their first appearnce
     public final TemplateVariable[] instances; // Array of references to variables in order of each occurrence in the template
 	public final String[] fragments;           // Array of strings representing non-variable portions of the template path
 	
@@ -40,24 +40,24 @@ public class LogEntryTemplate {
 		// and extract the variable names and fixed portions of the template path
 		List<String> variableNames = new LinkedList<String>();
 		List<String> constantFragments = new LinkedList<String>();
-		reducedPath = reduceTemplateAndExtractVariables(template, variableNames, constantFragments);
+		reducedTemplate = reduceTemplateAndExtractVariables(template, variableNames, constantFragments);
 		instances = new TemplateVariable[variableNames.size()];
-		Map<String,TemplateVariable> uriVariableForName = new LinkedHashMap<String,TemplateVariable>();
+		Map<String,TemplateVariable> templateVariableForName = new LinkedHashMap<String,TemplateVariable>();
 		int position = 0;
 		for (String name : variableNames) {
-		    TemplateVariable uriVariable = uriVariableForName.get(name);
+		    TemplateVariable templateVariable = templateVariableForName.get(name);
 		    if (!name.isEmpty()) {
-    		    if (uriVariable == null) {
-    		        uriVariable = new TemplateVariable(nextVariableId++, name);
-    		        uriVariableForName.put(name, uriVariable);
+    		    if (templateVariable == null) {
+    		        templateVariable = new TemplateVariable(nextVariableId++, name);
+    		        templateVariableForName.put(name, templateVariable);
     		    }
 		    }
-		    instances[position++] = uriVariable;
+		    instances[position++] = templateVariable;
 		}
 		
-		variables = new TemplateVariable[uriVariableForName.size()];
+		variables = new TemplateVariable[templateVariableForName.size()];
 		int i = 0;
-		for (Map.Entry<String, TemplateVariable> entry : uriVariableForName.entrySet()) {
+		for (Map.Entry<String, TemplateVariable> entry : templateVariableForName.entrySet()) {
 		    variables[i++] = entry.getValue();
 		}
 
@@ -112,15 +112,16 @@ public class LogEntryTemplate {
         path = FileIO.normalizePathSeparator(path);
         Map<String,String> variableValues = new LinkedHashMap<String,String>();
 
-       // TODO handle case where first variable precedes first constant fragment
        // TODO handle case where last variable follows last constant fragment
        int start = 0;
+       int valueStart = 0;
+       int valueEnd = 0;
        for (int i = 0; i < fragments.length - 1; ++i) {
-           int valueStart = start + fragments[i].length();
-           int valueEnd = path.indexOf(fragments[i+1], valueStart);
-           if (valueEnd == -1) throw new Exception("Cannot find fragment '" + fragments[i+1] + "' in '" + path.substring(valueStart));
+           valueStart = start + fragments[i].length();
+           valueEnd = path.indexOf(fragments[i+1], valueStart);
+           if (valueEnd == -1) return null;
            TemplateVariable variable = instances[i];
-           // TODO make sure values in concrete URI match for multiple instances of a variable
+           // TODO make sure values in concrete log entry match for multiple instances of a variable
            if (variable != null && variableValues.get(variable.name) == null) {
                String value = path.substring(valueStart, valueEnd);
                variableValues.put(variable.name, value);
@@ -134,21 +135,21 @@ public class LogEntryTemplate {
        return variableValues;
   }
 
-	/** @return The reduced, directly matchable representation of the URI template. */
-	public String getReducedPath() {
-		return reducedPath;
+	/** @return The reduced, directly matchable representation of the leg entry template. */
+	public String getReducedTemplate() {
+		return reducedTemplate;
 	}
 
 	/** 
-	 * @param otherTemplate The URI template to compare reduced path against.
+	 * @param otherTemplate The template to compare reduced template against.
 	 * @return true if the reduced paths of the two templates are identical, otherwise false
 	 */
 	public boolean matches(LogEntryTemplate otherTemplate) {
-		return this.reducedPath.equals(otherTemplate.reducedPath);
+		return this.reducedTemplate.equals(otherTemplate.reducedTemplate);
 	}
 	
 	/**
-	 * Expands the path portion of a URI template given an array of variable name-value pairs.
+	 * Expands the path portion of a log entry template given an array of variable name-value pairs.
 	 * Also returns the values of the variables used in the template as an array ordered by
 	 * appearance of the variables in the template.  Variables values will appear multiple times
 	 * in the array if the corresponding variables are used more than once in the template.
@@ -158,7 +159,7 @@ public class LogEntryTemplate {
 	 * @param valueArray	Reference used to return an array of the values of the 
 	 * 						template variables expanded, in order of appearance
 	 * 						in the template.
-	 * @return				String containing the requested expansion of the path portion of the URI template.
+	 * @return				String containing the requested expansion of the path portion of the template.
 	 * @throws				Exception if template has missing variables, i.e. empty braces
 	 * 						and thus cannot be expanded.
 	 */
@@ -205,11 +206,11 @@ public class LogEntryTemplate {
 	////                  public class methods                     ////
 	
 	/**
-	 * Extract variables names from URI template.
+	 * Extract variables names from log entry template.
 	 *  
-	 * @param fullTemplate A URI template including variable names.
+	 * @param fullTemplate A log entry template including variable names.
 	 * @param variables A list in which the method stores the names of the variables extracted from the full template.
-	 * @param fragments A list the constant fragments of the URI template.
+	 * @param fragments A list the constant fragments of the log entry template.
 	 * @return A reduced template with variable names removed.
 	 */
 	public static String reduceTemplateAndExtractVariables(String fullTemplate, List<String> variables, 

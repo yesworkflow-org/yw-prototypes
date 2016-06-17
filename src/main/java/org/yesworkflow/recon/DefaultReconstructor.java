@@ -135,7 +135,7 @@ public class DefaultReconstructor implements Reconstructor  {
         } else {
             PrintStream stream = new PrintStream(path);
             for (Map.Entry<String, String> entry : texts.entrySet()) {
-                stream.print(entry.getValue());            
+                stream.print(entry.getValue());
             }
             stream.close();
         }

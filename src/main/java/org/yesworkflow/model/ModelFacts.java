@@ -36,8 +36,7 @@ public class ModelFacts {
     private DataExportBuilder portLogFacts;
     private DataExportBuilder logTemplateVariableFacts;
     private Long nextLogId = 1L;
-   private Long nextLogTemplateVariableId = 1L;
-
+    private Long nextLogTemplateVariableId = 1L;
 
     public ModelFacts(QueryEngine queryEngine, Model model) throws IOException {
 

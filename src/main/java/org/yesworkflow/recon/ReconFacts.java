@@ -1,5 +1,8 @@
 package org.yesworkflow.recon;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.yesworkflow.annotations.In;
+import org.yesworkflow.annotations.Log;
+import org.yesworkflow.annotations.Out;
+import org.yesworkflow.data.LogEntryTemplate;
 import org.yesworkflow.data.UriTemplate;
 import org.yesworkflow.data.TemplateVariable;
 import org.yesworkflow.model.Data;
@@ -25,10 +31,14 @@ public class ReconFacts {
     private final Run run;
     private Map<String,String> facts = new LinkedHashMap<String,String>();
     private Integer nextResourceId = 1;
+    private Long nextLogEntryId = 1L;
     
     private DataExportBuilder resourceFacts;
     private DataExportBuilder dataResourceFacts;
     private DataExportBuilder uriVariableValueFacts;
+    private DataExportBuilder logVariableValueFacts;
+    private DataExportBuilder logResourceFacts;
+
     private Map<String,Resource> resourceForUri = new HashMap<String,Resource>();
 
     private ResourceFinder resourceFinder;
@@ -43,6 +53,7 @@ public class ReconFacts {
         this.resourceFacts  = DataExportBuilder.create(queryEngine, "resource", "resource_id", "resource_uri");
         this.dataResourceFacts = DataExportBuilder.create(queryEngine, "data_resource", "data_id", "resource_id");
         this.uriVariableValueFacts = DataExportBuilder.create(queryEngine, "uri_variable_value", "resource_id", "uri_variable_id", "uri_variable_value");
+        this.logVariableValueFacts = DataExportBuilder.create(queryEngine, "log_variable_value", "resource_id", "log_entry_id", "log_variable_id", "log_variable_value");
 
         this.resourceFinder = resourceFinder;
     }
@@ -58,6 +69,7 @@ public class ReconFacts {
         facts.put(resourceFacts.name, resourceFacts.toString());
         facts.put(dataResourceFacts.name, dataResourceFacts.toString());
         facts.put(uriVariableValueFacts.name, uriVariableValueFacts.toString());
+        facts.put(logVariableValueFacts.name, logVariableValueFacts.toString());
  
         return this;
     }
@@ -81,8 +93,8 @@ public class ReconFacts {
             buildReconFactsRecursively(childFunction);
         }
     }
-   
-    private void buildFactsForPortResources(Port[] ports) throws Exception {        
+
+    private void buildFactsForPortResources(Port[] ports) throws Exception {
         for (Port port: ports) {
             List<Resource> resources = findResourcesForPort(port);
             for (Resource resource : resources) {
@@ -91,21 +103,58 @@ public class ReconFacts {
         }
     }
     
-    private List<Resource> findResourcesForPort(Port port) throws IOException {
+    private List<Resource> findResourcesForPort(Port port) throws Exception {
         
         List<Resource> foundResources = new LinkedList<Resource>();
         
         ResourceFinder.ResourceRole role = (port.flowAnnotation instanceof In) ? ResourceRole.INPUT : ResourceRole.OUTPUT;
         
         if (port.uriTemplate != null) {
+            
             Collection<String> matchingResourceURIs = resourceFinder.findMatchingResources(run.runDirectoryBase.toString(), port.uriTemplate, role);
             for (String uri : matchingResourceURIs) {
                 Resource resource = addResource(port.data, uri);
                 foundResources.add(resource);
             }
+            
+            if (port.flowAnnotation instanceof Out && !foundResources.isEmpty()) {
+                Out outPort = (Out)port.flowAnnotation;
+                if (!outPort.logAnnotations().isEmpty()) {
+                    for (Resource resource : foundResources) {
+                        findLogEntries(outPort.logAnnotations(), resource);
+                    }
+                }
+            }
         }
         
         return foundResources;
+    }
+    
+    private void findLogEntries(List<Log> logAnnotations, Resource resource) throws Exception {
+        File logFile = new File(run.runDirectoryBase.toString() + "/" + resource.uri);
+        FileReader fileReader = new FileReader(logFile);
+        BufferedReader br = new BufferedReader(fileReader);
+        String entry = null;
+        while ((entry = br.readLine()) != null) {
+            findLogEntryVariableValues(logAnnotations, resource, entry);
+        }
+        br.close();
+    }
+    
+    private void findLogEntryVariableValues(List<Log> logAnnotations, Resource resource, String entry) throws Exception {
+        // "resource_id", "log_entry_id", "log_variable_id", "log_variable_value"
+        for (Log logAnnotation : logAnnotations) {
+            LogEntryTemplate template = logAnnotation.entryTemplate;
+            Map<String,String> variableValues = template.extractValuesFromPath(entry);
+            if (variableValues != null && !variableValues.isEmpty()) {
+                System.out.println(variableValues);
+                Long logEntryId = nextLogEntryId++;
+                for (Map.Entry<String, String> e : variableValues.entrySet()) {
+                    logVariableValueFacts.addRow(resource.id, logEntryId, e.getKey(), e.getValue());
+                }
+                return;
+            }
+        }
     }
     
     private Resource addResource(Data data, String uri) throws IOException {

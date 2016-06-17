@@ -31,118 +31,122 @@ annotation(25, 1, 31, 'desc', '@desc', 'Create run directory and initialize log 
 annotation(26, 1, 32, 'param', '@param', 'cassette_id').
 annotation(27, 1, 33, 'param', '@param', 'sample_score_cutoff').
 annotation(28, 1, 34, 'out', '@out', 'run_log').
-annotation(29, 1, 34, 'log', '@log', '{timestamp} Processing samples in cassette {cassette_id}').
-annotation(30, 1, 35, 'log', '@log', 'Sample quality cutoff: {sample_score_cutoff}').
-annotation(31, 1, 47, 'end', '@end', 'initialize_run').
-annotation(32, 1, 51, 'begin', '@begin', 'load_screening_results').
-annotation(33, 1, 51, 'desc', '@desc', 'Load sample information from spreadsheet.').
-annotation(34, 1, 52, 'param', '@param', 'cassette_id').
-annotation(35, 1, 53, 'in', '@in', 'sample_spreadsheet').
-annotation(36, 1, 53, 'uri', '@uri', 'file:cassette_{cassette_id}_spreadsheet.csv').
-annotation(37, 1, 54, 'out', '@out', 'sample_name').
-annotation(38, 1, 55, 'out', '@out', 'sample_quality').
-annotation(39, 1, 56, 'out', '@out', 'run_log').
-annotation(40, 1, 56, 'log', '@log', '{timestamp} Sample {sample_id} had score of {sample_quality}').
-annotation(41, 1, 62, 'end', '@end', 'load_screening_results').
-annotation(42, 1, 66, 'begin', '@begin', 'calculate_strategy').
-annotation(43, 1, 66, 'desc', '@desc', 'Reject unsuitable crystals and compute \n best data sets to collect for accepted crystals.').
-annotation(44, 1, 67, 'param', '@param', 'sample_score_cutoff').
-annotation(45, 1, 68, 'param', '@param', 'data_redundancy').
-annotation(46, 1, 69, 'in', '@in', 'sample_name').
-annotation(47, 1, 70, 'in', '@in', 'sample_quality').
-annotation(48, 1, 71, 'out', '@out', 'accepted_sample').
-annotation(49, 1, 72, 'out', '@out', 'rejected_sample').
-annotation(50, 1, 73, 'out', '@out', 'num_images').
-annotation(51, 1, 74, 'out', '@out', 'energies').
-annotation(52, 1, 79, 'end', '@end', 'calculate_strategy').
-annotation(53, 1, 83, 'begin', '@begin', 'log_rejected_sample').
-annotation(54, 1, 83, 'desc', '@desc', 'Record which samples were rejected.').
-annotation(55, 1, 84, 'param', '@param', 'cassette_id').
-annotation(56, 1, 85, 'in', '@in', 'rejected_sample').
-annotation(57, 1, 86, 'out', '@out', 'rejection_log').
-annotation(58, 1, 86, 'uri', '@uri', 'file:run/rejected_samples.txt').
-annotation(59, 1, 86, 'log', '@log', 'Rejected sample {rejected_sample} in cassette {cassette_id}').
-annotation(60, 1, 95, 'end', '@end', 'log_rejected_sample').
-annotation(61, 1, 99, 'begin', '@begin', 'collect_data_set').
-annotation(62, 1, 99, 'desc', '@desc', 'Collect data set using the given data collection parameters.').
-annotation(63, 1, 100, 'call', '@call', 'collect_next_image').
-annotation(64, 1, 101, 'param', '@param', 'cassette_id').
-annotation(65, 1, 102, 'param', '@param', 'num_images').
-annotation(66, 1, 103, 'in', '@in', 'accepted_sample').
-annotation(67, 1, 104, 'in', '@in', 'energies').
-annotation(68, 1, 105, 'out', '@out', 'sample_id').
-annotation(69, 1, 105, 'desc', '@desc', 'The crystal that the diffraction image was collected from.').
-annotation(70, 1, 106, 'out', '@out', 'energy').
-annotation(71, 1, 106, 'desc', '@desc', 'Energy (in eV) at which the diffraction image was collected.').
-annotation(72, 1, 107, 'out', '@out', 'frame_number').
-annotation(73, 1, 107, 'desc', '@desc', 'Index of diffraction image within data set.').
-annotation(74, 1, 108, 'out', '@out', 'raw_image_path').
-annotation(75, 1, 108, 'desc', '@desc', 'Path of file storing the raw diffraction image.').
-annotation(76, 1, 109, 'uri', '@uri', 'file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw').
-annotation(77, 1, 110, 'as', '@as', 'raw_image').
-annotation(78, 1, 111, 'out', '@out', 'run_log').
-annotation(79, 1, 111, 'log', '@log', '{timestamp} Collecting data set for sample {sample_id}').
-annotation(80, 1, 112, 'log', '@log', '{timestamp} Collecting image {raw_image_path}').
-annotation(81, 1, 121, 'end', '@end', 'collect_data_set').
-annotation(82, 1, 125, 'begin', '@begin', 'transform_images').
-annotation(83, 1, 125, 'desc', '@desc', 'Correct raw image using the detector calibration image.').
-annotation(84, 1, 126, 'call', '@call', 'transform_image').
-annotation(85, 1, 127, 'in', '@in', 'sample_id').
-annotation(86, 1, 128, 'in', '@in', 'energy').
-annotation(87, 1, 129, 'in', '@in', 'frame_number').
-annotation(88, 1, 130, 'in', '@in', 'raw_image_path').
-annotation(89, 1, 130, 'as', '@as', 'raw_image').
-annotation(90, 1, 131, 'in', '@in', 'calibration_image').
-annotation(91, 1, 131, 'uri', '@uri', 'file:calibration.img').
-annotation(92, 1, 132, 'out', '@out', 'corrected_image').
-annotation(93, 1, 132, 'uri', '@uri', 'file:run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img').
-annotation(94, 1, 133, 'out', '@out', 'corrected_image_path').
-annotation(95, 1, 134, 'out', '@out', 'total_intensity').
-annotation(96, 1, 135, 'out', '@out', 'pixel_count').
-annotation(97, 1, 136, 'out', '@out', 'run_log').
-annotation(98, 1, 136, 'log', '@log', '{timestamp} Wrote transformed image {corrected_image_path}').
-annotation(99, 1, 144, 'end', '@end', 'transform_images').
-annotation(100, 1, 148, 'begin', '@begin', 'log_average_image_intensity').
-annotation(101, 1, 148, 'desc', '@desc', 'Record statistics about each diffraction image.').
-annotation(102, 1, 149, 'param', '@param', 'cassette_id').
-annotation(103, 1, 150, 'param', '@param', 'sample_id').
-annotation(104, 1, 151, 'param', '@param', 'frame_number').
-annotation(105, 1, 152, 'in', '@in', 'corrected_image_path').
-annotation(106, 1, 153, 'in', '@in', 'total_intensity').
-annotation(107, 1, 154, 'in', '@in', 'pixel_count').
-annotation(108, 1, 155, 'out', '@out', 'collection_log').
-annotation(109, 1, 155, 'uri', '@uri', 'file:run/collected_images.csv').
-annotation(110, 1, 156, 'log', '@log', '{cassette_id},{sample_id},{energy},run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img').
-annotation(111, 1, 164, 'end', '@end', 'log_average_image_intensity').
-annotation(112, 1, 168, 'end', '@end', 'simulate_data_collection').
-annotation(113, 1, 172, 'begin', '@begin', 'calculate_strategy').
-annotation(114, 1, 173, 'param', '@param', 'sample_name').
-annotation(115, 1, 174, 'param', '@param', 'sample_quality').
-annotation(116, 1, 175, 'param', '@param', 'sample_score_cutoff').
-annotation(117, 1, 176, 'param', '@param', 'data_redundancy').
-annotation(118, 1, 177, 'return', '@return', 'accepted_sample').
-annotation(119, 1, 178, 'return', '@return', 'rejected_sample').
-annotation(120, 1, 179, 'return', '@return', 'num_images').
-annotation(121, 1, 180, 'return', '@return', 'energies').
-annotation(122, 1, 196, 'end', '@end', 'calculate_strategy').
-annotation(123, 1, 200, 'begin', '@begin', 'collect_next_image').
-annotation(124, 1, 201, 'param', '@param', 'cassette_id').
-annotation(125, 1, 202, 'param', '@param', 'sample_id').
-annotation(126, 1, 203, 'param', '@param', 'num_images').
-annotation(127, 1, 204, 'param', '@param', 'energies').
-annotation(128, 1, 205, 'param', '@param', 'image_path_template').
-annotation(129, 1, 206, 'return', '@return', 'energy').
-annotation(130, 1, 207, 'return', '@return', 'frame_number').
-annotation(131, 1, 208, 'return', '@return', 'intensity').
-annotation(132, 1, 209, 'return', '@return', 'raw_image_path').
-annotation(133, 1, 222, 'end', '@end', 'collect_next_image').
-annotation(134, 1, 226, 'begin', '@begin', 'transform_image').
-annotation(135, 1, 227, 'param', '@param', 'raw_image_path').
-annotation(136, 1, 228, 'param', '@param', 'corrected_image_path').
-annotation(137, 1, 229, 'param', '@param', 'calibration_image_path').
-annotation(138, 1, 230, 'return', '@return', 'total_intensity').
-annotation(139, 1, 231, 'return', '@return', 'pixel_count').
-annotation(140, 1, 252, 'end', '@end', 'transform_image').
+annotation(29, 1, 34, 'uri', '@uri', 'file:run/run_log.txt').
+annotation(30, 1, 35, 'log', '@log', '{timestamp} Processing samples in cassette {cassette_id}').
+annotation(31, 1, 36, 'log', '@log', 'Sample quality cutoff: {sample_score_cutoff}').
+annotation(32, 1, 48, 'end', '@end', 'initialize_run').
+annotation(33, 1, 52, 'begin', '@begin', 'load_screening_results').
+annotation(34, 1, 52, 'desc', '@desc', 'Load sample information from spreadsheet.').
+annotation(35, 1, 53, 'param', '@param', 'cassette_id').
+annotation(36, 1, 54, 'in', '@in', 'sample_spreadsheet').
+annotation(37, 1, 54, 'uri', '@uri', 'file:cassette_{cassette_id}_spreadsheet.csv').
+annotation(38, 1, 55, 'out', '@out', 'sample_name').
+annotation(39, 1, 56, 'out', '@out', 'sample_quality').
+annotation(40, 1, 57, 'out', '@out', 'run_log').
+annotation(41, 1, 57, 'uri', '@uri', 'file:run/run_log.txt').
+annotation(42, 1, 58, 'log', '@log', '{timestamp} Sample {sample_id} had score of {sample_quality}').
+annotation(43, 1, 64, 'end', '@end', 'load_screening_results').
+annotation(44, 1, 68, 'begin', '@begin', 'calculate_strategy').
+annotation(45, 1, 68, 'desc', '@desc', 'Reject unsuitable crystals and compute \n best data sets to collect for accepted crystals.').
+annotation(46, 1, 69, 'param', '@param', 'sample_score_cutoff').
+annotation(47, 1, 70, 'param', '@param', 'data_redundancy').
+annotation(48, 1, 71, 'in', '@in', 'sample_name').
+annotation(49, 1, 72, 'in', '@in', 'sample_quality').
+annotation(50, 1, 73, 'out', '@out', 'accepted_sample').
+annotation(51, 1, 74, 'out', '@out', 'rejected_sample').
+annotation(52, 1, 75, 'out', '@out', 'num_images').
+annotation(53, 1, 76, 'out', '@out', 'energies').
+annotation(54, 1, 81, 'end', '@end', 'calculate_strategy').
+annotation(55, 1, 85, 'begin', '@begin', 'log_rejected_sample').
+annotation(56, 1, 85, 'desc', '@desc', 'Record which samples were rejected.').
+annotation(57, 1, 86, 'param', '@param', 'cassette_id').
+annotation(58, 1, 87, 'in', '@in', 'rejected_sample').
+annotation(59, 1, 88, 'out', '@out', 'rejection_log').
+annotation(60, 1, 88, 'uri', '@uri', 'file:run/rejected_samples.txt').
+annotation(61, 1, 88, 'log', '@log', 'Rejected sample {rejected_sample} in cassette {cassette_id}').
+annotation(62, 1, 97, 'end', '@end', 'log_rejected_sample').
+annotation(63, 1, 101, 'begin', '@begin', 'collect_data_set').
+annotation(64, 1, 101, 'desc', '@desc', 'Collect data set using the given data collection parameters.').
+annotation(65, 1, 102, 'call', '@call', 'collect_next_image').
+annotation(66, 1, 103, 'param', '@param', 'cassette_id').
+annotation(67, 1, 104, 'param', '@param', 'num_images').
+annotation(68, 1, 105, 'in', '@in', 'accepted_sample').
+annotation(69, 1, 106, 'in', '@in', 'energies').
+annotation(70, 1, 107, 'out', '@out', 'sample_id').
+annotation(71, 1, 107, 'desc', '@desc', 'The crystal that the diffraction image was collected from.').
+annotation(72, 1, 108, 'out', '@out', 'energy').
+annotation(73, 1, 108, 'desc', '@desc', 'Energy (in eV) at which the diffraction image was collected.').
+annotation(74, 1, 109, 'out', '@out', 'frame_number').
+annotation(75, 1, 109, 'desc', '@desc', 'Index of diffraction image within data set.').
+annotation(76, 1, 110, 'out', '@out', 'raw_image_path').
+annotation(77, 1, 110, 'desc', '@desc', 'Path of file storing the raw diffraction image.').
+annotation(78, 1, 111, 'uri', '@uri', 'file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw').
+annotation(79, 1, 112, 'as', '@as', 'raw_image').
+annotation(80, 1, 113, 'out', '@out', 'run_log').
+annotation(81, 1, 113, 'uri', '@uri', 'file:run/run_log.txt').
+annotation(82, 1, 114, 'log', '@log', '{timestamp} Collecting data set for sample {sample_id}').
+annotation(83, 1, 115, 'log', '@log', '{timestamp} Collecting image {raw_image_path}').
+annotation(84, 1, 124, 'end', '@end', 'collect_data_set').
+annotation(85, 1, 128, 'begin', '@begin', 'transform_images').
+annotation(86, 1, 128, 'desc', '@desc', 'Correct raw image using the detector calibration image.').
+annotation(87, 1, 129, 'call', '@call', 'transform_image').
+annotation(88, 1, 130, 'in', '@in', 'sample_id').
+annotation(89, 1, 131, 'in', '@in', 'energy').
+annotation(90, 1, 132, 'in', '@in', 'frame_number').
+annotation(91, 1, 133, 'in', '@in', 'raw_image_path').
+annotation(92, 1, 133, 'as', '@as', 'raw_image').
+annotation(93, 1, 134, 'in', '@in', 'calibration_image').
+annotation(94, 1, 134, 'uri', '@uri', 'file:calibration.img').
+annotation(95, 1, 135, 'out', '@out', 'corrected_image').
+annotation(96, 1, 135, 'uri', '@uri', 'file:run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img').
+annotation(97, 1, 136, 'out', '@out', 'corrected_image_path').
+annotation(98, 1, 137, 'out', '@out', 'total_intensity').
+annotation(99, 1, 138, 'out', '@out', 'pixel_count').
+annotation(100, 1, 139, 'out', '@out', 'run_log').
+annotation(101, 1, 139, 'uri', '@uri', 'file:run/run_log.txt').
+annotation(102, 1, 140, 'log', '@log', '{timestamp} Wrote transformed image {corrected_image_path}').
+annotation(103, 1, 148, 'end', '@end', 'transform_images').
+annotation(104, 1, 152, 'begin', '@begin', 'log_average_image_intensity').
+annotation(105, 1, 152, 'desc', '@desc', 'Record statistics about each diffraction image.').
+annotation(106, 1, 153, 'param', '@param', 'cassette_id').
+annotation(107, 1, 154, 'param', '@param', 'sample_id').
+annotation(108, 1, 155, 'param', '@param', 'frame_number').
+annotation(109, 1, 156, 'in', '@in', 'corrected_image_path').
+annotation(110, 1, 157, 'in', '@in', 'total_intensity').
+annotation(111, 1, 158, 'in', '@in', 'pixel_count').
+annotation(112, 1, 159, 'out', '@out', 'collection_log').
+annotation(113, 1, 159, 'uri', '@uri', 'file:run/collected_images.csv').
+annotation(114, 1, 160, 'log', '@log', '{cassette_id},{sample_id},{energy},{average_intensity},{corrected_image_path}').
+annotation(115, 1, 168, 'end', '@end', 'log_average_image_intensity').
+annotation(116, 1, 172, 'end', '@end', 'simulate_data_collection').
+annotation(117, 1, 176, 'begin', '@begin', 'calculate_strategy').
+annotation(118, 1, 177, 'param', '@param', 'sample_name').
+annotation(119, 1, 178, 'param', '@param', 'sample_quality').
+annotation(120, 1, 179, 'param', '@param', 'sample_score_cutoff').
+annotation(121, 1, 180, 'param', '@param', 'data_redundancy').
+annotation(122, 1, 181, 'return', '@return', 'accepted_sample').
+annotation(123, 1, 182, 'return', '@return', 'rejected_sample').
+annotation(124, 1, 183, 'return', '@return', 'num_images').
+annotation(125, 1, 184, 'return', '@return', 'energies').
+annotation(126, 1, 200, 'end', '@end', 'calculate_strategy').
+annotation(127, 1, 204, 'begin', '@begin', 'collect_next_image').
+annotation(128, 1, 205, 'param', '@param', 'cassette_id').
+annotation(129, 1, 206, 'param', '@param', 'sample_id').
+annotation(130, 1, 207, 'param', '@param', 'num_images').
+annotation(131, 1, 208, 'param', '@param', 'energies').
+annotation(132, 1, 209, 'param', '@param', 'image_path_template').
+annotation(133, 1, 210, 'return', '@return', 'energy').
+annotation(134, 1, 211, 'return', '@return', 'frame_number').
+annotation(135, 1, 212, 'return', '@return', 'intensity').
+annotation(136, 1, 213, 'return', '@return', 'raw_image_path').
+annotation(137, 1, 226, 'end', '@end', 'collect_next_image').
+annotation(138, 1, 230, 'begin', '@begin', 'transform_image').
+annotation(139, 1, 231, 'param', '@param', 'raw_image_path').
+annotation(140, 1, 232, 'param', '@param', 'corrected_image_path').
+annotation(141, 1, 233, 'param', '@param', 'calibration_image_path').
+annotation(142, 1, 234, 'return', '@return', 'total_intensity').
+annotation(143, 1, 235, 'return', '@return', 'pixel_count').
+annotation(144, 1, 256, 'end', '@end', 'transform_image').
 
 % FACT: annotation_qualifies(qualifying_annotation_id, primary_annotation_id).
 annotation_qualifies(2, 1).
@@ -161,27 +165,31 @@ annotation_qualifies(23, 22).
 annotation_qualifies(25, 24).
 annotation_qualifies(29, 28).
 annotation_qualifies(30, 28).
-annotation_qualifies(33, 32).
-annotation_qualifies(36, 35).
-annotation_qualifies(40, 39).
-annotation_qualifies(43, 42).
-annotation_qualifies(54, 53).
-annotation_qualifies(58, 57).
-annotation_qualifies(59, 57).
-annotation_qualifies(62, 61).
-annotation_qualifies(69, 68).
+annotation_qualifies(31, 28).
+annotation_qualifies(34, 33).
+annotation_qualifies(37, 36).
+annotation_qualifies(41, 40).
+annotation_qualifies(42, 40).
+annotation_qualifies(45, 44).
+annotation_qualifies(56, 55).
+annotation_qualifies(60, 59).
+annotation_qualifies(61, 59).
+annotation_qualifies(64, 63).
 annotation_qualifies(71, 70).
 annotation_qualifies(73, 72).
 annotation_qualifies(75, 74).
-annotation_qualifies(76, 74).
-annotation_qualifies(77, 74).
-annotation_qualifies(79, 78).
-annotation_qualifies(80, 78).
-annotation_qualifies(83, 82).
-annotation_qualifies(89, 88).
-annotation_qualifies(91, 90).
-annotation_qualifies(93, 92).
-annotation_qualifies(98, 97).
+annotation_qualifies(77, 76).
+annotation_qualifies(78, 76).
+annotation_qualifies(79, 76).
+annotation_qualifies(81, 80).
+annotation_qualifies(82, 80).
+annotation_qualifies(83, 80).
+annotation_qualifies(86, 85).
+annotation_qualifies(92, 91).
+annotation_qualifies(94, 93).
+annotation_qualifies(96, 95).
 annotation_qualifies(101, 100).
-annotation_qualifies(109, 108).
-annotation_qualifies(110, 108).
+annotation_qualifies(102, 100).
+annotation_qualifies(105, 104).
+annotation_qualifies(113, 112).
+annotation_qualifies(114, 112).
