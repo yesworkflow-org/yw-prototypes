@@ -150,7 +150,9 @@ public class ReconFacts {
                 System.out.println(variableValues);
                 Long logEntryId = nextLogEntryId++;
                 for (Map.Entry<String, String> e : variableValues.entrySet()) {
-                    logVariableValueFacts.addRow(resource.id, logEntryId, e.getKey(), e.getValue());
+                    String variableName =  e.getKey();
+                    Long variableId = logAnnotation.variableId(variableName);
+                    logVariableValueFacts.addRow(resource.id, logEntryId, variableId, e.getValue());
                 }
                 return;
             }

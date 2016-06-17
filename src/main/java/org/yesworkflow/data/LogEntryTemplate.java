@@ -12,21 +12,15 @@ import org.yesworkflow.util.FileIO;
 
 public class LogEntryTemplate {
 
-    private static Integer nextVariableId = 1;
+    private static Long nextVariableId = 1L;
     
-	///////////////////////////////////////////////////////////////////
-	////                    private data fields                    ////
-
     public final String template;
-    public final String reducedTemplate;           // Fully reduced, directly matchable representation of the template
+    public final String reducedTemplate;       // Fully reduced, directly matchable representation of the template
 	public final Path leadingPath;             // Portion of path preceding any path element that contains variables
 	public final TemplateVariable[] variables; // Array of template variables in order of their first appearnce
     public final TemplateVariable[] instances; // Array of references to variables in order of each occurrence in the template
 	public final String[] fragments;           // Array of strings representing non-variable portions of the template path
 	
-	///////////////////////////////////////////////////////////////////
-	////                     public constructors                   ////
-
 	/**
 	 * Creates a new MatchableTemplate object.
 	 * 
@@ -140,9 +134,6 @@ public class LogEntryTemplate {
 	public String getReducedTemplate() {
 		return reducedTemplate;
 	}
-	
-	///////////////////////////////////////////////////////////////////
-	////                  public class methods                     ////
 	
 	/**
 	 * Extract variables names from log entry template.

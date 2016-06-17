@@ -27,7 +27,7 @@ import org.yesworkflow.util.FileIO;
  */
 public class UriTemplate extends UriBase {
 
-    private static Integer nextUriVariableId = 1;
+    private static Long nextUriVariableId = 1L;
     
 	///////////////////////////////////////////////////////////////////
 	////                    private data fields                    ////
