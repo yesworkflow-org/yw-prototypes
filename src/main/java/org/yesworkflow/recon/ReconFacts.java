@@ -146,7 +146,6 @@ public class ReconFacts {
             LogEntryTemplate template = logAnnotation.entryTemplate;
             Map<String,String> variableValues = template.extractValuesFromLogEntry(entry);
             if (variableValues != null && !variableValues.isEmpty()) {
-                System.out.println(variableValues);
                 Long logEntryId = nextLogEntryId++;
                 for (Map.Entry<String, String> e : variableValues.entrySet()) {
                     String variableName =  e.getKey();
