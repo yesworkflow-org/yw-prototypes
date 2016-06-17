@@ -1,7 +1,5 @@
 package org.yesworkflow.data;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.LinkedList;
@@ -16,7 +14,6 @@ public class LogEntryTemplate {
     
     public final String template;
     public final String reducedTemplate;       // Fully reduced, directly matchable representation of the template
-	public final Path leadingPath;             // Portion of path preceding any path element that contains variables
 	public final TemplateVariable[] variables; // Array of template variables in order of their first appearnce
     public final TemplateVariable[] instances; // Array of references to variables in order of each occurrence in the template
 	public final String[] fragments;           // Array of strings representing non-variable portions of the template path
@@ -57,22 +54,6 @@ public class LogEntryTemplate {
 
 		// store the fixed portions of the template path as an array
 		fragments = constantFragments.toArray(new String[] {});
-		
-		String leadingPathString;
-		if (fragments.length == 0) {
-		    leadingPathString = "";
-		} else if (variables.length == 0) {
-		    leadingPathString = fragments[0];
-		} else {
-		    int lastSlashInFirstFragment = fragments[0].lastIndexOf('/');
-		    if (lastSlashInFirstFragment == -1) {
-		        leadingPathString = "";
-		    } else {
-		        leadingPathString = template.substring(0, lastSlashInFirstFragment);		        
-		    }
-		}
-		
-		leadingPath = Paths.get(leadingPathString);
 	}
 
 	public String getGlobPattern() {
@@ -96,39 +77,45 @@ public class LogEntryTemplate {
         return pattern;
     }
 	
-    public Map<String,String> extractValuesFromPath(String path) throws Exception {
+    public Map<String,String> extractValuesFromLogEntry(String entry) throws Exception {
 
-        path = FileIO.normalizePathSeparator(path);
         Map<String,String> variableValues = new LinkedHashMap<String,String>();
 
-       int start = 0;
-       int valueStart = 0;
-       int valueEnd = 0;
-       int i;
-       for (i = 0; i < fragments.length - 1; ++i) {
-           valueStart = start + fragments[i].length();
-           valueEnd = path.indexOf(fragments[i+1], valueStart);
-           if (valueEnd == -1) return null;
-           TemplateVariable variable = instances[i];
-           // TODO make sure values in concrete log entry match for multiple instances of a variable
-           if (variable != null && variableValues.get(variable.name) == null) {
-               String value = path.substring(valueStart, valueEnd);
-               variableValues.put(variable.name, value);
-               if (!variable.name.isEmpty()) {
-                   variableValues.put(variable.name, value);
-               }
-           }
-           start = valueEnd;
-       }
+        if (entry.length() == 0) return variableValues;
+        
+        if (fragments.length == 0) {
+            variableValues.put(variables[0].name, entry);
+            return variableValues;
+        }
+        
+        int start = 0;
+        int valueStart = 0;
+        int valueEnd = 0;
+        int i;
+        for (i = 0; i < fragments.length - 1; ++i) {
+            valueStart = start + fragments[i].length();
+            valueEnd = entry.indexOf(fragments[i+1], valueStart);
+            if (valueEnd == -1) return null;
+            TemplateVariable variable = instances[i];
+            // TODO make sure values in concrete log entry match for multiple instances of a variable
+            if (variable != null && variableValues.get(variable.name) == null) {
+                String value = entry.substring(valueStart, valueEnd);
+                variableValues.put(variable.name, value);
+                if (!variable.name.isEmpty()) {
+                    variableValues.put(variable.name, value);
+                }
+            }
+            start = valueEnd;
+        }
        
-       if (instances.length == i) {
-           TemplateVariable variable = instances[i-1];
-           String value = path.substring(valueStart);
-           variableValues.put(variable.name, value);
-       }
+        if (i > 0 && instances.length == i+1) {
+            TemplateVariable variable = instances[i];
+            String value = entry.substring(start + fragments[i].length());
+            variableValues.put(variable.name, value);
+        }
 
-       return variableValues;
-  }
+        return variableValues;
+    }
 
 	/** @return The reduced, directly matchable representation of the leg entry template. */
 	public String getReducedTemplate() {
@@ -157,9 +144,13 @@ public class LogEntryTemplate {
 		while ((openingBracePosition = fullTemplate.indexOf('{', closingBracePosition)) != -1) {
 			
 			// store substring between last closing brace and next opening brace as fixed path fragment
-			fragments.add(fullTemplate.substring(closingBracePosition + fragmentStartOffset, 
-					openingBracePosition));
-			
+		    if (openingBracePosition == 0) {
+		        fragments.add("");
+		    } else {
+		        fragments.add(fullTemplate.substring(closingBracePosition + fragmentStartOffset, 
+		                openingBracePosition));
+		    }
+		    
 			// add to reduced template substring starting at last closing brace through the next opening brace in full template
 			reducedPathBuffer.append(fullTemplate.substring(closingBracePosition, openingBracePosition + 1));
 			
@@ -175,8 +166,10 @@ public class LogEntryTemplate {
 		}
 
 		// store the final fixed path fragment
-		fragments.add(fullTemplate.substring(closingBracePosition + fragmentStartOffset, 
-				fullTemplate.length()));
+		if (closingBracePosition + fragmentStartOffset < fullTemplate.length()) {
+    		fragments.add(fullTemplate.substring(closingBracePosition + fragmentStartOffset, 
+    				fullTemplate.length()));
+		}
 		
 		// add to the reduced template the portion of the full template that follows the final closing brace
 		reducedPathBuffer.append(fullTemplate.substring(closingBracePosition, fullTemplate.length()));

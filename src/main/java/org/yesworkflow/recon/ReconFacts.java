@@ -37,7 +37,6 @@ public class ReconFacts {
     private DataExportBuilder dataResourceFacts;
     private DataExportBuilder uriVariableValueFacts;
     private DataExportBuilder logVariableValueFacts;
-    private DataExportBuilder logResourceFacts;
 
     private Map<String,Resource> resourceForUri = new HashMap<String,Resource>();
 
@@ -145,7 +144,7 @@ public class ReconFacts {
         // "resource_id", "log_entry_id", "log_variable_id", "log_variable_value"
         for (Log logAnnotation : logAnnotations) {
             LogEntryTemplate template = logAnnotation.entryTemplate;
-            Map<String,String> variableValues = template.extractValuesFromPath(entry);
+            Map<String,String> variableValues = template.extractValuesFromLogEntry(entry);
             if (variableValues != null && !variableValues.isEmpty()) {
                 System.out.println(variableValues);
                 Long logEntryId = nextLogEntryId++;

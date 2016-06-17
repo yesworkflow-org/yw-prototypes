@@ -36,7 +36,6 @@ public class ModelFacts {
     private DataExportBuilder portLogFacts;
     private DataExportBuilder logTemplateVariableFacts;
     private Long nextLogId = 1L;
-    private Long nextLogTemplateVariableId = 1L;
 
     public ModelFacts(QueryEngine queryEngine, Model model) throws IOException {
 
@@ -206,8 +205,7 @@ public class ModelFacts {
                     Long logTemplateId = nextLogId++;
                     portLogFacts.addRow(logTemplateId, port.id, logAnnotation.value(), logAnnotation.id);
                     for (TemplateVariable variable : logAnnotation.entryTemplate.variables) {
-                        Long templateVariableId = this.nextLogTemplateVariableId++;
-                        logTemplateVariableFacts.addRow(templateVariableId, variable.name, logTemplateId);
+                        logTemplateVariableFacts.addRow(variable.id, variable.name, logTemplateId);
                     }
                 }
             }
