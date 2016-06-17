@@ -81,11 +81,6 @@ public class LogEntryTemplate {
 		leadingPath = Paths.get(leadingPathString);
 	}
 
-	//TODO Add support for double slashes following scheme delimiter.
-	
-	///////////////////////////////////////////////////////////////////
-	////                 public instance methods                   ////
-
 	public String getGlobPattern() {
         StringBuilder globPatternBuilder = new StringBuilder("glob:");
         globPatternBuilder.append(fragments[0]);
@@ -112,11 +107,11 @@ public class LogEntryTemplate {
         path = FileIO.normalizePathSeparator(path);
         Map<String,String> variableValues = new LinkedHashMap<String,String>();
 
-       // TODO handle case where last variable follows last constant fragment
        int start = 0;
        int valueStart = 0;
        int valueEnd = 0;
-       for (int i = 0; i < fragments.length - 1; ++i) {
+       int i;
+       for (i = 0; i < fragments.length - 1; ++i) {
            valueStart = start + fragments[i].length();
            valueEnd = path.indexOf(fragments[i+1], valueStart);
            if (valueEnd == -1) return null;
@@ -131,6 +126,12 @@ public class LogEntryTemplate {
            }
            start = valueEnd;
        }
+       
+       if (instances.length == i) {
+           TemplateVariable variable = instances[i-1];
+           String value = path.substring(valueStart);
+           variableValues.put(variable.name, value);
+       }
 
        return variableValues;
   }
@@ -139,69 +140,7 @@ public class LogEntryTemplate {
 	public String getReducedTemplate() {
 		return reducedTemplate;
 	}
-
-	/** 
-	 * @param otherTemplate The template to compare reduced template against.
-	 * @return true if the reduced paths of the two templates are identical, otherwise false
-	 */
-	public boolean matches(LogEntryTemplate otherTemplate) {
-		return this.reducedTemplate.equals(otherTemplate.reducedTemplate);
-	}
 	
-	/**
-	 * Expands the path portion of a log entry template given an array of variable name-value pairs.
-	 * Also returns the values of the variables used in the template as an array ordered by
-	 * appearance of the variables in the template.  Variables values will appear multiple times
-	 * in the array if the corresponding variables are used more than once in the template.
-	 * 
-	 * @param nameValueMap	Mapping of variable names to values to be used
-	 * 						when expanding the template.
-	 * @param valueArray	Reference used to return an array of the values of the 
-	 * 						template variables expanded, in order of appearance
-	 * 						in the template.
-	 * @return				String containing the requested expansion of the path portion of the template.
-	 * @throws				Exception if template has missing variables, i.e. empty braces
-	 * 						and thus cannot be expanded.
-	 */
-	public String getExpandedPath(Map<String,Object> nameValueMap, Object[] valueArray) throws Exception {
-		
-		// create a string builder for assembling the expanded template path
-		// starting with the first constant fragment of the template path
-		StringBuilder expandedPathBuilder = new StringBuilder(fragments[0]);
-		
-		// iterate over template variable indices
-		for (int i = 0; i < variables.length; i++) {
-			
-			// get the next variable name and make sure it isn't an empty string
-			String name = variables[i].name;
-			if (name.isEmpty()) {
-				throw new Exception("Cannot expand a template with missing variable names: " 
-						+ template);
-			}
-			
-			// look up the variable value in the value map and make sure there is one
-			Object value = nameValueMap.get(name);
-			if (value == null) {
-				throw new Exception ("Could not expand template. No value for variable '" + name + "'.");
-			}
-			
-			// hex-encode any characters not safe to use in file system patha
-			String encodedValue = encodeString(value.toString());
-			
-			// append the value of the current variable to the expanded path
-			expandedPathBuilder.append(encodedValue);
-			
-			// append the next constant fragment of the template path
-			expandedPathBuilder.append(fragments[i+1]);
-
-			// save the value of the current variable in the value array
-			valueArray[i] = value;
-		}
-		
-		// return the expanded path
-		return expandedPathBuilder.toString();
-	}
-
 	///////////////////////////////////////////////////////////////////
 	////                  public class methods                     ////
 	
@@ -253,21 +192,5 @@ public class LogEntryTemplate {
 		
 		// return the reduced path
 		return reducedPathBuffer.toString();
-	}
-	
-	public static String encodeString(String unescapedString) {
-        
-        StringBuffer escapedString = new StringBuffer(unescapedString);
-        
-        for (int index = 0; index < escapedString.length(); index++) {
-            Character c = escapedString.charAt(index);
-            if ((!Character.isLetterOrDigit(c)) && (c != '-') && (c != '.') && (c != '_') && (c != '~')) {
-                String hexCode = String.format("%02x", (int)c);
-                escapedString.replace(index, index+1, "%" + hexCode);
-                index += hexCode.length();
-            }
-        }
-        
-        return escapedString.toString();
 	}
 }
