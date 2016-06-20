@@ -141,7 +141,6 @@ public class ReconFacts {
     }
     
     private void findLogEntryVariableValues(List<Log> logAnnotations, Resource resource, String entry) throws Exception {
-        // "resource_id", "log_entry_id", "log_variable_id", "log_variable_value"
         for (Log logAnnotation : logAnnotations) {
             LogEntryTemplate template = logAnnotation.entryTemplate;
             Map<String,String> variableValues = template.extractValuesFromLogEntry(entry);
