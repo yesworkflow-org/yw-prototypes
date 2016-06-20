@@ -1,0 +1,789 @@
+
+% FACT: program(program_id, program_name, qualified_program_name, begin_annotation_id, end_annotation_id).
+program(1, "clean_name_and_date_workflow", "clean_name_and_date_workflow", 1, 274).
+program(2, "validate_scientificName_field_of_data", "clean_name_and_date_workflow.validate_scientificName_field_of_data", 12, 162).
+program(3, "initialize_run", "clean_name_and_date_workflow.validate_scientificName_field_of_data.initialize_run", 23, 27).
+program(4, "read_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.read_scientificName", 28, 33).
+program(5, "read_input1_data_records", "clean_name_and_date_workflow.validate_scientificName_field_of_data.read_input1_data_records", 34, 49).
+program(6, "check_empty_value", "clean_name_and_date_workflow.validate_scientificName_field_of_data.check_empty_value", 50, 62).
+program(7, "log_rejected_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_rejected_record", 63, 73).
+program(8, "find_matching_local_authority_source_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data.find_matching_local_authority_source_record", 74, 93).
+program(9, "log_rejected_unmatching_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_rejected_unmatching_record", 94, 104).
+program(10, "update_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.update_scientificName", 105, 111).
+program(11, "update_authorship", "clean_name_and_date_workflow.validate_scientificName_field_of_data.update_authorship", 112, 118).
+program(12, "log_updated_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_updated_record", 119, 129).
+program(13, "log_accepted_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_accepted_record", 130, 139).
+program(14, "write_output1_data", "clean_name_and_date_workflow.validate_scientificName_field_of_data.write_output1_data", 140, 153).
+program(15, "log_summary", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_summary", 154, 161).
+program(16, "validate_eventDate_field_of_data", "clean_name_and_date_workflow.validate_eventDate_field_of_data", 163, 273).
+program(17, "initialize_run", "clean_name_and_date_workflow.validate_eventDate_field_of_data.initialize_run", 172, 176).
+program(18, "read_input2_data_records", "clean_name_and_date_workflow.validate_eventDate_field_of_data.read_input2_data_records", 177, 190).
+program(19, "check_empty_value", "clean_name_and_date_workflow.validate_eventDate_field_of_data.check_empty_value", 191, 203).
+program(20, "log_rejected_record", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_rejected_record", 204, 215).
+program(21, "check_ISO_compliant", "clean_name_and_date_workflow.validate_eventDate_field_of_data.check_ISO_compliant", 216, 227).
+program(22, "update_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.update_eventDate", 228, 237).
+program(23, "log_accepted_record", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_accepted_record", 238, 250).
+program(24, "write_output2_data", "clean_name_and_date_workflow.validate_eventDate_field_of_data.write_output2_data", 251, 262).
+program(25, "log_summary", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_summary", 263, 272).
+program(26, "exactmatch", "exactmatch", 275, 280).
+program(27, "fuzzymatch", "fuzzymatch", 281, 285).
+program(28, "fieldmatch", "fieldmatch", 286, 291).
+program(29, "timestamp", "timestamp", 292, 295).
+
+% FACT: workflow(program_id).
+workflow(1).
+workflow(2).
+workflow(16).
+
+% FACT: function(program_id).
+function(26).
+function(27).
+function(28).
+function(29).
+
+% FACT: has_subprogram(program_id, subprogram_id).
+has_subprogram(1, 2).
+has_subprogram(2, 3).
+has_subprogram(2, 4).
+has_subprogram(2, 5).
+has_subprogram(2, 6).
+has_subprogram(2, 7).
+has_subprogram(2, 8).
+has_subprogram(2, 9).
+has_subprogram(2, 10).
+has_subprogram(2, 11).
+has_subprogram(2, 12).
+has_subprogram(2, 13).
+has_subprogram(2, 14).
+has_subprogram(2, 15).
+has_subprogram(1, 16).
+has_subprogram(16, 17).
+has_subprogram(16, 18).
+has_subprogram(16, 19).
+has_subprogram(16, 20).
+has_subprogram(16, 21).
+has_subprogram(16, 22).
+has_subprogram(16, 23).
+has_subprogram(16, 24).
+has_subprogram(16, 25).
+
+% FACT: port(port_id, port_type, port_name, qualified_port_name, port_annotation_id, data_id).
+port(1, "in", "input1_data", "clean_name_and_date_workflow<-input1_data", 2, 1).
+port(2, "param", "local_authority_source", "clean_name_and_date_workflow<-local_authority_source", 4, 2).
+port(3, "out", "name_val_log", "clean_name_and_date_workflow->name_val_log", 6, 3).
+port(4, "out", "output2_data", "clean_name_and_date_workflow->output2_data", 8, 4).
+port(5, "out", "date_val_log", "clean_name_and_date_workflow->date_val_log", 10, 5).
+port(6, "param", "local_authority_source", "clean_name_and_date_workflow.validate_scientificName_field_of_data<-local_authority_source", 13, 6).
+port(7, "in", "input1_data", "clean_name_and_date_workflow.validate_scientificName_field_of_data<-input1_data", 15, 7).
+port(8, "out", "output1_data", "clean_name_and_date_workflow.validate_scientificName_field_of_data->output1_data", 17, 8).
+port(9, "out", "name_val_log", "clean_name_and_date_workflow.validate_scientificName_field_of_data->name_val_log", 19, 9).
+port(10, "out", "record_id_data", "clean_name_and_date_workflow.validate_scientificName_field_of_data->record_id_data", 21, 10).
+port(11, "out", "name_val_log", "clean_name_and_date_workflow.validate_scientificName_field_of_data.initialize_run->name_val_log", 24, 11).
+port(12, "param", "local_authority_source", "clean_name_and_date_workflow.validate_scientificName_field_of_data.read_scientificName<-local_authority_source", 29, 12).
+port(13, "out", "local_authority_source_scientificName_lst", "clean_name_and_date_workflow.validate_scientificName_field_of_data.read_scientificName->local_authority_source_scientificName_lst", 32, 13).
+port(14, "in", "input1_data", "clean_name_and_date_workflow.validate_scientificName_field_of_data.read_input1_data_records<-input1_data", 35, 14).
+port(15, "out", "original_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.read_input1_data_records->original_scientificName", 37, 15).
+port(16, "out", "original_authorship", "clean_name_and_date_workflow.validate_scientificName_field_of_data.read_input1_data_records->original_authorship", 39, 16).
+port(17, "out", "RecordID", "clean_name_and_date_workflow.validate_scientificName_field_of_data.read_input1_data_records->RecordID", 41, 17).
+port(18, "out", "original_others", "clean_name_and_date_workflow.validate_scientificName_field_of_data.read_input1_data_records->original_others", 42, 18).
+port(19, "out", "record_id_data", "clean_name_and_date_workflow.validate_scientificName_field_of_data.read_input1_data_records->record_id_data", 44, 19).
+port(20, "out", "name_val_log", "clean_name_and_date_workflow.validate_scientificName_field_of_data.read_input1_data_records->name_val_log", 46, 11).
+port(21, "in", "original_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.check_empty_value<-original_scientificName", 51, 15).
+port(22, "out", "check_result", "clean_name_and_date_workflow.validate_scientificName_field_of_data.check_empty_value->check_result", 53, 20).
+port(23, "out", "original_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.check_empty_value->original_scientificName", 54, 21).
+port(24, "out", "original_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.check_empty_value->original_scientificName", 56, 22).
+port(25, "out", "name_val_log", "clean_name_and_date_workflow.validate_scientificName_field_of_data.check_empty_value->name_val_log", 58, 11).
+port(26, "param", "RecordID", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_rejected_record<-RecordID", 64, 17).
+port(27, "in", "original_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_rejected_record<-original_scientificName", 65, 21).
+port(28, "in", "check_result", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_rejected_record<-check_result", 67, 20).
+port(29, "out", "final_result", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_rejected_record->final_result", 68, 23).
+port(30, "out", "rejected_record_count", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_rejected_record->rejected_record_count", 69, 24).
+port(31, "out", "name_val_log", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_rejected_record->name_val_log", 70, 11).
+port(32, "in", "original_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.find_matching_local_authority_source_record<-original_scientificName", 75, 22).
+port(33, "param", "local_authority_source_scientificName_lst", "clean_name_and_date_workflow.validate_scientificName_field_of_data.find_matching_local_authority_source_record<-local_authority_source_scientificName_lst", 77, 13).
+port(34, "out", "match_result", "clean_name_and_date_workflow.validate_scientificName_field_of_data.find_matching_local_authority_source_record->match_result", 80, 25).
+port(35, "out", "matching_local_authority_source_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data.find_matching_local_authority_source_record->matching_local_authority_source_record", 81, 26).
+port(36, "out", "matching_local_authority_source_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data.find_matching_local_authority_source_record->matching_local_authority_source_record", 83, 27).
+port(37, "out", "matching_local_authority_source_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data.find_matching_local_authority_source_record->matching_local_authority_source_record", 85, 28).
+port(38, "out", "final_result", "clean_name_and_date_workflow.validate_scientificName_field_of_data.find_matching_local_authority_source_record->final_result", 87, 23).
+port(39, "out", "matching_method", "clean_name_and_date_workflow.validate_scientificName_field_of_data.find_matching_local_authority_source_record->matching_method", 88, 29).
+port(40, "out", "name_val_log", "clean_name_and_date_workflow.validate_scientificName_field_of_data.find_matching_local_authority_source_record->name_val_log", 89, 11).
+port(41, "param", "RecordID", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_rejected_unmatching_record<-RecordID", 95, 17).
+port(42, "in", "original_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_rejected_unmatching_record<-original_scientificName", 96, 22).
+port(43, "in", "matching_local_authority_source_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_rejected_unmatching_record<-matching_local_authority_source_record", 98, 28).
+port(44, "out", "rejected_record_count", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_rejected_unmatching_record->rejected_record_count", 100, 24).
+port(45, "out", "name_val_log", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_rejected_unmatching_record->name_val_log", 101, 11).
+port(46, "in", "original_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.update_scientificName<-original_scientificName", 106, 22).
+port(47, "param", "matching_local_authority_source_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data.update_scientificName<-matching_local_authority_source_record", 108, 27).
+port(48, "out", "updated_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.update_scientificName->updated_scientificName", 110, 30).
+port(49, "param", "matching_local_authority_source_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data.update_authorship<-matching_local_authority_source_record", 113, 27).
+port(50, "in", "original_authorship", "clean_name_and_date_workflow.validate_scientificName_field_of_data.update_authorship<-original_authorship", 115, 16).
+port(51, "out", "updated_authorship", "clean_name_and_date_workflow.validate_scientificName_field_of_data.update_authorship->updated_authorship", 117, 31).
+port(52, "in", "updated_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_updated_record<-updated_scientificName", 120, 30).
+port(53, "in", "updated_authorship", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_updated_record<-updated_authorship", 121, 31).
+port(54, "in", "original_authorship", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_updated_record<-original_authorship", 122, 16).
+port(55, "in", "original_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_updated_record<-original_scientificName", 124, 22).
+port(56, "out", "name_val_log", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_updated_record->name_val_log", 126, 11).
+port(57, "param", "RecordID", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_accepted_record<-RecordID", 131, 17).
+port(58, "in", "final_result", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_accepted_record<-final_result", 132, 23).
+port(59, "param", "original_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_accepted_record<-original_scientificName", 133, 22).
+port(60, "out", "accepted_record_count", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_accepted_record->accepted_record_count", 135, 32).
+port(61, "out", "name_val_log", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_accepted_record->name_val_log", 136, 11).
+port(62, "in", "original_others", "clean_name_and_date_workflow.validate_scientificName_field_of_data.write_output1_data<-original_others", 141, 18).
+port(63, "in", "original_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.write_output1_data<-original_scientificName", 143, 21).
+port(64, "in", "original_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.write_output1_data<-original_scientificName", 145, 22).
+port(65, "in", "original_authorship", "clean_name_and_date_workflow.validate_scientificName_field_of_data.write_output1_data<-original_authorship", 147, 16).
+port(66, "in", "updated_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data.write_output1_data<-updated_scientificName", 149, 30).
+port(67, "in", "updated_authorship", "clean_name_and_date_workflow.validate_scientificName_field_of_data.write_output1_data<-updated_authorship", 150, 31).
+port(68, "out", "output1_data", "clean_name_and_date_workflow.validate_scientificName_field_of_data.write_output1_data->output1_data", 151, 33).
+port(69, "in", "accepted_record_count", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_summary<-accepted_record_count", 155, 32).
+port(70, "in", "rejected_record_count", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_summary<-rejected_record_count", 156, 24).
+port(71, "out", "name_val_log", "clean_name_and_date_workflow.validate_scientificName_field_of_data.log_summary->name_val_log", 157, 11).
+port(72, "in", "output1_data", "clean_name_and_date_workflow.validate_eventDate_field_of_data<-output1_data", 164, 8).
+port(73, "param", "record_id_data", "clean_name_and_date_workflow.validate_eventDate_field_of_data<-record_id_data", 166, 10).
+port(74, "out", "output2_data", "clean_name_and_date_workflow.validate_eventDate_field_of_data->output2_data", 168, 34).
+port(75, "out", "date_val_log", "clean_name_and_date_workflow.validate_eventDate_field_of_data->date_val_log", 170, 35).
+port(76, "out", "date_val_log", "clean_name_and_date_workflow.validate_eventDate_field_of_data.initialize_run->date_val_log", 173, 36).
+port(77, "in", "input2_data", "clean_name_and_date_workflow.validate_eventDate_field_of_data.read_input2_data_records<-input2_data", 178, 37).
+port(78, "in", "record_id_data", "clean_name_and_date_workflow.validate_eventDate_field_of_data.read_input2_data_records<-record_id_data", 180, 38).
+port(79, "out", "original2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.read_input2_data_records->original2_eventDate", 182, 39).
+port(80, "out", "RecordID", "clean_name_and_date_workflow.validate_eventDate_field_of_data.read_input2_data_records->RecordID", 184, 40).
+port(81, "out", "original2_others", "clean_name_and_date_workflow.validate_eventDate_field_of_data.read_input2_data_records->original2_others", 185, 41).
+port(82, "out", "date_val_log", "clean_name_and_date_workflow.validate_eventDate_field_of_data.read_input2_data_records->date_val_log", 187, 36).
+port(83, "in", "original2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.check_empty_value<-original2_eventDate", 192, 39).
+port(84, "out", "check_result", "clean_name_and_date_workflow.validate_eventDate_field_of_data.check_empty_value->check_result", 194, 42).
+port(85, "out", "original2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.check_empty_value->original2_eventDate", 195, 43).
+port(86, "out", "original2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.check_empty_value->original2_eventDate", 197, 44).
+port(87, "out", "date_val_log", "clean_name_and_date_workflow.validate_eventDate_field_of_data.check_empty_value->date_val_log", 199, 36).
+port(88, "param", "RecordID", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_rejected_record<-RecordID", 205, 40).
+port(89, "in", "original2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_rejected_record<-original2_eventDate", 206, 43).
+port(90, "in", "check_result", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_rejected_record<-check_result", 208, 42).
+port(91, "out", "final_result", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_rejected_record->final_result", 209, 45).
+port(92, "out", "rejected2_record_count", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_rejected_record->rejected2_record_count", 210, 46).
+port(93, "out", "date_val_log", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_rejected_record->date_val_log", 212, 36).
+port(94, "in", "original2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.check_ISO_compliant<-original2_eventDate", 217, 44).
+port(95, "out", "match_result", "clean_name_and_date_workflow.validate_eventDate_field_of_data.check_ISO_compliant->match_result", 219, 47).
+port(96, "out", "original2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.check_ISO_compliant->original2_eventDate", 220, 48).
+port(97, "out", "original2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.check_ISO_compliant->original2_eventDate", 222, 49).
+port(98, "out", "date_val_log", "clean_name_and_date_workflow.validate_eventDate_field_of_data.check_ISO_compliant->date_val_log", 224, 36).
+port(99, "in", "original2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.update_eventDate<-original2_eventDate", 229, 49).
+port(100, "in", "match_result", "clean_name_and_date_workflow.validate_eventDate_field_of_data.update_eventDate<-match_result", 231, 47).
+port(101, "out", "updated2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.update_eventDate->updated2_eventDate", 232, 50).
+port(102, "out", "date_val_log", "clean_name_and_date_workflow.validate_eventDate_field_of_data.update_eventDate->date_val_log", 234, 36).
+port(103, "param", "RecordID", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_accepted_record<-RecordID", 239, 40).
+port(104, "in", "updated2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_accepted_record<-updated2_eventDate", 240, 50).
+port(105, "in", "original2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_accepted_record<-original2_eventDate", 242, 48).
+port(106, "out", "final_result", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_accepted_record->final_result", 244, 45).
+port(107, "out", "accepted2_record_count", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_accepted_record->accepted2_record_count", 245, 51).
+port(108, "out", "date_val_log", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_accepted_record->date_val_log", 247, 36).
+port(109, "in", "original2_others", "clean_name_and_date_workflow.validate_eventDate_field_of_data.write_output2_data<-original2_others", 252, 41).
+port(110, "in", "updated2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.write_output2_data<-updated2_eventDate", 254, 50).
+port(111, "in", "original2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.write_output2_data<-original2_eventDate", 256, 48).
+port(112, "in", "original2_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data.write_output2_data<-original2_eventDate", 258, 43).
+port(113, "out", "output2_data", "clean_name_and_date_workflow.validate_eventDate_field_of_data.write_output2_data->output2_data", 260, 52).
+port(114, "in", "accepted2_record_count", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_summary<-accepted2_record_count", 264, 51).
+port(115, "in", "rejected2_record_count", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_summary<-rejected2_record_count", 266, 46).
+port(116, "out", "date_val_log", "clean_name_and_date_workflow.validate_eventDate_field_of_data.log_summary->date_val_log", 268, 36).
+port(117, "param", "lst", "exactmatch<-lst", 276, 53).
+port(118, "param", "label_str", "exactmatch<-label_str", 277, 54).
+port(121, "param", "str1", "fuzzymatch<-str1", 282, 57).
+port(122, "param", "str2", "fuzzymatch<-str2", 283, 58).
+port(124, "param", "lst", "fieldmatch<-lst", 287, 53).
+port(125, "param", "str2", "fieldmatch<-str2", 288, 58).
+port(127, "param", "message", "timestamp<-message", 293, 61).
+
+% FACT: port_alias(port_id, alias).
+port_alias(15, "scientificName").
+port_alias(16, "authorship").
+port_alias(18, "others").
+port_alias(21, "scientificName").
+port_alias(23, "empty_scientificName").
+port_alias(24, "nonEmpty_scientificName").
+port_alias(27, "empty_scientificName").
+port_alias(32, "nonEmpty_scientificName").
+port_alias(35, "exactMatching_local_authority_source_record").
+port_alias(36, "fuzzyMatching_local_authority_source_record").
+port_alias(37, "nonMatching_local_authority_source_record").
+port_alias(42, "nonEmpty_scientificName").
+port_alias(43, "nonMatching_local_authority_source_record").
+port_alias(46, "nonEmpty_scientificName").
+port_alias(47, "fuzzyMatching_local_authority_source_record").
+port_alias(49, "fuzzyMatching_local_authority_source_record").
+port_alias(50, "authorship").
+port_alias(54, "authorship").
+port_alias(55, "nonEmpty_scientificName").
+port_alias(59, "nonEmpty_scientificName").
+port_alias(62, "others").
+port_alias(63, "empty_scientificName").
+port_alias(64, "nonEmpty_scientificName").
+port_alias(65, "authorship").
+port_alias(79, "eventDate").
+port_alias(81, "others").
+port_alias(83, "eventDate").
+port_alias(85, "empty_eventDate").
+port_alias(86, "nonEmpty_eventDate").
+port_alias(89, "empty_eventDate").
+port_alias(92, "rejected_record_count").
+port_alias(94, "nonEmpty_eventDate").
+port_alias(96, "compliant_eventDate").
+port_alias(97, "nonCompliant_eventDate").
+port_alias(99, "nonCompliant_eventDate").
+port_alias(101, "updated_eventDate").
+port_alias(104, "updated_eventDate").
+port_alias(105, "compliant_eventDate").
+port_alias(107, "accepted_record_count").
+port_alias(109, "others").
+port_alias(110, "updated_eventDate").
+port_alias(111, "compliant_eventDate").
+port_alias(112, "empty_eventDate").
+port_alias(114, "accepted_record_count").
+port_alias(115, "rejected_record_count").
+
+% FACT: port_uri_template(port_id, uri).
+port_uri_template(1, "file:demo_input.csv").
+port_uri_template(2, "file:demo_localDB.csv").
+port_uri_template(3, "file:name_val_log.txt").
+port_uri_template(4, "file:demo_output_name_date_val.csv").
+port_uri_template(5, "file:date_val_log.txt").
+port_uri_template(6, "file:demo_localDB.csv").
+port_uri_template(7, "file:demo_input.csv").
+port_uri_template(8, "file:demo_output_name_val.csv").
+port_uri_template(9, "file:name_val_log.txt").
+port_uri_template(10, "file:record_id.txt").
+port_uri_template(11, "file:name_val_log.txt").
+port_uri_template(12, "file:demo_localDB.csv").
+port_uri_template(14, "file:demo_input.csv").
+port_uri_template(19, "file:record_id.txt").
+port_uri_template(20, "file:name_val_log.txt").
+port_uri_template(25, "file:name_val_log.txt").
+port_uri_template(31, "file:name_val_log.txt").
+port_uri_template(40, "file:name_val_log.txt").
+port_uri_template(45, "file:name_val_log.txt").
+port_uri_template(56, "file:name_val_log.txt").
+port_uri_template(61, "file:name_val_log.txt").
+port_uri_template(68, "file:demo_output_name_val.csv").
+port_uri_template(71, "file:name_val_log.txt").
+port_uri_template(72, "file:demo_output_name_val.csv").
+port_uri_template(73, "file:record_id.txt").
+port_uri_template(74, "file:demo_output_name_date_val.csv").
+port_uri_template(75, "file:date_val_log.txt").
+port_uri_template(76, "file:date_val_log.txt").
+port_uri_template(77, "file:demo_output_name_val.csv").
+port_uri_template(78, "file:record_id.txt").
+port_uri_template(82, "file:date_val_log.txt").
+port_uri_template(87, "file:date_val_log.txt").
+port_uri_template(93, "file:date_val_log.txt").
+port_uri_template(98, "file:date_val_log.txt").
+port_uri_template(102, "file:date_val_log.txt").
+port_uri_template(108, "file:date_val_log.txt").
+port_uri_template(113, "file:demo_output_name_date_val.csv").
+port_uri_template(116, "file:date_val_log.txt").
+
+% FACT: has_in_port(block_id, port_id).
+has_in_port(1, 1).
+has_in_port(1, 2).
+has_in_port(2, 6).
+has_in_port(2, 7).
+has_in_port(4, 12).
+has_in_port(5, 14).
+has_in_port(6, 21).
+has_in_port(7, 26).
+has_in_port(7, 27).
+has_in_port(7, 28).
+has_in_port(8, 32).
+has_in_port(8, 33).
+has_in_port(9, 41).
+has_in_port(9, 42).
+has_in_port(9, 43).
+has_in_port(10, 46).
+has_in_port(10, 47).
+has_in_port(11, 49).
+has_in_port(11, 50).
+has_in_port(12, 52).
+has_in_port(12, 53).
+has_in_port(12, 54).
+has_in_port(12, 55).
+has_in_port(13, 57).
+has_in_port(13, 58).
+has_in_port(13, 59).
+has_in_port(14, 62).
+has_in_port(14, 63).
+has_in_port(14, 64).
+has_in_port(14, 65).
+has_in_port(14, 66).
+has_in_port(14, 67).
+has_in_port(15, 69).
+has_in_port(15, 70).
+has_in_port(16, 72).
+has_in_port(16, 73).
+has_in_port(18, 77).
+has_in_port(18, 78).
+has_in_port(19, 83).
+has_in_port(20, 88).
+has_in_port(20, 89).
+has_in_port(20, 90).
+has_in_port(21, 94).
+has_in_port(22, 99).
+has_in_port(22, 100).
+has_in_port(23, 103).
+has_in_port(23, 104).
+has_in_port(23, 105).
+has_in_port(24, 109).
+has_in_port(24, 110).
+has_in_port(24, 111).
+has_in_port(24, 112).
+has_in_port(25, 114).
+has_in_port(25, 115).
+has_in_port(26, 117).
+has_in_port(26, 118).
+has_in_port(27, 121).
+has_in_port(27, 122).
+has_in_port(28, 124).
+has_in_port(28, 125).
+has_in_port(29, 127).
+
+% FACT: has_out_port(block_id, port_id).
+has_out_port(1, 3).
+has_out_port(1, 4).
+has_out_port(1, 5).
+has_out_port(2, 8).
+has_out_port(2, 9).
+has_out_port(2, 10).
+has_out_port(3, 11).
+has_out_port(4, 13).
+has_out_port(5, 15).
+has_out_port(5, 16).
+has_out_port(5, 17).
+has_out_port(5, 18).
+has_out_port(5, 19).
+has_out_port(5, 20).
+has_out_port(6, 22).
+has_out_port(6, 23).
+has_out_port(6, 24).
+has_out_port(6, 25).
+has_out_port(7, 29).
+has_out_port(7, 30).
+has_out_port(7, 31).
+has_out_port(8, 34).
+has_out_port(8, 35).
+has_out_port(8, 36).
+has_out_port(8, 37).
+has_out_port(8, 38).
+has_out_port(8, 39).
+has_out_port(8, 40).
+has_out_port(9, 44).
+has_out_port(9, 45).
+has_out_port(10, 48).
+has_out_port(11, 51).
+has_out_port(12, 56).
+has_out_port(13, 60).
+has_out_port(13, 61).
+has_out_port(14, 68).
+has_out_port(15, 71).
+has_out_port(16, 74).
+has_out_port(16, 75).
+has_out_port(17, 76).
+has_out_port(18, 79).
+has_out_port(18, 80).
+has_out_port(18, 81).
+has_out_port(18, 82).
+has_out_port(19, 84).
+has_out_port(19, 85).
+has_out_port(19, 86).
+has_out_port(19, 87).
+has_out_port(20, 91).
+has_out_port(20, 92).
+has_out_port(20, 93).
+has_out_port(21, 95).
+has_out_port(21, 96).
+has_out_port(21, 97).
+has_out_port(21, 98).
+has_out_port(22, 101).
+has_out_port(22, 102).
+has_out_port(23, 106).
+has_out_port(23, 107).
+has_out_port(23, 108).
+has_out_port(24, 113).
+has_out_port(25, 116).
+
+% FACT: data(data_id, data_name, qualified_data_name).
+data(1, "input1_data", "[input1_data]").
+data(2, "local_authority_source", "[local_authority_source]").
+data(3, "name_val_log", "[name_val_log]").
+data(4, "output2_data", "[output2_data]").
+data(5, "date_val_log", "[date_val_log]").
+data(6, "local_authority_source", "clean_name_and_date_workflow[local_authority_source]").
+data(7, "input1_data", "clean_name_and_date_workflow[input1_data]").
+data(8, "output1_data", "clean_name_and_date_workflow[output1_data]").
+data(9, "name_val_log", "clean_name_and_date_workflow[name_val_log]").
+data(10, "record_id_data", "clean_name_and_date_workflow[record_id_data]").
+data(34, "output2_data", "clean_name_and_date_workflow[output2_data]").
+data(35, "date_val_log", "clean_name_and_date_workflow[date_val_log]").
+data(11, "name_val_log", "clean_name_and_date_workflow.validate_scientificName_field_of_data[name_val_log]").
+data(12, "local_authority_source", "clean_name_and_date_workflow.validate_scientificName_field_of_data[local_authority_source]").
+data(13, "local_authority_source_scientificName_lst", "clean_name_and_date_workflow.validate_scientificName_field_of_data[local_authority_source_scientificName_lst]").
+data(14, "input1_data", "clean_name_and_date_workflow.validate_scientificName_field_of_data[input1_data]").
+data(15, "scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data[scientificName]").
+data(16, "authorship", "clean_name_and_date_workflow.validate_scientificName_field_of_data[authorship]").
+data(17, "RecordID", "clean_name_and_date_workflow.validate_scientificName_field_of_data[RecordID]").
+data(18, "others", "clean_name_and_date_workflow.validate_scientificName_field_of_data[others]").
+data(19, "record_id_data", "clean_name_and_date_workflow.validate_scientificName_field_of_data[record_id_data]").
+data(20, "check_result", "clean_name_and_date_workflow.validate_scientificName_field_of_data[check_result]").
+data(21, "empty_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data[empty_scientificName]").
+data(22, "nonEmpty_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data[nonEmpty_scientificName]").
+data(23, "final_result", "clean_name_and_date_workflow.validate_scientificName_field_of_data[final_result]").
+data(24, "rejected_record_count", "clean_name_and_date_workflow.validate_scientificName_field_of_data[rejected_record_count]").
+data(25, "match_result", "clean_name_and_date_workflow.validate_scientificName_field_of_data[match_result]").
+data(26, "exactMatching_local_authority_source_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data[exactMatching_local_authority_source_record]").
+data(27, "fuzzyMatching_local_authority_source_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data[fuzzyMatching_local_authority_source_record]").
+data(28, "nonMatching_local_authority_source_record", "clean_name_and_date_workflow.validate_scientificName_field_of_data[nonMatching_local_authority_source_record]").
+data(29, "matching_method", "clean_name_and_date_workflow.validate_scientificName_field_of_data[matching_method]").
+data(30, "updated_scientificName", "clean_name_and_date_workflow.validate_scientificName_field_of_data[updated_scientificName]").
+data(31, "updated_authorship", "clean_name_and_date_workflow.validate_scientificName_field_of_data[updated_authorship]").
+data(32, "accepted_record_count", "clean_name_and_date_workflow.validate_scientificName_field_of_data[accepted_record_count]").
+data(33, "output1_data", "clean_name_and_date_workflow.validate_scientificName_field_of_data[output1_data]").
+data(36, "date_val_log", "clean_name_and_date_workflow.validate_eventDate_field_of_data[date_val_log]").
+data(37, "input2_data", "clean_name_and_date_workflow.validate_eventDate_field_of_data[input2_data]").
+data(38, "record_id_data", "clean_name_and_date_workflow.validate_eventDate_field_of_data[record_id_data]").
+data(39, "eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data[eventDate]").
+data(40, "RecordID", "clean_name_and_date_workflow.validate_eventDate_field_of_data[RecordID]").
+data(41, "others", "clean_name_and_date_workflow.validate_eventDate_field_of_data[others]").
+data(42, "check_result", "clean_name_and_date_workflow.validate_eventDate_field_of_data[check_result]").
+data(43, "empty_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data[empty_eventDate]").
+data(44, "nonEmpty_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data[nonEmpty_eventDate]").
+data(45, "final_result", "clean_name_and_date_workflow.validate_eventDate_field_of_data[final_result]").
+data(46, "rejected_record_count", "clean_name_and_date_workflow.validate_eventDate_field_of_data[rejected_record_count]").
+data(47, "match_result", "clean_name_and_date_workflow.validate_eventDate_field_of_data[match_result]").
+data(48, "compliant_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data[compliant_eventDate]").
+data(49, "nonCompliant_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data[nonCompliant_eventDate]").
+data(50, "updated_eventDate", "clean_name_and_date_workflow.validate_eventDate_field_of_data[updated_eventDate]").
+data(51, "accepted_record_count", "clean_name_and_date_workflow.validate_eventDate_field_of_data[accepted_record_count]").
+data(52, "output2_data", "clean_name_and_date_workflow.validate_eventDate_field_of_data[output2_data]").
+
+% FACT: channel(channel_id, data_id).
+channel(61, 3).
+channel(62, 4).
+channel(63, 5).
+channel(64, 6).
+channel(65, 7).
+channel(66, 8).
+channel(67, 10).
+channel(68, 1).
+channel(69, 2).
+channel(70, 9).
+channel(71, 34).
+channel(72, 35).
+channel(1, 8).
+channel(2, 9).
+channel(3, 10).
+channel(4, 12).
+channel(5, 14).
+channel(6, 15).
+channel(7, 17).
+channel(8, 17).
+channel(9, 17).
+channel(10, 21).
+channel(11, 21).
+channel(12, 20).
+channel(13, 22).
+channel(14, 22).
+channel(15, 22).
+channel(16, 22).
+channel(17, 22).
+channel(18, 22).
+channel(19, 13).
+channel(20, 28).
+channel(21, 27).
+channel(22, 27).
+channel(23, 16).
+channel(24, 16).
+channel(25, 16).
+channel(26, 30).
+channel(27, 30).
+channel(28, 31).
+channel(29, 31).
+channel(30, 23).
+channel(31, 18).
+channel(32, 32).
+channel(33, 24).
+channel(34, 6).
+channel(35, 7).
+channel(36, 33).
+channel(37, 11).
+channel(38, 19).
+channel(39, 34).
+channel(40, 35).
+channel(41, 38).
+channel(42, 39).
+channel(43, 40).
+channel(44, 40).
+channel(45, 43).
+channel(46, 43).
+channel(47, 42).
+channel(48, 44).
+channel(49, 49).
+channel(50, 47).
+channel(51, 50).
+channel(52, 50).
+channel(53, 48).
+channel(54, 48).
+channel(55, 41).
+channel(56, 51).
+channel(57, 46).
+channel(58, 10).
+channel(59, 52).
+channel(60, 36).
+
+% FACT: port_connects_to_channel(port_id, channel_id).
+port_connects_to_channel(9, 61).
+port_connects_to_channel(74, 62).
+port_connects_to_channel(75, 63).
+port_connects_to_channel(6, 64).
+port_connects_to_channel(7, 65).
+port_connects_to_channel(8, 66).
+port_connects_to_channel(72, 66).
+port_connects_to_channel(10, 67).
+port_connects_to_channel(73, 67).
+port_connects_to_channel(7, 68).
+port_connects_to_channel(6, 69).
+port_connects_to_channel(9, 70).
+port_connects_to_channel(74, 71).
+port_connects_to_channel(75, 72).
+port_connects_to_channel(68, 1).
+port_connects_to_channel(71, 2).
+port_connects_to_channel(19, 3).
+port_connects_to_channel(12, 4).
+port_connects_to_channel(14, 5).
+port_connects_to_channel(15, 6).
+port_connects_to_channel(21, 6).
+port_connects_to_channel(17, 7).
+port_connects_to_channel(26, 7).
+port_connects_to_channel(17, 8).
+port_connects_to_channel(41, 8).
+port_connects_to_channel(17, 9).
+port_connects_to_channel(57, 9).
+port_connects_to_channel(23, 10).
+port_connects_to_channel(27, 10).
+port_connects_to_channel(23, 11).
+port_connects_to_channel(63, 11).
+port_connects_to_channel(22, 12).
+port_connects_to_channel(28, 12).
+port_connects_to_channel(24, 13).
+port_connects_to_channel(32, 13).
+port_connects_to_channel(24, 14).
+port_connects_to_channel(42, 14).
+port_connects_to_channel(24, 15).
+port_connects_to_channel(46, 15).
+port_connects_to_channel(24, 16).
+port_connects_to_channel(55, 16).
+port_connects_to_channel(24, 17).
+port_connects_to_channel(59, 17).
+port_connects_to_channel(24, 18).
+port_connects_to_channel(64, 18).
+port_connects_to_channel(13, 19).
+port_connects_to_channel(33, 19).
+port_connects_to_channel(37, 20).
+port_connects_to_channel(43, 20).
+port_connects_to_channel(36, 21).
+port_connects_to_channel(47, 21).
+port_connects_to_channel(36, 22).
+port_connects_to_channel(49, 22).
+port_connects_to_channel(16, 23).
+port_connects_to_channel(50, 23).
+port_connects_to_channel(16, 24).
+port_connects_to_channel(54, 24).
+port_connects_to_channel(16, 25).
+port_connects_to_channel(65, 25).
+port_connects_to_channel(48, 26).
+port_connects_to_channel(52, 26).
+port_connects_to_channel(48, 27).
+port_connects_to_channel(66, 27).
+port_connects_to_channel(51, 28).
+port_connects_to_channel(53, 28).
+port_connects_to_channel(51, 29).
+port_connects_to_channel(67, 29).
+port_connects_to_channel(38, 30).
+port_connects_to_channel(58, 30).
+port_connects_to_channel(18, 31).
+port_connects_to_channel(62, 31).
+port_connects_to_channel(60, 32).
+port_connects_to_channel(69, 32).
+port_connects_to_channel(44, 33).
+port_connects_to_channel(70, 33).
+port_connects_to_channel(12, 34).
+port_connects_to_channel(14, 35).
+port_connects_to_channel(68, 36).
+port_connects_to_channel(71, 37).
+port_connects_to_channel(19, 38).
+port_connects_to_channel(113, 39).
+port_connects_to_channel(116, 40).
+port_connects_to_channel(78, 41).
+port_connects_to_channel(79, 42).
+port_connects_to_channel(83, 42).
+port_connects_to_channel(80, 43).
+port_connects_to_channel(88, 43).
+port_connects_to_channel(80, 44).
+port_connects_to_channel(103, 44).
+port_connects_to_channel(85, 45).
+port_connects_to_channel(89, 45).
+port_connects_to_channel(85, 46).
+port_connects_to_channel(112, 46).
+port_connects_to_channel(84, 47).
+port_connects_to_channel(90, 47).
+port_connects_to_channel(86, 48).
+port_connects_to_channel(94, 48).
+port_connects_to_channel(97, 49).
+port_connects_to_channel(99, 49).
+port_connects_to_channel(95, 50).
+port_connects_to_channel(100, 50).
+port_connects_to_channel(101, 51).
+port_connects_to_channel(104, 51).
+port_connects_to_channel(101, 52).
+port_connects_to_channel(110, 52).
+port_connects_to_channel(96, 53).
+port_connects_to_channel(105, 53).
+port_connects_to_channel(96, 54).
+port_connects_to_channel(111, 54).
+port_connects_to_channel(81, 55).
+port_connects_to_channel(109, 55).
+port_connects_to_channel(107, 56).
+port_connects_to_channel(114, 56).
+port_connects_to_channel(92, 57).
+port_connects_to_channel(115, 57).
+port_connects_to_channel(78, 58).
+port_connects_to_channel(113, 59).
+port_connects_to_channel(116, 60).
+
+% FACT: inflow_connects_to_channel(port_id, channel_id).
+inflow_connects_to_channel(2, 64).
+inflow_connects_to_channel(1, 65).
+inflow_connects_to_channel(1, 68).
+inflow_connects_to_channel(2, 69).
+inflow_connects_to_channel(6, 4).
+inflow_connects_to_channel(7, 5).
+inflow_connects_to_channel(6, 34).
+inflow_connects_to_channel(7, 35).
+inflow_connects_to_channel(73, 41).
+inflow_connects_to_channel(73, 58).
+
+% FACT: outflow_connects_to_channel(port_id, channel_id).
+outflow_connects_to_channel(3, 61).
+outflow_connects_to_channel(4, 62).
+outflow_connects_to_channel(5, 63).
+outflow_connects_to_channel(3, 70).
+outflow_connects_to_channel(4, 71).
+outflow_connects_to_channel(5, 72).
+outflow_connects_to_channel(8, 1).
+outflow_connects_to_channel(9, 2).
+outflow_connects_to_channel(10, 3).
+outflow_connects_to_channel(8, 36).
+outflow_connects_to_channel(9, 37).
+outflow_connects_to_channel(10, 38).
+outflow_connects_to_channel(74, 39).
+outflow_connects_to_channel(75, 40).
+outflow_connects_to_channel(74, 59).
+outflow_connects_to_channel(75, 60).
+
+% FACT: uri_variable(uri_variable_id, variable_name, port_id).
+
+% FACT: log_template(log_template_id, port_id, entry_template, log_annotation_id).
+log_template(1, 11, "{timestamp} Reading input records from {input1_data_file_name}", 26).
+log_template(2, 20, "{timestamp} Reading input record {RecordID}", 48).
+log_template(3, 25, "{timestamp} Trying {check_type} {source_used} {match_method} match for validating {field_name}: {field_name_value}", 60).
+log_template(4, 25, "{timestamp} Checking if {field_name} value is Empty: {check_result}", 61).
+log_template(5, 31, "{timestamp} {final_result} record {RecordID}", 72).
+log_template(6, 40, "{timestamp} Trying {check_type} {source_used} {match_method} match for validating {field_name}: {field_name_value}", 91).
+log_template(7, 40, "{timestamp} {match_method} match was {match_result}, compliant with {source_used}: {compliant_result}.", 92).
+log_template(8, 45, "{timestamp} {final_result} record {RecordID}", 103).
+log_template(9, 56, "{timestamp} UPDATING {field_name} from {original_value} to {updated_value}", 128).
+log_template(10, 61, "{timestamp} {final_result} record {RecordID}", 138).
+log_template(11, 71, "{timestamp} Wrote {accepted_record_count} ACCEPTED records to {output1_data_file_name}", 159).
+log_template(12, 71, "{timestamp} Wrote {rejected_record_count} UNABLE-to-determine-validity records to {output1_data_file_name}", 160).
+log_template(13, 76, "{timestamp} Reading input records from {input2_data_file_name}", 175).
+log_template(14, 82, "{timestamp} Reading input record {RecordID}", 189).
+log_template(15, 87, "{timestamp} Trying {check_type} {source_used} {match_method} match for validating {field_name}: {field_name_value}", 201).
+log_template(16, 87, "{timestamp} Checking if {field_name} value is Empty: {check_result}", 202).
+log_template(17, 93, "{timestamp} {final_result} record {RecordID}", 214).
+log_template(18, 98, "{timestamp} {match_method} match was {match_result}, compliant with {source_used}: {match_result}.", 226).
+log_template(19, 102, "{timestamp} UPDATING {field_name} from {original_value} to {updated_value}", 236).
+log_template(20, 108, "{timestamp} {final_result} record {RecordID}", 249).
+log_template(21, 116, "{timestamp} Wrote {accepted2_record_count} accepted records to {output2_data_file_name}", 270).
+log_template(22, 116, "{timestamp} Wrote {rejected2_record_count} UNABLE-to-determine-validity records to {rejected2_data_file_name}", 271).
+
+% FACT: log_template_variable(log_variable_id, variable_name, log_template_id).
+log_template_variable(1, "timestamp", 1).
+log_template_variable(2, "input1_data_file_name", 1).
+log_template_variable(3, "timestamp", 2).
+log_template_variable(4, "RecordID", 2).
+log_template_variable(5, "timestamp", 3).
+log_template_variable(6, "check_type", 3).
+log_template_variable(7, "source_used", 3).
+log_template_variable(8, "match_method", 3).
+log_template_variable(9, "field_name", 3).
+log_template_variable(10, "field_name_value", 3).
+log_template_variable(11, "timestamp", 4).
+log_template_variable(12, "field_name", 4).
+log_template_variable(13, "check_result", 4).
+log_template_variable(14, "timestamp", 5).
+log_template_variable(15, "final_result", 5).
+log_template_variable(16, "RecordID", 5).
+log_template_variable(17, "timestamp", 6).
+log_template_variable(18, "check_type", 6).
+log_template_variable(19, "source_used", 6).
+log_template_variable(20, "match_method", 6).
+log_template_variable(21, "field_name", 6).
+log_template_variable(22, "field_name_value", 6).
+log_template_variable(23, "timestamp", 7).
+log_template_variable(24, "match_method", 7).
+log_template_variable(25, "match_result", 7).
+log_template_variable(26, "source_used", 7).
+log_template_variable(27, "compliant_result", 7).
+log_template_variable(28, "timestamp", 8).
+log_template_variable(29, "final_result", 8).
+log_template_variable(30, "RecordID", 8).
+log_template_variable(31, "timestamp", 9).
+log_template_variable(32, "field_name", 9).
+log_template_variable(33, "original_value", 9).
+log_template_variable(34, "updated_value", 9).
+log_template_variable(35, "timestamp", 10).
+log_template_variable(36, "final_result", 10).
+log_template_variable(37, "RecordID", 10).
+log_template_variable(38, "timestamp", 11).
+log_template_variable(39, "accepted_record_count", 11).
+log_template_variable(40, "output1_data_file_name", 11).
+log_template_variable(41, "timestamp", 12).
+log_template_variable(42, "rejected_record_count", 12).
+log_template_variable(43, "output1_data_file_name", 12).
+log_template_variable(44, "timestamp", 13).
+log_template_variable(45, "input2_data_file_name", 13).
+log_template_variable(46, "timestamp", 14).
+log_template_variable(47, "RecordID", 14).
+log_template_variable(48, "timestamp", 15).
+log_template_variable(49, "check_type", 15).
+log_template_variable(50, "source_used", 15).
+log_template_variable(51, "match_method", 15).
+log_template_variable(52, "field_name", 15).
+log_template_variable(53, "field_name_value", 15).
+log_template_variable(54, "timestamp", 16).
+log_template_variable(55, "field_name", 16).
+log_template_variable(56, "check_result", 16).
+log_template_variable(57, "timestamp", 17).
+log_template_variable(58, "final_result", 17).
+log_template_variable(59, "RecordID", 17).
+log_template_variable(60, "timestamp", 18).
+log_template_variable(61, "match_method", 18).
+log_template_variable(62, "match_result", 18).
+log_template_variable(63, "source_used", 18).
+log_template_variable(64, "timestamp", 19).
+log_template_variable(65, "field_name", 19).
+log_template_variable(66, "original_value", 19).
+log_template_variable(67, "updated_value", 19).
+log_template_variable(68, "timestamp", 20).
+log_template_variable(69, "final_result", 20).
+log_template_variable(70, "RecordID", 20).
+log_template_variable(71, "timestamp", 21).
+log_template_variable(72, "accepted2_record_count", 21).
+log_template_variable(73, "output2_data_file_name", 21).
+log_template_variable(74, "timestamp", 22).
+log_template_variable(75, "rejected2_record_count", 22).
+log_template_variable(76, "rejected2_data_file_name", 22).

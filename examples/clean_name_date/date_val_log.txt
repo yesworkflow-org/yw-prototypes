@@ -1,0 +1,61 @@
+2016-06-19 19:36:10  Reading input records from 'demo_output_name_val.csv'.
+
+2016-06-19 19:36:10  Reading input record '66126746'.
+2016-06-19 19:36:10  Trying validating self check ISO date format (YYYY-MM-DD) match for validating eventDate: '5/27/50'.
+2016-06-19 19:36:10  Checking if eventDate value is Emmpty: 'NO'.
+2016-06-19 19:36:10  EXACT match FAILED, compliant with ISO date format (YYYY-MM-DD): FAILED
+2016-06-19 19:36:10  UPDATING eventDate from '5/27/50' to '1950-05-27'.
+2016-06-19 19:36:10  ACCEPTED record '66126746'.
+
+2016-06-19 19:36:10  Reading input record '12584243'.
+2016-06-19 19:36:10  Trying validating self check ISO date format (YYYY-MM-DD) match for validating eventDate: '1880-01-01/1880-12-31'.
+2016-06-19 19:36:10  Checking if eventDate value is Emmpty: 'NO'.
+2016-06-19 19:36:10  EXACT match was SUCESSFUL, compliant with ISO date format (YYYY-MM-DD): SUCCESSFUL
+2016-06-19 19:36:10  ACCEPTED record '12584243'.
+
+2016-06-19 19:36:10  Reading input record '24374588'.
+2016-06-19 19:36:10  Trying validating self check ISO date format (YYYY-MM-DD) match for validating eventDate: '1963-09-01/1963-09-30'.
+2016-06-19 19:36:10  Checking if eventDate value is Emmpty: 'NO'.
+2016-06-19 19:36:10  EXACT match was SUCESSFUL, compliant with ISO date format (YYYY-MM-DD): SUCCESSFUL
+2016-06-19 19:36:10  ACCEPTED record '24374588'.
+
+2016-06-19 19:36:10  Reading input record '18657474'.
+2016-06-19 19:36:10  Trying validating self check ISO date format (YYYY-MM-DD) match for validating eventDate: '1931-09-01/1931-09-30'.
+2016-06-19 19:36:10  Checking if eventDate value is Emmpty: 'NO'.
+2016-06-19 19:36:10  EXACT match was SUCESSFUL, compliant with ISO date format (YYYY-MM-DD): SUCCESSFUL
+2016-06-19 19:36:10  ACCEPTED record '18657474'.
+
+2016-06-19 19:36:10  Reading input record '15564390'.
+2016-06-19 19:36:10  Trying validating self check ISO date format (YYYY-MM-DD) match for validating eventDate: '1880-01-01/1880-12-31'.
+2016-06-19 19:36:10  Checking if eventDate value is Emmpty: 'NO'.
+2016-06-19 19:36:10  EXACT match was SUCESSFUL, compliant with ISO date format (YYYY-MM-DD): SUCCESSFUL
+2016-06-19 19:36:10  ACCEPTED record '15564390'.
+
+2016-06-19 19:36:10  Reading input record '65596906'.
+2016-06-19 19:36:10  Trying validating self check ISO date format (YYYY-MM-DD) match for validating eventDate: '1904-06-01/1904-06-30'.
+2016-06-19 19:36:10  Checking if eventDate value is Emmpty: 'NO'.
+2016-06-19 19:36:10  EXACT match was SUCESSFUL, compliant with ISO date format (YYYY-MM-DD): SUCCESSFUL
+2016-06-19 19:36:10  ACCEPTED record '65596906'.
+
+2016-06-19 19:36:10  Reading input record '17247949'.
+2016-06-19 19:36:10  Trying validating self check ISO date format (YYYY-MM-DD) match for validating eventDate: ''.
+2016-06-19 19:36:10  Checking if eventDate value is Emmpty: 'YES'.
+2016-06-19 19:36:10  UNABLE to determine the validity record '17247949'.
+
+2016-06-19 19:36:10  Reading input record '14157498'.
+2016-06-19 19:36:10  Trying validating self check ISO date format (YYYY-MM-DD) match for validating eventDate: ''.
+2016-06-19 19:36:10  Checking if eventDate value is Emmpty: 'YES'.
+2016-06-19 19:36:10  UNABLE to determine the validity record '14157498'.
+
+2016-06-19 19:36:10  Reading input record '91213620'.
+2016-06-19 19:36:10  Trying validating self check ISO date format (YYYY-MM-DD) match for validating eventDate: ''.
+2016-06-19 19:36:10  Checking if eventDate value is Emmpty: 'YES'.
+2016-06-19 19:36:10  UNABLE to determine the validity record '91213620'.
+
+2016-06-19 19:36:10  Reading input record '13911570'.
+2016-06-19 19:36:10  Trying validating self check ISO date format (YYYY-MM-DD) match for validating eventDate: ''.
+2016-06-19 19:36:10  Checking if eventDate value is Emmpty: 'YES'.
+2016-06-19 19:36:10  UNABLE to determine the validity record '13911570'.
+
+2016-06-19 19:36:10  Wrote 6 accepted records to demo_output_name_date_val.csv.
+2016-06-19 19:36:10  Wrote 4 UNABLE-to-determine-validity records to demo_output_name_date_val.csv.

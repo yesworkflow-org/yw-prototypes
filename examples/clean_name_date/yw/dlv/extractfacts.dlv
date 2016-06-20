@@ -1,0 +1,407 @@
+
+% FACT: extract_source(source_id, source_path).
+extract_source(1, "../clean_name_date_yw.py").
+
+% FACT: annotation(annotation_id, source_id, line_number, tag, keyword, value).
+annotation(1, 1, 11, "begin", "@begin", "clean_name_and_date_workflow").
+annotation(2, 1, 12, "in", "@in", "input1_data").
+annotation(3, 1, 12, "uri", "@uri", "file:demo_input.csv").
+annotation(4, 1, 13, "param", "@param", "local_authority_source").
+annotation(5, 1, 13, "uri", "@uri", "file:demo_localDB.csv").
+annotation(6, 1, 14, "out", "@out", "name_val_log").
+annotation(7, 1, 14, "uri", "@uri", "file:name_val_log.txt").
+annotation(8, 1, 15, "out", "@out", "output2_data").
+annotation(9, 1, 15, "uri", "@uri", "file:demo_output_name_date_val.csv").
+annotation(10, 1, 16, "out", "@out", "date_val_log").
+annotation(11, 1, 16, "uri", "@uri", "file:date_val_log.txt").
+annotation(12, 1, 20, "begin", "@begin", "validate_scientificName_field_of_data").
+annotation(13, 1, 21, "param", "@param", "local_authority_source").
+annotation(14, 1, 21, "uri", "@uri", "file:demo_localDB.csv").
+annotation(15, 1, 22, "in", "@in", "input1_data").
+annotation(16, 1, 22, "uri", "@uri", "file:demo_input.csv").
+annotation(17, 1, 23, "out", "@out", "output1_data").
+annotation(18, 1, 23, "uri", "@uri", "file:demo_output_name_val.csv").
+annotation(19, 1, 24, "out", "@out", "name_val_log").
+annotation(20, 1, 24, "uri", "@uri", "file:name_val_log.txt").
+annotation(21, 1, 25, "out", "@out", "record_id_data").
+annotation(22, 1, 25, "uri", "@uri", "file:record_id.txt").
+annotation(23, 1, 45, "begin", "@begin", "initialize_run").
+annotation(24, 1, 46, "out", "@out", "name_val_log").
+annotation(25, 1, 46, "uri", "@uri", "file:name_val_log.txt").
+annotation(26, 1, 47, "log", "@log", "{timestamp} Reading input records from {input1_data_file_name}").
+annotation(27, 1, 53, "end", "@end", "initialize_run").
+annotation(28, 1, 57, "begin", "@begin", "read_scientificName").
+annotation(29, 1, 58, "param", "@param", "local_authority_source").
+annotation(30, 1, 58, "uri", "@uri", "file:demo_localDB.csv").
+annotation(31, 1, 59, "call", "@call", "fieldmatch").
+annotation(32, 1, 60, "out", "@out", "local_authority_source_scientificName_lst").
+annotation(33, 1, 90, "end", "@end", "read_scientificName").
+annotation(34, 1, 94, "begin", "@begin", "read_input1_data_records").
+annotation(35, 1, 95, "in", "@in", "input1_data").
+annotation(36, 1, 95, "uri", "@uri", "file:demo_input.csv").
+annotation(37, 1, 96, "out", "@out", "original_scientificName").
+annotation(38, 1, 96, "as", "@as", "scientificName").
+annotation(39, 1, 97, "out", "@out", "original_authorship").
+annotation(40, 1, 97, "as", "@as", "authorship").
+annotation(41, 1, 98, "out", "@out", "RecordID").
+annotation(42, 1, 99, "out", "@out", "original_others").
+annotation(43, 1, 99, "as", "@as", "others").
+annotation(44, 1, 100, "out", "@out", "record_id_data").
+annotation(45, 1, 100, "uri", "@uri", "file:record_id.txt").
+annotation(46, 1, 101, "out", "@out", "name_val_log").
+annotation(47, 1, 101, "uri", "@uri", "file:name_val_log.txt").
+annotation(48, 1, 102, "log", "@log", "{timestamp} Reading input record {RecordID}").
+annotation(49, 1, 135, "end", "@end", "read_input1_data_records").
+annotation(50, 1, 139, "begin", "@begin", "check_empty_value").
+annotation(51, 1, 140, "in", "@in", "original_scientificName").
+annotation(52, 1, 140, "as", "@as", "scientificName").
+annotation(53, 1, 141, "out", "@out", "check_result").
+annotation(54, 1, 142, "out", "@out", "original_scientificName").
+annotation(55, 1, 142, "as", "@as", "empty_scientificName").
+annotation(56, 1, 143, "out", "@out", "original_scientificName").
+annotation(57, 1, 143, "as", "@as", "nonEmpty_scientificName").
+annotation(58, 1, 144, "out", "@out", "name_val_log").
+annotation(59, 1, 144, "uri", "@uri", "file:name_val_log.txt").
+annotation(60, 1, 145, "log", "@log", "{timestamp} Trying {check_type} {source_used} {match_method} match for validating {field_name}: {field_name_value}").
+annotation(61, 1, 146, "log", "@log", "{timestamp} Checking if {field_name} value is Empty: {check_result}").
+annotation(62, 1, 163, "end", "@end", "check_empty_value").
+annotation(63, 1, 167, "begin", "@begin", "log_rejected_record").
+annotation(64, 1, 168, "param", "@param", "RecordID").
+annotation(65, 1, 169, "in", "@in", "original_scientificName").
+annotation(66, 1, 169, "as", "@as", "empty_scientificName").
+annotation(67, 1, 170, "in", "@in", "check_result").
+annotation(68, 1, 171, "out", "@out", "final_result").
+annotation(69, 1, 172, "out", "@out", "rejected_record_count").
+annotation(70, 1, 173, "out", "@out", "name_val_log").
+annotation(71, 1, 173, "uri", "@uri", "file:name_val_log.txt").
+annotation(72, 1, 174, "log", "@log", "{timestamp} {final_result} record {RecordID}").
+annotation(73, 1, 187, "end", "@end", "log_rejected_record").
+annotation(74, 1, 193, "begin", "@begin", "find_matching_local_authority_source_record").
+annotation(75, 1, 194, "in", "@in", "original_scientificName").
+annotation(76, 1, 194, "as", "@as", "nonEmpty_scientificName").
+annotation(77, 1, 195, "param", "@param", "local_authority_source_scientificName_lst").
+annotation(78, 1, 196, "call", "@call", "exactmatch").
+annotation(79, 1, 197, "call", "@call", "fieldmatch").
+annotation(80, 1, 198, "out", "@out", "match_result").
+annotation(81, 1, 199, "out", "@out", "matching_local_authority_source_record").
+annotation(82, 1, 199, "as", "@as", "exactMatching_local_authority_source_record").
+annotation(83, 1, 200, "out", "@out", "matching_local_authority_source_record").
+annotation(84, 1, 200, "as", "@as", "fuzzyMatching_local_authority_source_record").
+annotation(85, 1, 201, "out", "@out", "matching_local_authority_source_record").
+annotation(86, 1, 201, "as", "@as", "nonMatching_local_authority_source_record").
+annotation(87, 1, 202, "out", "@out", "final_result").
+annotation(88, 1, 203, "out", "@out", "matching_method").
+annotation(89, 1, 204, "out", "@out", "name_val_log").
+annotation(90, 1, 204, "uri", "@uri", "file:name_val_log.txt").
+annotation(91, 1, 205, "log", "@log", "{timestamp} Trying {check_type} {source_used} {match_method} match for validating {field_name}: {field_name_value}").
+annotation(92, 1, 206, "log", "@log", "{timestamp} {match_method} match was {match_result}, compliant with {source_used}: {compliant_result}.").
+annotation(93, 1, 232, "end", "@end", "find_matching_local_authority_source_record").
+annotation(94, 1, 238, "begin", "@begin", "log_rejected_unmatching_record").
+annotation(95, 1, 239, "param", "@param", "RecordID").
+annotation(96, 1, 240, "in", "@in", "original_scientificName").
+annotation(97, 1, 240, "as", "@as", "nonEmpty_scientificName").
+annotation(98, 1, 241, "in", "@in", "matching_local_authority_source_record").
+annotation(99, 1, 241, "as", "@as", "nonMatching_local_authority_source_record").
+annotation(100, 1, 242, "out", "@out", "rejected_record_count").
+annotation(101, 1, 243, "out", "@out", "name_val_log").
+annotation(102, 1, 243, "uri", "@uri", "file:name_val_log.txt").
+annotation(103, 1, 244, "log", "@log", "{timestamp} {final_result} record {RecordID}").
+annotation(104, 1, 257, "end", "@end", "log_rejected_unmatching_record").
+annotation(105, 1, 262, "begin", "@begin", "update_scientificName").
+annotation(106, 1, 263, "in", "@in", "original_scientificName").
+annotation(107, 1, 263, "as", "@as", "nonEmpty_scientificName").
+annotation(108, 1, 264, "param", "@param", "matching_local_authority_source_record").
+annotation(109, 1, 264, "as", "@as", "fuzzyMatching_local_authority_source_record").
+annotation(110, 1, 265, "out", "@out", "updated_scientificName").
+annotation(111, 1, 273, "end", "@end", "update_scientificName").
+annotation(112, 1, 278, "begin", "@begin", "update_authorship").
+annotation(113, 1, 279, "param", "@param", "matching_local_authority_source_record").
+annotation(114, 1, 279, "as", "@as", "fuzzyMatching_local_authority_source_record").
+annotation(115, 1, 280, "in", "@in", "original_authorship").
+annotation(116, 1, 280, "as", "@as", "authorship").
+annotation(117, 1, 281, "out", "@out", "updated_authorship").
+annotation(118, 1, 291, "end", "@end", "update_authorship").
+annotation(119, 1, 297, "begin", "@begin", "log_updated_record").
+annotation(120, 1, 298, "in", "@in", "updated_scientificName").
+annotation(121, 1, 299, "in", "@in", "updated_authorship").
+annotation(122, 1, 300, "in", "@in", "original_authorship").
+annotation(123, 1, 300, "as", "@as", "authorship").
+annotation(124, 1, 301, "in", "@in", "original_scientificName").
+annotation(125, 1, 301, "as", "@as", "nonEmpty_scientificName").
+annotation(126, 1, 302, "out", "@out", "name_val_log").
+annotation(127, 1, 302, "uri", "@uri", "file:name_val_log.txt").
+annotation(128, 1, 303, "log", "@log", "{timestamp} UPDATING {field_name} from {original_value} to {updated_value}").
+annotation(129, 1, 321, "end", "@end", "log_updated_record").
+annotation(130, 1, 325, "begin", "@begin", "log_accepted_record").
+annotation(131, 1, 326, "param", "@param", "RecordID").
+annotation(132, 1, 327, "in", "@in", "final_result").
+annotation(133, 1, 328, "param", "@param", "original_scientificName").
+annotation(134, 1, 328, "as", "@as", "nonEmpty_scientificName").
+annotation(135, 1, 329, "out", "@out", "accepted_record_count").
+annotation(136, 1, 330, "out", "@out", "name_val_log").
+annotation(137, 1, 330, "uri", "@uri", "file:name_val_log.txt").
+annotation(138, 1, 331, "log", "@log", "{timestamp} {final_result} record {RecordID}").
+annotation(139, 1, 336, "end", "@end", "log_accepted_record").
+annotation(140, 1, 341, "begin", "@begin", "write_output1_data").
+annotation(141, 1, 342, "in", "@in", "original_others").
+annotation(142, 1, 342, "as", "@as", "others").
+annotation(143, 1, 343, "in", "@in", "original_scientificName").
+annotation(144, 1, 343, "as", "@as", "empty_scientificName").
+annotation(145, 1, 344, "in", "@in", "original_scientificName").
+annotation(146, 1, 344, "as", "@as", "nonEmpty_scientificName").
+annotation(147, 1, 345, "in", "@in", "original_authorship").
+annotation(148, 1, 345, "as", "@as", "authorship").
+annotation(149, 1, 346, "in", "@in", "updated_scientificName").
+annotation(150, 1, 347, "in", "@in", "updated_authorship").
+annotation(151, 1, 348, "out", "@out", "output1_data").
+annotation(152, 1, 348, "uri", "@uri", "file:demo_output_name_val.csv").
+annotation(153, 1, 353, "end", "@end", "write_output1_data").
+annotation(154, 1, 357, "begin", "@begin", "log_summary").
+annotation(155, 1, 358, "in", "@in", "accepted_record_count").
+annotation(156, 1, 359, "in", "@in", "rejected_record_count").
+annotation(157, 1, 360, "out", "@out", "name_val_log").
+annotation(158, 1, 360, "uri", "@uri", "file:name_val_log.txt").
+annotation(159, 1, 361, "log", "@log", "{timestamp} Wrote {accepted_record_count} ACCEPTED records to {output1_data_file_name}").
+annotation(160, 1, 362, "log", "@log", "{timestamp} Wrote {rejected_record_count} UNABLE-to-determine-validity records to {output1_data_file_name}").
+annotation(161, 1, 369, "end", "@end", "log_summary").
+annotation(162, 1, 373, "end", "@end", "validate_scientificName_field_of_data").
+annotation(163, 1, 377, "begin", "@begin", "validate_eventDate_field_of_data").
+annotation(164, 1, 378, "in", "@in", "output1_data").
+annotation(165, 1, 378, "uri", "@uri", "file:demo_output_name_val.csv").
+annotation(166, 1, 379, "param", "@param", "record_id_data").
+annotation(167, 1, 379, "uri", "@uri", "file:record_id.txt").
+annotation(168, 1, 380, "out", "@out", "output2_data").
+annotation(169, 1, 380, "uri", "@uri", "file:demo_output_name_date_val.csv").
+annotation(170, 1, 381, "out", "@out", "date_val_log").
+annotation(171, 1, 381, "uri", "@uri", "file:date_val_log.txt").
+annotation(172, 1, 398, "begin", "@begin", "initialize_run").
+annotation(173, 1, 399, "out", "@out", "date_val_log").
+annotation(174, 1, 399, "uri", "@uri", "file:date_val_log.txt").
+annotation(175, 1, 400, "log", "@log", "{timestamp} Reading input records from {input2_data_file_name}").
+annotation(176, 1, 406, "end", "@end", "initialize_run").
+annotation(177, 1, 410, "begin", "@begin", "read_input2_data_records").
+annotation(178, 1, 411, "in", "@in", "input2_data").
+annotation(179, 1, 411, "uri", "@uri", "file:demo_output_name_val.csv").
+annotation(180, 1, 412, "in", "@in", "record_id_data").
+annotation(181, 1, 412, "uri", "@uri", "file:record_id.txt").
+annotation(182, 1, 413, "out", "@out", "original2_eventDate").
+annotation(183, 1, 413, "as", "@as", "eventDate").
+annotation(184, 1, 414, "out", "@out", "RecordID").
+annotation(185, 1, 415, "out", "@out", "original2_others").
+annotation(186, 1, 415, "as", "@as", "others").
+annotation(187, 1, 416, "out", "@out", "date_val_log").
+annotation(188, 1, 416, "uri", "@uri", "file:date_val_log.txt").
+annotation(189, 1, 417, "log", "@log", "{timestamp} Reading input record {RecordID}").
+annotation(190, 1, 447, "end", "@end", "read_input2_data_records").
+annotation(191, 1, 451, "begin", "@begin", "check_empty_value").
+annotation(192, 1, 452, "in", "@in", "original2_eventDate").
+annotation(193, 1, 452, "as", "@as", "eventDate").
+annotation(194, 1, 453, "out", "@out", "check_result").
+annotation(195, 1, 454, "out", "@out", "original2_eventDate").
+annotation(196, 1, 454, "as", "@as", "empty_eventDate").
+annotation(197, 1, 455, "out", "@out", "original2_eventDate").
+annotation(198, 1, 455, "as", "@as", "nonEmpty_eventDate").
+annotation(199, 1, 456, "out", "@out", "date_val_log").
+annotation(200, 1, 456, "uri", "@uri", "file:date_val_log.txt").
+annotation(201, 1, 457, "log", "@log", "{timestamp} Trying {check_type} {source_used} {match_method} match for validating {field_name}: {field_name_value}").
+annotation(202, 1, 458, "log", "@log", "{timestamp} Checking if {field_name} value is Empty: {check_result}").
+annotation(203, 1, 475, "end", "@end", "check_empty_value").
+annotation(204, 1, 479, "begin", "@begin", "log_rejected_record").
+annotation(205, 1, 480, "param", "@param", "RecordID").
+annotation(206, 1, 481, "in", "@in", "original2_eventDate").
+annotation(207, 1, 481, "as", "@as", "empty_eventDate").
+annotation(208, 1, 482, "in", "@in", "check_result").
+annotation(209, 1, 483, "out", "@out", "final_result").
+annotation(210, 1, 484, "out", "@out", "rejected2_record_count").
+annotation(211, 1, 484, "as", "@as", "rejected_record_count").
+annotation(212, 1, 485, "out", "@out", "date_val_log").
+annotation(213, 1, 485, "uri", "@uri", "file:date_val_log.txt").
+annotation(214, 1, 486, "log", "@log", "{timestamp} {final_result} record {RecordID}").
+annotation(215, 1, 499, "end", "@end", "log_rejected_record").
+annotation(216, 1, 505, "begin", "@begin", "check_ISO_compliant").
+annotation(217, 1, 506, "in", "@in", "original2_eventDate").
+annotation(218, 1, 506, "as", "@as", "nonEmpty_eventDate").
+annotation(219, 1, 507, "out", "@out", "match_result").
+annotation(220, 1, 508, "out", "@out", "original2_eventDate").
+annotation(221, 1, 508, "as", "@as", "compliant_eventDate").
+annotation(222, 1, 509, "out", "@out", "original2_eventDate").
+annotation(223, 1, 509, "as", "@as", "nonCompliant_eventDate").
+annotation(224, 1, 510, "out", "@out", "date_val_log").
+annotation(225, 1, 510, "uri", "@uri", "file:date_val_log.txt").
+annotation(226, 1, 511, "log", "@log", "{timestamp} {match_method} match was {match_result}, compliant with {source_used}: {match_result}.").
+annotation(227, 1, 528, "end", "@end", "check_ISO_compliant").
+annotation(228, 1, 532, "begin", "@begin", "update_eventDate").
+annotation(229, 1, 533, "in", "@in", "original2_eventDate").
+annotation(230, 1, 533, "as", "@as", "nonCompliant_eventDate").
+annotation(231, 1, 534, "in", "@in", "match_result").
+annotation(232, 1, 535, "out", "@out", "updated2_eventDate").
+annotation(233, 1, 535, "as", "@as", "updated_eventDate").
+annotation(234, 1, 536, "out", "@out", "date_val_log").
+annotation(235, 1, 536, "uri", "@uri", "file:date_val_log.txt").
+annotation(236, 1, 537, "log", "@log", "{timestamp} UPDATING {field_name} from {original_value} to {updated_value}").
+annotation(237, 1, 574, "end", "@end", "update_eventDate").
+annotation(238, 1, 578, "begin", "@begin", "log_accepted_record").
+annotation(239, 1, 579, "param", "@param", "RecordID").
+annotation(240, 1, 580, "in", "@in", "updated2_eventDate").
+annotation(241, 1, 580, "as", "@as", "updated_eventDate").
+annotation(242, 1, 581, "in", "@in", "original2_eventDate").
+annotation(243, 1, 581, "as", "@as", "compliant_eventDate").
+annotation(244, 1, 582, "out", "@out", "final_result").
+annotation(245, 1, 583, "out", "@out", "accepted2_record_count").
+annotation(246, 1, 583, "as", "@as", "accepted_record_count").
+annotation(247, 1, 584, "out", "@out", "date_val_log").
+annotation(248, 1, 584, "uri", "@uri", "file:date_val_log.txt").
+annotation(249, 1, 585, "log", "@log", "{timestamp} {final_result} record {RecordID}").
+annotation(250, 1, 590, "end", "@end", "log_accepted_record").
+annotation(251, 1, 595, "begin", "@begin", "write_output2_data").
+annotation(252, 1, 596, "in", "@in", "original2_others").
+annotation(253, 1, 596, "as", "@as", "others").
+annotation(254, 1, 597, "in", "@in", "updated2_eventDate").
+annotation(255, 1, 597, "as", "@as", "updated_eventDate").
+annotation(256, 1, 598, "in", "@in", "original2_eventDate").
+annotation(257, 1, 598, "as", "@as", "compliant_eventDate").
+annotation(258, 1, 599, "in", "@in", "original2_eventDate").
+annotation(259, 1, 599, "as", "@as", "empty_eventDate").
+annotation(260, 1, 600, "out", "@out", "output2_data").
+annotation(261, 1, 600, "uri", "@uri", "file:demo_output_name_date_val.csv").
+annotation(262, 1, 605, "end", "@end", "write_output2_data").
+annotation(263, 1, 609, "begin", "@begin", "log_summary").
+annotation(264, 1, 610, "in", "@in", "accepted2_record_count").
+annotation(265, 1, 610, "as", "@as", "accepted_record_count").
+annotation(266, 1, 611, "in", "@in", "rejected2_record_count").
+annotation(267, 1, 611, "as", "@as", "rejected_record_count").
+annotation(268, 1, 612, "out", "@out", "date_val_log").
+annotation(269, 1, 612, "uri", "@uri", "file:date_val_log.txt").
+annotation(270, 1, 613, "log", "@log", "{timestamp} Wrote {accepted2_record_count} accepted records to {output2_data_file_name}").
+annotation(271, 1, 614, "log", "@log", "{timestamp} Wrote {rejected2_record_count} UNABLE-to-determine-validity records to {rejected2_data_file_name}").
+annotation(272, 1, 621, "end", "@end", "log_summary").
+annotation(273, 1, 625, "end", "@end", "validate_eventDate_field_of_data").
+annotation(274, 1, 629, "end", "@end", "clean_name_and_date_workflow").
+annotation(275, 1, 633, "begin", "@begin", "exactmatch").
+annotation(276, 1, 634, "param", "@param", "lst").
+annotation(277, 1, 635, "param", "@param", "label_str").
+annotation(278, 1, 636, "return", "@return", "key").
+annotation(279, 1, 637, "return", "@return", "None").
+annotation(280, 1, 649, "end", "@end", "exactmatch").
+annotation(281, 1, 653, "begin", "@begin", "fuzzymatch").
+annotation(282, 1, 654, "param", "@param", "str1").
+annotation(283, 1, 655, "param", "@param", "str2").
+annotation(284, 1, 656, "return", "@return", "[match_result,").
+annotation(285, 1, 684, "end", "@end", "fuzzymatch").
+annotation(286, 1, 688, "begin", "@begin", "fieldmatch").
+annotation(287, 1, 689, "param", "@param", "lst").
+annotation(288, 1, 690, "param", "@param", "str2").
+annotation(289, 1, 691, "call", "@call", "fuzzymatch").
+annotation(290, 1, 692, "return", "@return", "match_str").
+annotation(291, 1, 703, "end", "@end", "fieldmatch").
+annotation(292, 1, 708, "begin", "@begin", "timestamp").
+annotation(293, 1, 709, "param", "@param", "message").
+annotation(294, 1, 710, "return", "@return", "timestamp_message").
+annotation(295, 1, 719, "end", "@end", "timestamp").
+
+% FACT: annotation_qualifies(qualifying_annotation_id, primary_annotation_id).
+annotation_qualifies(3, 2).
+annotation_qualifies(5, 4).
+annotation_qualifies(7, 6).
+annotation_qualifies(9, 8).
+annotation_qualifies(11, 10).
+annotation_qualifies(14, 13).
+annotation_qualifies(16, 15).
+annotation_qualifies(18, 17).
+annotation_qualifies(20, 19).
+annotation_qualifies(22, 21).
+annotation_qualifies(25, 24).
+annotation_qualifies(26, 24).
+annotation_qualifies(30, 29).
+annotation_qualifies(36, 35).
+annotation_qualifies(38, 37).
+annotation_qualifies(40, 39).
+annotation_qualifies(43, 42).
+annotation_qualifies(45, 44).
+annotation_qualifies(47, 46).
+annotation_qualifies(48, 46).
+annotation_qualifies(52, 51).
+annotation_qualifies(55, 54).
+annotation_qualifies(57, 56).
+annotation_qualifies(59, 58).
+annotation_qualifies(60, 58).
+annotation_qualifies(61, 58).
+annotation_qualifies(66, 65).
+annotation_qualifies(71, 70).
+annotation_qualifies(72, 70).
+annotation_qualifies(76, 75).
+annotation_qualifies(82, 81).
+annotation_qualifies(84, 83).
+annotation_qualifies(86, 85).
+annotation_qualifies(90, 89).
+annotation_qualifies(91, 89).
+annotation_qualifies(92, 89).
+annotation_qualifies(97, 96).
+annotation_qualifies(99, 98).
+annotation_qualifies(102, 101).
+annotation_qualifies(103, 101).
+annotation_qualifies(107, 106).
+annotation_qualifies(109, 108).
+annotation_qualifies(114, 113).
+annotation_qualifies(116, 115).
+annotation_qualifies(123, 122).
+annotation_qualifies(125, 124).
+annotation_qualifies(127, 126).
+annotation_qualifies(128, 126).
+annotation_qualifies(134, 133).
+annotation_qualifies(137, 136).
+annotation_qualifies(138, 136).
+annotation_qualifies(142, 141).
+annotation_qualifies(144, 143).
+annotation_qualifies(146, 145).
+annotation_qualifies(148, 147).
+annotation_qualifies(152, 151).
+annotation_qualifies(158, 157).
+annotation_qualifies(159, 157).
+annotation_qualifies(160, 157).
+annotation_qualifies(165, 164).
+annotation_qualifies(167, 166).
+annotation_qualifies(169, 168).
+annotation_qualifies(171, 170).
+annotation_qualifies(174, 173).
+annotation_qualifies(175, 173).
+annotation_qualifies(179, 178).
+annotation_qualifies(181, 180).
+annotation_qualifies(183, 182).
+annotation_qualifies(186, 185).
+annotation_qualifies(188, 187).
+annotation_qualifies(189, 187).
+annotation_qualifies(193, 192).
+annotation_qualifies(196, 195).
+annotation_qualifies(198, 197).
+annotation_qualifies(200, 199).
+annotation_qualifies(201, 199).
+annotation_qualifies(202, 199).
+annotation_qualifies(207, 206).
+annotation_qualifies(211, 210).
+annotation_qualifies(213, 212).
+annotation_qualifies(214, 212).
+annotation_qualifies(218, 217).
+annotation_qualifies(221, 220).
+annotation_qualifies(223, 222).
+annotation_qualifies(225, 224).
+annotation_qualifies(226, 224).
+annotation_qualifies(230, 229).
+annotation_qualifies(233, 232).
+annotation_qualifies(235, 234).
+annotation_qualifies(236, 234).
+annotation_qualifies(241, 240).
+annotation_qualifies(243, 242).
+annotation_qualifies(246, 245).
+annotation_qualifies(248, 247).
+annotation_qualifies(249, 247).
+annotation_qualifies(253, 252).
+annotation_qualifies(255, 254).
+annotation_qualifies(257, 256).
+annotation_qualifies(259, 258).
+annotation_qualifies(261, 260).
+annotation_qualifies(265, 264).
+annotation_qualifies(267, 266).
+annotation_qualifies(269, 268).
+annotation_qualifies(270, 268).
+annotation_qualifies(271, 268).
