@@ -1,0 +1,311 @@
+:- import concat_atom/2 from string.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% graphviz styles for YW prospective provenance graphs
+
+gv_nodestyle__atomic_step :-
+    writeln('node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=1 fontname=Courier]').
+
+gv_nodestyle__subworkflow :-
+    gv_nodestyle__atomic_step.
+
+gv_node_style__data :-
+    gv_nodestyle(box, 'rounded,filled', '#FFFFCC', 1, 'Helvetica').
+
+gv_node_style__param :-
+    gv_nodestyle(box, 'rounded,filled', '#FFFFFF', 1, 'Helvetica').
+
+gv_node_style__workflow_port :-
+    gv_nodestyle(circle, '#FFFFFF', 1, '0.2').
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% graphviz styles for YW-NW retrospective provenance graphs
+
+gv_nodestyle__atomic_step_invocation :-
+    writeln('node[shape=box style=filled fillcolor="#66883F" peripheries=1 fontname="Courier-Bold" fontcolor=white]').
+
+gv_nodestyle__data_value :-
+    writeln('node[shape=box style="rounded,filled" fillcolor="#D18E2C" peripheries=1 fontname="Helvetica-Bold"]').
+
+gv_nodestyle__param_value :-
+    writeln('node[shape=box style="rounded,filled" fillcolor="#222222" peripheries=1 fontname="Helvetica-Bold"]').
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+gv_nodes__atomic_steps(WorkflowId) :-
+    yw_workflow_step(StepId, StepName, WorkflowId, _, _, _),
+    not yw_workflow(StepId, _, _, _, _, _),
+    gv_labeled_node(StepName),
+    fail
+    ;
+    true.
+
+yw_inflow_name_for_data_name(InflowName, DataName) :-
+    concat_atom([DataName,'_inflow'], InflowName).
+
+yw_outflow_name_for_data_name(OutflowName, DataName) :-
+    concat_atom([DataName,'_outflow'], OutflowName).
+
+gv_nodes__atomic_steps__upstream_of_data(WorkflowId, DataId) :-
+    yw_data_downstream_of_step(StepId, DataId),
+    yw_workflow_step(StepId, StepName, WorkflowId, _, _, _),
+    gv_labeled_node(StepName),
+    fail
+    ;
+    true.
+
+gv_nodes__subworkflows(WorkflowId) :-
+    yw_workflow(_, StepName, WorkflowId, _, _, _),
+    gv_labeled_node(StepName),
+    fail
+    ;
+    true.
+
+gv_nodes__subworkflows__upstream_of_data(WorkflowId, DataId) :-
+    yw_workflow(StepId, StepName, WorkflowId, _, _, _),
+    yw_data_downstream_of_step(StepId, DataId),
+    gv_labeled_node(StepName),
+    fail
+    ;
+    true.
+
+gv_nodes__data(WorkflowId) :-
+    yw_data(DataId, DataName, WorkflowId, _),
+    not yw_workflow_param(_, _, DataId, _),
+    gv_labeled_node(DataName),
+    fail
+    ;
+    true.
+
+gv_node__data(DataId) :-
+    yw_data(DataId, DataName, _, _),
+    gv_labeled_node(DataName).
+
+gv_nodes__data__upstream_of_data(WorkflowId, DownstreamDataId) :-
+    yw_data(DataId, DataName, WorkflowId, _),
+    not yw_workflow_param(_, _, DataId, _),
+    yw_data_downstream(DataId, DownstreamDataId),
+    gv_labeled_node(DataName),
+    fail
+    ;
+    true.
+
+gv_nodes__data_values__upstream_of_data_product(ProductDataId, ProductVarValue) :-
+    data_values_upstream_of_data_product(ProductDataId, DataId, DataName, VarId, VarName, VarValue, ProductVarId, ProductVarName, ProductVarValue),
+    nw_variable_for_yw_data(ProductVarId, ProductVarName, _, ProductDataId, _),
+    not yw_data_only_used_as_param(DataId),
+    concat_atom(['[data', DataId, '] ', DataName], Top),
+    concat_atom(['[var', VarId, '] ', VarName, ' = ', VarValue], Bottom),
+    gv_record_node(DataName, Top, Bottom),
+    fail
+    ;
+    true.
+
+gv_nodes__param_values__upstream_of_data_product(ProductDataId, ProductVarValue) :-
+    data_values_upstream_of_data_product(ProductDataId, DataId, DataName, VarId, VarName, VarValue, ProductVarId, ProductVarName, ProductVarValue),
+    nw_variable_for_yw_data(ProductVarId, ProductVarName, _, ProductDataId, _),
+    yw_data_only_used_as_param(DataId),
+    concat_atom(['[data', DataId, '] ', DataName], Top),
+    concat_atom(['[var', VarId, '] ', VarName, ' = ', VarValue], Bottom),
+    gv_record_node(DataName, Top, Bottom),
+    fail
+    ;
+    true.
+
+_gv_nodes__data_values__upstream_of_data_product(WorkflowId, DataProductId, DataProductName, DataProductValue) :-
+    yw_data(DataId, _, WorkflowId, _),
+    not yw_workflow_param(_, _, DataId, _),
+    nw_variable_in_yw_lineage_of_nw_variable(_, DataId, DataName, VarId, VarName, Value, DataProductId, DataProductName, _, _, DataProductValue),
+    concat_atom(['[data', DataId, '] ', DataName], Top),
+    concat_atom(['[var', VarId, '] ', VarName, ' = ', Value], Bottom),
+    gv_record_node(DataName, Top, Bottom),
+    fail
+    ;
+    true.
+
+_gv_nodes__param_values__upstream_of_data_product(WorkflowId, DataProductId, DataProductName, DataProductValue) :-
+    yw_workflow_param(WorkflowId, _, DataId, _),
+    nw_variable_in_yw_lineage_of_nw_variable(_, DataId, DataName, VarId, VarName, Value, DataProductId, DataProductName, _, _, DataProductValue),
+    concat_atom(['[data', DataId, '] ', DataName], Top),
+    concat_atom(['[var', VarId, '] ', VarName, ' = ', Value], Bottom),
+    gv_record_node(DataName, Top, Bottom),
+    fail
+    ;
+    true.
+
+gv_nodes__params(WorkflowId) :-
+    yw_workflow_param(WorkflowId, _, _, DataName),
+    gv_labeled_node(DataName),
+    fail
+    ;
+    true.
+
+gv_nodes__params__upstream_of_data(WorkflowId, DownstreamDataId) :-
+    yw_workflow_param(WorkflowId, _, DataId, DataName),
+    yw_data_downstream(DataId, DownstreamDataId),
+    gv_labeled_node(DataName),
+    fail
+    ;
+    true.
+
+gv_node__inflow(DataName) :-
+    concat_atom([DataName,'_inflow'], InflowName),
+    gv_unlabeled_node(InflowName).
+
+gv_nodes__inflows(WorkflowId) :-
+    yw_inflow_data(WorkflowId, _, _, DataName),
+    gv_node__inflow(DataName),
+    fail
+    ;
+    true.
+
+gv_nodes__inflows__upstream_of_data(WorkflowId, DownstreamDataId) :-
+    yw_inflow_data(WorkflowId, _, DataId, DataName),
+    yw_data_downstream(DataId, DownstreamDataId),
+    gv_node__inflow(DataName),
+    fail
+    ;
+    true.
+
+gv_node__outflow(DataName) :-
+    concat_atom([DataName,'_outflow'], OutflowName),
+    gv_unlabeled_node(OutflowName).
+
+gv_nodes__outflows(WorkflowId) :-
+    yw_outflow_data(WorkflowId, _, _, DataName),
+    gv_node__outflow(DataName),
+    fail
+    ;
+    true.
+
+gv_node__outflow_for_data(WorkflowId, DataId) :-
+    yw_outflow_data(WorkflowId, _, DataId, DataName),
+    gv_node__outflow(DataName),
+    fail
+    ;
+    true.
+
+gv_edges__data_to_data(WorkflowId) :-
+    yw_data(DownstreamDataId, DownstreamDataName, WorkflowId, _),
+    yw_data(UpstreamDataId, UpstreamDataName, WorkflowId, _),
+    yw_data_immediately_downstream(UpstreamDataId, DownstreamDataId),
+    gv_unlabeled_edge(UpstreamDataName, DownstreamDataName),
+    fail
+    ;
+    true.
+
+gv_edges__step_to_step(WorkflowId) :-
+    yw_workflow_step(SourceProgramId, SourceProgramName, WorkflowId, _, _, _),
+    yw_workflow_step(SinkProgramId, SinkProgramName, WorkflowId, _, _, _),
+    yw_step_immediately_downstream(SourceProgramId, SinkProgramId),
+    gv_unlabeled_edge(SourceProgramName, SinkProgramName),
+    fail
+    ;
+    true.
+
+gv_edges__data_to_step(WorkflowId) :-
+    yw_data(DataId, DataName, WorkflowId, _),
+    yw_workflow_step(StepId, StepName, WorkflowId, _, _, _),
+    yw_step_input(StepId, _, _, _, _, DataId, _),
+    gv_unlabeled_edge(DataName, StepName),
+    fail
+    ;
+    true.
+
+:- table yw_data_to_step_connection_upstream_of_data/4.
+yw_data_to_step_connection_upstream_of_data(WorkflowId, DownstreamDataId, DataName, StepName) :-
+    yw_data(DataId, DataName, WorkflowId, _),
+    yw_workflow_step(StepId, StepName, WorkflowId, _, _, _),
+    yw_step_input(StepId, _, _, _, _, DataId, _),
+    yw_data_downstream_of_step(StepId, DownstreamDataId).
+
+
+gv_edges__data_to_step__upstream_of_data(WorkflowId, DownstreamDataId) :-
+    yw_data_to_step_connection_upstream_of_data(WorkflowId, DownstreamDataId, DataName, StepName),
+    gv_unlabeled_edge(DataName, StepName),
+    fail
+    ;
+    true.
+
+gv_edges__step_to_data(WorkflowId) :-
+    yw_workflow_step(StepId, StepName, WorkflowId, _, _, _),
+    yw_data(DataId, DataName, WorkflowId, _),
+    yw_step_output(StepId, _, _, _, _, DataId, _),
+    gv_unlabeled_edge(StepName, DataName),
+    fail
+    ;
+    true.
+
+gv_edges__step_to_data__upstream_of_data(WorkflowId, DownstreamDataId) :-
+    yw_workflow_step(StepId, StepName, WorkflowId, _, _, _),
+    yw_data(DataId, DataName, WorkflowId, _),
+    yw_step_output(StepId, _, _, _, _, DataId, _),
+    yw_data_downstream(DataId, DownstreamDataId),
+    gv_unlabeled_edge(StepName, DataName),
+    fail
+    ;
+    true.
+
+gv_edges__inflow_to_step(WorkflowId) :-
+    yw_inflow(WorkflowId, _, _, DataName, StepId, StepName),
+    yw_workflow_step(StepId, StepName, WorkflowId, _, _, _),
+    yw_inflow_name_for_data_name(InflowName, DataName),
+    gv_unlabeled_edge(InflowName, StepName),
+    fail
+    ;
+    true.
+
+gv_edges__step_to_outflow(WorkflowId) :-
+    yw_outflow(StepId, StepName, _, DataName, WorkflowId, _, _, _),
+    yw_workflow_step(StepId, StepName, WorkflowId, _, _, _),
+    yw_outflow_name_for_data_name(OutflowName, DataName),
+    gv_unlabeled_edge(StepName, OutflowName),
+    fail
+    ;
+    true.
+
+gv_edges__inflow_to_data(WorkflowId) :-
+    yw_inflow_data(WorkflowId, _, _, DataName),
+    yw_inflow_name_for_data_name(InflowName, DataName),
+    gv_unlabeled_edge(InflowName, DataName),
+    fail
+    ;
+    true.
+
+gv_edges__inflow_to_data__upstream_of_data(WorkflowId, DownstreamDataId) :-
+    yw_inflow_data(WorkflowId, _, DataId, DataName),
+    yw_data_downstream(DataId, DownstreamDataId),
+    yw_inflow_name_for_data_name(InflowName, DataName),
+    gv_unlabeled_edge(InflowName, DataName),
+    fail
+    ;
+    true.
+
+gv_edges__data_to_outflow(WorkflowId) :-
+    yw_outflow_data(WorkflowId, _, _, DataName),
+    yw_outflow_name_for_data_name(OutflowName, DataName),
+    gv_unlabeled_edge(DataName, OutflowName),
+    fail
+    ;
+    true.
+
+gv_edges__data_to_outflow__upstream_of_data(WorkflowId, DataId) :-
+    yw_outflow_data(WorkflowId, _, DataId, DataName),
+    yw_outflow_name_for_data_name(OutflowName, DataName),
+    gv_unlabeled_edge(DataName, OutflowName),
+    fail
+    ;
+    true.
+
+gv_edges__nw_dependencies() :-
+    dependency(_, _, _, SourceId, _, TargetId),
+    variable(_, _, SourceId, SourceName, _, SourceValue, _),
+    variable(_, _, TargetId, TargetName, _, TargetValue, _),
+    concat_atom(['\"', SourceName, ' = ', SourceValue, '\"'], Source),
+    concat_atom(['\"', TargetName, ' = ', TargetValue, '\"'], Target),
+    gv_unlabeled_edge(Target, Source),
+    fail
+    ;
+    true.

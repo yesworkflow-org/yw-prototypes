@@ -1,0 +1,129 @@
+
+:- table yw_data_used_as_in/1.
+yw_data_used_as_in(DataId) :-
+    yw_step_input(_, _, in, _, _, DataId, _).
+
+:- table yw_data_used_as_param/1.
+yw_data_used_as_param(DataId) :-
+    yw_step_input(_, _, param, _, _, DataId, _).
+
+:- table yw_data_only_used_as_param/1.
+yw_data_only_used_as_param(DataId) :-
+    yw_data_used_as_param(DataId),
+    not yw_data_used_as_in(DataId).
+
+:- table yw_workflow_param/4.
+yw_workflow_param(WorkflowId, WorkflowName, DataId, DataName) :-
+    yw_inflow(WorkflowId, WorkflowName, DataId, DataName, _, _),
+    yw_step_input(_, _, param, _, _, DataId, _).
+
+:- table yw_inflow_data/4.
+yw_inflow_data(WorkflowId, WorkflowName, DataId, DataName) :-
+    yw_inflow(WorkflowId, WorkflowName, DataId, DataName, _, _).
+
+:- table yw_outflow_data/4.
+yw_outflow_data(WorkflowId, WorkflowName, StepOutDataId, StepOutDataName) :-
+    yw_outflow(_, _, StepOutDataId, StepOutDataName, WorkflowId, WorkflowName, _, _).
+
+:- table yw_data_immediately_downstream/2.
+yw_data_immediately_downstream(D1, D2) :-
+    yw_step_input(StepId, _, _, _, _, D1, _),
+    yw_step_output(StepId, _, _, _, _, D2, _).
+
+:- table yw_data_downstream/2.
+yw_data_downstream(D1, D2) :-
+    D1 = D2.
+yw_data_downstream(D1, D2) :-
+    yw_data_immediately_downstream(D1, D2).
+yw_data_downstream(D1, D2):-
+    yw_data_immediately_downstream(D1, D),
+    yw_data_downstream(D, D2).
+
+:- table yw_step_immediately_downstream/2.
+yw_step_immediately_downstream(S1, S2) :-
+    yw_workflow_step(S1, _, _, _, _, _),
+    yw_workflow_step(S2, _, _, _, _, _),
+    yw_flow(S1, _, _, _, _, _, _, _, S2, _).
+
+:- table yw_step_downstream/2.
+yw_step_downstream(S1, S2) :-
+    yw_step_immediately_downstream(S1, S2).
+yw_step_downstream(S1, S2) :-
+    yw_step_immediately_downstream(S1, S),
+    yw_step_downstream(S, S2).
+
+:- table yw_data_downstream_of_step/2.
+yw_data_downstream_of_step(S1, D2) :-
+    yw_step_output(S1, _, _, _, _, D2, _).
+yw_data_downstream_of_step(S1, D2) :-
+    yw_step_output(S2, _, _, _, _, D2, _),
+    yw_step_downstream(S1, S2).
+
+% Resource R1 is upstream of resource R2.
+:- table resource_upstream/2.
+resource_upstream(R1, R2) :-
+    data_resource(D1, R1),
+    data_resource(D2, R2),
+    data_upstream(D1, D2).
+
+% Resource R1 is downstream of resource R2.
+:- table resource_downstream/2.
+resource_downstream(R1, R2) :-
+    resource_upstream(R2, R1).
+
+% Data D with URI variable V passed through output port P.
+:- table output_data_has_uri_variable/2.
+output_data_has_uri_variable(D, V) :-
+    channel(C, D),
+    port_connects_to_channel(P, C),
+    has_out_port(_, P),
+    uri_variable(V, _, P).
+
+% Data D with URI variable V passed through input port P.
+:- table input_data_has_uri_variable/2.
+input_data_has_uri_variable(D, V) :-
+    channel(C, D),
+    port_connects_to_channel(P, C),
+    has_in_port(_, P),
+    uri_variable(V, _, P).
+
+% Resource R with uri variable U named N with value V passed through Port P.
+:- table resource_metadata/4.
+resource_metadata(R, N, V, P) :-
+    data_resource(D, R),
+    channel(C, D),
+    port_connects_to_channel(P, C),
+    uri_variable(U, N, P),
+    uri_variable_value(R, U, V).
+
+% Resource R was read with a metadata variable named N with value V.
+:- table read_resource_metadata/3.
+read_resource_metadata(R, N, V) :-
+    resource_metadata(R, N, V, P),
+    has_in_port(_, P).
+
+% Resource R was written with a metadata variable named N with value V.
+:- table written_resource_metadata/3.
+written_resource_metadata(R, N, V) :-
+    resource_metadata(R, N, V, P),
+    has_out_port(_, P).
+
+% Resources R1 and R2 have metadata variables with shared name N.
+:- table common_metadata_variable/2.
+common_metadata_variable(R1, R2) :-
+    resource_metadata(R1, N, _, _),
+    resource_metadata(R2, N, _, _).
+
+% Resources R1 and R2 have metadata variables with shared name N but different values V1 and V2.
+:- table common_metadata_values_differ/2.
+common_metadata_values_differ(R1, R2) :-
+    resource_metadata(R1, N, V1, _),
+    resource_metadata(R2, N, V2, _),
+    V1 \== V2.
+
+% Resource R1 depends on resource R2.
+depends_on(R1, R2) :-
+    common_metadata_variable(R1, R2),
+    not common_metadata_values_differ(R1, R2),
+    resource_downstream(R1, R2),
+    R1 \== R2.
