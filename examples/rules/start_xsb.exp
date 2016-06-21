@@ -8,17 +8,9 @@ send {['./facts/nw_facts'].}
 send \n
 send {[yw_views].}
 send \n
-send {[nw_views].}
-send \n
-send {[yw_nw_views].}
-send \n
 send {['../../rules/general_rules'].}
 send \n
 send {['../../rules/yw_rules'].}
-send \n
-send {['../../rules/nw_rules'].}
-send \n
-send {['../../rules/yw_nw_rules'].}
 send \n
 send {['../../graphs/gv_rules'].}
 send \n

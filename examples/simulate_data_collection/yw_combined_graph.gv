@@ -1,0 +1,114 @@
+
+digraph yw_data_view {
+rankdir=TB
+fontname=Courier; fontsize=18; labelloc=t
+label="simulate_data_collection"
+subgraph cluster_workflow { label=""; color=black; penwidth=2
+subgraph cluster_workflow_inner { label=""; color=white
+node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
+initialize_run
+load_screening_results
+calculate_strategy
+log_rejected_sample
+collect_data_set
+transform_images
+log_average_image_intensity
+node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+run_log
+sample_spreadsheet
+sample_name
+sample_quality
+accepted_sample
+rejected_sample
+num_images
+energies
+rejection_log
+sample_id
+energy
+frame_number
+raw_image
+calibration_image
+corrected_image
+corrected_image_path
+total_intensity
+pixel_count
+collection_log
+node[shape=box style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica]
+data_redundancy
+cassette_id
+sample_score_cutoff
+}}
+subgraph cluster_inflows { label=""; color=white; penwidth=2
+subgraph cluster_inflows_inner { label=""; color=white
+node[shape=circle fillcolor="#FFFFFF" peripheries=1 width=0.2]
+calibration_image_inflow [label=""]
+data_redundancy_inflow [label=""]
+sample_spreadsheet_inflow [label=""]
+cassette_id_inflow [label=""]
+sample_score_cutoff_inflow [label=""]
+}}
+subgraph cluster_outflows { label=""; color=white; penwidth=2
+subgraph cluster_outflows_inner { label=""; color=white
+node[shape=circle fillcolor="#FFFFFF" peripheries=1 width=0.2]
+rejection_log_outflow [label=""]
+collection_log_outflow [label=""]
+run_log_outflow [label=""]
+corrected_image_outflow [label=""]
+}}
+cassette_id -> initialize_run
+cassette_id -> load_screening_results
+cassette_id -> log_rejected_sample
+cassette_id -> collect_data_set
+cassette_id -> log_average_image_intensity
+sample_score_cutoff -> initialize_run
+sample_score_cutoff -> calculate_strategy
+sample_spreadsheet -> load_screening_results
+sample_name -> calculate_strategy
+sample_quality -> calculate_strategy
+data_redundancy -> calculate_strategy
+accepted_sample -> collect_data_set
+rejected_sample -> log_rejected_sample
+num_images -> collect_data_set
+energies -> collect_data_set
+sample_id -> transform_images
+sample_id -> log_average_image_intensity
+energy -> transform_images
+frame_number -> transform_images
+frame_number -> log_average_image_intensity
+raw_image -> transform_images
+calibration_image -> transform_images
+corrected_image_path -> log_average_image_intensity
+total_intensity -> log_average_image_intensity
+pixel_count -> log_average_image_intensity
+initialize_run -> run_log
+load_screening_results -> run_log
+load_screening_results -> sample_name
+load_screening_results -> sample_quality
+calculate_strategy -> accepted_sample
+calculate_strategy -> rejected_sample
+calculate_strategy -> num_images
+calculate_strategy -> energies
+log_rejected_sample -> rejection_log
+collect_data_set -> run_log
+collect_data_set -> sample_id
+collect_data_set -> energy
+collect_data_set -> frame_number
+collect_data_set -> raw_image
+transform_images -> run_log
+transform_images -> corrected_image
+transform_images -> corrected_image_path
+transform_images -> total_intensity
+transform_images -> pixel_count
+log_average_image_intensity -> collection_log
+calibration_image_inflow -> calibration_image
+data_redundancy_inflow -> data_redundancy
+sample_spreadsheet_inflow -> sample_spreadsheet
+cassette_id_inflow -> cassette_id
+sample_score_cutoff_inflow -> sample_score_cutoff
+rejection_log -> rejection_log_outflow
+collection_log -> collection_log_outflow
+run_log -> run_log_outflow
+corrected_image -> corrected_image_outflow
+}
+

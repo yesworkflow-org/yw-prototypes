@@ -1,0 +1,73 @@
+
+
+---------------------------------------------------------------------------------------------------
+YW_Q1 : What is the name and description of the workflow implemented by the script?
+
+yw_q1(WorkflowName, Description)
+...................................................................................................
+yw_q1(simulate_data_collection,'Workflow for collecting diffraction data from high quality crystals in a cassette.').
+
+
+---------------------------------------------------------------------------------------------------
+YW_Q2 : What workflow steps comprise the top-level workflow?
+
+yw_q2(StepName, Description)
+...................................................................................................
+yw_q2(log_average_image_intensity,'Record statistics about each diffraction image.').
+yw_q2(transform_images,'Correct raw image using the detector calibration image.').
+yw_q2(collect_data_set,'Collect data set using the given data collection parameters.').
+yw_q2(log_rejected_sample,'Record which samples were rejected.').
+yw_q2(calculate_strategy,'Reject unsuitable crystals and compute 
+ best data sets to collect for accepted crystals.').
+yw_q2(load_screening_results,'Load sample information from spreadsheet.').
+yw_q2(initialize_run,'Create run directory and initialize log files.').
+
+
+---------------------------------------------------------------------------------------------------
+YW_Q3 : Where is the definition of workflow step emphasize_greeting?
+
+yw_q3(SourceFile, StartLine, EndLine)
+...................................................................................................
+
+
+---------------------------------------------------------------------------------------------------
+YW_Q4 : What are the names and descriptions of any outputs of the workflow?
+
+yw_q4(OutputName, Description)
+...................................................................................................
+yw_q4(corrected_image,'The corrected diffraction images collected on all crystals.').
+
+
+---------------------------------------------------------------------------------------------------
+YW_Q5 : What data flows from the emphasize_greeting workflow step to the print_greeting step?
+
+yw_q5(DataName)
+...................................................................................................
+
+
+---------------------------------------------------------------------------------------------------
+NW_Q1 : What functions are called from the top level of the script?
+
+nw_q1(FunctionName)
+...................................................................................................
+
+
+---------------------------------------------------------------------------------------------------
+NW_Q2 : What variable values are passed to greet_user() from the top of the script?
+
+nw_q2(Variable, Value)
+...................................................................................................
+
+
+---------------------------------------------------------------------------------------------------
+NW_Q3 : What literal values are passed to the greeting argument of greet_user() from the top of the script?
+
+nw_q3(Literal)
+...................................................................................................
+
+
+---------------------------------------------------------------------------------------------------
+YW_NW_Q1 : What Python variables carries values of emphasized_greeting into the print_greeting workflow step?
+
+yw_nw_q1(VariableId, VariableName, VariableValue)
+...................................................................................................

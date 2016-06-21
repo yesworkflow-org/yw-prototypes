@@ -1,6 +1,6 @@
 
-RULES_DIR = ../../rules
-SCRIPTS_DIR = ../../scripts
+RULES_DIR = ../rules
+SCRIPTS_DIR = ../scripts
 
 YW_EXTRACT_FACTS = facts/yw_extract_facts.P
 YW_MODEL_FACTS = facts/yw_model_facts.P
@@ -11,14 +11,12 @@ YW_MODEL_OPTIONS = -c extract.language=python \
                    -c model.factsfile=$(YW_MODEL_FACTS) \
                    -c query.engine=xsb
 
-
 RUN_STDOUT = run_outputs.txt
 RUN_OUTPUTS = $(RUN_STDOUT)
 
 ifndef SCRIPT_RUN_CMD
 SCRIPT_RUN_CMD = $(WORKFLOW_SCRIPT)
 endif
-
 
 RULES = $(RULES_DIR)/yw_views.P
 QUERY_SCRIPT = query.sh
@@ -33,12 +31,11 @@ YW_GRAPHS = $(YW_DATA_GRAPH).gv \
 	        $(YW_COMBINED_GRAPH).gv \
 	        $(YW_PROSPECTIVE_LINEAGE_GRAPH).gv
 
-
 GRAPHS = $(YW_GRAPHS)
 PNGS = $(GRAPHS:.gv=.png)
 PDFS = $(GRAPHS:.gv=.pdf)
 
-all: $(QUERY_OUTPUTS) $(GRAPHS) $(PNGS) $(PDFS)
+all: $(QUERY_OUTPUTS) $(GRAPHS)
 run: $(RUN_OUTPUTS)
 yw: $(YW_FACTS) $(YW_VIEWS) $(YW_GRAPHS)
 query: $(QUERY_OUTPUTS)
