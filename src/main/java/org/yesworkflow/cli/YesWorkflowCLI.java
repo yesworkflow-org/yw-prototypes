@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.config.YWConfiguration;
@@ -185,6 +186,11 @@ public class YesWorkflowCLI {
                 printCLIHelp(parser);
                 return ExitCode.SUCCESS;
             }
+
+            if (options.has("v")) {
+                printVersionInfo(parser);
+                return ExitCode.SUCCESS;
+            }
             
             // load the configuration files if a configuration has not been assigned programmatically
             if (config == null) {
@@ -287,7 +293,7 @@ public class YesWorkflowCLI {
     }
     
     public static final String YW_CLI_USAGE_HELP = 
-            "usage: yw <command> [source file(s)] [-c <name=value>]..."                                 + EOL;
+            "USAGE: yw <command> [source file(s)] [-c <name=value>]..."                                 + EOL;
     
     public static final String YW_CLI_COMMAND_HELP = 
         "Command                    Function"                                                           + EOL +
@@ -334,7 +340,7 @@ public class YesWorkflowCLI {
         "$ yw graph scriptA.py scriptB.py > wf.gv; dot -Tpdf wf.gv -o wf.pdf; open wf.pdf"              + EOL;
     
     private void printCLIHelp(OptionParser parser) throws IOException {
-        errStream.println();
+        printVersionSummary("");
         errStream.println(YW_CLI_USAGE_HELP);
         errStream.println(YW_CLI_COMMAND_HELP);
         parser.printHelpOn(errStream);
@@ -342,7 +348,34 @@ public class YesWorkflowCLI {
         errStream.println(YW_CLI_CONFIG_HELP);
         errStream.println(YW_CLI_EXAMPLES_HELP);
     }
-
+    
+    private void printVersionInfo(OptionParser parser) throws IOException {
+        Properties properties = printVersionSummary("");
+        errStream.println("Repository: " + properties.getProperty("git.remote.origin.url"));
+        errStream.println("Branch: " + properties.getProperty("git.branch"));
+        errStream.println("Commit: " + properties.getProperty("git.commit.id"));
+        errStream.println("Latest tag: " + properties.getProperty("git.closest.tag.name") + 
+                          " (" + properties.getProperty("git.closest.tag.commit.count") + " commits since tag)");
+        errStream.println("Build time: " + properties.getProperty("git.build.time"));
+        errStream.println("");
+    }
+    
+    
+    private Properties printVersionSummary(String prefix) throws IOException {
+        Properties properties = new Properties();
+        properties.load(getClass().getClassLoader().getResourceAsStream("git.properties"));
+        String gitBuildVersion =  properties.getProperty("git.build.version");
+        String gitBranch = properties.getProperty("git.branch");
+        String gitCommitAbbrev = properties.getProperty("git.commit.id.abbrev");
+        String gitCommitsSinceTag = properties.getProperty("git.closest.tag.commit.count");
+        errStream.println(prefix + "-----------------------------------------------------------------------------");
+        errStream.println(prefix + "YesWorkflow " + gitBuildVersion + "-" + gitCommitsSinceTag +
+                          " (branch " + gitBranch + 
+                          ", commit " + gitCommitAbbrev + ")");
+        errStream.println(prefix + "-----------------------------------------------------------------------------");
+        return properties;
+    }    
+    
     private OptionParser createOptionsParser() throws Exception {
         
         OptionParser parser = null;
@@ -353,6 +386,8 @@ public class YesWorkflowCLI {
                 .ofType(String.class)
                 .describedAs("configuration")
                 .describedAs("name=value");
+
+            acceptsAll(asList("v", "version"), "Show version, git, and build details");
 
             acceptsAll(asList("h", "help"), "Display this help");
         }};
