@@ -42,7 +42,7 @@ public class TestDefaultReconstructor extends YesWorkflowTestCase {
                              .model()
                              .getModel();
         
-        Run run = new Run(model, "src/main/resources/examples/simulate_data_collection");
+        Run run = new Run(model, "examples/simulate_data_collection");
         
         reconstructor.run(run)
                      .recon()
