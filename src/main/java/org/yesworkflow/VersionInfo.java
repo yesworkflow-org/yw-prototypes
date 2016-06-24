@@ -12,11 +12,15 @@ public class VersionInfo {
     public final String gitBranch;
     public final String gitCommitId;
     public final String gitCommitAbbrev;
+    public final String gitCommitTime;
     public final String gitClosestTag;
     public final String gitCommitsSinceTag;
 
     public final String mavenBuildVersion;
     public final String mavenBuildTime;
+    public final String mavenBuildHost;
+    public final String mavenBuildUserName;
+    public final String mavenBuildUserEmail;
 
     public static final String EOL = System.getProperty("line.separator");
     public static final String bannerDelimiter = 
@@ -43,12 +47,16 @@ public class VersionInfo {
         gitBranch = gitProperties.getProperty("git.branch");
         gitCommitId = gitProperties.getProperty("git.commit.id");
         gitCommitAbbrev = gitProperties.getProperty("git.commit.id.abbrev");
+        gitCommitTime = gitProperties.getProperty("git.commit.time");
         gitClosestTag = gitProperties.getProperty("git.closest.tag.name");
         gitCommitsSinceTag = gitProperties.getProperty("git.closest.tag.commit.count");
         
         mavenBuildVersion = gitProperties.getProperty("git.build.version");
         mavenBuildTime = gitProperties.getProperty("git.build.time");
-        
+        mavenBuildHost = gitProperties.getProperty("git.build.host");
+        mavenBuildUserName = gitProperties.getProperty("git.build.user.name");
+        mavenBuildUserEmail = gitProperties.getProperty("git.commit.user.email");
+
         version = softwareName + " " + mavenBuildVersion + "-" + gitCommitsSinceTag;
         qualifiedVersion = version + " (" 
                             + (gitBranch.equals("master") ? "branch" : "BRANCH ") + gitBranch + 
@@ -69,8 +77,12 @@ public class VersionInfo {
                    .append("Remote repo: ").append(officialRepoUrl).append(EOL)
                    .append("Git branch: ").append(gitBranch).append(EOL)
                    .append("Last commit: ").append(gitCommitId).append(EOL)
+                   .append("Commit time: ").append(gitCommitTime).append(EOL)
                    .append("Most recent tag: ").append(gitClosestTag).append(EOL)
                    .append("Commits since tag: ").append(gitCommitsSinceTag).append(EOL)
+                   .append("Builder name: ").append(mavenBuildUserName).append(EOL)
+                   .append("Builder email: ").append(mavenBuildUserEmail).append(EOL)
+                   .append("Build host: ").append(mavenBuildHost).append(EOL)
                    .append("Build time: ").append(mavenBuildTime).append(EOL)
                    .toString();
     }

@@ -48,8 +48,12 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             "Remote repo: https://github.com/yesworkflow-org/yw-prototypes.git"             + EOL +
             "Git branch: log-file-parsing"                                                  + EOL +
             "Last commit: 43285b1391e48d5797344bb40c76ee7b6f0bfaa8"                         + EOL +
+            "Commit time: 24.06.2016 @ 01:08:56 PDT"                                        + EOL +
             "Most recent tag: v0.2.0"                                                       + EOL +
             "Commits since tag: 34"                                                         + EOL +
+            "Builder name: Timothy McPhillips"                                              + EOL +
+            "Builder email: tmcphillips@absoluteflow.org"                                   + EOL +
+            "Build host: calypso.local"                                                     + EOL +
             "Build time: 24.06.2016 @ 10:35:34 PDT"                                         + EOL;
     
     @Override
