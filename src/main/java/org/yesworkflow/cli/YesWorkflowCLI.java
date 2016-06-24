@@ -62,12 +62,11 @@ public class YesWorkflowCLI {
     public static final String EOL = System.getProperty("line.separator");
     private static final String PROPERTY_FILE_NAME = "yw.properties";
     private static final String YAML_FILE_NAME = "yw.yaml";
-    public static final VersionInfo versionInfo = 
-                VersionInfo.loadVersionInfoFromResource("YesWorkflow", "git.properties");
-    
+
     private final YesWorkflowDB ywdb;
     private final PrintStream errStream;
     private final PrintStream outStream;    
+    public VersionInfo versionInfo;
     private OptionSet options = null;
     private Extractor extractor = null;
     private Modeler modeler = null;
@@ -90,14 +89,23 @@ public class YesWorkflowCLI {
 
         ExitCode exitCode;
 
+        VersionInfo versionInfo = 
+                VersionInfo.loadVersionInfoFromResource("YesWorkflow", "git.properties");
+        
         try {
-            exitCode = new YesWorkflowCLI().runForArgs(args);
+            YesWorkflowCLI cli = new YesWorkflowCLI();
+            cli.setVersionInfo(versionInfo);
+            exitCode = cli.runForArgs(args);
         } catch (Exception e) {
             e.printStackTrace();
             exitCode = ExitCode.UNCAUGHT_ERROR;
         }
 
         System.exit(exitCode.value());
+    }
+
+    public void setVersionInfo(VersionInfo versionInfo) {
+        this.versionInfo = versionInfo;
     }
 
     /** 
@@ -123,7 +131,7 @@ public class YesWorkflowCLI {
         this.outStream = outStream;
         this.errStream = errStream;
     }
-
+      
     public YesWorkflowCLI config(YWConfiguration config) {
         this.config = config;
         return this;
@@ -187,14 +195,14 @@ public class YesWorkflowCLI {
 
             // print detailed software version info and exit if requested
             if (options.has("v")) {
-                errStream.println(versionInfo.versionBanner());
-                errStream.println(versionInfo.versionDetails());
+                errStream.print(versionInfo.versionBanner());
+                errStream.print(versionInfo.versionDetails());
                 return ExitCode.SUCCESS;
             }
 
             // print help and exit if requested
             if (options.has("h")) {
-                errStream.println(versionInfo.versionBanner());
+                errStream.print(versionInfo.versionBanner());
                 errStream.println(YW_CLI_USAGE_HELP);
                 errStream.println(YW_CLI_COMMAND_HELP);
                 parser.printHelpOn(errStream);
@@ -310,10 +318,13 @@ public class YesWorkflowCLI {
     public static final String YW_CLI_COMMAND_HELP = 
         "Command                    Function"                                                           + EOL +
         "-------                    --------"                                                           + EOL +
-        "extract                    Identify YW comments in script source file(s)"                      + EOL +
-        "model                      Build workflow model from identified YW comments"                   + EOL +
-        "recon                      Reconstruct a run from its persisted data products"                 + EOL +
-        "graph                      Graphically render workflow model of script"                        + EOL;
+        "extract                    Identifies YW comments in script source file(s)."                   + EOL +
+        "model                      Builds workflow model from identified YW comments. Implicitly"      + EOL +
+        "                             performs *extract* command first."                                + EOL +
+        "recon                      Reconstructs a run from persisted data products and log files."     + EOL +
+        "                             Implicitly performs *extract* and *model* commands first."        + EOL +
+        "graph                      Graphically renders workflow model of script. Implicitly performs"  + EOL +
+        "                             *extract* and *model* commands first."                            + EOL;
 
     public static final String YW_CLI_CONFIG_HELP = 
         "Configuration Name         Value"                                                              + EOL +
@@ -356,15 +367,15 @@ public class YesWorkflowCLI {
         OptionParser parser = null;
 
         parser = new OptionParser() {{
-            acceptsAll(asList("c", "config"), "Assign value to configuration option")
+            acceptsAll(asList("c", "config"), "Assigns a value to a configuration option.")
                 .withRequiredArg()
                 .ofType(String.class)
                 .describedAs("configuration")
                 .describedAs("name=value");
 
-            acceptsAll(asList("v", "version"), "Show version, git, and build details");
+            acceptsAll(asList("v", "version"), "Shows version, git, and build details.");
 
-            acceptsAll(asList("h", "help"), "Display this help");
+            acceptsAll(asList("h", "help"), "Displays this help.");
         }};
 
         return parser;

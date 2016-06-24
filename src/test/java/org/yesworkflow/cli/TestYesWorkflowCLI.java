@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.yesworkflow.Language;
+import org.yesworkflow.VersionInfo;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.cli.ExitCode;
 import org.yesworkflow.cli.YesWorkflowCLI;
@@ -16,7 +17,6 @@ import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
-import org.yesworkflow.query.QueryEngine;
 import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestYesWorkflowCLI extends YesWorkflowTestCase {
@@ -26,16 +26,20 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     private YesWorkflowDB ywdb;
     
     private static String EXPECTED_HELP_OUTPUT =
-            ""                                                                      + EOL +
-            YesWorkflowCLI.YW_CLI_USAGE_HELP                                        + EOL +
-            YesWorkflowCLI.YW_CLI_COMMAND_HELP                                      + EOL +
-            "Option                     Description                         "       + EOL +
-            "------                     -----------                         "       + EOL +
-            "-c, --config <name=value>  Assign value to configuration option"       + EOL +
-            "-h, --help                 Display this help                   "       + EOL +
-            ""                                                                      + EOL +
-             YesWorkflowCLI.YW_CLI_CONFIG_HELP                                      + EOL +
-             YesWorkflowCLI.YW_CLI_EXAMPLES_HELP                                    + EOL;
+            "-----------------------------------------------------------------------------" + EOL +
+            "YesWorkflow 0.2.1-SNAPSHOT-25 (branch log-file-parsing, commit 830acc6)"       + EOL +
+            "-----------------------------------------------------------------------------" + EOL +
+            YesWorkflowCLI.YW_CLI_USAGE_HELP                                                + EOL +
+            YesWorkflowCLI.YW_CLI_COMMAND_HELP                                              + EOL +
+            "Option                     Description                           "             + EOL +
+            "------                     -----------                           "             + EOL +
+            "-c, --config <name=value>  Assigns a value to a configuration    "             + EOL +
+            "                             option.                             "             + EOL +
+            "-h, --help                 Displays this help.                   "             + EOL +
+            "-v, --version              Shows version, git, and build details."             + EOL +
+            ""                                                                              + EOL +
+             YesWorkflowCLI.YW_CLI_CONFIG_HELP                                              + EOL +
+             YesWorkflowCLI.YW_CLI_EXAMPLES_HELP                                            + EOL;
 
     @Override
     public void setUp() throws Exception {
@@ -56,25 +60,22 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     }
 
     public void testYesWorkflowCLI_HelpOption() throws Exception {
-        String[] args = {"--help"};
-        ExitCode returnValue = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream).runForArgs(args);
-        assertEquals(ExitCode.SUCCESS, returnValue);
-        assertEquals("", stdoutBuffer.toString());
-        assertEquals(
-            EXPECTED_HELP_OUTPUT,
-            stderrBuffer.toString());
+        helper_TestYesWorkflowCLI_HelpOption(new String[] {"--help"});
     }
 
     public void testYesWorkflowCLI_HelpOption_Abbreviation() throws Exception {
-        String[] args = {"-h"};
-        ExitCode returnValue = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream).runForArgs(args);
-        assertEquals(ExitCode.SUCCESS, returnValue);
-        assertEquals("", stdoutBuffer.toString());
-        assertEquals(
-            EXPECTED_HELP_OUTPUT,
-            stderrBuffer.toString());
+        helper_TestYesWorkflowCLI_HelpOption(new String[] {"-h"});
     }
 
+    private void helper_TestYesWorkflowCLI_HelpOption(String[] args) throws Exception {
+        YesWorkflowCLI cli = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream);
+        cli.versionInfo = VersionInfo.loadVersionInfoFromResource("YesWorkflow", "org/yesworkflow/testYesWorkflowCLI/git.properties");
+        ExitCode returnValue = cli.runForArgs(args);
+        assertEquals(ExitCode.SUCCESS, returnValue);
+        assertEquals("", stdoutBuffer.toString());
+        assertEquals(EXPECTED_HELP_OUTPUT, stderrBuffer.toString());
+    }
+    
     public void testYesWorkflowCLI_NoArgument() throws Exception {
         String[] args = new String[]{};
         ExitCode returnValue = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream).runForArgs(args);
