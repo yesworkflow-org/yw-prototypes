@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import org.yesworkflow.VersionInfo;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.db.YesWorkflowDB;
@@ -61,6 +62,8 @@ public class YesWorkflowCLI {
     public static final String EOL = System.getProperty("line.separator");
     private static final String PROPERTY_FILE_NAME = "yw.properties";
     private static final String YAML_FILE_NAME = "yw.yaml";
+    public static final VersionInfo versionInfo = 
+                VersionInfo.loadVersionInfoFromResource("YesWorkflow", "git.properties");
     
     private final YesWorkflowDB ywdb;
     private final PrintStream errStream;
@@ -170,9 +173,10 @@ public class YesWorkflowCLI {
      */
     public ExitCode runForArgs(String[] args) throws Exception {
 
-        OptionParser parser = createOptionsParser();
-
+        
         try {
+
+            OptionParser parser = createOptionsParser();
 
             // parse the command line arguments and options
             try {
@@ -181,14 +185,22 @@ public class YesWorkflowCLI {
                 throw new YWToolUsageException(exception.getMessage());
             }
 
-            // print help and exit if requested
-            if (options.has("h")) {
-                printCLIHelp(parser);
+            // print detailed software version info and exit if requested
+            if (options.has("v")) {
+                errStream.println(versionInfo.versionBanner());
+                errStream.println(versionInfo.versionDetails());
                 return ExitCode.SUCCESS;
             }
 
-            if (options.has("v")) {
-                printVersionInfo(parser);
+            // print help and exit if requested
+            if (options.has("h")) {
+                errStream.println(versionInfo.versionBanner());
+                errStream.println(YW_CLI_USAGE_HELP);
+                errStream.println(YW_CLI_COMMAND_HELP);
+                parser.printHelpOn(errStream);
+                errStream.println();
+                errStream.println(YW_CLI_CONFIG_HELP);
+                errStream.println(YW_CLI_EXAMPLES_HELP);
                 return ExitCode.SUCCESS;
             }
             
@@ -338,44 +350,7 @@ public class YesWorkflowCLI {
         "$ yw extract myscript -c extract.comment='#' -c extract.listing=comments.txt"                  + EOL +
         "$ yw graph myscript.py -config graph.view=combined -config graph.datalabel=uri"                + EOL +
         "$ yw graph scriptA.py scriptB.py > wf.gv; dot -Tpdf wf.gv -o wf.pdf; open wf.pdf"              + EOL;
-    
-    private void printCLIHelp(OptionParser parser) throws IOException {
-        printVersionSummary("");
-        errStream.println(YW_CLI_USAGE_HELP);
-        errStream.println(YW_CLI_COMMAND_HELP);
-        parser.printHelpOn(errStream);
-        errStream.println();
-        errStream.println(YW_CLI_CONFIG_HELP);
-        errStream.println(YW_CLI_EXAMPLES_HELP);
-    }
-    
-    private void printVersionInfo(OptionParser parser) throws IOException {
-        Properties properties = printVersionSummary("");
-        errStream.println("Repository: " + properties.getProperty("git.remote.origin.url"));
-        errStream.println("Branch: " + properties.getProperty("git.branch"));
-        errStream.println("Commit: " + properties.getProperty("git.commit.id"));
-        errStream.println("Latest tag: " + properties.getProperty("git.closest.tag.name") + 
-                          " (" + properties.getProperty("git.closest.tag.commit.count") + " commits since tag)");
-        errStream.println("Build time: " + properties.getProperty("git.build.time"));
-        errStream.println("");
-    }
-    
-    
-    private Properties printVersionSummary(String prefix) throws IOException {
-        Properties properties = new Properties();
-        properties.load(getClass().getClassLoader().getResourceAsStream("git.properties"));
-        String gitBuildVersion =  properties.getProperty("git.build.version");
-        String gitBranch = properties.getProperty("git.branch");
-        String gitCommitAbbrev = properties.getProperty("git.commit.id.abbrev");
-        String gitCommitsSinceTag = properties.getProperty("git.closest.tag.commit.count");
-        errStream.println(prefix + "-----------------------------------------------------------------------------");
-        errStream.println(prefix + "YesWorkflow " + gitBuildVersion + "-" + gitCommitsSinceTag +
-                          " (branch " + gitBranch + 
-                          ", commit " + gitCommitAbbrev + ")");
-        errStream.println(prefix + "-----------------------------------------------------------------------------");
-        return properties;
-    }    
-    
+        
     private OptionParser createOptionsParser() throws Exception {
         
         OptionParser parser = null;
