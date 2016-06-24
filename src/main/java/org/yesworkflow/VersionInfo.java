@@ -42,14 +42,18 @@ public class VersionInfo {
         gitBranch = gitProperties.getProperty("git.branch");
         gitCommitId = gitProperties.getProperty("git.commit.id");
         gitCommitAbbrev = gitProperties.getProperty("git.commit.id.abbrev");
-        gitClosestTag = gitProperties.getProperty("git.closest.tag.name");
-        gitCommitsSinceTag = gitProperties.getProperty("git.closest.tag.commit.count");
-
-        mavenBuildVersion = gitProperties.getProperty("git.build.version");
+//      gitClosestTag = gitProperties.getProperty("git.closest.tag.name");
+//      gitCommitsSinceTag = gitProperties.getProperty("git.closest.tag.commit.count");
+//      mavenBuildVersion = gitProperties.getProperty("git.build.version");
+        mavenBuildVersion = gitProperties.getProperty("git.commit.id.describe-short");
         mavenBuildTime = gitProperties.getProperty("git.build.time");
         
-        version = softwareName + " " + mavenBuildVersion + "-" + gitCommitsSinceTag;
+        version = softwareName + " " + mavenBuildVersion; // + "-" + gitCommitsSinceTag;
         qualifiedVersion = version + " (branch " + gitBranch + ", commit " + gitCommitAbbrev + ")";
+        
+        String[] versionParts = mavenBuildVersion.split("-");
+        gitClosestTag = versionParts[0];
+        gitCommitsSinceTag = versionParts[1];
     }
     
     public String versionBanner() {
