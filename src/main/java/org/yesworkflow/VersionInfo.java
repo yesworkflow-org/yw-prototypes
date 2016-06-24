@@ -53,7 +53,7 @@ public class VersionInfo {
         
         String[] versionParts = mavenBuildVersion.split("-");
         gitClosestTag = versionParts[0];
-        gitCommitsSinceTag = versionParts[1];
+        gitCommitsSinceTag = (versionParts.length > 1) ? versionParts[1] : "";
     }
     
     public String versionBanner() {
