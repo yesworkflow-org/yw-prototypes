@@ -27,7 +27,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     
     private static String EXPECTED_HELP_OUTPUT =
             "-----------------------------------------------------------------------------" + EOL +
-            "YesWorkflow v0.2.0-31 (branch log-file-parsing, commit 90a7d1c)"               + EOL +
+            "YesWorkflow 0.2.1-SNAPSHOT-34 (BRANCH log-file-parsing, commit 43285b1)"       + EOL +
             "-----------------------------------------------------------------------------" + EOL +
             YesWorkflowCLI.YW_CLI_USAGE_HELP                                                + EOL +
             YesWorkflowCLI.YW_CLI_COMMAND_HELP                                              + EOL +
@@ -43,14 +43,14 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     private static String EXPECTED_VERSION_OUTPUT =
             "-----------------------------------------------------------------------------" + EOL +
-            "YesWorkflow v0.2.0-31 (branch log-file-parsing, commit 90a7d1c)"               + EOL +
+            "YesWorkflow 0.2.1-SNAPSHOT-34 (BRANCH log-file-parsing, commit 43285b1)"       + EOL +
             "-----------------------------------------------------------------------------" + EOL +
             "Remote repo: https://github.com/yesworkflow-org/yw-prototypes.git"             + EOL +
             "Git branch: log-file-parsing"                                                  + EOL +
-            "Last commit: 90a7d1cedc24669c7e818b3802e0a93ecd4f3e32"                         + EOL +
+            "Last commit: 43285b1391e48d5797344bb40c76ee7b6f0bfaa8"                         + EOL +
             "Most recent tag: v0.2.0"                                                       + EOL +
-            "Commits since tag: 31"                                                         + EOL +
-            "Build time: 24.06.2016 @ 00:33:26 PDT"                                         + EOL;
+            "Commits since tag: 34"                                                         + EOL +
+            "Build time: 24.06.2016 @ 10:35:34 PDT"                                         + EOL;
     
     @Override
     public void setUp() throws Exception {
