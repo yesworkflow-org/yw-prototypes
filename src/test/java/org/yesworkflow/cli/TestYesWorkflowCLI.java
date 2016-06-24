@@ -81,7 +81,9 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     private void helper_TestYesWorkflowCLI_HelpOption(String[] args) throws Exception {
         YesWorkflowCLI cli = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream);
         cli.versionInfo = VersionInfo.loadVersionInfoFromResource(
-                "YesWorkflow", "org/yesworkflow/testYesWorkflowCLI/git.properties");
+                "YesWorkflow", 
+                "https://github.com/yesworkflow-org/yw-prototypes.git",
+                "org/yesworkflow/testYesWorkflowCLI/git.properties");
         ExitCode returnValue = cli.runForArgs(args);
         assertEquals(ExitCode.SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
@@ -99,7 +101,9 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     private void helper_TestYesWorkflowCLI_VersionOption(String[] args) throws Exception {
         YesWorkflowCLI cli = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream);
         cli.versionInfo = VersionInfo.loadVersionInfoFromResource(
-                "YesWorkflow", "org/yesworkflow/testYesWorkflowCLI/git.properties");
+                "YesWorkflow", 
+                "https://github.com/yesworkflow-org/yw-prototypes.git",
+                "org/yesworkflow/testYesWorkflowCLI/git.properties");
         ExitCode returnValue = cli.runForArgs(args);
         assertEquals(ExitCode.SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());

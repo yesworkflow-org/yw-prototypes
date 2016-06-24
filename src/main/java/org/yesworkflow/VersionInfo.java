@@ -1,15 +1,14 @@
 package org.yesworkflow;
 
-import java.io.IOException;
 import java.util.Properties;
 
 public class VersionInfo {
 
     public final String softwareName;
     public final String version;
-    public final String qualifiedVersion;
+    public final String qualifiedVersion;    
+    public final String officialRepoUrl;
     
-    public final String gitRemoteOrigin;
     public final String gitBranch;
     public final String gitCommitId;
     public final String gitCommitAbbrev;
@@ -23,7 +22,7 @@ public class VersionInfo {
     public static final String bannerDelimiter = 
             "-----------------------------------------------------------------------------";
     
-    public static VersionInfo loadVersionInfoFromResource(String softwareName, String classPathResource)  {
+    public static VersionInfo loadVersionInfoFromResource(String softwareName, String officialRepoUrl, String classPathResource)  {
         Properties gitProperties = new Properties();
         try {
             gitProperties.load(VersionInfo.class.getClassLoader().getResourceAsStream(classPathResource));
@@ -31,14 +30,16 @@ public class VersionInfo {
             e.printStackTrace();
             System.exit(-1);
         }
-        return new VersionInfo(softwareName, gitProperties);
+        return new VersionInfo(softwareName, officialRepoUrl, gitProperties);
     }
+
     
-    public VersionInfo(String softwareName, Properties gitProperties) {
+    
+    public VersionInfo(String softwareName, String officialRepoUrl, Properties gitProperties) {
         
         this.softwareName = softwareName;
+        this.officialRepoUrl = officialRepoUrl;
         
-        gitRemoteOrigin = gitProperties.getProperty("git.remote.origin.url");
         gitBranch = gitProperties.getProperty("git.branch");
         gitCommitId = gitProperties.getProperty("git.commit.id");
         gitCommitAbbrev = gitProperties.getProperty("git.commit.id.abbrev");
@@ -65,7 +66,7 @@ public class VersionInfo {
     
     public String versionDetails() {
         return new StringBuilder()
-                   .append("Remote repo: ").append(gitRemoteOrigin).append(EOL)
+                   .append("Remote repo: ").append(officialRepoUrl).append(EOL)
                    .append("Git branch: ").append(gitBranch).append(EOL)
                    .append("Last commit: ").append(gitCommitId).append(EOL)
                    .append("Most recent tag: ").append(gitClosestTag).append(EOL)

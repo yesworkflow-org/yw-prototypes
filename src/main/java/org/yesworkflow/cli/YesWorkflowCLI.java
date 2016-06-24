@@ -3,11 +3,9 @@ package org.yesworkflow.cli;
 import static java.util.Arrays.asList;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
 
 import org.yesworkflow.VersionInfo;
 import org.yesworkflow.annotations.Annotation;
@@ -90,7 +88,10 @@ public class YesWorkflowCLI {
         ExitCode exitCode;
 
         VersionInfo versionInfo = 
-                VersionInfo.loadVersionInfoFromResource("YesWorkflow", "git.properties");
+                VersionInfo.loadVersionInfoFromResource(
+                        "YesWorkflow", 
+                        "https://github.com/yesworkflow-org/yw-prototypes.git",
+                        "git.properties");
         
         try {
             YesWorkflowCLI cli = new YesWorkflowCLI();
