@@ -41,6 +41,17 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
              YesWorkflowCLI.YW_CLI_CONFIG_HELP                                              + EOL +
              YesWorkflowCLI.YW_CLI_EXAMPLES_HELP                                            + EOL;
 
+    private static String EXPECTED_VERSION_OUTPUT =
+            "-----------------------------------------------------------------------------" + EOL +
+            "YesWorkflow 0.2.1-SNAPSHOT-25 (branch log-file-parsing, commit 830acc6)"       + EOL +
+            "-----------------------------------------------------------------------------" + EOL +
+            "Remote repo: https://github.com/yesworkflow-org/yw-prototypes.git"             + EOL +
+            "Git branch: log-file-parsing"                                                  + EOL +
+            "Last commit: 830acc637d68d92f5468b9e5c2735d67e6423a9f"                         + EOL +
+            "Most recent tag: v0.2.0"                                                       + EOL +
+            "Commits since tag: 25"                                                         + EOL +
+            "Build time: 23.06.2016 @ 19:56:31 PDT"                                         + EOL;
+    
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -69,11 +80,30 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
 
     private void helper_TestYesWorkflowCLI_HelpOption(String[] args) throws Exception {
         YesWorkflowCLI cli = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream);
-        cli.versionInfo = VersionInfo.loadVersionInfoFromResource("YesWorkflow", "org/yesworkflow/testYesWorkflowCLI/git.properties");
+        cli.versionInfo = VersionInfo.loadVersionInfoFromResource(
+                "YesWorkflow", "org/yesworkflow/testYesWorkflowCLI/git.properties");
         ExitCode returnValue = cli.runForArgs(args);
         assertEquals(ExitCode.SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
         assertEquals(EXPECTED_HELP_OUTPUT, stderrBuffer.toString());
+    }
+    
+    public void testYesWorkflowCLI_VersionOption() throws Exception {
+        helper_TestYesWorkflowCLI_VersionOption(new String[] {"--version"});
+    }
+    
+    public void testYesWorkflowCLI_VersionOption_Abbreviation() throws Exception {
+        helper_TestYesWorkflowCLI_VersionOption(new String[] {"-v"});
+    }
+    
+    private void helper_TestYesWorkflowCLI_VersionOption(String[] args) throws Exception {
+        YesWorkflowCLI cli = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream);
+        cli.versionInfo = VersionInfo.loadVersionInfoFromResource(
+                "YesWorkflow", "org/yesworkflow/testYesWorkflowCLI/git.properties");
+        ExitCode returnValue = cli.runForArgs(args);
+        assertEquals(ExitCode.SUCCESS, returnValue);
+        assertEquals("", stdoutBuffer.toString());
+        assertEquals(EXPECTED_VERSION_OUTPUT, stderrBuffer.toString());
     }
     
     public void testYesWorkflowCLI_NoArgument() throws Exception {
