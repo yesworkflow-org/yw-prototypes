@@ -2432,1829 +2432,1829 @@ uri_variable_value(202, 8, '11000').
 uri_variable_value(202, 9, '030').
 
 % FACT: log_variable_value(resource_id, log_entry_id, log_variable_id, log_variable_value).
-log_variable_value(203, 1, 1, '2016-03-29 19:15:45').
+log_variable_value(203, 1, 1, '2016-06-23 23:01:10').
 log_variable_value(203, 1, 2, 'q55').
-log_variable_value(203, 2, 4, '2016-03-29 19:15:45').
+log_variable_value(203, 2, 4, '2016-06-23 23:01:10').
 log_variable_value(203, 2, 5, 'DRT110').
 log_variable_value(203, 2, 6, '10').
-log_variable_value(203, 3, 4, '2016-03-29 19:15:45').
+log_variable_value(203, 3, 4, '2016-06-23 23:01:10').
 log_variable_value(203, 3, 5, 'DRT240').
 log_variable_value(203, 3, 6, '45').
-log_variable_value(203, 4, 4, '2016-03-29 19:15:45').
+log_variable_value(203, 4, 4, '2016-06-23 23:01:10').
 log_variable_value(203, 4, 5, 'DRT322').
 log_variable_value(203, 4, 6, '28').
 log_variable_value(205, 5, 7, 'DRT110').
 log_variable_value(205, 5, 8, 'q55').
-log_variable_value(203, 6, 9, '2016-03-29 19:15:45').
+log_variable_value(203, 6, 9, '2016-06-23 23:01:10').
 log_variable_value(203, 6, 10, 'DRT240').
-log_variable_value(203, 7, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 7, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 7, 12, 'run/raw/q55/DRT240/e10000/image_001.raw').
-log_variable_value(203, 8, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 8, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 8, 12, 'run/raw/q55/DRT240/e10000/image_002.raw').
-log_variable_value(203, 9, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 9, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 9, 12, 'run/raw/q55/DRT240/e10000/image_003.raw').
-log_variable_value(203, 10, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 10, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 10, 12, 'run/raw/q55/DRT240/e10000/image_004.raw').
-log_variable_value(203, 11, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 11, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 11, 12, 'run/raw/q55/DRT240/e10000/image_005.raw').
-log_variable_value(203, 12, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 12, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 12, 12, 'run/raw/q55/DRT240/e10000/image_006.raw').
-log_variable_value(203, 13, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 13, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 13, 12, 'run/raw/q55/DRT240/e10000/image_007.raw').
-log_variable_value(203, 14, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 14, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 14, 12, 'run/raw/q55/DRT240/e10000/image_008.raw').
-log_variable_value(203, 15, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 15, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 15, 12, 'run/raw/q55/DRT240/e10000/image_009.raw').
-log_variable_value(203, 16, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 16, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 16, 12, 'run/raw/q55/DRT240/e10000/image_010.raw').
-log_variable_value(203, 17, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 17, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 17, 12, 'run/raw/q55/DRT240/e10000/image_011.raw').
-log_variable_value(203, 18, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 18, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 18, 12, 'run/raw/q55/DRT240/e10000/image_012.raw').
-log_variable_value(203, 19, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 19, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 19, 12, 'run/raw/q55/DRT240/e10000/image_013.raw').
-log_variable_value(203, 20, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 20, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 20, 12, 'run/raw/q55/DRT240/e10000/image_014.raw').
-log_variable_value(203, 21, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 21, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 21, 12, 'run/raw/q55/DRT240/e10000/image_015.raw').
-log_variable_value(203, 22, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 22, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 22, 12, 'run/raw/q55/DRT240/e10000/image_016.raw').
-log_variable_value(203, 23, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 23, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 23, 12, 'run/raw/q55/DRT240/e10000/image_017.raw').
-log_variable_value(203, 24, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 24, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 24, 12, 'run/raw/q55/DRT240/e10000/image_018.raw').
-log_variable_value(203, 25, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 25, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 25, 12, 'run/raw/q55/DRT240/e10000/image_019.raw').
-log_variable_value(203, 26, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 26, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 26, 12, 'run/raw/q55/DRT240/e10000/image_020.raw').
-log_variable_value(203, 27, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 27, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 27, 12, 'run/raw/q55/DRT240/e10000/image_021.raw').
-log_variable_value(203, 28, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 28, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 28, 12, 'run/raw/q55/DRT240/e10000/image_022.raw').
-log_variable_value(203, 29, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 29, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 29, 12, 'run/raw/q55/DRT240/e10000/image_023.raw').
-log_variable_value(203, 30, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 30, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 30, 12, 'run/raw/q55/DRT240/e10000/image_024.raw').
-log_variable_value(203, 31, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 31, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 31, 12, 'run/raw/q55/DRT240/e10000/image_025.raw').
-log_variable_value(203, 32, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 32, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 32, 12, 'run/raw/q55/DRT240/e10000/image_026.raw').
-log_variable_value(203, 33, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 33, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 33, 12, 'run/raw/q55/DRT240/e10000/image_027.raw').
-log_variable_value(203, 34, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 34, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 34, 12, 'run/raw/q55/DRT240/e10000/image_028.raw').
-log_variable_value(203, 35, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 35, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 35, 12, 'run/raw/q55/DRT240/e10000/image_029.raw').
-log_variable_value(203, 36, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 36, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 36, 12, 'run/raw/q55/DRT240/e10000/image_030.raw').
-log_variable_value(203, 37, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 37, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 37, 12, 'run/raw/q55/DRT240/e10000/image_031.raw').
-log_variable_value(203, 38, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 38, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 38, 12, 'run/raw/q55/DRT240/e10000/image_032.raw').
-log_variable_value(203, 39, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 39, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 39, 12, 'run/raw/q55/DRT240/e10000/image_033.raw').
-log_variable_value(203, 40, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 40, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 40, 12, 'run/raw/q55/DRT240/e10000/image_034.raw').
-log_variable_value(203, 41, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 41, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 41, 12, 'run/raw/q55/DRT240/e10000/image_035.raw').
-log_variable_value(203, 42, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 42, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 42, 12, 'run/raw/q55/DRT240/e10000/image_036.raw').
-log_variable_value(203, 43, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 43, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 43, 12, 'run/raw/q55/DRT240/e10000/image_037.raw').
-log_variable_value(203, 44, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 44, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 44, 12, 'run/raw/q55/DRT240/e10000/image_038.raw').
-log_variable_value(203, 45, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 45, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 45, 12, 'run/raw/q55/DRT240/e10000/image_039.raw').
-log_variable_value(203, 46, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 46, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 46, 12, 'run/raw/q55/DRT240/e10000/image_040.raw').
-log_variable_value(203, 47, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 47, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 47, 12, 'run/raw/q55/DRT240/e10000/image_041.raw').
-log_variable_value(203, 48, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 48, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 48, 12, 'run/raw/q55/DRT240/e10000/image_042.raw').
-log_variable_value(203, 49, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 49, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 49, 12, 'run/raw/q55/DRT240/e10000/image_043.raw').
-log_variable_value(203, 50, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 50, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 50, 12, 'run/raw/q55/DRT240/e10000/image_044.raw').
-log_variable_value(203, 51, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 51, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 51, 12, 'run/raw/q55/DRT240/e10000/image_045.raw').
-log_variable_value(203, 52, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 52, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 52, 12, 'run/raw/q55/DRT240/e10000/image_046.raw').
-log_variable_value(203, 53, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 53, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 53, 12, 'run/raw/q55/DRT240/e10000/image_047.raw').
-log_variable_value(203, 54, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 54, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 54, 12, 'run/raw/q55/DRT240/e11000/image_001.raw').
-log_variable_value(203, 55, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 55, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 55, 12, 'run/raw/q55/DRT240/e11000/image_002.raw').
-log_variable_value(203, 56, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 56, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 56, 12, 'run/raw/q55/DRT240/e11000/image_003.raw').
-log_variable_value(203, 57, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 57, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 57, 12, 'run/raw/q55/DRT240/e11000/image_004.raw').
-log_variable_value(203, 58, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 58, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 58, 12, 'run/raw/q55/DRT240/e11000/image_005.raw').
-log_variable_value(203, 59, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 59, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 59, 12, 'run/raw/q55/DRT240/e11000/image_006.raw').
-log_variable_value(203, 60, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 60, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 60, 12, 'run/raw/q55/DRT240/e11000/image_007.raw').
-log_variable_value(203, 61, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 61, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 61, 12, 'run/raw/q55/DRT240/e11000/image_008.raw').
-log_variable_value(203, 62, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 62, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 62, 12, 'run/raw/q55/DRT240/e11000/image_009.raw').
-log_variable_value(203, 63, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 63, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 63, 12, 'run/raw/q55/DRT240/e11000/image_010.raw').
-log_variable_value(203, 64, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 64, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 64, 12, 'run/raw/q55/DRT240/e11000/image_011.raw').
-log_variable_value(203, 65, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 65, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 65, 12, 'run/raw/q55/DRT240/e11000/image_012.raw').
-log_variable_value(203, 66, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 66, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 66, 12, 'run/raw/q55/DRT240/e11000/image_013.raw').
-log_variable_value(203, 67, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 67, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 67, 12, 'run/raw/q55/DRT240/e11000/image_014.raw').
-log_variable_value(203, 68, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 68, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 68, 12, 'run/raw/q55/DRT240/e11000/image_015.raw').
-log_variable_value(203, 69, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 69, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 69, 12, 'run/raw/q55/DRT240/e11000/image_016.raw').
-log_variable_value(203, 70, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 70, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 70, 12, 'run/raw/q55/DRT240/e11000/image_017.raw').
-log_variable_value(203, 71, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 71, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 71, 12, 'run/raw/q55/DRT240/e11000/image_018.raw').
-log_variable_value(203, 72, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 72, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 72, 12, 'run/raw/q55/DRT240/e11000/image_019.raw').
-log_variable_value(203, 73, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 73, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 73, 12, 'run/raw/q55/DRT240/e11000/image_020.raw').
-log_variable_value(203, 74, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 74, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 74, 12, 'run/raw/q55/DRT240/e11000/image_021.raw').
-log_variable_value(203, 75, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 75, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 75, 12, 'run/raw/q55/DRT240/e11000/image_022.raw').
-log_variable_value(203, 76, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 76, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 76, 12, 'run/raw/q55/DRT240/e11000/image_023.raw').
-log_variable_value(203, 77, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 77, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 77, 12, 'run/raw/q55/DRT240/e11000/image_024.raw').
-log_variable_value(203, 78, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 78, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 78, 12, 'run/raw/q55/DRT240/e11000/image_025.raw').
-log_variable_value(203, 79, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 79, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 79, 12, 'run/raw/q55/DRT240/e11000/image_026.raw').
-log_variable_value(203, 80, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 80, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 80, 12, 'run/raw/q55/DRT240/e11000/image_027.raw').
-log_variable_value(203, 81, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 81, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 81, 12, 'run/raw/q55/DRT240/e11000/image_028.raw').
-log_variable_value(203, 82, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 82, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 82, 12, 'run/raw/q55/DRT240/e11000/image_029.raw').
-log_variable_value(203, 83, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 83, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 83, 12, 'run/raw/q55/DRT240/e11000/image_030.raw').
-log_variable_value(203, 84, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 84, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 84, 12, 'run/raw/q55/DRT240/e11000/image_031.raw').
-log_variable_value(203, 85, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 85, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 85, 12, 'run/raw/q55/DRT240/e11000/image_032.raw').
-log_variable_value(203, 86, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 86, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 86, 12, 'run/raw/q55/DRT240/e11000/image_033.raw').
-log_variable_value(203, 87, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 87, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 87, 12, 'run/raw/q55/DRT240/e11000/image_034.raw').
-log_variable_value(203, 88, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 88, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 88, 12, 'run/raw/q55/DRT240/e11000/image_035.raw').
-log_variable_value(203, 89, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 89, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 89, 12, 'run/raw/q55/DRT240/e11000/image_036.raw').
-log_variable_value(203, 90, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 90, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 90, 12, 'run/raw/q55/DRT240/e11000/image_037.raw').
-log_variable_value(203, 91, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 91, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 91, 12, 'run/raw/q55/DRT240/e11000/image_038.raw').
-log_variable_value(203, 92, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 92, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 92, 12, 'run/raw/q55/DRT240/e11000/image_039.raw').
-log_variable_value(203, 93, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 93, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 93, 12, 'run/raw/q55/DRT240/e11000/image_040.raw').
-log_variable_value(203, 94, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 94, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 94, 12, 'run/raw/q55/DRT240/e11000/image_041.raw').
-log_variable_value(203, 95, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 95, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 95, 12, 'run/raw/q55/DRT240/e11000/image_042.raw').
-log_variable_value(203, 96, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 96, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 96, 12, 'run/raw/q55/DRT240/e11000/image_043.raw').
-log_variable_value(203, 97, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 97, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 97, 12, 'run/raw/q55/DRT240/e11000/image_044.raw').
-log_variable_value(203, 98, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 98, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 98, 12, 'run/raw/q55/DRT240/e11000/image_045.raw').
-log_variable_value(203, 99, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 99, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 99, 12, 'run/raw/q55/DRT240/e11000/image_046.raw').
-log_variable_value(203, 100, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 100, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 100, 12, 'run/raw/q55/DRT240/e11000/image_047.raw').
-log_variable_value(203, 101, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 101, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 101, 12, 'run/raw/q55/DRT240/e12000/image_001.raw').
-log_variable_value(203, 102, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 102, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 102, 12, 'run/raw/q55/DRT240/e12000/image_002.raw').
-log_variable_value(203, 103, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 103, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 103, 12, 'run/raw/q55/DRT240/e12000/image_003.raw').
-log_variable_value(203, 104, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 104, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 104, 12, 'run/raw/q55/DRT240/e12000/image_004.raw').
-log_variable_value(203, 105, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 105, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 105, 12, 'run/raw/q55/DRT240/e12000/image_005.raw').
-log_variable_value(203, 106, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 106, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 106, 12, 'run/raw/q55/DRT240/e12000/image_006.raw').
-log_variable_value(203, 107, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 107, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 107, 12, 'run/raw/q55/DRT240/e12000/image_007.raw').
-log_variable_value(203, 108, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 108, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 108, 12, 'run/raw/q55/DRT240/e12000/image_008.raw').
-log_variable_value(203, 109, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 109, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 109, 12, 'run/raw/q55/DRT240/e12000/image_009.raw').
-log_variable_value(203, 110, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 110, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 110, 12, 'run/raw/q55/DRT240/e12000/image_010.raw').
-log_variable_value(203, 111, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 111, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 111, 12, 'run/raw/q55/DRT240/e12000/image_011.raw').
-log_variable_value(203, 112, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 112, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 112, 12, 'run/raw/q55/DRT240/e12000/image_012.raw').
-log_variable_value(203, 113, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 113, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 113, 12, 'run/raw/q55/DRT240/e12000/image_013.raw').
-log_variable_value(203, 114, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 114, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 114, 12, 'run/raw/q55/DRT240/e12000/image_014.raw').
-log_variable_value(203, 115, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 115, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 115, 12, 'run/raw/q55/DRT240/e12000/image_015.raw').
-log_variable_value(203, 116, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 116, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 116, 12, 'run/raw/q55/DRT240/e12000/image_016.raw').
-log_variable_value(203, 117, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 117, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 117, 12, 'run/raw/q55/DRT240/e12000/image_017.raw').
-log_variable_value(203, 118, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 118, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 118, 12, 'run/raw/q55/DRT240/e12000/image_018.raw').
-log_variable_value(203, 119, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 119, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 119, 12, 'run/raw/q55/DRT240/e12000/image_019.raw').
-log_variable_value(203, 120, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 120, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 120, 12, 'run/raw/q55/DRT240/e12000/image_020.raw').
-log_variable_value(203, 121, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 121, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 121, 12, 'run/raw/q55/DRT240/e12000/image_021.raw').
-log_variable_value(203, 122, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 122, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 122, 12, 'run/raw/q55/DRT240/e12000/image_022.raw').
-log_variable_value(203, 123, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 123, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 123, 12, 'run/raw/q55/DRT240/e12000/image_023.raw').
-log_variable_value(203, 124, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 124, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 124, 12, 'run/raw/q55/DRT240/e12000/image_024.raw').
-log_variable_value(203, 125, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 125, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 125, 12, 'run/raw/q55/DRT240/e12000/image_025.raw').
-log_variable_value(203, 126, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 126, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 126, 12, 'run/raw/q55/DRT240/e12000/image_026.raw').
-log_variable_value(203, 127, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 127, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 127, 12, 'run/raw/q55/DRT240/e12000/image_027.raw').
-log_variable_value(203, 128, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 128, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 128, 12, 'run/raw/q55/DRT240/e12000/image_028.raw').
-log_variable_value(203, 129, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 129, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 129, 12, 'run/raw/q55/DRT240/e12000/image_029.raw').
-log_variable_value(203, 130, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 130, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 130, 12, 'run/raw/q55/DRT240/e12000/image_030.raw').
-log_variable_value(203, 131, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 131, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 131, 12, 'run/raw/q55/DRT240/e12000/image_031.raw').
-log_variable_value(203, 132, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 132, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 132, 12, 'run/raw/q55/DRT240/e12000/image_032.raw').
-log_variable_value(203, 133, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 133, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 133, 12, 'run/raw/q55/DRT240/e12000/image_033.raw').
-log_variable_value(203, 134, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 134, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 134, 12, 'run/raw/q55/DRT240/e12000/image_034.raw').
-log_variable_value(203, 135, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 135, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 135, 12, 'run/raw/q55/DRT240/e12000/image_035.raw').
-log_variable_value(203, 136, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 136, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 136, 12, 'run/raw/q55/DRT240/e12000/image_036.raw').
-log_variable_value(203, 137, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 137, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 137, 12, 'run/raw/q55/DRT240/e12000/image_037.raw').
-log_variable_value(203, 138, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 138, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 138, 12, 'run/raw/q55/DRT240/e12000/image_038.raw').
-log_variable_value(203, 139, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 139, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 139, 12, 'run/raw/q55/DRT240/e12000/image_039.raw').
-log_variable_value(203, 140, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 140, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 140, 12, 'run/raw/q55/DRT240/e12000/image_040.raw').
-log_variable_value(203, 141, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 141, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 141, 12, 'run/raw/q55/DRT240/e12000/image_041.raw').
-log_variable_value(203, 142, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 142, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 142, 12, 'run/raw/q55/DRT240/e12000/image_042.raw').
-log_variable_value(203, 143, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 143, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 143, 12, 'run/raw/q55/DRT240/e12000/image_043.raw').
-log_variable_value(203, 144, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 144, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 144, 12, 'run/raw/q55/DRT240/e12000/image_044.raw').
-log_variable_value(203, 145, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 145, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 145, 12, 'run/raw/q55/DRT240/e12000/image_045.raw').
-log_variable_value(203, 146, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 146, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 146, 12, 'run/raw/q55/DRT240/e12000/image_046.raw').
-log_variable_value(203, 147, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 147, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 147, 12, 'run/raw/q55/DRT240/e12000/image_047.raw').
-log_variable_value(203, 148, 9, '2016-03-29 19:15:45').
+log_variable_value(203, 148, 9, '2016-06-23 23:01:10').
 log_variable_value(203, 148, 10, 'DRT322').
-log_variable_value(203, 149, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 149, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 149, 12, 'run/raw/q55/DRT322/e10000/image_001.raw').
-log_variable_value(203, 150, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 150, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 150, 12, 'run/raw/q55/DRT322/e10000/image_002.raw').
-log_variable_value(203, 151, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 151, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 151, 12, 'run/raw/q55/DRT322/e10000/image_003.raw').
-log_variable_value(203, 152, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 152, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 152, 12, 'run/raw/q55/DRT322/e10000/image_004.raw').
-log_variable_value(203, 153, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 153, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 153, 12, 'run/raw/q55/DRT322/e10000/image_005.raw').
-log_variable_value(203, 154, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 154, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 154, 12, 'run/raw/q55/DRT322/e10000/image_006.raw').
-log_variable_value(203, 155, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 155, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 155, 12, 'run/raw/q55/DRT322/e10000/image_007.raw').
-log_variable_value(203, 156, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 156, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 156, 12, 'run/raw/q55/DRT322/e10000/image_008.raw').
-log_variable_value(203, 157, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 157, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 157, 12, 'run/raw/q55/DRT322/e10000/image_009.raw').
-log_variable_value(203, 158, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 158, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 158, 12, 'run/raw/q55/DRT322/e10000/image_010.raw').
-log_variable_value(203, 159, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 159, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 159, 12, 'run/raw/q55/DRT322/e10000/image_011.raw').
-log_variable_value(203, 160, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 160, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 160, 12, 'run/raw/q55/DRT322/e10000/image_012.raw').
-log_variable_value(203, 161, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 161, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 161, 12, 'run/raw/q55/DRT322/e10000/image_013.raw').
-log_variable_value(203, 162, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 162, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 162, 12, 'run/raw/q55/DRT322/e10000/image_014.raw').
-log_variable_value(203, 163, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 163, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 163, 12, 'run/raw/q55/DRT322/e10000/image_015.raw').
-log_variable_value(203, 164, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 164, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 164, 12, 'run/raw/q55/DRT322/e10000/image_016.raw').
-log_variable_value(203, 165, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 165, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 165, 12, 'run/raw/q55/DRT322/e10000/image_017.raw').
-log_variable_value(203, 166, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 166, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 166, 12, 'run/raw/q55/DRT322/e10000/image_018.raw').
-log_variable_value(203, 167, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 167, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 167, 12, 'run/raw/q55/DRT322/e10000/image_019.raw').
-log_variable_value(203, 168, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 168, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 168, 12, 'run/raw/q55/DRT322/e10000/image_020.raw').
-log_variable_value(203, 169, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 169, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 169, 12, 'run/raw/q55/DRT322/e10000/image_021.raw').
-log_variable_value(203, 170, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 170, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 170, 12, 'run/raw/q55/DRT322/e10000/image_022.raw').
-log_variable_value(203, 171, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 171, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 171, 12, 'run/raw/q55/DRT322/e10000/image_023.raw').
-log_variable_value(203, 172, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 172, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 172, 12, 'run/raw/q55/DRT322/e10000/image_024.raw').
-log_variable_value(203, 173, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 173, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 173, 12, 'run/raw/q55/DRT322/e10000/image_025.raw').
-log_variable_value(203, 174, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 174, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 174, 12, 'run/raw/q55/DRT322/e10000/image_026.raw').
-log_variable_value(203, 175, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 175, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 175, 12, 'run/raw/q55/DRT322/e10000/image_027.raw').
-log_variable_value(203, 176, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 176, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 176, 12, 'run/raw/q55/DRT322/e10000/image_028.raw').
-log_variable_value(203, 177, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 177, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 177, 12, 'run/raw/q55/DRT322/e10000/image_029.raw').
-log_variable_value(203, 178, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 178, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 178, 12, 'run/raw/q55/DRT322/e10000/image_030.raw').
-log_variable_value(203, 179, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 179, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 179, 12, 'run/raw/q55/DRT322/e11000/image_001.raw').
-log_variable_value(203, 180, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 180, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 180, 12, 'run/raw/q55/DRT322/e11000/image_002.raw').
-log_variable_value(203, 181, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 181, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 181, 12, 'run/raw/q55/DRT322/e11000/image_003.raw').
-log_variable_value(203, 182, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 182, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 182, 12, 'run/raw/q55/DRT322/e11000/image_004.raw').
-log_variable_value(203, 183, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 183, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 183, 12, 'run/raw/q55/DRT322/e11000/image_005.raw').
-log_variable_value(203, 184, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 184, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 184, 12, 'run/raw/q55/DRT322/e11000/image_006.raw').
-log_variable_value(203, 185, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 185, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 185, 12, 'run/raw/q55/DRT322/e11000/image_007.raw').
-log_variable_value(203, 186, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 186, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 186, 12, 'run/raw/q55/DRT322/e11000/image_008.raw').
-log_variable_value(203, 187, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 187, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 187, 12, 'run/raw/q55/DRT322/e11000/image_009.raw').
-log_variable_value(203, 188, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 188, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 188, 12, 'run/raw/q55/DRT322/e11000/image_010.raw').
-log_variable_value(203, 189, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 189, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 189, 12, 'run/raw/q55/DRT322/e11000/image_011.raw').
-log_variable_value(203, 190, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 190, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 190, 12, 'run/raw/q55/DRT322/e11000/image_012.raw').
-log_variable_value(203, 191, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 191, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 191, 12, 'run/raw/q55/DRT322/e11000/image_013.raw').
-log_variable_value(203, 192, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 192, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 192, 12, 'run/raw/q55/DRT322/e11000/image_014.raw').
-log_variable_value(203, 193, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 193, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 193, 12, 'run/raw/q55/DRT322/e11000/image_015.raw').
-log_variable_value(203, 194, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 194, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 194, 12, 'run/raw/q55/DRT322/e11000/image_016.raw').
-log_variable_value(203, 195, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 195, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 195, 12, 'run/raw/q55/DRT322/e11000/image_017.raw').
-log_variable_value(203, 196, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 196, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 196, 12, 'run/raw/q55/DRT322/e11000/image_018.raw').
-log_variable_value(203, 197, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 197, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 197, 12, 'run/raw/q55/DRT322/e11000/image_019.raw').
-log_variable_value(203, 198, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 198, 11, '2016-06-23 23:01:10').
 log_variable_value(203, 198, 12, 'run/raw/q55/DRT322/e11000/image_020.raw').
-log_variable_value(203, 199, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 199, 11, '2016-06-23 23:01:11').
 log_variable_value(203, 199, 12, 'run/raw/q55/DRT322/e11000/image_021.raw').
-log_variable_value(203, 200, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 200, 11, '2016-06-23 23:01:11').
 log_variable_value(203, 200, 12, 'run/raw/q55/DRT322/e11000/image_022.raw').
-log_variable_value(203, 201, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 201, 11, '2016-06-23 23:01:11').
 log_variable_value(203, 201, 12, 'run/raw/q55/DRT322/e11000/image_023.raw').
-log_variable_value(203, 202, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 202, 11, '2016-06-23 23:01:11').
 log_variable_value(203, 202, 12, 'run/raw/q55/DRT322/e11000/image_024.raw').
-log_variable_value(203, 203, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 203, 11, '2016-06-23 23:01:11').
 log_variable_value(203, 203, 12, 'run/raw/q55/DRT322/e11000/image_025.raw').
-log_variable_value(203, 204, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 204, 11, '2016-06-23 23:01:11').
 log_variable_value(203, 204, 12, 'run/raw/q55/DRT322/e11000/image_026.raw').
-log_variable_value(203, 205, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 205, 11, '2016-06-23 23:01:11').
 log_variable_value(203, 205, 12, 'run/raw/q55/DRT322/e11000/image_027.raw').
-log_variable_value(203, 206, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 206, 11, '2016-06-23 23:01:11').
 log_variable_value(203, 206, 12, 'run/raw/q55/DRT322/e11000/image_028.raw').
-log_variable_value(203, 207, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 207, 11, '2016-06-23 23:01:11').
 log_variable_value(203, 207, 12, 'run/raw/q55/DRT322/e11000/image_029.raw').
-log_variable_value(203, 208, 11, '2016-03-29 19:15:45').
+log_variable_value(203, 208, 11, '2016-06-23 23:01:11').
 log_variable_value(203, 208, 12, 'run/raw/q55/DRT322/e11000/image_030.raw').
-log_variable_value(203, 209, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 209, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 209, 14, 'run/data/DRT240/DRT240_10000eV_001.img').
-log_variable_value(203, 210, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 210, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 210, 14, 'run/data/DRT240/DRT240_10000eV_002.img').
-log_variable_value(203, 211, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 211, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 211, 14, 'run/data/DRT240/DRT240_10000eV_003.img').
-log_variable_value(203, 212, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 212, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 212, 14, 'run/data/DRT240/DRT240_10000eV_004.img').
-log_variable_value(203, 213, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 213, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 213, 14, 'run/data/DRT240/DRT240_10000eV_005.img').
-log_variable_value(203, 214, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 214, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 214, 14, 'run/data/DRT240/DRT240_10000eV_006.img').
-log_variable_value(203, 215, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 215, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 215, 14, 'run/data/DRT240/DRT240_10000eV_007.img').
-log_variable_value(203, 216, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 216, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 216, 14, 'run/data/DRT240/DRT240_10000eV_008.img').
-log_variable_value(203, 217, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 217, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 217, 14, 'run/data/DRT240/DRT240_10000eV_009.img').
-log_variable_value(203, 218, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 218, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 218, 14, 'run/data/DRT240/DRT240_10000eV_010.img').
-log_variable_value(203, 219, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 219, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 219, 14, 'run/data/DRT240/DRT240_10000eV_011.img').
-log_variable_value(203, 220, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 220, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 220, 14, 'run/data/DRT240/DRT240_10000eV_012.img').
-log_variable_value(203, 221, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 221, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 221, 14, 'run/data/DRT240/DRT240_10000eV_013.img').
-log_variable_value(203, 222, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 222, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 222, 14, 'run/data/DRT240/DRT240_10000eV_014.img').
-log_variable_value(203, 223, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 223, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 223, 14, 'run/data/DRT240/DRT240_10000eV_015.img').
-log_variable_value(203, 224, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 224, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 224, 14, 'run/data/DRT240/DRT240_10000eV_016.img').
-log_variable_value(203, 225, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 225, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 225, 14, 'run/data/DRT240/DRT240_10000eV_017.img').
-log_variable_value(203, 226, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 226, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 226, 14, 'run/data/DRT240/DRT240_10000eV_018.img').
-log_variable_value(203, 227, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 227, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 227, 14, 'run/data/DRT240/DRT240_10000eV_019.img').
-log_variable_value(203, 228, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 228, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 228, 14, 'run/data/DRT240/DRT240_10000eV_020.img').
-log_variable_value(203, 229, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 229, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 229, 14, 'run/data/DRT240/DRT240_10000eV_021.img').
-log_variable_value(203, 230, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 230, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 230, 14, 'run/data/DRT240/DRT240_10000eV_022.img').
-log_variable_value(203, 231, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 231, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 231, 14, 'run/data/DRT240/DRT240_10000eV_023.img').
-log_variable_value(203, 232, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 232, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 232, 14, 'run/data/DRT240/DRT240_10000eV_024.img').
-log_variable_value(203, 233, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 233, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 233, 14, 'run/data/DRT240/DRT240_10000eV_025.img').
-log_variable_value(203, 234, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 234, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 234, 14, 'run/data/DRT240/DRT240_10000eV_026.img').
-log_variable_value(203, 235, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 235, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 235, 14, 'run/data/DRT240/DRT240_10000eV_027.img').
-log_variable_value(203, 236, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 236, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 236, 14, 'run/data/DRT240/DRT240_10000eV_028.img').
-log_variable_value(203, 237, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 237, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 237, 14, 'run/data/DRT240/DRT240_10000eV_029.img').
-log_variable_value(203, 238, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 238, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 238, 14, 'run/data/DRT240/DRT240_10000eV_030.img').
-log_variable_value(203, 239, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 239, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 239, 14, 'run/data/DRT240/DRT240_10000eV_031.img').
-log_variable_value(203, 240, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 240, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 240, 14, 'run/data/DRT240/DRT240_10000eV_032.img').
-log_variable_value(203, 241, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 241, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 241, 14, 'run/data/DRT240/DRT240_10000eV_033.img').
-log_variable_value(203, 242, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 242, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 242, 14, 'run/data/DRT240/DRT240_10000eV_034.img').
-log_variable_value(203, 243, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 243, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 243, 14, 'run/data/DRT240/DRT240_10000eV_035.img').
-log_variable_value(203, 244, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 244, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 244, 14, 'run/data/DRT240/DRT240_10000eV_036.img').
-log_variable_value(203, 245, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 245, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 245, 14, 'run/data/DRT240/DRT240_10000eV_037.img').
-log_variable_value(203, 246, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 246, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 246, 14, 'run/data/DRT240/DRT240_10000eV_038.img').
-log_variable_value(203, 247, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 247, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 247, 14, 'run/data/DRT240/DRT240_10000eV_039.img').
-log_variable_value(203, 248, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 248, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 248, 14, 'run/data/DRT240/DRT240_10000eV_040.img').
-log_variable_value(203, 249, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 249, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 249, 14, 'run/data/DRT240/DRT240_10000eV_041.img').
-log_variable_value(203, 250, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 250, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 250, 14, 'run/data/DRT240/DRT240_10000eV_042.img').
-log_variable_value(203, 251, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 251, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 251, 14, 'run/data/DRT240/DRT240_10000eV_043.img').
-log_variable_value(203, 252, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 252, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 252, 14, 'run/data/DRT240/DRT240_10000eV_044.img').
-log_variable_value(203, 253, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 253, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 253, 14, 'run/data/DRT240/DRT240_10000eV_045.img').
-log_variable_value(203, 254, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 254, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 254, 14, 'run/data/DRT240/DRT240_10000eV_046.img').
-log_variable_value(203, 255, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 255, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 255, 14, 'run/data/DRT240/DRT240_10000eV_047.img').
-log_variable_value(203, 256, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 256, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 256, 14, 'run/data/DRT240/DRT240_11000eV_001.img').
-log_variable_value(203, 257, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 257, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 257, 14, 'run/data/DRT240/DRT240_11000eV_002.img').
-log_variable_value(203, 258, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 258, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 258, 14, 'run/data/DRT240/DRT240_11000eV_003.img').
-log_variable_value(203, 259, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 259, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 259, 14, 'run/data/DRT240/DRT240_11000eV_004.img').
-log_variable_value(203, 260, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 260, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 260, 14, 'run/data/DRT240/DRT240_11000eV_005.img').
-log_variable_value(203, 261, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 261, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 261, 14, 'run/data/DRT240/DRT240_11000eV_006.img').
-log_variable_value(203, 262, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 262, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 262, 14, 'run/data/DRT240/DRT240_11000eV_007.img').
-log_variable_value(203, 263, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 263, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 263, 14, 'run/data/DRT240/DRT240_11000eV_008.img').
-log_variable_value(203, 264, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 264, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 264, 14, 'run/data/DRT240/DRT240_11000eV_009.img').
-log_variable_value(203, 265, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 265, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 265, 14, 'run/data/DRT240/DRT240_11000eV_010.img').
-log_variable_value(203, 266, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 266, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 266, 14, 'run/data/DRT240/DRT240_11000eV_011.img').
-log_variable_value(203, 267, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 267, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 267, 14, 'run/data/DRT240/DRT240_11000eV_012.img').
-log_variable_value(203, 268, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 268, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 268, 14, 'run/data/DRT240/DRT240_11000eV_013.img').
-log_variable_value(203, 269, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 269, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 269, 14, 'run/data/DRT240/DRT240_11000eV_014.img').
-log_variable_value(203, 270, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 270, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 270, 14, 'run/data/DRT240/DRT240_11000eV_015.img').
-log_variable_value(203, 271, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 271, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 271, 14, 'run/data/DRT240/DRT240_11000eV_016.img').
-log_variable_value(203, 272, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 272, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 272, 14, 'run/data/DRT240/DRT240_11000eV_017.img').
-log_variable_value(203, 273, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 273, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 273, 14, 'run/data/DRT240/DRT240_11000eV_018.img').
-log_variable_value(203, 274, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 274, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 274, 14, 'run/data/DRT240/DRT240_11000eV_019.img').
-log_variable_value(203, 275, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 275, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 275, 14, 'run/data/DRT240/DRT240_11000eV_020.img').
-log_variable_value(203, 276, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 276, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 276, 14, 'run/data/DRT240/DRT240_11000eV_021.img').
-log_variable_value(203, 277, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 277, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 277, 14, 'run/data/DRT240/DRT240_11000eV_022.img').
-log_variable_value(203, 278, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 278, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 278, 14, 'run/data/DRT240/DRT240_11000eV_023.img').
-log_variable_value(203, 279, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 279, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 279, 14, 'run/data/DRT240/DRT240_11000eV_024.img').
-log_variable_value(203, 280, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 280, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 280, 14, 'run/data/DRT240/DRT240_11000eV_025.img').
-log_variable_value(203, 281, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 281, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 281, 14, 'run/data/DRT240/DRT240_11000eV_026.img').
-log_variable_value(203, 282, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 282, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 282, 14, 'run/data/DRT240/DRT240_11000eV_027.img').
-log_variable_value(203, 283, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 283, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 283, 14, 'run/data/DRT240/DRT240_11000eV_028.img').
-log_variable_value(203, 284, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 284, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 284, 14, 'run/data/DRT240/DRT240_11000eV_029.img').
-log_variable_value(203, 285, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 285, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 285, 14, 'run/data/DRT240/DRT240_11000eV_030.img').
-log_variable_value(203, 286, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 286, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 286, 14, 'run/data/DRT240/DRT240_11000eV_031.img').
-log_variable_value(203, 287, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 287, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 287, 14, 'run/data/DRT240/DRT240_11000eV_032.img').
-log_variable_value(203, 288, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 288, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 288, 14, 'run/data/DRT240/DRT240_11000eV_033.img').
-log_variable_value(203, 289, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 289, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 289, 14, 'run/data/DRT240/DRT240_11000eV_034.img').
-log_variable_value(203, 290, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 290, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 290, 14, 'run/data/DRT240/DRT240_11000eV_035.img').
-log_variable_value(203, 291, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 291, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 291, 14, 'run/data/DRT240/DRT240_11000eV_036.img').
-log_variable_value(203, 292, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 292, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 292, 14, 'run/data/DRT240/DRT240_11000eV_037.img').
-log_variable_value(203, 293, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 293, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 293, 14, 'run/data/DRT240/DRT240_11000eV_038.img').
-log_variable_value(203, 294, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 294, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 294, 14, 'run/data/DRT240/DRT240_11000eV_039.img').
-log_variable_value(203, 295, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 295, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 295, 14, 'run/data/DRT240/DRT240_11000eV_040.img').
-log_variable_value(203, 296, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 296, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 296, 14, 'run/data/DRT240/DRT240_11000eV_041.img').
-log_variable_value(203, 297, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 297, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 297, 14, 'run/data/DRT240/DRT240_11000eV_042.img').
-log_variable_value(203, 298, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 298, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 298, 14, 'run/data/DRT240/DRT240_11000eV_043.img').
-log_variable_value(203, 299, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 299, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 299, 14, 'run/data/DRT240/DRT240_11000eV_044.img').
-log_variable_value(203, 300, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 300, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 300, 14, 'run/data/DRT240/DRT240_11000eV_045.img').
-log_variable_value(203, 301, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 301, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 301, 14, 'run/data/DRT240/DRT240_11000eV_046.img').
-log_variable_value(203, 302, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 302, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 302, 14, 'run/data/DRT240/DRT240_11000eV_047.img').
-log_variable_value(203, 303, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 303, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 303, 14, 'run/data/DRT240/DRT240_12000eV_001.img').
-log_variable_value(203, 304, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 304, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 304, 14, 'run/data/DRT240/DRT240_12000eV_002.img').
-log_variable_value(203, 305, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 305, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 305, 14, 'run/data/DRT240/DRT240_12000eV_003.img').
-log_variable_value(203, 306, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 306, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 306, 14, 'run/data/DRT240/DRT240_12000eV_004.img').
-log_variable_value(203, 307, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 307, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 307, 14, 'run/data/DRT240/DRT240_12000eV_005.img').
-log_variable_value(203, 308, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 308, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 308, 14, 'run/data/DRT240/DRT240_12000eV_006.img').
-log_variable_value(203, 309, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 309, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 309, 14, 'run/data/DRT240/DRT240_12000eV_007.img').
-log_variable_value(203, 310, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 310, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 310, 14, 'run/data/DRT240/DRT240_12000eV_008.img').
-log_variable_value(203, 311, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 311, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 311, 14, 'run/data/DRT240/DRT240_12000eV_009.img').
-log_variable_value(203, 312, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 312, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 312, 14, 'run/data/DRT240/DRT240_12000eV_010.img').
-log_variable_value(203, 313, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 313, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 313, 14, 'run/data/DRT240/DRT240_12000eV_011.img').
-log_variable_value(203, 314, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 314, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 314, 14, 'run/data/DRT240/DRT240_12000eV_012.img').
-log_variable_value(203, 315, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 315, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 315, 14, 'run/data/DRT240/DRT240_12000eV_013.img').
-log_variable_value(203, 316, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 316, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 316, 14, 'run/data/DRT240/DRT240_12000eV_014.img').
-log_variable_value(203, 317, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 317, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 317, 14, 'run/data/DRT240/DRT240_12000eV_015.img').
-log_variable_value(203, 318, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 318, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 318, 14, 'run/data/DRT240/DRT240_12000eV_016.img').
-log_variable_value(203, 319, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 319, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 319, 14, 'run/data/DRT240/DRT240_12000eV_017.img').
-log_variable_value(203, 320, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 320, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 320, 14, 'run/data/DRT240/DRT240_12000eV_018.img').
-log_variable_value(203, 321, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 321, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 321, 14, 'run/data/DRT240/DRT240_12000eV_019.img').
-log_variable_value(203, 322, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 322, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 322, 14, 'run/data/DRT240/DRT240_12000eV_020.img').
-log_variable_value(203, 323, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 323, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 323, 14, 'run/data/DRT240/DRT240_12000eV_021.img').
-log_variable_value(203, 324, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 324, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 324, 14, 'run/data/DRT240/DRT240_12000eV_022.img').
-log_variable_value(203, 325, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 325, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 325, 14, 'run/data/DRT240/DRT240_12000eV_023.img').
-log_variable_value(203, 326, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 326, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 326, 14, 'run/data/DRT240/DRT240_12000eV_024.img').
-log_variable_value(203, 327, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 327, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 327, 14, 'run/data/DRT240/DRT240_12000eV_025.img').
-log_variable_value(203, 328, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 328, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 328, 14, 'run/data/DRT240/DRT240_12000eV_026.img').
-log_variable_value(203, 329, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 329, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 329, 14, 'run/data/DRT240/DRT240_12000eV_027.img').
-log_variable_value(203, 330, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 330, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 330, 14, 'run/data/DRT240/DRT240_12000eV_028.img').
-log_variable_value(203, 331, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 331, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 331, 14, 'run/data/DRT240/DRT240_12000eV_029.img').
-log_variable_value(203, 332, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 332, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 332, 14, 'run/data/DRT240/DRT240_12000eV_030.img').
-log_variable_value(203, 333, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 333, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 333, 14, 'run/data/DRT240/DRT240_12000eV_031.img').
-log_variable_value(203, 334, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 334, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 334, 14, 'run/data/DRT240/DRT240_12000eV_032.img').
-log_variable_value(203, 335, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 335, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 335, 14, 'run/data/DRT240/DRT240_12000eV_033.img').
-log_variable_value(203, 336, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 336, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 336, 14, 'run/data/DRT240/DRT240_12000eV_034.img').
-log_variable_value(203, 337, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 337, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 337, 14, 'run/data/DRT240/DRT240_12000eV_035.img').
-log_variable_value(203, 338, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 338, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 338, 14, 'run/data/DRT240/DRT240_12000eV_036.img').
-log_variable_value(203, 339, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 339, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 339, 14, 'run/data/DRT240/DRT240_12000eV_037.img').
-log_variable_value(203, 340, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 340, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 340, 14, 'run/data/DRT240/DRT240_12000eV_038.img').
-log_variable_value(203, 341, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 341, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 341, 14, 'run/data/DRT240/DRT240_12000eV_039.img').
-log_variable_value(203, 342, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 342, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 342, 14, 'run/data/DRT240/DRT240_12000eV_040.img').
-log_variable_value(203, 343, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 343, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 343, 14, 'run/data/DRT240/DRT240_12000eV_041.img').
-log_variable_value(203, 344, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 344, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 344, 14, 'run/data/DRT240/DRT240_12000eV_042.img').
-log_variable_value(203, 345, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 345, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 345, 14, 'run/data/DRT240/DRT240_12000eV_043.img').
-log_variable_value(203, 346, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 346, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 346, 14, 'run/data/DRT240/DRT240_12000eV_044.img').
-log_variable_value(203, 347, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 347, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 347, 14, 'run/data/DRT240/DRT240_12000eV_045.img').
-log_variable_value(203, 348, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 348, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 348, 14, 'run/data/DRT240/DRT240_12000eV_046.img').
-log_variable_value(203, 349, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 349, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 349, 14, 'run/data/DRT240/DRT240_12000eV_047.img').
-log_variable_value(203, 350, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 350, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 350, 14, 'run/data/DRT322/DRT322_10000eV_001.img').
-log_variable_value(203, 351, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 351, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 351, 14, 'run/data/DRT322/DRT322_10000eV_002.img').
-log_variable_value(203, 352, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 352, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 352, 14, 'run/data/DRT322/DRT322_10000eV_003.img').
-log_variable_value(203, 353, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 353, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 353, 14, 'run/data/DRT322/DRT322_10000eV_004.img').
-log_variable_value(203, 354, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 354, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 354, 14, 'run/data/DRT322/DRT322_10000eV_005.img').
-log_variable_value(203, 355, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 355, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 355, 14, 'run/data/DRT322/DRT322_10000eV_006.img').
-log_variable_value(203, 356, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 356, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 356, 14, 'run/data/DRT322/DRT322_10000eV_007.img').
-log_variable_value(203, 357, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 357, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 357, 14, 'run/data/DRT322/DRT322_10000eV_008.img').
-log_variable_value(203, 358, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 358, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 358, 14, 'run/data/DRT322/DRT322_10000eV_009.img').
-log_variable_value(203, 359, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 359, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 359, 14, 'run/data/DRT322/DRT322_10000eV_010.img').
-log_variable_value(203, 360, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 360, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 360, 14, 'run/data/DRT322/DRT322_10000eV_011.img').
-log_variable_value(203, 361, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 361, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 361, 14, 'run/data/DRT322/DRT322_10000eV_012.img').
-log_variable_value(203, 362, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 362, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 362, 14, 'run/data/DRT322/DRT322_10000eV_013.img').
-log_variable_value(203, 363, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 363, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 363, 14, 'run/data/DRT322/DRT322_10000eV_014.img').
-log_variable_value(203, 364, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 364, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 364, 14, 'run/data/DRT322/DRT322_10000eV_015.img').
-log_variable_value(203, 365, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 365, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 365, 14, 'run/data/DRT322/DRT322_10000eV_016.img').
-log_variable_value(203, 366, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 366, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 366, 14, 'run/data/DRT322/DRT322_10000eV_017.img').
-log_variable_value(203, 367, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 367, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 367, 14, 'run/data/DRT322/DRT322_10000eV_018.img').
-log_variable_value(203, 368, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 368, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 368, 14, 'run/data/DRT322/DRT322_10000eV_019.img').
-log_variable_value(203, 369, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 369, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 369, 14, 'run/data/DRT322/DRT322_10000eV_020.img').
-log_variable_value(203, 370, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 370, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 370, 14, 'run/data/DRT322/DRT322_10000eV_021.img').
-log_variable_value(203, 371, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 371, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 371, 14, 'run/data/DRT322/DRT322_10000eV_022.img').
-log_variable_value(203, 372, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 372, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 372, 14, 'run/data/DRT322/DRT322_10000eV_023.img').
-log_variable_value(203, 373, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 373, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 373, 14, 'run/data/DRT322/DRT322_10000eV_024.img').
-log_variable_value(203, 374, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 374, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 374, 14, 'run/data/DRT322/DRT322_10000eV_025.img').
-log_variable_value(203, 375, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 375, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 375, 14, 'run/data/DRT322/DRT322_10000eV_026.img').
-log_variable_value(203, 376, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 376, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 376, 14, 'run/data/DRT322/DRT322_10000eV_027.img').
-log_variable_value(203, 377, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 377, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 377, 14, 'run/data/DRT322/DRT322_10000eV_028.img').
-log_variable_value(203, 378, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 378, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 378, 14, 'run/data/DRT322/DRT322_10000eV_029.img').
-log_variable_value(203, 379, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 379, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 379, 14, 'run/data/DRT322/DRT322_10000eV_030.img').
-log_variable_value(203, 380, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 380, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 380, 14, 'run/data/DRT322/DRT322_11000eV_001.img').
-log_variable_value(203, 381, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 381, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 381, 14, 'run/data/DRT322/DRT322_11000eV_002.img').
-log_variable_value(203, 382, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 382, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 382, 14, 'run/data/DRT322/DRT322_11000eV_003.img').
-log_variable_value(203, 383, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 383, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 383, 14, 'run/data/DRT322/DRT322_11000eV_004.img').
-log_variable_value(203, 384, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 384, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 384, 14, 'run/data/DRT322/DRT322_11000eV_005.img').
-log_variable_value(203, 385, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 385, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 385, 14, 'run/data/DRT322/DRT322_11000eV_006.img').
-log_variable_value(203, 386, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 386, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 386, 14, 'run/data/DRT322/DRT322_11000eV_007.img').
-log_variable_value(203, 387, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 387, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 387, 14, 'run/data/DRT322/DRT322_11000eV_008.img').
-log_variable_value(203, 388, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 388, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 388, 14, 'run/data/DRT322/DRT322_11000eV_009.img').
-log_variable_value(203, 389, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 389, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 389, 14, 'run/data/DRT322/DRT322_11000eV_010.img').
-log_variable_value(203, 390, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 390, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 390, 14, 'run/data/DRT322/DRT322_11000eV_011.img').
-log_variable_value(203, 391, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 391, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 391, 14, 'run/data/DRT322/DRT322_11000eV_012.img').
-log_variable_value(203, 392, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 392, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 392, 14, 'run/data/DRT322/DRT322_11000eV_013.img').
-log_variable_value(203, 393, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 393, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 393, 14, 'run/data/DRT322/DRT322_11000eV_014.img').
-log_variable_value(203, 394, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 394, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 394, 14, 'run/data/DRT322/DRT322_11000eV_015.img').
-log_variable_value(203, 395, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 395, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 395, 14, 'run/data/DRT322/DRT322_11000eV_016.img').
-log_variable_value(203, 396, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 396, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 396, 14, 'run/data/DRT322/DRT322_11000eV_017.img').
-log_variable_value(203, 397, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 397, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 397, 14, 'run/data/DRT322/DRT322_11000eV_018.img').
-log_variable_value(203, 398, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 398, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 398, 14, 'run/data/DRT322/DRT322_11000eV_019.img').
-log_variable_value(203, 399, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 399, 13, '2016-06-23 23:01:10').
 log_variable_value(203, 399, 14, 'run/data/DRT322/DRT322_11000eV_020.img').
-log_variable_value(203, 400, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 400, 13, '2016-06-23 23:01:11').
 log_variable_value(203, 400, 14, 'run/data/DRT322/DRT322_11000eV_021.img').
-log_variable_value(203, 401, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 401, 13, '2016-06-23 23:01:11').
 log_variable_value(203, 401, 14, 'run/data/DRT322/DRT322_11000eV_022.img').
-log_variable_value(203, 402, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 402, 13, '2016-06-23 23:01:11').
 log_variable_value(203, 402, 14, 'run/data/DRT322/DRT322_11000eV_023.img').
-log_variable_value(203, 403, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 403, 13, '2016-06-23 23:01:11').
 log_variable_value(203, 403, 14, 'run/data/DRT322/DRT322_11000eV_024.img').
-log_variable_value(203, 404, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 404, 13, '2016-06-23 23:01:11').
 log_variable_value(203, 404, 14, 'run/data/DRT322/DRT322_11000eV_025.img').
-log_variable_value(203, 405, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 405, 13, '2016-06-23 23:01:11').
 log_variable_value(203, 405, 14, 'run/data/DRT322/DRT322_11000eV_026.img').
-log_variable_value(203, 406, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 406, 13, '2016-06-23 23:01:11').
 log_variable_value(203, 406, 14, 'run/data/DRT322/DRT322_11000eV_027.img').
-log_variable_value(203, 407, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 407, 13, '2016-06-23 23:01:11').
 log_variable_value(203, 407, 14, 'run/data/DRT322/DRT322_11000eV_028.img').
-log_variable_value(203, 408, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 408, 13, '2016-06-23 23:01:11').
 log_variable_value(203, 408, 14, 'run/data/DRT322/DRT322_11000eV_029.img').
-log_variable_value(203, 409, 13, '2016-03-29 19:15:45').
+log_variable_value(203, 409, 13, '2016-06-23 23:01:11').
 log_variable_value(203, 409, 14, 'run/data/DRT322/DRT322_11000eV_030.img').
 log_variable_value(204, 410, 15, 'q55').
 log_variable_value(204, 410, 16, 'DRT240').
 log_variable_value(204, 410, 17, '10000').
-log_variable_value(204, 410, 18, '0').
+log_variable_value(204, 410, 18, '0.0').
 log_variable_value(204, 410, 19, 'run/data/DRT240/DRT240_10000eV_001.img').
 log_variable_value(204, 411, 15, 'q55').
 log_variable_value(204, 411, 16, 'DRT240').
 log_variable_value(204, 411, 17, '10000').
-log_variable_value(204, 411, 18, '31').
+log_variable_value(204, 411, 18, '31.0').
 log_variable_value(204, 411, 19, 'run/data/DRT240/DRT240_10000eV_002.img').
 log_variable_value(204, 412, 15, 'q55').
 log_variable_value(204, 412, 16, 'DRT240').
 log_variable_value(204, 412, 17, '10000').
-log_variable_value(204, 412, 18, '0').
+log_variable_value(204, 412, 18, '0.0').
 log_variable_value(204, 412, 19, 'run/data/DRT240/DRT240_10000eV_003.img').
 log_variable_value(204, 413, 15, 'q55').
 log_variable_value(204, 413, 16, 'DRT240').
 log_variable_value(204, 413, 17, '10000').
-log_variable_value(204, 413, 18, '0').
+log_variable_value(204, 413, 18, '0.0').
 log_variable_value(204, 413, 19, 'run/data/DRT240/DRT240_10000eV_004.img').
 log_variable_value(204, 414, 15, 'q55').
 log_variable_value(204, 414, 16, 'DRT240').
 log_variable_value(204, 414, 17, '10000').
-log_variable_value(204, 414, 18, '64').
+log_variable_value(204, 414, 18, '64.0').
 log_variable_value(204, 414, 19, 'run/data/DRT240/DRT240_10000eV_005.img').
 log_variable_value(204, 415, 15, 'q55').
 log_variable_value(204, 415, 16, 'DRT240').
 log_variable_value(204, 415, 17, '10000').
-log_variable_value(204, 415, 18, '26').
+log_variable_value(204, 415, 18, '26.0').
 log_variable_value(204, 415, 19, 'run/data/DRT240/DRT240_10000eV_006.img').
 log_variable_value(204, 416, 15, 'q55').
 log_variable_value(204, 416, 16, 'DRT240').
 log_variable_value(204, 416, 17, '10000').
-log_variable_value(204, 416, 18, '48').
+log_variable_value(204, 416, 18, '48.0').
 log_variable_value(204, 416, 19, 'run/data/DRT240/DRT240_10000eV_007.img').
 log_variable_value(204, 417, 15, 'q55').
 log_variable_value(204, 417, 16, 'DRT240').
 log_variable_value(204, 417, 17, '10000').
-log_variable_value(204, 417, 18, '9').
+log_variable_value(204, 417, 18, '9.0').
 log_variable_value(204, 417, 19, 'run/data/DRT240/DRT240_10000eV_008.img').
 log_variable_value(204, 418, 15, 'q55').
 log_variable_value(204, 418, 16, 'DRT240').
 log_variable_value(204, 418, 17, '10000').
-log_variable_value(204, 418, 18, '0').
+log_variable_value(204, 418, 18, '0.0').
 log_variable_value(204, 418, 19, 'run/data/DRT240/DRT240_10000eV_009.img').
 log_variable_value(204, 419, 15, 'q55').
 log_variable_value(204, 419, 16, 'DRT240').
 log_variable_value(204, 419, 17, '10000').
-log_variable_value(204, 419, 18, '7').
+log_variable_value(204, 419, 18, '7.0').
 log_variable_value(204, 419, 19, 'run/data/DRT240/DRT240_10000eV_010.img').
 log_variable_value(204, 420, 15, 'q55').
 log_variable_value(204, 420, 16, 'DRT240').
 log_variable_value(204, 420, 17, '10000').
-log_variable_value(204, 420, 18, '31').
+log_variable_value(204, 420, 18, '31.0').
 log_variable_value(204, 420, 19, 'run/data/DRT240/DRT240_10000eV_011.img').
 log_variable_value(204, 421, 15, 'q55').
 log_variable_value(204, 421, 16, 'DRT240').
 log_variable_value(204, 421, 17, '10000').
-log_variable_value(204, 421, 18, '67').
+log_variable_value(204, 421, 18, '67.0').
 log_variable_value(204, 421, 19, 'run/data/DRT240/DRT240_10000eV_012.img').
 log_variable_value(204, 422, 15, 'q55').
 log_variable_value(204, 422, 16, 'DRT240').
 log_variable_value(204, 422, 17, '10000').
-log_variable_value(204, 422, 18, '12').
+log_variable_value(204, 422, 18, '12.0').
 log_variable_value(204, 422, 19, 'run/data/DRT240/DRT240_10000eV_013.img').
 log_variable_value(204, 423, 15, 'q55').
 log_variable_value(204, 423, 16, 'DRT240').
 log_variable_value(204, 423, 17, '10000').
-log_variable_value(204, 423, 18, '64').
+log_variable_value(204, 423, 18, '64.0').
 log_variable_value(204, 423, 19, 'run/data/DRT240/DRT240_10000eV_014.img').
 log_variable_value(204, 424, 15, 'q55').
 log_variable_value(204, 424, 16, 'DRT240').
 log_variable_value(204, 424, 17, '10000').
-log_variable_value(204, 424, 18, '23').
+log_variable_value(204, 424, 18, '23.0').
 log_variable_value(204, 424, 19, 'run/data/DRT240/DRT240_10000eV_015.img').
 log_variable_value(204, 425, 15, 'q55').
 log_variable_value(204, 425, 16, 'DRT240').
 log_variable_value(204, 425, 17, '10000').
-log_variable_value(204, 425, 18, '86').
+log_variable_value(204, 425, 18, '86.0').
 log_variable_value(204, 425, 19, 'run/data/DRT240/DRT240_10000eV_016.img').
 log_variable_value(204, 426, 15, 'q55').
 log_variable_value(204, 426, 16, 'DRT240').
 log_variable_value(204, 426, 17, '10000').
-log_variable_value(204, 426, 18, '53').
+log_variable_value(204, 426, 18, '53.0').
 log_variable_value(204, 426, 19, 'run/data/DRT240/DRT240_10000eV_017.img').
 log_variable_value(204, 427, 15, 'q55').
 log_variable_value(204, 427, 16, 'DRT240').
 log_variable_value(204, 427, 17, '10000').
-log_variable_value(204, 427, 18, '24').
+log_variable_value(204, 427, 18, '24.0').
 log_variable_value(204, 427, 19, 'run/data/DRT240/DRT240_10000eV_018.img').
 log_variable_value(204, 428, 15, 'q55').
 log_variable_value(204, 428, 16, 'DRT240').
 log_variable_value(204, 428, 17, '10000').
-log_variable_value(204, 428, 18, '0').
+log_variable_value(204, 428, 18, '0.0').
 log_variable_value(204, 428, 19, 'run/data/DRT240/DRT240_10000eV_019.img').
 log_variable_value(204, 429, 15, 'q55').
 log_variable_value(204, 429, 16, 'DRT240').
 log_variable_value(204, 429, 17, '10000').
-log_variable_value(204, 429, 18, '74').
+log_variable_value(204, 429, 18, '74.0').
 log_variable_value(204, 429, 19, 'run/data/DRT240/DRT240_10000eV_020.img').
 log_variable_value(204, 430, 15, 'q55').
 log_variable_value(204, 430, 16, 'DRT240').
 log_variable_value(204, 430, 17, '10000').
-log_variable_value(204, 430, 18, '52').
+log_variable_value(204, 430, 18, '52.0').
 log_variable_value(204, 430, 19, 'run/data/DRT240/DRT240_10000eV_021.img').
 log_variable_value(204, 431, 15, 'q55').
 log_variable_value(204, 431, 16, 'DRT240').
 log_variable_value(204, 431, 17, '10000').
-log_variable_value(204, 431, 18, '32').
+log_variable_value(204, 431, 18, '32.0').
 log_variable_value(204, 431, 19, 'run/data/DRT240/DRT240_10000eV_022.img').
 log_variable_value(204, 432, 15, 'q55').
 log_variable_value(204, 432, 16, 'DRT240').
 log_variable_value(204, 432, 17, '10000').
-log_variable_value(204, 432, 18, '14').
+log_variable_value(204, 432, 18, '14.0').
 log_variable_value(204, 432, 19, 'run/data/DRT240/DRT240_10000eV_023.img').
 log_variable_value(204, 433, 15, 'q55').
 log_variable_value(204, 433, 16, 'DRT240').
 log_variable_value(204, 433, 17, '10000').
-log_variable_value(204, 433, 18, '0').
+log_variable_value(204, 433, 18, '0.0').
 log_variable_value(204, 433, 19, 'run/data/DRT240/DRT240_10000eV_024.img').
 log_variable_value(204, 434, 15, 'q55').
 log_variable_value(204, 434, 16, 'DRT240').
 log_variable_value(204, 434, 17, '10000').
-log_variable_value(204, 434, 18, '82').
+log_variable_value(204, 434, 18, '82.0').
 log_variable_value(204, 434, 19, 'run/data/DRT240/DRT240_10000eV_025.img').
 log_variable_value(204, 435, 15, 'q55').
 log_variable_value(204, 435, 16, 'DRT240').
 log_variable_value(204, 435, 17, '10000').
-log_variable_value(204, 435, 18, '68').
+log_variable_value(204, 435, 18, '68.0').
 log_variable_value(204, 435, 19, 'run/data/DRT240/DRT240_10000eV_026.img').
 log_variable_value(204, 436, 15, 'q55').
 log_variable_value(204, 436, 16, 'DRT240').
 log_variable_value(204, 436, 17, '10000').
-log_variable_value(204, 436, 18, '55').
+log_variable_value(204, 436, 18, '55.0').
 log_variable_value(204, 436, 19, 'run/data/DRT240/DRT240_10000eV_027.img').
 log_variable_value(204, 437, 15, 'q55').
 log_variable_value(204, 437, 16, 'DRT240').
 log_variable_value(204, 437, 17, '10000').
-log_variable_value(204, 437, 18, '42').
+log_variable_value(204, 437, 18, '42.0').
 log_variable_value(204, 437, 19, 'run/data/DRT240/DRT240_10000eV_028.img').
 log_variable_value(204, 438, 15, 'q55').
 log_variable_value(204, 438, 16, 'DRT240').
 log_variable_value(204, 438, 17, '10000').
-log_variable_value(204, 438, 18, '31').
+log_variable_value(204, 438, 18, '31.0').
 log_variable_value(204, 438, 19, 'run/data/DRT240/DRT240_10000eV_029.img').
 log_variable_value(204, 439, 15, 'q55').
 log_variable_value(204, 439, 16, 'DRT240').
 log_variable_value(204, 439, 17, '10000').
-log_variable_value(204, 439, 18, '20').
+log_variable_value(204, 439, 18, '20.0').
 log_variable_value(204, 439, 19, 'run/data/DRT240/DRT240_10000eV_030.img').
 log_variable_value(204, 440, 15, 'q55').
 log_variable_value(204, 440, 16, 'DRT240').
 log_variable_value(204, 440, 17, '10000').
-log_variable_value(204, 440, 18, '10').
+log_variable_value(204, 440, 18, '10.0').
 log_variable_value(204, 440, 19, 'run/data/DRT240/DRT240_10000eV_031.img').
 log_variable_value(204, 441, 15, 'q55').
 log_variable_value(204, 441, 16, 'DRT240').
 log_variable_value(204, 441, 17, '10000').
-log_variable_value(204, 441, 18, '1').
+log_variable_value(204, 441, 18, '1.2').
 log_variable_value(204, 441, 19, 'run/data/DRT240/DRT240_10000eV_032.img').
 log_variable_value(204, 442, 15, 'q55').
 log_variable_value(204, 442, 16, 'DRT240').
 log_variable_value(204, 442, 17, '10000').
-log_variable_value(204, 442, 18, '92').
+log_variable_value(204, 442, 18, '92.0').
 log_variable_value(204, 442, 19, 'run/data/DRT240/DRT240_10000eV_033.img').
 log_variable_value(204, 443, 15, 'q55').
 log_variable_value(204, 443, 16, 'DRT240').
 log_variable_value(204, 443, 17, '10000').
-log_variable_value(204, 443, 18, '83').
+log_variable_value(204, 443, 18, '83.0').
 log_variable_value(204, 443, 19, 'run/data/DRT240/DRT240_10000eV_034.img').
 log_variable_value(204, 444, 15, 'q55').
 log_variable_value(204, 444, 16, 'DRT240').
 log_variable_value(204, 444, 17, '10000').
-log_variable_value(204, 444, 18, '75').
+log_variable_value(204, 444, 18, '75.0').
 log_variable_value(204, 444, 19, 'run/data/DRT240/DRT240_10000eV_035.img').
 log_variable_value(204, 445, 15, 'q55').
 log_variable_value(204, 445, 16, 'DRT240').
 log_variable_value(204, 445, 17, '10000').
-log_variable_value(204, 445, 18, '68').
+log_variable_value(204, 445, 18, '68.0').
 log_variable_value(204, 445, 19, 'run/data/DRT240/DRT240_10000eV_036.img').
 log_variable_value(204, 446, 15, 'q55').
 log_variable_value(204, 446, 16, 'DRT240').
 log_variable_value(204, 446, 17, '10000').
-log_variable_value(204, 446, 18, '61').
+log_variable_value(204, 446, 18, '61.0').
 log_variable_value(204, 446, 19, 'run/data/DRT240/DRT240_10000eV_037.img').
 log_variable_value(204, 447, 15, 'q55').
 log_variable_value(204, 447, 16, 'DRT240').
 log_variable_value(204, 447, 17, '10000').
-log_variable_value(204, 447, 18, '54').
+log_variable_value(204, 447, 18, '54.0').
 log_variable_value(204, 447, 19, 'run/data/DRT240/DRT240_10000eV_038.img').
 log_variable_value(204, 448, 15, 'q55').
 log_variable_value(204, 448, 16, 'DRT240').
 log_variable_value(204, 448, 17, '10000').
-log_variable_value(204, 448, 18, '48').
+log_variable_value(204, 448, 18, '48.0').
 log_variable_value(204, 448, 19, 'run/data/DRT240/DRT240_10000eV_039.img').
 log_variable_value(204, 449, 15, 'q55').
 log_variable_value(204, 449, 16, 'DRT240').
 log_variable_value(204, 449, 17, '10000').
-log_variable_value(204, 449, 18, '41').
+log_variable_value(204, 449, 18, '41.0').
 log_variable_value(204, 449, 19, 'run/data/DRT240/DRT240_10000eV_040.img').
 log_variable_value(204, 450, 15, 'q55').
 log_variable_value(204, 450, 16, 'DRT240').
 log_variable_value(204, 450, 17, '10000').
-log_variable_value(204, 450, 18, '36').
+log_variable_value(204, 450, 18, '36.0').
 log_variable_value(204, 450, 19, 'run/data/DRT240/DRT240_10000eV_041.img').
 log_variable_value(204, 451, 15, 'q55').
 log_variable_value(204, 451, 16, 'DRT240').
 log_variable_value(204, 451, 17, '10000').
-log_variable_value(204, 451, 18, '30').
+log_variable_value(204, 451, 18, '30.0').
 log_variable_value(204, 451, 19, 'run/data/DRT240/DRT240_10000eV_042.img').
 log_variable_value(204, 452, 15, 'q55').
 log_variable_value(204, 452, 16, 'DRT240').
 log_variable_value(204, 452, 17, '10000').
-log_variable_value(204, 452, 18, '25').
+log_variable_value(204, 452, 18, '25.0').
 log_variable_value(204, 452, 19, 'run/data/DRT240/DRT240_10000eV_043.img').
 log_variable_value(204, 453, 15, 'q55').
 log_variable_value(204, 453, 16, 'DRT240').
 log_variable_value(204, 453, 17, '10000').
-log_variable_value(204, 453, 18, '20').
+log_variable_value(204, 453, 18, '20.0').
 log_variable_value(204, 453, 19, 'run/data/DRT240/DRT240_10000eV_044.img').
 log_variable_value(204, 454, 15, 'q55').
 log_variable_value(204, 454, 16, 'DRT240').
 log_variable_value(204, 454, 17, '10000').
-log_variable_value(204, 454, 18, '15').
+log_variable_value(204, 454, 18, '15.0').
 log_variable_value(204, 454, 19, 'run/data/DRT240/DRT240_10000eV_045.img').
 log_variable_value(204, 455, 15, 'q55').
 log_variable_value(204, 455, 16, 'DRT240').
 log_variable_value(204, 455, 17, '10000').
-log_variable_value(204, 455, 18, '10').
+log_variable_value(204, 455, 18, '10.0').
 log_variable_value(204, 455, 19, 'run/data/DRT240/DRT240_10000eV_046.img').
 log_variable_value(204, 456, 15, 'q55').
 log_variable_value(204, 456, 16, 'DRT240').
 log_variable_value(204, 456, 17, '10000').
-log_variable_value(204, 456, 18, '6').
+log_variable_value(204, 456, 18, '6.0').
 log_variable_value(204, 456, 19, 'run/data/DRT240/DRT240_10000eV_047.img').
 log_variable_value(204, 457, 15, 'q55').
 log_variable_value(204, 457, 16, 'DRT240').
 log_variable_value(204, 457, 17, '11000').
-log_variable_value(204, 457, 18, '44').
+log_variable_value(204, 457, 18, '44.0').
 log_variable_value(204, 457, 19, 'run/data/DRT240/DRT240_11000eV_001.img').
 log_variable_value(204, 458, 15, 'q55').
 log_variable_value(204, 458, 16, 'DRT240').
 log_variable_value(204, 458, 17, '11000').
-log_variable_value(204, 458, 18, '98').
+log_variable_value(204, 458, 18, '98.0').
 log_variable_value(204, 458, 19, 'run/data/DRT240/DRT240_11000eV_002.img').
 log_variable_value(204, 459, 15, 'q55').
 log_variable_value(204, 459, 16, 'DRT240').
 log_variable_value(204, 459, 17, '11000').
-log_variable_value(204, 459, 18, '21').
+log_variable_value(204, 459, 18, '21.0').
 log_variable_value(204, 459, 19, 'run/data/DRT240/DRT240_11000eV_003.img').
 log_variable_value(204, 460, 15, 'q55').
 log_variable_value(204, 460, 16, 'DRT240').
 log_variable_value(204, 460, 17, '11000').
-log_variable_value(204, 460, 18, '100').
+log_variable_value(204, 460, 18, '100.0').
 log_variable_value(204, 460, 19, 'run/data/DRT240/DRT240_11000eV_004.img').
 log_variable_value(204, 461, 15, 'q55').
 log_variable_value(204, 461, 16, 'DRT240').
 log_variable_value(204, 461, 17, '11000').
-log_variable_value(204, 461, 18, '48').
+log_variable_value(204, 461, 18, '48.0').
 log_variable_value(204, 461, 19, 'run/data/DRT240/DRT240_11000eV_005.img').
 log_variable_value(204, 462, 15, 'q55').
 log_variable_value(204, 462, 16, 'DRT240').
 log_variable_value(204, 462, 17, '11000').
-log_variable_value(204, 462, 18, '100').
+log_variable_value(204, 462, 18, '100.0').
 log_variable_value(204, 462, 19, 'run/data/DRT240/DRT240_11000eV_006.img').
 log_variable_value(204, 463, 15, 'q55').
 log_variable_value(204, 463, 16, 'DRT240').
 log_variable_value(204, 463, 17, '11000').
-log_variable_value(204, 463, 18, '9').
+log_variable_value(204, 463, 18, '9.0').
 log_variable_value(204, 463, 19, 'run/data/DRT240/DRT240_11000eV_007.img').
 log_variable_value(204, 464, 15, 'q55').
 log_variable_value(204, 464, 16, 'DRT240').
 log_variable_value(204, 464, 17, '11000').
-log_variable_value(204, 464, 18, '66').
+log_variable_value(204, 464, 18, '66.0').
 log_variable_value(204, 464, 19, 'run/data/DRT240/DRT240_11000eV_008.img').
 log_variable_value(204, 465, 15, 'q55').
 log_variable_value(204, 465, 16, 'DRT240').
 log_variable_value(204, 465, 17, '11000').
-log_variable_value(204, 465, 18, '49').
+log_variable_value(204, 465, 18, '49.0').
 log_variable_value(204, 465, 19, 'run/data/DRT240/DRT240_11000eV_009.img').
 log_variable_value(204, 466, 15, 'q55').
 log_variable_value(204, 466, 16, 'DRT240').
 log_variable_value(204, 466, 17, '11000').
-log_variable_value(204, 466, 18, '54').
+log_variable_value(204, 466, 18, '54.0').
 log_variable_value(204, 466, 19, 'run/data/DRT240/DRT240_11000eV_010.img').
 log_variable_value(204, 467, 15, 'q55').
 log_variable_value(204, 467, 16, 'DRT240').
 log_variable_value(204, 467, 17, '11000').
-log_variable_value(204, 467, 18, '74').
+log_variable_value(204, 467, 18, '74.0').
 log_variable_value(204, 467, 19, 'run/data/DRT240/DRT240_11000eV_011.img').
 log_variable_value(204, 468, 15, 'q55').
 log_variable_value(204, 468, 16, 'DRT240').
 log_variable_value(204, 468, 17, '11000').
-log_variable_value(204, 468, 18, '4').
+log_variable_value(204, 468, 18, '4.0').
 log_variable_value(204, 468, 19, 'run/data/DRT240/DRT240_11000eV_012.img').
 log_variable_value(204, 469, 15, 'q55').
 log_variable_value(204, 469, 16, 'DRT240').
 log_variable_value(204, 469, 17, '11000').
-log_variable_value(204, 469, 18, '48').
+log_variable_value(204, 469, 18, '48.0').
 log_variable_value(204, 469, 19, 'run/data/DRT240/DRT240_11000eV_013.img').
 log_variable_value(204, 470, 15, 'q55').
 log_variable_value(204, 470, 16, 'DRT240').
 log_variable_value(204, 470, 17, '11000').
-log_variable_value(204, 470, 18, '101').
+log_variable_value(204, 470, 18, '101.0').
 log_variable_value(204, 470, 19, 'run/data/DRT240/DRT240_11000eV_014.img').
 log_variable_value(204, 471, 15, 'q55').
 log_variable_value(204, 471, 16, 'DRT240').
 log_variable_value(204, 471, 17, '11000').
-log_variable_value(204, 471, 18, '55').
+log_variable_value(204, 471, 18, '55.0').
 log_variable_value(204, 471, 19, 'run/data/DRT240/DRT240_11000eV_015.img').
 log_variable_value(204, 472, 15, 'q55').
 log_variable_value(204, 472, 16, 'DRT240').
 log_variable_value(204, 472, 17, '11000').
-log_variable_value(204, 472, 18, '15').
+log_variable_value(204, 472, 18, '15.0').
 log_variable_value(204, 472, 19, 'run/data/DRT240/DRT240_11000eV_016.img').
 log_variable_value(204, 473, 15, 'q55').
 log_variable_value(204, 473, 16, 'DRT240').
 log_variable_value(204, 473, 17, '11000').
-log_variable_value(204, 473, 18, '84').
+log_variable_value(204, 473, 18, '84.0').
 log_variable_value(204, 473, 19, 'run/data/DRT240/DRT240_11000eV_017.img').
 log_variable_value(204, 474, 15, 'q55').
 log_variable_value(204, 474, 16, 'DRT240').
 log_variable_value(204, 474, 17, '11000').
-log_variable_value(204, 474, 18, '51').
+log_variable_value(204, 474, 18, '51.0').
 log_variable_value(204, 474, 19, 'run/data/DRT240/DRT240_11000eV_018.img').
 log_variable_value(204, 475, 15, 'q55').
 log_variable_value(204, 475, 16, 'DRT240').
 log_variable_value(204, 475, 17, '11000').
-log_variable_value(204, 475, 18, '23').
+log_variable_value(204, 475, 18, '23.0').
 log_variable_value(204, 475, 19, 'run/data/DRT240/DRT240_11000eV_019.img').
 log_variable_value(204, 476, 15, 'q55').
 log_variable_value(204, 476, 16, 'DRT240').
 log_variable_value(204, 476, 17, '11000').
-log_variable_value(204, 476, 18, '101').
+log_variable_value(204, 476, 18, '101.0').
 log_variable_value(204, 476, 19, 'run/data/DRT240/DRT240_11000eV_020.img').
 log_variable_value(204, 477, 15, 'q55').
 log_variable_value(204, 477, 16, 'DRT240').
 log_variable_value(204, 477, 17, '11000').
-log_variable_value(204, 477, 18, '78').
+log_variable_value(204, 477, 18, '78.0').
 log_variable_value(204, 477, 19, 'run/data/DRT240/DRT240_11000eV_021.img').
 log_variable_value(204, 478, 15, 'q55').
 log_variable_value(204, 478, 16, 'DRT240').
 log_variable_value(204, 478, 17, '11000').
-log_variable_value(204, 478, 18, '56').
+log_variable_value(204, 478, 18, '56.0').
 log_variable_value(204, 478, 19, 'run/data/DRT240/DRT240_11000eV_022.img').
 log_variable_value(204, 479, 15, 'q55').
 log_variable_value(204, 479, 16, 'DRT240').
 log_variable_value(204, 479, 17, '11000').
-log_variable_value(204, 479, 18, '36').
+log_variable_value(204, 479, 18, '36.0').
 log_variable_value(204, 479, 19, 'run/data/DRT240/DRT240_11000eV_023.img').
 log_variable_value(204, 480, 15, 'q55').
 log_variable_value(204, 480, 16, 'DRT240').
 log_variable_value(204, 480, 17, '11000').
-log_variable_value(204, 480, 18, '18').
+log_variable_value(204, 480, 18, '18.0').
 log_variable_value(204, 480, 19, 'run/data/DRT240/DRT240_11000eV_024.img').
 log_variable_value(204, 481, 15, 'q55').
 log_variable_value(204, 481, 16, 'DRT240').
 log_variable_value(204, 481, 17, '11000').
-log_variable_value(204, 481, 18, '1').
+log_variable_value(204, 481, 18, '1.2').
 log_variable_value(204, 481, 19, 'run/data/DRT240/DRT240_11000eV_025.img').
 log_variable_value(204, 482, 15, 'q55').
 log_variable_value(204, 482, 16, 'DRT240').
 log_variable_value(204, 482, 17, '11000').
-log_variable_value(204, 482, 18, '90').
+log_variable_value(204, 482, 18, '90.0').
 log_variable_value(204, 482, 19, 'run/data/DRT240/DRT240_11000eV_026.img').
 log_variable_value(204, 483, 15, 'q55').
 log_variable_value(204, 483, 16, 'DRT240').
 log_variable_value(204, 483, 17, '11000').
-log_variable_value(204, 483, 18, '75').
+log_variable_value(204, 483, 18, '75.0').
 log_variable_value(204, 483, 19, 'run/data/DRT240/DRT240_11000eV_027.img').
 log_variable_value(204, 484, 15, 'q55').
 log_variable_value(204, 484, 16, 'DRT240').
 log_variable_value(204, 484, 17, '11000').
-log_variable_value(204, 484, 18, '62').
+log_variable_value(204, 484, 18, '62.0').
 log_variable_value(204, 484, 19, 'run/data/DRT240/DRT240_11000eV_028.img').
 log_variable_value(204, 485, 15, 'q55').
 log_variable_value(204, 485, 16, 'DRT240').
 log_variable_value(204, 485, 17, '11000').
-log_variable_value(204, 485, 18, '49').
+log_variable_value(204, 485, 18, '49.0').
 log_variable_value(204, 485, 19, 'run/data/DRT240/DRT240_11000eV_029.img').
 log_variable_value(204, 486, 15, 'q55').
 log_variable_value(204, 486, 16, 'DRT240').
 log_variable_value(204, 486, 17, '11000').
-log_variable_value(204, 486, 18, '37').
+log_variable_value(204, 486, 18, '37.0').
 log_variable_value(204, 486, 19, 'run/data/DRT240/DRT240_11000eV_030.img').
 log_variable_value(204, 487, 15, 'q55').
 log_variable_value(204, 487, 16, 'DRT240').
 log_variable_value(204, 487, 17, '11000').
-log_variable_value(204, 487, 18, '26').
+log_variable_value(204, 487, 18, '26.0').
 log_variable_value(204, 487, 19, 'run/data/DRT240/DRT240_11000eV_031.img').
 log_variable_value(204, 488, 15, 'q55').
 log_variable_value(204, 488, 16, 'DRT240').
 log_variable_value(204, 488, 17, '11000').
-log_variable_value(204, 488, 18, '16').
+log_variable_value(204, 488, 18, '16.0').
 log_variable_value(204, 488, 19, 'run/data/DRT240/DRT240_11000eV_032.img').
 log_variable_value(204, 489, 15, 'q55').
 log_variable_value(204, 489, 16, 'DRT240').
 log_variable_value(204, 489, 17, '11000').
-log_variable_value(204, 489, 18, '6').
+log_variable_value(204, 489, 18, '6.0').
 log_variable_value(204, 489, 19, 'run/data/DRT240/DRT240_11000eV_033.img').
 log_variable_value(204, 490, 15, 'q55').
 log_variable_value(204, 490, 16, 'DRT240').
 log_variable_value(204, 490, 17, '11000').
-log_variable_value(204, 490, 18, '102').
+log_variable_value(204, 490, 18, '102.0').
 log_variable_value(204, 490, 19, 'run/data/DRT240/DRT240_11000eV_034.img').
 log_variable_value(204, 491, 15, 'q55').
 log_variable_value(204, 491, 16, 'DRT240').
 log_variable_value(204, 491, 17, '11000').
-log_variable_value(204, 491, 18, '93').
+log_variable_value(204, 491, 18, '93.0').
 log_variable_value(204, 491, 19, 'run/data/DRT240/DRT240_11000eV_035.img').
 log_variable_value(204, 492, 15, 'q55').
 log_variable_value(204, 492, 16, 'DRT240').
 log_variable_value(204, 492, 17, '11000').
-log_variable_value(204, 492, 18, '85').
+log_variable_value(204, 492, 18, '85.0').
 log_variable_value(204, 492, 19, 'run/data/DRT240/DRT240_11000eV_036.img').
 log_variable_value(204, 493, 15, 'q55').
 log_variable_value(204, 493, 16, 'DRT240').
 log_variable_value(204, 493, 17, '11000').
-log_variable_value(204, 493, 18, '77').
+log_variable_value(204, 493, 18, '77.0').
 log_variable_value(204, 493, 19, 'run/data/DRT240/DRT240_11000eV_037.img').
 log_variable_value(204, 494, 15, 'q55').
 log_variable_value(204, 494, 16, 'DRT240').
 log_variable_value(204, 494, 17, '11000').
-log_variable_value(204, 494, 18, '70').
+log_variable_value(204, 494, 18, '70.0').
 log_variable_value(204, 494, 19, 'run/data/DRT240/DRT240_11000eV_038.img').
 log_variable_value(204, 495, 15, 'q55').
 log_variable_value(204, 495, 16, 'DRT240').
 log_variable_value(204, 495, 17, '11000').
-log_variable_value(204, 495, 18, '63').
+log_variable_value(204, 495, 18, '63.0').
 log_variable_value(204, 495, 19, 'run/data/DRT240/DRT240_11000eV_039.img').
 log_variable_value(204, 496, 15, 'q55').
 log_variable_value(204, 496, 16, 'DRT240').
 log_variable_value(204, 496, 17, '11000').
-log_variable_value(204, 496, 18, '56').
+log_variable_value(204, 496, 18, '56.0').
 log_variable_value(204, 496, 19, 'run/data/DRT240/DRT240_11000eV_040.img').
 log_variable_value(204, 497, 15, 'q55').
 log_variable_value(204, 497, 16, 'DRT240').
 log_variable_value(204, 497, 17, '11000').
-log_variable_value(204, 497, 18, '49').
+log_variable_value(204, 497, 18, '49.0').
 log_variable_value(204, 497, 19, 'run/data/DRT240/DRT240_11000eV_041.img').
 log_variable_value(204, 498, 15, 'q55').
 log_variable_value(204, 498, 16, 'DRT240').
 log_variable_value(204, 498, 17, '11000').
-log_variable_value(204, 498, 18, '43').
+log_variable_value(204, 498, 18, '43.0').
 log_variable_value(204, 498, 19, 'run/data/DRT240/DRT240_11000eV_042.img').
 log_variable_value(204, 499, 15, 'q55').
 log_variable_value(204, 499, 16, 'DRT240').
 log_variable_value(204, 499, 17, '11000').
-log_variable_value(204, 499, 18, '38').
+log_variable_value(204, 499, 18, '38.0').
 log_variable_value(204, 499, 19, 'run/data/DRT240/DRT240_11000eV_043.img').
 log_variable_value(204, 500, 15, 'q55').
 log_variable_value(204, 500, 16, 'DRT240').
 log_variable_value(204, 500, 17, '11000').
-log_variable_value(204, 500, 18, '32').
+log_variable_value(204, 500, 18, '32.0').
 log_variable_value(204, 500, 19, 'run/data/DRT240/DRT240_11000eV_044.img').
 log_variable_value(204, 501, 15, 'q55').
 log_variable_value(204, 501, 16, 'DRT240').
 log_variable_value(204, 501, 17, '11000').
-log_variable_value(204, 501, 18, '27').
+log_variable_value(204, 501, 18, '27.0').
 log_variable_value(204, 501, 19, 'run/data/DRT240/DRT240_11000eV_045.img').
 log_variable_value(204, 502, 15, 'q55').
 log_variable_value(204, 502, 16, 'DRT240').
 log_variable_value(204, 502, 17, '11000').
-log_variable_value(204, 502, 18, '22').
+log_variable_value(204, 502, 18, '22.0').
 log_variable_value(204, 502, 19, 'run/data/DRT240/DRT240_11000eV_046.img').
 log_variable_value(204, 503, 15, 'q55').
 log_variable_value(204, 503, 16, 'DRT240').
 log_variable_value(204, 503, 17, '11000').
-log_variable_value(204, 503, 18, '17').
+log_variable_value(204, 503, 18, '17.0').
 log_variable_value(204, 503, 19, 'run/data/DRT240/DRT240_11000eV_047.img').
 log_variable_value(204, 504, 15, 'q55').
 log_variable_value(204, 504, 16, 'DRT240').
 log_variable_value(204, 504, 17, '12000').
-log_variable_value(204, 504, 18, '82').
+log_variable_value(204, 504, 18, '82.0').
 log_variable_value(204, 504, 19, 'run/data/DRT240/DRT240_12000eV_001.img').
 log_variable_value(204, 505, 15, 'q55').
 log_variable_value(204, 505, 16, 'DRT240').
 log_variable_value(204, 505, 17, '12000').
-log_variable_value(204, 505, 18, '54').
+log_variable_value(204, 505, 18, '54.0').
 log_variable_value(204, 505, 19, 'run/data/DRT240/DRT240_12000eV_002.img').
 log_variable_value(204, 506, 15, 'q55').
 log_variable_value(204, 506, 16, 'DRT240').
 log_variable_value(204, 506, 17, '12000').
-log_variable_value(204, 506, 18, '40').
+log_variable_value(204, 506, 18, '40.0').
 log_variable_value(204, 506, 19, 'run/data/DRT240/DRT240_12000eV_003.img').
 log_variable_value(204, 507, 15, 'q55').
 log_variable_value(204, 507, 16, 'DRT240').
 log_variable_value(204, 507, 17, '12000').
-log_variable_value(204, 507, 18, '97').
+log_variable_value(204, 507, 18, '97.0').
 log_variable_value(204, 507, 19, 'run/data/DRT240/DRT240_12000eV_004.img').
 log_variable_value(204, 508, 15, 'q55').
 log_variable_value(204, 508, 16, 'DRT240').
 log_variable_value(204, 508, 17, '12000').
-log_variable_value(204, 508, 18, '26').
+log_variable_value(204, 508, 18, '26.0').
 log_variable_value(204, 508, 19, 'run/data/DRT240/DRT240_12000eV_005.img').
 log_variable_value(204, 509, 15, 'q55').
 log_variable_value(204, 509, 16, 'DRT240').
 log_variable_value(204, 509, 17, '12000').
-log_variable_value(204, 509, 18, '68').
+log_variable_value(204, 509, 18, '68.0').
 log_variable_value(204, 509, 19, 'run/data/DRT240/DRT240_12000eV_006.img').
 log_variable_value(204, 510, 15, 'q55').
 log_variable_value(204, 510, 16, 'DRT240').
 log_variable_value(204, 510, 17, '12000').
-log_variable_value(204, 510, 18, '73').
+log_variable_value(204, 510, 18, '73.0').
 log_variable_value(204, 510, 19, 'run/data/DRT240/DRT240_12000eV_007.img').
 log_variable_value(204, 511, 15, 'q55').
 log_variable_value(204, 511, 16, 'DRT240').
 log_variable_value(204, 511, 17, '12000').
-log_variable_value(204, 511, 18, '16').
+log_variable_value(204, 511, 18, '16.0').
 log_variable_value(204, 511, 19, 'run/data/DRT240/DRT240_12000eV_008.img').
 log_variable_value(204, 512, 15, 'q55').
 log_variable_value(204, 512, 16, 'DRT240').
 log_variable_value(204, 512, 17, '12000').
-log_variable_value(204, 512, 18, '102').
+log_variable_value(204, 512, 18, '102.0').
 log_variable_value(204, 512, 19, 'run/data/DRT240/DRT240_12000eV_009.img').
 log_variable_value(204, 513, 15, 'q55').
 log_variable_value(204, 513, 16, 'DRT240').
 log_variable_value(204, 513, 17, '12000').
-log_variable_value(204, 513, 18, '102').
+log_variable_value(204, 513, 18, '102.0').
 log_variable_value(204, 513, 19, 'run/data/DRT240/DRT240_12000eV_010.img').
 log_variable_value(204, 514, 15, 'q55').
 log_variable_value(204, 514, 16, 'DRT240').
 log_variable_value(204, 514, 17, '12000').
-log_variable_value(204, 514, 18, '12').
+log_variable_value(204, 514, 18, '12.0').
 log_variable_value(204, 514, 19, 'run/data/DRT240/DRT240_12000eV_011.img').
 log_variable_value(204, 515, 15, 'q55').
 log_variable_value(204, 515, 16, 'DRT240').
 log_variable_value(204, 515, 17, '12000').
-log_variable_value(204, 515, 18, '44').
+log_variable_value(204, 515, 18, '44.0').
 log_variable_value(204, 515, 19, 'run/data/DRT240/DRT240_12000eV_012.img').
 log_variable_value(204, 516, 15, 'q55').
 log_variable_value(204, 516, 16, 'DRT240').
 log_variable_value(204, 516, 17, '12000').
-log_variable_value(204, 516, 18, '88').
+log_variable_value(204, 516, 18, '88.0').
 log_variable_value(204, 516, 19, 'run/data/DRT240/DRT240_12000eV_013.img').
 log_variable_value(204, 517, 15, 'q55').
 log_variable_value(204, 517, 16, 'DRT240').
 log_variable_value(204, 517, 17, '12000').
-log_variable_value(204, 517, 18, '31').
+log_variable_value(204, 517, 18, '31.0').
 log_variable_value(204, 517, 19, 'run/data/DRT240/DRT240_12000eV_014.img').
 log_variable_value(204, 518, 15, 'q55').
 log_variable_value(204, 518, 16, 'DRT240').
 log_variable_value(204, 518, 17, '12000').
-log_variable_value(204, 518, 18, '90').
+log_variable_value(204, 518, 18, '90.0').
 log_variable_value(204, 518, 19, 'run/data/DRT240/DRT240_12000eV_015.img').
 log_variable_value(204, 519, 15, 'q55').
 log_variable_value(204, 519, 16, 'DRT240').
 log_variable_value(204, 519, 17, '12000').
-log_variable_value(204, 519, 18, '45').
+log_variable_value(204, 519, 18, '45.0').
 log_variable_value(204, 519, 19, 'run/data/DRT240/DRT240_12000eV_016.img').
 log_variable_value(204, 520, 15, 'q55').
 log_variable_value(204, 520, 16, 'DRT240').
 log_variable_value(204, 520, 17, '12000').
-log_variable_value(204, 520, 18, '6').
+log_variable_value(204, 520, 18, '6.0').
 log_variable_value(204, 520, 19, 'run/data/DRT240/DRT240_12000eV_017.img').
 log_variable_value(204, 521, 15, 'q55').
 log_variable_value(204, 521, 16, 'DRT240').
 log_variable_value(204, 521, 17, '12000').
-log_variable_value(204, 521, 18, '81').
+log_variable_value(204, 521, 18, '81.0').
 log_variable_value(204, 521, 19, 'run/data/DRT240/DRT240_12000eV_018.img').
 log_variable_value(204, 522, 15, 'q55').
 log_variable_value(204, 522, 16, 'DRT240').
 log_variable_value(204, 522, 17, '12000').
-log_variable_value(204, 522, 18, '50').
+log_variable_value(204, 522, 18, '50.0').
 log_variable_value(204, 522, 19, 'run/data/DRT240/DRT240_12000eV_019.img').
 log_variable_value(204, 523, 15, 'q55').
 log_variable_value(204, 523, 16, 'DRT240').
 log_variable_value(204, 523, 17, '12000').
-log_variable_value(204, 523, 18, '21').
+log_variable_value(204, 523, 18, '21.0').
 log_variable_value(204, 523, 19, 'run/data/DRT240/DRT240_12000eV_020.img').
 log_variable_value(204, 524, 15, 'q55').
 log_variable_value(204, 524, 16, 'DRT240').
 log_variable_value(204, 524, 17, '12000').
-log_variable_value(204, 524, 18, '104').
+log_variable_value(204, 524, 18, '104.0').
 log_variable_value(204, 524, 19, 'run/data/DRT240/DRT240_12000eV_021.img').
 log_variable_value(204, 525, 15, 'q55').
 log_variable_value(204, 525, 16, 'DRT240').
 log_variable_value(204, 525, 17, '12000').
-log_variable_value(204, 525, 18, '80').
+log_variable_value(204, 525, 18, '80.0').
 log_variable_value(204, 525, 19, 'run/data/DRT240/DRT240_12000eV_022.img').
 log_variable_value(204, 526, 15, 'q55').
 log_variable_value(204, 526, 16, 'DRT240').
 log_variable_value(204, 526, 17, '12000').
-log_variable_value(204, 526, 18, '59').
+log_variable_value(204, 526, 18, '59.0').
 log_variable_value(204, 526, 19, 'run/data/DRT240/DRT240_12000eV_023.img').
 log_variable_value(204, 527, 15, 'q55').
 log_variable_value(204, 527, 16, 'DRT240').
 log_variable_value(204, 527, 17, '12000').
-log_variable_value(204, 527, 18, '39').
+log_variable_value(204, 527, 18, '39.0').
 log_variable_value(204, 527, 19, 'run/data/DRT240/DRT240_12000eV_024.img').
 log_variable_value(204, 528, 15, 'q55').
 log_variable_value(204, 528, 16, 'DRT240').
 log_variable_value(204, 528, 17, '12000').
-log_variable_value(204, 528, 18, '20').
+log_variable_value(204, 528, 18, '20.0').
 log_variable_value(204, 528, 19, 'run/data/DRT240/DRT240_12000eV_025.img').
 log_variable_value(204, 529, 15, 'q55').
 log_variable_value(204, 529, 16, 'DRT240').
 log_variable_value(204, 529, 17, '12000').
-log_variable_value(204, 529, 18, '3').
+log_variable_value(204, 529, 18, '3.0').
 log_variable_value(204, 529, 19, 'run/data/DRT240/DRT240_12000eV_026.img').
 log_variable_value(204, 530, 15, 'q55').
 log_variable_value(204, 530, 16, 'DRT240').
 log_variable_value(204, 530, 17, '12000').
-log_variable_value(204, 530, 18, '97').
+log_variable_value(204, 530, 18, '97.0').
 log_variable_value(204, 530, 19, 'run/data/DRT240/DRT240_12000eV_027.img').
 log_variable_value(204, 531, 15, 'q55').
 log_variable_value(204, 531, 16, 'DRT240').
 log_variable_value(204, 531, 17, '12000').
-log_variable_value(204, 531, 18, '82').
+log_variable_value(204, 531, 18, '82.0').
 log_variable_value(204, 531, 19, 'run/data/DRT240/DRT240_12000eV_028.img').
 log_variable_value(204, 532, 15, 'q55').
 log_variable_value(204, 532, 16, 'DRT240').
 log_variable_value(204, 532, 17, '12000').
-log_variable_value(204, 532, 18, '69').
+log_variable_value(204, 532, 18, '69.0').
 log_variable_value(204, 532, 19, 'run/data/DRT240/DRT240_12000eV_029.img').
 log_variable_value(204, 533, 15, 'q55').
 log_variable_value(204, 533, 16, 'DRT240').
 log_variable_value(204, 533, 17, '12000').
-log_variable_value(204, 533, 18, '56').
+log_variable_value(204, 533, 18, '56.0').
 log_variable_value(204, 533, 19, 'run/data/DRT240/DRT240_12000eV_030.img').
 log_variable_value(204, 534, 15, 'q55').
 log_variable_value(204, 534, 16, 'DRT240').
 log_variable_value(204, 534, 17, '12000').
-log_variable_value(204, 534, 18, '44').
+log_variable_value(204, 534, 18, '44.0').
 log_variable_value(204, 534, 19, 'run/data/DRT240/DRT240_12000eV_031.img').
 log_variable_value(204, 535, 15, 'q55').
 log_variable_value(204, 535, 16, 'DRT240').
 log_variable_value(204, 535, 17, '12000').
-log_variable_value(204, 535, 18, '32').
+log_variable_value(204, 535, 18, '32.0').
 log_variable_value(204, 535, 19, 'run/data/DRT240/DRT240_12000eV_032.img').
 log_variable_value(204, 536, 15, 'q55').
 log_variable_value(204, 536, 16, 'DRT240').
 log_variable_value(204, 536, 17, '12000').
-log_variable_value(204, 536, 18, '21').
+log_variable_value(204, 536, 18, '21.0').
 log_variable_value(204, 536, 19, 'run/data/DRT240/DRT240_12000eV_033.img').
 log_variable_value(204, 537, 15, 'q55').
 log_variable_value(204, 537, 16, 'DRT240').
 log_variable_value(204, 537, 17, '12000').
-log_variable_value(204, 537, 18, '11').
+log_variable_value(204, 537, 18, '11.0').
 log_variable_value(204, 537, 19, 'run/data/DRT240/DRT240_12000eV_034.img').
 log_variable_value(204, 538, 15, 'q55').
 log_variable_value(204, 538, 16, 'DRT240').
 log_variable_value(204, 538, 17, '12000').
-log_variable_value(204, 538, 18, '2').
+log_variable_value(204, 538, 18, '2.0').
 log_variable_value(204, 538, 19, 'run/data/DRT240/DRT240_12000eV_035.img').
 log_variable_value(204, 539, 15, 'q55').
 log_variable_value(204, 539, 16, 'DRT240').
 log_variable_value(204, 539, 17, '12000').
-log_variable_value(204, 539, 18, '102').
+log_variable_value(204, 539, 18, '102.0').
 log_variable_value(204, 539, 19, 'run/data/DRT240/DRT240_12000eV_036.img').
 log_variable_value(204, 540, 15, 'q55').
 log_variable_value(204, 540, 16, 'DRT240').
 log_variable_value(204, 540, 17, '12000').
-log_variable_value(204, 540, 18, '93').
+log_variable_value(204, 540, 18, '93.0').
 log_variable_value(204, 540, 19, 'run/data/DRT240/DRT240_12000eV_037.img').
 log_variable_value(204, 541, 15, 'q55').
 log_variable_value(204, 541, 16, 'DRT240').
 log_variable_value(204, 541, 17, '12000').
-log_variable_value(204, 541, 18, '85').
+log_variable_value(204, 541, 18, '85.0').
 log_variable_value(204, 541, 19, 'run/data/DRT240/DRT240_12000eV_038.img').
 log_variable_value(204, 542, 15, 'q55').
 log_variable_value(204, 542, 16, 'DRT240').
 log_variable_value(204, 542, 17, '12000').
-log_variable_value(204, 542, 18, '78').
+log_variable_value(204, 542, 18, '78.0').
 log_variable_value(204, 542, 19, 'run/data/DRT240/DRT240_12000eV_039.img').
 log_variable_value(204, 543, 15, 'q55').
 log_variable_value(204, 543, 16, 'DRT240').
 log_variable_value(204, 543, 17, '12000').
-log_variable_value(204, 543, 18, '70').
+log_variable_value(204, 543, 18, '70.0').
 log_variable_value(204, 543, 19, 'run/data/DRT240/DRT240_12000eV_040.img').
 log_variable_value(204, 544, 15, 'q55').
 log_variable_value(204, 544, 16, 'DRT240').
 log_variable_value(204, 544, 17, '12000').
-log_variable_value(204, 544, 18, '63').
+log_variable_value(204, 544, 18, '63.0').
 log_variable_value(204, 544, 19, 'run/data/DRT240/DRT240_12000eV_041.img').
 log_variable_value(204, 545, 15, 'q55').
 log_variable_value(204, 545, 16, 'DRT240').
 log_variable_value(204, 545, 17, '12000').
-log_variable_value(204, 545, 18, '57').
+log_variable_value(204, 545, 18, '57.0').
 log_variable_value(204, 545, 19, 'run/data/DRT240/DRT240_12000eV_042.img').
 log_variable_value(204, 546, 15, 'q55').
 log_variable_value(204, 546, 16, 'DRT240').
 log_variable_value(204, 546, 17, '12000').
-log_variable_value(204, 546, 18, '50').
+log_variable_value(204, 546, 18, '50.0').
 log_variable_value(204, 546, 19, 'run/data/DRT240/DRT240_12000eV_043.img').
 log_variable_value(204, 547, 15, 'q55').
 log_variable_value(204, 547, 16, 'DRT240').
 log_variable_value(204, 547, 17, '12000').
-log_variable_value(204, 547, 18, '44').
+log_variable_value(204, 547, 18, '44.0').
 log_variable_value(204, 547, 19, 'run/data/DRT240/DRT240_12000eV_044.img').
 log_variable_value(204, 548, 15, 'q55').
 log_variable_value(204, 548, 16, 'DRT240').
 log_variable_value(204, 548, 17, '12000').
-log_variable_value(204, 548, 18, '38').
+log_variable_value(204, 548, 18, '38.0').
 log_variable_value(204, 548, 19, 'run/data/DRT240/DRT240_12000eV_045.img').
 log_variable_value(204, 549, 15, 'q55').
 log_variable_value(204, 549, 16, 'DRT240').
 log_variable_value(204, 549, 17, '12000').
-log_variable_value(204, 549, 18, '33').
+log_variable_value(204, 549, 18, '33.0').
 log_variable_value(204, 549, 19, 'run/data/DRT240/DRT240_12000eV_046.img').
 log_variable_value(204, 550, 15, 'q55').
 log_variable_value(204, 550, 16, 'DRT240').
 log_variable_value(204, 550, 17, '12000').
-log_variable_value(204, 550, 18, '28').
+log_variable_value(204, 550, 18, '28.0').
 log_variable_value(204, 550, 19, 'run/data/DRT240/DRT240_12000eV_047.img').
 log_variable_value(204, 551, 15, 'q55').
 log_variable_value(204, 551, 16, 'DRT322').
 log_variable_value(204, 551, 17, '10000').
-log_variable_value(204, 551, 18, '0').
+log_variable_value(204, 551, 18, '0.0').
 log_variable_value(204, 551, 19, 'run/data/DRT322/DRT322_10000eV_001.img').
 log_variable_value(204, 552, 15, 'q55').
 log_variable_value(204, 552, 16, 'DRT322').
 log_variable_value(204, 552, 17, '10000').
-log_variable_value(204, 552, 18, '31').
+log_variable_value(204, 552, 18, '31.0').
 log_variable_value(204, 552, 19, 'run/data/DRT322/DRT322_10000eV_002.img').
 log_variable_value(204, 553, 15, 'q55').
 log_variable_value(204, 553, 16, 'DRT322').
 log_variable_value(204, 553, 17, '10000').
-log_variable_value(204, 553, 18, '0').
+log_variable_value(204, 553, 18, '0.0').
 log_variable_value(204, 553, 19, 'run/data/DRT322/DRT322_10000eV_003.img').
 log_variable_value(204, 554, 15, 'q55').
 log_variable_value(204, 554, 16, 'DRT322').
 log_variable_value(204, 554, 17, '10000').
-log_variable_value(204, 554, 18, '0').
+log_variable_value(204, 554, 18, '0.0').
 log_variable_value(204, 554, 19, 'run/data/DRT322/DRT322_10000eV_004.img').
 log_variable_value(204, 555, 15, 'q55').
 log_variable_value(204, 555, 16, 'DRT322').
 log_variable_value(204, 555, 17, '10000').
-log_variable_value(204, 555, 18, '64').
+log_variable_value(204, 555, 18, '64.0').
 log_variable_value(204, 555, 19, 'run/data/DRT322/DRT322_10000eV_005.img').
 log_variable_value(204, 556, 15, 'q55').
 log_variable_value(204, 556, 16, 'DRT322').
 log_variable_value(204, 556, 17, '10000').
-log_variable_value(204, 556, 18, '26').
+log_variable_value(204, 556, 18, '26.0').
 log_variable_value(204, 556, 19, 'run/data/DRT322/DRT322_10000eV_006.img').
 log_variable_value(204, 557, 15, 'q55').
 log_variable_value(204, 557, 16, 'DRT322').
 log_variable_value(204, 557, 17, '10000').
-log_variable_value(204, 557, 18, '48').
+log_variable_value(204, 557, 18, '48.0').
 log_variable_value(204, 557, 19, 'run/data/DRT322/DRT322_10000eV_007.img').
 log_variable_value(204, 558, 15, 'q55').
 log_variable_value(204, 558, 16, 'DRT322').
 log_variable_value(204, 558, 17, '10000').
-log_variable_value(204, 558, 18, '9').
+log_variable_value(204, 558, 18, '9.0').
 log_variable_value(204, 558, 19, 'run/data/DRT322/DRT322_10000eV_008.img').
 log_variable_value(204, 559, 15, 'q55').
 log_variable_value(204, 559, 16, 'DRT322').
 log_variable_value(204, 559, 17, '10000').
-log_variable_value(204, 559, 18, '0').
+log_variable_value(204, 559, 18, '0.0').
 log_variable_value(204, 559, 19, 'run/data/DRT322/DRT322_10000eV_009.img').
 log_variable_value(204, 560, 15, 'q55').
 log_variable_value(204, 560, 16, 'DRT322').
 log_variable_value(204, 560, 17, '10000').
-log_variable_value(204, 560, 18, '7').
+log_variable_value(204, 560, 18, '7.0').
 log_variable_value(204, 560, 19, 'run/data/DRT322/DRT322_10000eV_010.img').
 log_variable_value(204, 561, 15, 'q55').
 log_variable_value(204, 561, 16, 'DRT322').
 log_variable_value(204, 561, 17, '10000').
-log_variable_value(204, 561, 18, '31').
+log_variable_value(204, 561, 18, '31.0').
 log_variable_value(204, 561, 19, 'run/data/DRT322/DRT322_10000eV_011.img').
 log_variable_value(204, 562, 15, 'q55').
 log_variable_value(204, 562, 16, 'DRT322').
 log_variable_value(204, 562, 17, '10000').
-log_variable_value(204, 562, 18, '67').
+log_variable_value(204, 562, 18, '67.0').
 log_variable_value(204, 562, 19, 'run/data/DRT322/DRT322_10000eV_012.img').
 log_variable_value(204, 563, 15, 'q55').
 log_variable_value(204, 563, 16, 'DRT322').
 log_variable_value(204, 563, 17, '10000').
-log_variable_value(204, 563, 18, '12').
+log_variable_value(204, 563, 18, '12.0').
 log_variable_value(204, 563, 19, 'run/data/DRT322/DRT322_10000eV_013.img').
 log_variable_value(204, 564, 15, 'q55').
 log_variable_value(204, 564, 16, 'DRT322').
 log_variable_value(204, 564, 17, '10000').
-log_variable_value(204, 564, 18, '64').
+log_variable_value(204, 564, 18, '64.0').
 log_variable_value(204, 564, 19, 'run/data/DRT322/DRT322_10000eV_014.img').
 log_variable_value(204, 565, 15, 'q55').
 log_variable_value(204, 565, 16, 'DRT322').
 log_variable_value(204, 565, 17, '10000').
-log_variable_value(204, 565, 18, '23').
+log_variable_value(204, 565, 18, '23.0').
 log_variable_value(204, 565, 19, 'run/data/DRT322/DRT322_10000eV_015.img').
 log_variable_value(204, 566, 15, 'q55').
 log_variable_value(204, 566, 16, 'DRT322').
 log_variable_value(204, 566, 17, '10000').
-log_variable_value(204, 566, 18, '86').
+log_variable_value(204, 566, 18, '86.0').
 log_variable_value(204, 566, 19, 'run/data/DRT322/DRT322_10000eV_016.img').
 log_variable_value(204, 567, 15, 'q55').
 log_variable_value(204, 567, 16, 'DRT322').
 log_variable_value(204, 567, 17, '10000').
-log_variable_value(204, 567, 18, '53').
+log_variable_value(204, 567, 18, '53.0').
 log_variable_value(204, 567, 19, 'run/data/DRT322/DRT322_10000eV_017.img').
 log_variable_value(204, 568, 15, 'q55').
 log_variable_value(204, 568, 16, 'DRT322').
 log_variable_value(204, 568, 17, '10000').
-log_variable_value(204, 568, 18, '24').
+log_variable_value(204, 568, 18, '24.0').
 log_variable_value(204, 568, 19, 'run/data/DRT322/DRT322_10000eV_018.img').
 log_variable_value(204, 569, 15, 'q55').
 log_variable_value(204, 569, 16, 'DRT322').
 log_variable_value(204, 569, 17, '10000').
-log_variable_value(204, 569, 18, '0').
+log_variable_value(204, 569, 18, '0.0').
 log_variable_value(204, 569, 19, 'run/data/DRT322/DRT322_10000eV_019.img').
 log_variable_value(204, 570, 15, 'q55').
 log_variable_value(204, 570, 16, 'DRT322').
 log_variable_value(204, 570, 17, '10000').
-log_variable_value(204, 570, 18, '74').
+log_variable_value(204, 570, 18, '74.0').
 log_variable_value(204, 570, 19, 'run/data/DRT322/DRT322_10000eV_020.img').
 log_variable_value(204, 571, 15, 'q55').
 log_variable_value(204, 571, 16, 'DRT322').
 log_variable_value(204, 571, 17, '10000').
-log_variable_value(204, 571, 18, '52').
+log_variable_value(204, 571, 18, '52.0').
 log_variable_value(204, 571, 19, 'run/data/DRT322/DRT322_10000eV_021.img').
 log_variable_value(204, 572, 15, 'q55').
 log_variable_value(204, 572, 16, 'DRT322').
 log_variable_value(204, 572, 17, '10000').
-log_variable_value(204, 572, 18, '32').
+log_variable_value(204, 572, 18, '32.0').
 log_variable_value(204, 572, 19, 'run/data/DRT322/DRT322_10000eV_022.img').
 log_variable_value(204, 573, 15, 'q55').
 log_variable_value(204, 573, 16, 'DRT322').
 log_variable_value(204, 573, 17, '10000').
-log_variable_value(204, 573, 18, '14').
+log_variable_value(204, 573, 18, '14.0').
 log_variable_value(204, 573, 19, 'run/data/DRT322/DRT322_10000eV_023.img').
 log_variable_value(204, 574, 15, 'q55').
 log_variable_value(204, 574, 16, 'DRT322').
 log_variable_value(204, 574, 17, '10000').
-log_variable_value(204, 574, 18, '0').
+log_variable_value(204, 574, 18, '0.0').
 log_variable_value(204, 574, 19, 'run/data/DRT322/DRT322_10000eV_024.img').
 log_variable_value(204, 575, 15, 'q55').
 log_variable_value(204, 575, 16, 'DRT322').
 log_variable_value(204, 575, 17, '10000').
-log_variable_value(204, 575, 18, '82').
+log_variable_value(204, 575, 18, '82.0').
 log_variable_value(204, 575, 19, 'run/data/DRT322/DRT322_10000eV_025.img').
 log_variable_value(204, 576, 15, 'q55').
 log_variable_value(204, 576, 16, 'DRT322').
 log_variable_value(204, 576, 17, '10000').
-log_variable_value(204, 576, 18, '68').
+log_variable_value(204, 576, 18, '68.0').
 log_variable_value(204, 576, 19, 'run/data/DRT322/DRT322_10000eV_026.img').
 log_variable_value(204, 577, 15, 'q55').
 log_variable_value(204, 577, 16, 'DRT322').
 log_variable_value(204, 577, 17, '10000').
-log_variable_value(204, 577, 18, '55').
+log_variable_value(204, 577, 18, '55.0').
 log_variable_value(204, 577, 19, 'run/data/DRT322/DRT322_10000eV_027.img').
 log_variable_value(204, 578, 15, 'q55').
 log_variable_value(204, 578, 16, 'DRT322').
 log_variable_value(204, 578, 17, '10000').
-log_variable_value(204, 578, 18, '42').
+log_variable_value(204, 578, 18, '42.0').
 log_variable_value(204, 578, 19, 'run/data/DRT322/DRT322_10000eV_028.img').
 log_variable_value(204, 579, 15, 'q55').
 log_variable_value(204, 579, 16, 'DRT322').
 log_variable_value(204, 579, 17, '10000').
-log_variable_value(204, 579, 18, '31').
+log_variable_value(204, 579, 18, '31.0').
 log_variable_value(204, 579, 19, 'run/data/DRT322/DRT322_10000eV_029.img').
 log_variable_value(204, 580, 15, 'q55').
 log_variable_value(204, 580, 16, 'DRT322').
 log_variable_value(204, 580, 17, '10000').
-log_variable_value(204, 580, 18, '20').
+log_variable_value(204, 580, 18, '20.0').
 log_variable_value(204, 580, 19, 'run/data/DRT322/DRT322_10000eV_030.img').
 log_variable_value(204, 581, 15, 'q55').
 log_variable_value(204, 581, 16, 'DRT322').
 log_variable_value(204, 581, 17, '11000').
-log_variable_value(204, 581, 18, '44').
+log_variable_value(204, 581, 18, '44.0').
 log_variable_value(204, 581, 19, 'run/data/DRT322/DRT322_11000eV_001.img').
 log_variable_value(204, 582, 15, 'q55').
 log_variable_value(204, 582, 16, 'DRT322').
 log_variable_value(204, 582, 17, '11000').
-log_variable_value(204, 582, 18, '98').
+log_variable_value(204, 582, 18, '98.0').
 log_variable_value(204, 582, 19, 'run/data/DRT322/DRT322_11000eV_002.img').
 log_variable_value(204, 583, 15, 'q55').
 log_variable_value(204, 583, 16, 'DRT322').
 log_variable_value(204, 583, 17, '11000').
-log_variable_value(204, 583, 18, '21').
+log_variable_value(204, 583, 18, '21.0').
 log_variable_value(204, 583, 19, 'run/data/DRT322/DRT322_11000eV_003.img').
 log_variable_value(204, 584, 15, 'q55').
 log_variable_value(204, 584, 16, 'DRT322').
 log_variable_value(204, 584, 17, '11000').
-log_variable_value(204, 584, 18, '100').
+log_variable_value(204, 584, 18, '100.0').
 log_variable_value(204, 584, 19, 'run/data/DRT322/DRT322_11000eV_004.img').
 log_variable_value(204, 585, 15, 'q55').
 log_variable_value(204, 585, 16, 'DRT322').
 log_variable_value(204, 585, 17, '11000').
-log_variable_value(204, 585, 18, '48').
+log_variable_value(204, 585, 18, '48.0').
 log_variable_value(204, 585, 19, 'run/data/DRT322/DRT322_11000eV_005.img').
 log_variable_value(204, 586, 15, 'q55').
 log_variable_value(204, 586, 16, 'DRT322').
 log_variable_value(204, 586, 17, '11000').
-log_variable_value(204, 586, 18, '100').
+log_variable_value(204, 586, 18, '100.0').
 log_variable_value(204, 586, 19, 'run/data/DRT322/DRT322_11000eV_006.img').
 log_variable_value(204, 587, 15, 'q55').
 log_variable_value(204, 587, 16, 'DRT322').
 log_variable_value(204, 587, 17, '11000').
-log_variable_value(204, 587, 18, '9').
+log_variable_value(204, 587, 18, '9.0').
 log_variable_value(204, 587, 19, 'run/data/DRT322/DRT322_11000eV_007.img').
 log_variable_value(204, 588, 15, 'q55').
 log_variable_value(204, 588, 16, 'DRT322').
 log_variable_value(204, 588, 17, '11000').
-log_variable_value(204, 588, 18, '66').
+log_variable_value(204, 588, 18, '66.0').
 log_variable_value(204, 588, 19, 'run/data/DRT322/DRT322_11000eV_008.img').
 log_variable_value(204, 589, 15, 'q55').
 log_variable_value(204, 589, 16, 'DRT322').
 log_variable_value(204, 589, 17, '11000').
-log_variable_value(204, 589, 18, '49').
+log_variable_value(204, 589, 18, '49.0').
 log_variable_value(204, 589, 19, 'run/data/DRT322/DRT322_11000eV_009.img').
 log_variable_value(204, 590, 15, 'q55').
 log_variable_value(204, 590, 16, 'DRT322').
 log_variable_value(204, 590, 17, '11000').
-log_variable_value(204, 590, 18, '54').
+log_variable_value(204, 590, 18, '54.0').
 log_variable_value(204, 590, 19, 'run/data/DRT322/DRT322_11000eV_010.img').
 log_variable_value(204, 591, 15, 'q55').
 log_variable_value(204, 591, 16, 'DRT322').
 log_variable_value(204, 591, 17, '11000').
-log_variable_value(204, 591, 18, '74').
+log_variable_value(204, 591, 18, '74.0').
 log_variable_value(204, 591, 19, 'run/data/DRT322/DRT322_11000eV_011.img').
 log_variable_value(204, 592, 15, 'q55').
 log_variable_value(204, 592, 16, 'DRT322').
 log_variable_value(204, 592, 17, '11000').
-log_variable_value(204, 592, 18, '4').
+log_variable_value(204, 592, 18, '4.0').
 log_variable_value(204, 592, 19, 'run/data/DRT322/DRT322_11000eV_012.img').
 log_variable_value(204, 593, 15, 'q55').
 log_variable_value(204, 593, 16, 'DRT322').
 log_variable_value(204, 593, 17, '11000').
-log_variable_value(204, 593, 18, '48').
+log_variable_value(204, 593, 18, '48.0').
 log_variable_value(204, 593, 19, 'run/data/DRT322/DRT322_11000eV_013.img').
 log_variable_value(204, 594, 15, 'q55').
 log_variable_value(204, 594, 16, 'DRT322').
 log_variable_value(204, 594, 17, '11000').
-log_variable_value(204, 594, 18, '101').
+log_variable_value(204, 594, 18, '101.0').
 log_variable_value(204, 594, 19, 'run/data/DRT322/DRT322_11000eV_014.img').
 log_variable_value(204, 595, 15, 'q55').
 log_variable_value(204, 595, 16, 'DRT322').
 log_variable_value(204, 595, 17, '11000').
-log_variable_value(204, 595, 18, '55').
+log_variable_value(204, 595, 18, '55.0').
 log_variable_value(204, 595, 19, 'run/data/DRT322/DRT322_11000eV_015.img').
 log_variable_value(204, 596, 15, 'q55').
 log_variable_value(204, 596, 16, 'DRT322').
 log_variable_value(204, 596, 17, '11000').
-log_variable_value(204, 596, 18, '15').
+log_variable_value(204, 596, 18, '15.0').
 log_variable_value(204, 596, 19, 'run/data/DRT322/DRT322_11000eV_016.img').
 log_variable_value(204, 597, 15, 'q55').
 log_variable_value(204, 597, 16, 'DRT322').
 log_variable_value(204, 597, 17, '11000').
-log_variable_value(204, 597, 18, '84').
+log_variable_value(204, 597, 18, '84.0').
 log_variable_value(204, 597, 19, 'run/data/DRT322/DRT322_11000eV_017.img').
 log_variable_value(204, 598, 15, 'q55').
 log_variable_value(204, 598, 16, 'DRT322').
 log_variable_value(204, 598, 17, '11000').
-log_variable_value(204, 598, 18, '51').
+log_variable_value(204, 598, 18, '51.0').
 log_variable_value(204, 598, 19, 'run/data/DRT322/DRT322_11000eV_018.img').
 log_variable_value(204, 599, 15, 'q55').
 log_variable_value(204, 599, 16, 'DRT322').
 log_variable_value(204, 599, 17, '11000').
-log_variable_value(204, 599, 18, '23').
+log_variable_value(204, 599, 18, '23.0').
 log_variable_value(204, 599, 19, 'run/data/DRT322/DRT322_11000eV_019.img').
 log_variable_value(204, 600, 15, 'q55').
 log_variable_value(204, 600, 16, 'DRT322').
 log_variable_value(204, 600, 17, '11000').
-log_variable_value(204, 600, 18, '101').
+log_variable_value(204, 600, 18, '101.0').
 log_variable_value(204, 600, 19, 'run/data/DRT322/DRT322_11000eV_020.img').
 log_variable_value(204, 601, 15, 'q55').
 log_variable_value(204, 601, 16, 'DRT322').
 log_variable_value(204, 601, 17, '11000').
-log_variable_value(204, 601, 18, '78').
+log_variable_value(204, 601, 18, '78.0').
 log_variable_value(204, 601, 19, 'run/data/DRT322/DRT322_11000eV_021.img').
 log_variable_value(204, 602, 15, 'q55').
 log_variable_value(204, 602, 16, 'DRT322').
 log_variable_value(204, 602, 17, '11000').
-log_variable_value(204, 602, 18, '56').
+log_variable_value(204, 602, 18, '56.0').
 log_variable_value(204, 602, 19, 'run/data/DRT322/DRT322_11000eV_022.img').
 log_variable_value(204, 603, 15, 'q55').
 log_variable_value(204, 603, 16, 'DRT322').
 log_variable_value(204, 603, 17, '11000').
-log_variable_value(204, 603, 18, '36').
+log_variable_value(204, 603, 18, '36.0').
 log_variable_value(204, 603, 19, 'run/data/DRT322/DRT322_11000eV_023.img').
 log_variable_value(204, 604, 15, 'q55').
 log_variable_value(204, 604, 16, 'DRT322').
 log_variable_value(204, 604, 17, '11000').
-log_variable_value(204, 604, 18, '18').
+log_variable_value(204, 604, 18, '18.0').
 log_variable_value(204, 604, 19, 'run/data/DRT322/DRT322_11000eV_024.img').
 log_variable_value(204, 605, 15, 'q55').
 log_variable_value(204, 605, 16, 'DRT322').
 log_variable_value(204, 605, 17, '11000').
-log_variable_value(204, 605, 18, '1').
+log_variable_value(204, 605, 18, '1.2').
 log_variable_value(204, 605, 19, 'run/data/DRT322/DRT322_11000eV_025.img').
 log_variable_value(204, 606, 15, 'q55').
 log_variable_value(204, 606, 16, 'DRT322').
 log_variable_value(204, 606, 17, '11000').
-log_variable_value(204, 606, 18, '90').
+log_variable_value(204, 606, 18, '90.0').
 log_variable_value(204, 606, 19, 'run/data/DRT322/DRT322_11000eV_026.img').
 log_variable_value(204, 607, 15, 'q55').
 log_variable_value(204, 607, 16, 'DRT322').
 log_variable_value(204, 607, 17, '11000').
-log_variable_value(204, 607, 18, '75').
+log_variable_value(204, 607, 18, '75.0').
 log_variable_value(204, 607, 19, 'run/data/DRT322/DRT322_11000eV_027.img').
 log_variable_value(204, 608, 15, 'q55').
 log_variable_value(204, 608, 16, 'DRT322').
 log_variable_value(204, 608, 17, '11000').
-log_variable_value(204, 608, 18, '62').
+log_variable_value(204, 608, 18, '62.0').
 log_variable_value(204, 608, 19, 'run/data/DRT322/DRT322_11000eV_028.img').
 log_variable_value(204, 609, 15, 'q55').
 log_variable_value(204, 609, 16, 'DRT322').
 log_variable_value(204, 609, 17, '11000').
-log_variable_value(204, 609, 18, '49').
+log_variable_value(204, 609, 18, '49.0').
 log_variable_value(204, 609, 19, 'run/data/DRT322/DRT322_11000eV_029.img').
 log_variable_value(204, 610, 15, 'q55').
 log_variable_value(204, 610, 16, 'DRT322').
 log_variable_value(204, 610, 17, '11000').
-log_variable_value(204, 610, 18, '37').
+log_variable_value(204, 610, 18, '37.0').
 log_variable_value(204, 610, 19, 'run/data/DRT322/DRT322_11000eV_030.img').
