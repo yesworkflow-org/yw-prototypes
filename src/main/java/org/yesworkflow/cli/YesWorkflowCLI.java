@@ -91,7 +91,8 @@ public class YesWorkflowCLI {
                 VersionInfo.loadVersionInfoFromResource(
                         "YesWorkflow", 
                         "https://github.com/yesworkflow-org/yw-prototypes.git",
-                        "git.properties");
+                        "git.properties",
+                        "maven.properties");
         
         try {
             YesWorkflowCLI cli = new YesWorkflowCLI();

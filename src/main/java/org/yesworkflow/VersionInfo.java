@@ -5,7 +5,7 @@ import java.util.Properties;
 public class VersionInfo {
 
     public final String softwareName;
-    public final String version;
+    public final String productVersion;
     public final String qualifiedVersion;    
     public final String officialRepoUrl;
     
@@ -16,32 +16,45 @@ public class VersionInfo {
     public final String gitClosestTag;
     public final String gitCommitsSinceTag;
 
-    public final String mavenBuildVersion;
-    public final String mavenBuildTime;
-    public final String mavenBuildHost;
-    public final String mavenBuildUserName;
-    public final String mavenBuildUserEmail;
+    public final String buildVersion;
+    public final String buildTime;
+    public final String buildHost;
+    public final String buildUserName;
+    public final String buildUserEmail;
+    public final String buildPlatform;
+    
+    public final String osArch;
+    public final String osName;
+    public final String osVersion;
+    
+    public final String buildJavaVersion;
+    public final String javaVmName;
+    public final String javaVmVendor;
+    public final String buildJavaVM;
 
     public static final String EOL = System.getProperty("line.separator");
     public static final String bannerDelimiter = 
             "-----------------------------------------------------------------------------";
     
-    public static VersionInfo loadVersionInfoFromResource(String softwareName, String officialRepoUrl, String classPathResource)  {
+    public static VersionInfo loadVersionInfoFromResource(String softwareName, String officialRepoUrl, 
+                                                          String gitPropertyResource, String mavenPropertyResource)  {
         Properties gitProperties = new Properties();
+        Properties mavenProperties = new Properties();
+        
         try {
-            gitProperties.load(VersionInfo.class.getClassLoader().getResourceAsStream(classPathResource));
+            gitProperties.load(VersionInfo.class.getClassLoader().getResourceAsStream(gitPropertyResource));
+            mavenProperties.load(VersionInfo.class.getClassLoader().getResourceAsStream(mavenPropertyResource));
         } catch(Exception e) {
             e.printStackTrace();
             System.exit(-1);
         }
-        return new VersionInfo(softwareName, officialRepoUrl, gitProperties);
+        
+        return new VersionInfo(softwareName, officialRepoUrl, gitProperties, mavenProperties);
     }
 
-    
-    
-    public VersionInfo(String softwareName, String officialRepoUrl, Properties gitProperties) {
+    public VersionInfo(String productName, String officialRepoUrl, Properties gitProperties, Properties mavenProperties) {
         
-        this.softwareName = softwareName;
+        this.softwareName = productName;
         this.officialRepoUrl = officialRepoUrl;
         
         gitBranch = gitProperties.getProperty("git.branch");
@@ -51,17 +64,29 @@ public class VersionInfo {
         gitClosestTag = gitProperties.getProperty("git.closest.tag.name");
         gitCommitsSinceTag = gitProperties.getProperty("git.closest.tag.commit.count");
         
-        mavenBuildVersion = gitProperties.getProperty("git.build.version");
-        mavenBuildTime = gitProperties.getProperty("git.build.time");
-        mavenBuildHost = gitProperties.getProperty("git.build.host");
-        mavenBuildUserName = gitProperties.getProperty("git.build.user.name");
-        mavenBuildUserEmail = gitProperties.getProperty("git.commit.user.email");
+        buildVersion = gitProperties.getProperty("git.build.version");
 
-        version = softwareName + " " + mavenBuildVersion + "-" + gitCommitsSinceTag;
-        qualifiedVersion = version + " (" 
+        productVersion = productName + " " + buildVersion + "-" + gitCommitsSinceTag;
+        qualifiedVersion = productVersion + " (" 
                             + (gitBranch.equals("master") ? "branch" : "BRANCH ") + gitBranch + 
                             ", commit " + gitCommitAbbrev + 
                             ")";
+        
+        buildTime = gitProperties.getProperty("git.build.time");
+        buildHost = gitProperties.getProperty("git.build.host");
+        buildUserName = gitProperties.getProperty("git.build.user.name");
+        buildUserEmail = gitProperties.getProperty("git.commit.user.email");
+
+        osArch = mavenProperties.getProperty("os.arch");
+        osName = mavenProperties.getProperty("os.name");
+        osVersion = mavenProperties.getProperty("os.version");
+        
+        buildJavaVersion = mavenProperties.getProperty("java.version");
+        javaVmName = mavenProperties.getProperty("java.vm.name");
+        javaVmVendor = mavenProperties.getProperty("java.vm.vendor");        
+        buildJavaVM = javaVmName +" (" + javaVmVendor +  ")";
+        
+        buildPlatform = osName + " " + osVersion + " (" + osArch + ")";
     }
     
     public String versionBanner() {
@@ -80,10 +105,13 @@ public class VersionInfo {
                    .append("Commit time: ").append(gitCommitTime).append(EOL)
                    .append("Most recent tag: ").append(gitClosestTag).append(EOL)
                    .append("Commits since tag: ").append(gitCommitsSinceTag).append(EOL)
-                   .append("Builder name: ").append(mavenBuildUserName).append(EOL)
-                   .append("Builder email: ").append(mavenBuildUserEmail).append(EOL)
-                   .append("Build host: ").append(mavenBuildHost).append(EOL)
-                   .append("Build time: ").append(mavenBuildTime).append(EOL)
+                   .append("Builder name: ").append(buildUserName).append(EOL)
+                   .append("Builder email: ").append(buildUserEmail).append(EOL)
+                   .append("Build host: ").append(buildHost).append(EOL)
+                   .append("Build platform: ").append(buildPlatform).append(EOL)
+                   .append("Build Java VM: ").append(buildJavaVM).append(EOL)
+                   .append("Build Java version: ").append("JDK ").append(buildJavaVersion).append(EOL)
+                   .append("Build time: ").append(buildTime).append(EOL)
                    .toString();
     }
 }

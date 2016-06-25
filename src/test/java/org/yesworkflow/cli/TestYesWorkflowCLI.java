@@ -54,6 +54,9 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
             "Builder name: Timothy McPhillips"                                              + EOL +
             "Builder email: tmcphillips@absoluteflow.org"                                   + EOL +
             "Build host: calypso.local"                                                     + EOL +
+            "Build platform: Mac OS X 10.11.5 (x86_64)"                                     + EOL +
+            "Build Java VM: Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)"         + EOL +
+            "Build Java version: JDK 1.8.0_65"                                              + EOL +
             "Build time: 24.06.2016 @ 10:35:34 PDT"                                         + EOL;
     
     @Override
@@ -87,7 +90,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         cli.versionInfo = VersionInfo.loadVersionInfoFromResource(
                 "YesWorkflow", 
                 "https://github.com/yesworkflow-org/yw-prototypes.git",
-                "org/yesworkflow/testYesWorkflowCLI/git.properties");
+                "org/yesworkflow/testYesWorkflowCLI/git.properties",
+                "org/yesworkflow/testYesWorkflowCLI/maven.properties");
         ExitCode returnValue = cli.runForArgs(args);
         assertEquals(ExitCode.SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
@@ -107,7 +111,8 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         cli.versionInfo = VersionInfo.loadVersionInfoFromResource(
                 "YesWorkflow", 
                 "https://github.com/yesworkflow-org/yw-prototypes.git",
-                "org/yesworkflow/testYesWorkflowCLI/git.properties");
+                "org/yesworkflow/testYesWorkflowCLI/git.properties",
+                "org/yesworkflow/testYesWorkflowCLI/maven.properties");
         ExitCode returnValue = cli.runForArgs(args);
         assertEquals(ExitCode.SUCCESS, returnValue);
         assertEquals("", stdoutBuffer.toString());
