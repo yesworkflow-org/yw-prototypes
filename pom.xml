@@ -130,6 +130,29 @@
     
         <plugins>
 
+             <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/classes/examples</outputDirectory>
+                            <resources>          
+                                <resource>
+                                    <directory>examples</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>              
+                        </configuration>       
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Set Java compiler source and target versions -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

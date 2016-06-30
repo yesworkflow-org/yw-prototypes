@@ -10,23 +10,19 @@ from datetime import datetime
 
 """
 @begin simulate_data_collection @desc Workflow for collecting diffraction data from high quality crystals in a cassette.
-
-@param cassette_id         @desc The unique ID of the cassette containing the crystals.
+@param cassette_id @desc The unique ID of the cassette containing the crystals.
 @param sample_score_cutoff @desc The minimum quality score required of crystals.
-@param data_redundancy     @desc The desired redundancy of the data sets collected.
-@in sample_spreadsheet     @desc CSV file giving quality score for each crystal.
-                           @uri file:cassette_{cassette_id}_spreadsheet.csv
-@in calibration_image      @desc File used to correct raw diffraction images.
-                           @uri file:calibration.img
-
-@out corrected_image   @desc The corrected diffraction images collected on all crystals.
-                       @uri file:run/data/{}/{}_{}eV_{}.img
-@out run_log           @uri file:run/run_log.txt
-@out collection_log    @uri file:run/collected_images.csv
-@out rejection_log     @uri file:run/rejected_samples.txt
+@param data_redundancy @desc The desired redundancy of the data sets collected.
+@in sample_spreadsheet @desc CSV file giving quality score for each crystal.
+@in calibration_image_file @as calibration_image @desc File used to correct raw diffraction images.
+@out corrected_image @desc The corrected diffraction images collected on all crystals.
+@out run_log
+@out collection_log
+@out rejection_log
 """
 
-def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
+def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy, calibration_image_file):
+
     """
     @begin initialize_run @desc Create run directory and initialize log files.
     @param cassette_id
@@ -51,14 +47,13 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
         """
         @begin load_screening_results @desc Load sample information from spreadsheet.
         @param cassette_id
-        @in sample_spreadsheet  @uri file:cassette_{cassette_id}_spreadsheet.csv
-        @out sample_name
-        @out sample_quality
+        @in sample_spreadsheet_file @as sample_spreadsheet @uri file:cassette_{cassette_id}_spreadsheet.csv
+        @out sample_name @out sample_quality
         @out run_log @uri file:run/run_log.txt
                      @log {timestamp} Sample {sample_id} had score of {sample_quality}
         """
-        sample_spreadsheet = 'cassette_{0}_spreadsheet.csv'.format(cassette_id)
-        for sample_name, sample_quality in spreadsheet_rows(sample_spreadsheet):
+        sample_spreadsheet_file = 'cassette_{0}_spreadsheet.csv'.format(cassette_id)
+        for sample_name, sample_quality in spreadsheet_rows(sample_spreadsheet_file):
             run_log.write("Sample {0} had score of {1}".format(sample_name, sample_quality))
             """
             @end load_screening_results
@@ -66,32 +61,22 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
 
             """
             @begin calculate_strategy @desc Reject unsuitable crystals and compute \n best data sets to collect for accepted crystals.
-            @param sample_score_cutoff
-            @param data_redundancy
-            @in sample_name
-            @in sample_quality
-            @out accepted_sample
-            @out rejected_sample
-            @out num_images
-            @out energies
+            @param sample_score_cutoff @param data_redundancy @param sample_name @param sample_quality
+            @out accepted_sample @out rejected_sample @out num_images @out energies
             """
-            accepted_sample, rejected_sample, num_images, energies = calculate_strategy(
-                            sample_name, sample_quality, sample_score_cutoff, data_redundancy)
+            accepted_sample, rejected_sample, num_images, energies = calculate_strategy(sample_name, sample_quality, sample_score_cutoff, data_redundancy)
             """
             @end calculate_strategy
             """
 
             """
             @begin log_rejected_sample @desc Record which samples were rejected.
-            @param cassette_id
-            @in rejected_sample
-            @out rejection_log @uri file:run/rejected_samples.txt @log Rejected sample {rejected_sample} in cassette {cassette_id}
-            """
+            @param cassette_id  @param rejected_sample
+			@out rejection_log @uri file:run/rejected_samples.txt @log Rejected sample {rejected_sample} in cassette {cassette_id}"""
             if (rejected_sample is not None):
                 run_log.write("Rejected sample {0}".format(rejected_sample))
                 with open('run/rejected_samples.txt', 'at') as rejection_log:
-                    rejection_log.write("Rejected sample {0} in cassette {1}\n"
-                                        .format(rejected_sample, cassette_id))
+                    rejection_log.write("Rejected sample {0} in cassette {1}\n".format(rejected_sample, cassette_id))
                 continue
             """
             @end log_rejected_sample
@@ -99,78 +84,60 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy):
 
             """
             @begin collect_data_set @desc Collect data set using the given data collection parameters.
-            @call collect_next_image
-            @param cassette_id
-            @param num_images
-            @in accepted_sample
-            @in energies
-            @out sample_id      @desc The crystal that the diffraction image was collected from.
-            @out energy         @desc Energy (in eV) at which the diffraction image was collected.
-            @out frame_number   @desc Index of diffraction image within data set.
-            @out raw_image_path @desc Path of file storing the raw diffraction image.
-                                @uri file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw
-                                @as raw_image
+            @param cassette_id  @param num_images  @param accepted_sample @param energies
+            @out sample_id @desc The crystal that the diffraction image was collected from.
+            @out energy @desc Energy (in eV) at which the diffraction image was collected.
+            @out frame_number @desc Index of diffraction image within data set.
+            @out raw_image_file @as raw_image @desc Path of file storing the raw diffraction image.
+                @uri file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw
             @out run_log @uri file:run/run_log.txt
                          @log {timestamp} Collecting data set for sample {sample_id}
                          @log {timestamp} Collecting image {raw_image_path}
+
             """
             run_log.write("Collecting data set for sample {0}".format(accepted_sample))
             sample_id = accepted_sample
-            for energy, frame_number, intensity, raw_image_path in collect_next_image(
-                cassette_id, sample_id, num_images, energies,
-                'run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number:03d}.raw'):
-                run_log.write("Collecting image {0}".format(raw_image_path))
+            for energy, frame_number, intensity, raw_image_file in collect_next_image(cassette_id, sample_id, num_images, energies, 'run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number:03d}.raw'):
+                run_log.write("Collecting image {0}".format(raw_image_file))
                 """
                 @end collect_data_set
                 """
 
                 """
                 @begin transform_images @desc Correct raw image using the detector calibration image.
-                @call transform_image
-                @in sample_id
-                @in energy
-                @in frame_number
-                @in raw_image_path @as raw_image
-                @in calibration_image @uri file:calibration.img
-                @out corrected_image  @uri file:run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img
-                @out corrected_image_path
-                @out total_intensity
-                @out pixel_count
+                @param sample_id  @param energy  @param frame_number
+                @in raw_image_file @as raw_image
+                @in calibration_image_file @as calibration_image
+                @out corrected_image_file @as corrected_image @uri file:run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img
+                @out total_intensity  @out pixel_count
                 @out run_log @uri file:run/run_log.txt
                              @log {timestamp} Wrote transformed image {corrected_image_path}
                 """
-                corrected_image_path = 'run/data/{0}/{0}_{1}eV_{2:03d}.img'.format(
-                                        sample_id, energy, frame_number)
-                (total_intensity, pixel_count) = transform_image(
-                                                    raw_image_path, corrected_image_path, 'calibration.img')
-                run_log.write("Wrote transformed image {0}".format(corrected_image_path))
+                (total_intensity, pixel_count, corrected_image_file) = transform_image(raw_image_file, 'run/data/{0}/{0}_{1}eV_{2:03d}.img'.format(sample_id, energy, frame_number), calibration_image_file)
+                run_log.write("Wrote transformed image {0}".format(corrected_image_file))
                 """
                 @end transform_images
                 """
 
                 """
                 @begin log_average_image_intensity @desc Record statistics about each diffraction image.
-                @param cassette_id
-                @param sample_id
-                @param frame_number
-                @in corrected_image_path
-                @in total_intensity
-                @in pixel_count
+                @param cassette_id @param sample_id @param frame_number @param total_intensity @param pixel_count
+                @in corrected_image_file @AS corrected_image
                 @out collection_log @uri file:run/collected_images.csv
                 @log {cassette_id},{sample_id},{energy},{average_intensity},{corrected_image_path}
+
                 """
                 average_intensity = total_intensity / pixel_count
                 with open('run/collected_images.csv', 'at') as collection_log_file:
                     collection_log = csv.writer(collection_log_file, lineterminator=os.linesep)
-                    collection_log.writerow([cassette_id, sample_id, energy,
-                                        average_intensity, corrected_image_path ])
+                    collection_log.writerow([cassette_id, sample_id, energy, average_intensity, corrected_image_file])
                 """
                 @end log_average_image_intensity
                 """
 
-    """
-    @end simulate_data_collection
-    """
+"""
+@end simulate_data_collection
+"""
 
 """
 @begin calculate_strategy
@@ -215,9 +182,7 @@ def calculate_strategy(sample_name, sample_quality, sample_score_cutoff, data_re
 def collect_next_image(cassette_id, sample_id, num_images, energies, image_path_template):
     for energy in energies:
         for frame_number in range(1, num_images + 1):
-            raw_image_path = image_path_template.format(
-                        cassette_id=cassette_id, sample_id=sample_id,
-                        energy=energy, frame_number=frame_number)
+            raw_image_path = image_path_template.format(cassette_id=cassette_id, sample_id=sample_id, energy=energy, frame_number=frame_number)
             with new_image_file(raw_image_path) as raw_image:
                 intensity = int(math.floor(math.floor(energy / (frame_number + 1)) % math.sqrt(energy)))
                 raw_image.write_values(10 * [intensity])
@@ -233,12 +198,11 @@ def collect_next_image(cassette_id, sample_id, num_images, energies, image_path_
 @param calibration_image_path
 @return total_intensity
 @return pixel_count
+@return corrected_image_path
 """
 def transform_image(raw_image_path, corrected_image_path, calibration_image_path):
 
-    with open(raw_image_path, 'rt') as raw_image, \
-         open(calibration_image_path, 'rt') as calibration_image, \
-         new_image_file(corrected_image_path) as corrected_image:
+    with open(raw_image_path, 'rt') as raw_image, open(calibration_image_path, 'rt') as calibration_image, new_image_file(corrected_image_path) as corrected_image:
 
         pixel_count = 0
         total_intensity = 0
@@ -251,7 +215,7 @@ def transform_image(raw_image_path, corrected_image_path, calibration_image_path
             total_intensity += corrected_value
             pixel_count += 1
 
-    return total_intensity, pixel_count
+    return total_intensity, pixel_count, corrected_image_path
 """
 @end transform_image
 """
@@ -264,7 +228,7 @@ def spreadsheet_rows(spreadsheet_file_name):
 
 class run_logger:
 
-    def __init__(self, terminal=sys.stderr, log_file_name=None):
+    def __init__(self, terminal=sys.stdout, log_file_name=None):
         self.log_file = open(log_file_name, 'wt') if log_file_name is not None else None
         self.terminal = terminal
 
@@ -324,6 +288,11 @@ if __name__ == '__main__':
                       dest="data_redundancy",
                       help='The desired redundancy of the data sets collected (default=1)',
                       default=1)
+    parser.add_option("-c", "--calibration",
+                      type='string',
+                      dest="calibration_file",
+                      help='Calibration file for transforming raw images (default=calibration.img)',
+                      default='calibration.img')
 
     parser.set_usage("python simulate_data_collection.py <cassette_id> [options]")
 
@@ -337,4 +306,4 @@ if __name__ == '__main__':
         exit()
 
     # run the simulation using the provided options
-    simulate_data_collection(args[0], options.sample_score_cutoff, options.data_redundancy)
+    simulate_data_collection(args[0], options.sample_score_cutoff, options.data_redundancy, options.calibration_file)

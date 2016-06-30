@@ -1,4 +1,4 @@
-[xsb_configuration loaded, cpu time used: 0.0010 seconds]
+[xsb_configuration loaded]
 [sysinitrc loaded]
 [xsbbrat loaded]
 
@@ -6,7 +6,7 @@ XSB Version 3.6. (Gazpatcho) of April 22, 2015
 [i386-apple-darwin15.5.0 64 bits; mode: optimal; engine: slg-wam; scheduling: local]
 [Build date: 2016-05-25]
 
-| ?- [rules loaded, cpu time used: 0.0010 seconds]
+| ?- [rules loaded]
 
 yes
 | ?- [extractfacts loaded]
@@ -15,13 +15,13 @@ yes
 | ?- [modelfacts loaded]
 
 yes
-| ?- [reconfacts loaded, cpu time used: 0.0040 seconds]
+| ?- [reconfacts loaded, cpu time used: 0.0030 seconds]
 
 yes
 | ?- [extract_queries loaded]
 
 yes
-| ?- [model_queries loaded]
+| ?- [model_queries loaded, cpu time used: 0.0010 seconds]
 
 yes
 | ?- [recon_queries loaded]
@@ -38,34 +38,34 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 eq2(ProgramName) - What are the names N of all program blocks?
 ---------------------------------------------------------------------------------------------------------------------------
-eq2(collect_next_image)
-eq2(transform_images)
-eq2(load_screening_results)
-eq2(simulate_data_collection)
-eq2(collect_data_set)
 eq2(calculate_strategy)
+eq2(log_average_image_intensity)
+eq2(collect_data_set)
 eq2(transform_image)
+eq2(simulate_data_collection)
 eq2(log_rejected_sample)
 eq2(initialize_run)
-eq2(log_average_image_intensity)
+eq2(transform_images)
+eq2(load_screening_results)
+eq2(collect_next_image)
 
 yes
 | ?- 
 ---------------------------------------------------------------------------------------------------------------------------
 eq3(PortName) - What out ports are qualified with URIs?
 ---------------------------------------------------------------------------------------------------------------------------
-eq3(raw_image_path)
-eq3(rejection_log)
 eq3(collection_log)
+eq3(corrected_image_file)
+eq3(raw_image_file)
+eq3(rejection_log)
 eq3(run_log)
-eq3(corrected_image)
 
 yes
 | ?- 
 ---------------------------------------------------------------------------------------------------------------------------
 mq1(SourceFile,StartLine,EndLine) - Where is the definition of block simulate_data_collection.collect_data_set?
 ---------------------------------------------------------------------------------------------------------------------------
-mq1(../simulate_data_collection.py,101,124)
+mq1(../simulate_data_collection.py,86,103)
 
 yes
 | ?- 
@@ -101,7 +101,7 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 mq5(DataName) - What are the names and descriptions of the inputs to the top-level workflow?
 ---------------------------------------------------------------------------------------------------------------------------
-mq5(calibration_image,File used to correct raw diffraction images.)
+mq5(calibration_image_file,File used to correct raw diffraction images.)
 mq5(sample_spreadsheet,CSV file giving quality score for each crystal.)
 mq5(data_redundancy,The desired redundancy of the data sets collected.)
 mq5(sample_score_cutoff,The minimum quality score required of crystals.)
@@ -190,7 +190,6 @@ mq15(DownstreamDataName) - What data is immediately downstream of raw_image?
 ---------------------------------------------------------------------------------------------------------------------------
 mq15(pixel_count)
 mq15(total_intensity)
-mq15(corrected_image_path)
 mq15(run_log)
 mq15(corrected_image)
 
@@ -209,31 +208,30 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 mq17(DownstreamDataName) - What data is downstream of accepted_sample?
 ---------------------------------------------------------------------------------------------------------------------------
-mq17(corrected_image_path)
+mq17(run_log)
+mq17(collection_log)
+mq17(energy)
+mq17(raw_image)
+mq17(total_intensity)
+mq17(corrected_image)
+mq17(pixel_count)
 mq17(frame_number)
 mq17(sample_id)
-mq17(total_intensity)
-mq17(pixel_count)
-mq17(raw_image)
-mq17(run_log)
-mq17(energy)
-mq17(corrected_image)
-mq17(collection_log)
 
 yes
 | ?- 
 ---------------------------------------------------------------------------------------------------------------------------
 mq18(UpstreamDataName) - What data is upstream of raw_image?
 ---------------------------------------------------------------------------------------------------------------------------
-mq18(data_redundancy)
-mq18(num_images)
-mq18(energies)
-mq18(sample_score_cutoff)
-mq18(sample_name)
 mq18(cassette_id)
 mq18(sample_spreadsheet)
+mq18(num_images)
+mq18(data_redundancy)
+mq18(energies)
+mq18(sample_name)
 mq18(sample_quality)
 mq18(accepted_sample)
+mq18(sample_score_cutoff)
 
 yes
 | ?- 
@@ -301,4 +299,4 @@ rq5(q55)
 
 yes
 | ?- 
-End XSB (cputime 0.13 secs, elapsetime 0.14 secs)
+End XSB (cputime 0.12 secs, elapsetime 0.13 secs)

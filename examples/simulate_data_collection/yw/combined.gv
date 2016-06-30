@@ -31,20 +31,9 @@ corrected_image [shape=record rankdir=LR label="{<f0> corrected_image |<f1> file
 run_log [shape=record rankdir=LR label="{<f0> run_log |<f1> file\:run/run_log.txt}"];
 collection_log [shape=record rankdir=LR label="{<f0> collection_log |<f1> file\:run/collected_images.csv}"];
 rejection_log [shape=record rankdir=LR label="{<f0> rejection_log |<f1> file\:run/rejected_samples.txt}"];
-sample_spreadsheet [shape=record rankdir=LR label="{<f0> sample_spreadsheet |<f1> file\:cassette_\{cassette_id\}_spreadsheet.csv}"];
-sample_name
-sample_quality
-rejected_sample
-accepted_sample
-energies
-sample_id
-energy
-frame_number
+sample_spreadsheet
 raw_image [shape=record rankdir=LR label="{<f0> raw_image |<f1> file\:run/raw/\{cassette_id\}/\{sample_id\}/e\{energy\}/image_\{frame_number\}.raw}"];
-calibration_image [shape=record rankdir=LR label="{<f0> calibration_image |<f1> file\:calibration.img}"];
-corrected_image_path
-total_intensity
-pixel_count
+calibration_image
 
 /* Style for nodes representing parameter channels in workflow */
 node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
@@ -53,7 +42,17 @@ node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname
 cassette_id
 sample_score_cutoff
 data_redundancy
+sample_name
+sample_quality
+rejected_sample
 num_images
+accepted_sample
+energies
+sample_id
+energy
+frame_number
+total_intensity
+pixel_count
 
 /* Edges representing connections between programs and channels */
 initialize_run -> run_log
@@ -85,7 +84,6 @@ num_images -> collect_data_set
 accepted_sample -> collect_data_set
 energies -> collect_data_set
 transform_images -> corrected_image
-transform_images -> corrected_image_path
 transform_images -> total_intensity
 transform_images -> pixel_count
 transform_images -> run_log
@@ -98,9 +96,9 @@ log_average_image_intensity -> collection_log
 cassette_id -> log_average_image_intensity
 sample_id -> log_average_image_intensity
 frame_number -> log_average_image_intensity
-corrected_image_path -> log_average_image_intensity
 total_intensity -> log_average_image_intensity
 pixel_count -> log_average_image_intensity
+corrected_image -> log_average_image_intensity
 
 /* End of double cluster for drawing box around nodes in workflow */
 }}
