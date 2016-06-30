@@ -12,4 +12,5 @@ POST_RUN_CMD = rm -f run/data/DRT240/DRT240_12000eV_002.img
 
 NW_FILTERED_LINEAGE = true
 
-include ../common.Makefile
+include ../defaults.Makefile
+include $(MAKEFILES_DIR)/common.Makefile

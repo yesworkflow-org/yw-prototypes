@@ -1,8 +1,4 @@
 
-RULES_DIR = ../rules
-SCRIPTS_DIR = ../scripts
-FACTS_DIR = facts
-GRAPHS_DIR = graphs
 
 YW_EXTRACT_FACTS = $(FACTS_DIR)/yw_extract_facts.P
 YW_MODEL_FACTS = $(FACTS_DIR)/yw_model_facts.P
@@ -49,7 +45,7 @@ GRAPHS = $(YW_GRAPHS)
 PNGS = $(GRAPHS:.gv=.png)
 PDFS = $(GRAPHS:.gv=.pdf)
 
-all: $(RUN_OUTPUTS) $(QUERY_OUTPUTS) $(GRAPHS)
+all: run yw query graph
 run: $(RUN_OUTPUTS)
 yw: $(YW_FACTS) $(YW_VIEWS)
 query: $(QUERY_OUTPUTS)
@@ -71,6 +67,8 @@ PROSPECTIVE_LINEAGE_DATA = $(DATA)
 .PHONY: $(YW_PROSPECTIVE_LINEAGE_GRAPH_GV)
 endif
 
+
+
 yw_setup:
 ifdef YW_JAR
 	mkdir -p facts
@@ -89,8 +87,8 @@ $(YW_VIEWS): $(YW_FACTS)
 	bash $(SCRIPTS_DIR)/materialize_yw_views.sh > $(YW_VIEWS)
 
 $(RUN_OUTPUTS): $(WORKFLOW_SCRIPT)
-	$(SCRIPT_RUN_CMD) > $(RUN_STDOUT)
-	${POST_RUN_CMD}
+	$(SCRIPT_RUN_CMD) &> $(RUN_STDOUT)
+	$(POST_RUN_CMD)
 
 $(YW_DATA_GRAPH_GV): $(YW_VIEWS)
 	mkdir -p graphs
@@ -110,11 +108,11 @@ $(YW_PROSPECTIVE_LINEAGE_GRAPH_GV): $(YW_VIEWS)
 		$(PROSPECTIVE_LINEAGE_DATA) \
 		> $(YW_PROSPECTIVE_LINEAGE_GRAPH_GV)
 
-$(QUERY_OUTPUTS): $(QUERY_SCRIPT) $(YW_VIEWS) $(NW_VIEWS) $(YW_NW_VIEWS) $(RULES)
+$(QUERY_OUTPUTS): $(QUERY_SCRIPT) $(YW_VIEWS) $(RULES)
 	bash $(QUERY_SCRIPT) > $(QUERY_OUTPUTS)
 
 clean:
 	rm -rf $(FACTS_DIR) $(GRAPHS_DIR) run *.xwam *.gv *.png *.pdf *.P *.txt $(RULES_DIR)/*.xwam
 
-repl: $(YW_NW_VIEWS)
+repl: $(YW_VIEWS)
 	expect $(RULES_DIR)/start_xsb.exp
