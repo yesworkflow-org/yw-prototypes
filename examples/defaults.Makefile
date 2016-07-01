@@ -1,7 +1,7 @@
 
 YW_DIST_BASE = ../..
 TOOLS_DIR = $(YW_DIST_BASE)/tools
-RULES_DIR = $(TOOLS_DIR)/rules
+RULES_DIR = $(TOOLS_DIR)/rules/xsb
 SCRIPTS_DIR = $(TOOLS_DIR)/scripts
 MAKEFILES_DIR = $(TOOLS_DIR)/makefiles
 

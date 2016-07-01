@@ -4,10 +4,10 @@
 
 xsb << END_XSB_STDIN
 
-[rules].
-[extractfacts].
-[modelfacts].
-[reconfacts].
+[xsb_rules].
+[extract_facts].
+[model_facts].
+[recon_facts].
 [extract_queries].
 [model_queries].
 [recon_queries].
@@ -45,5 +45,3 @@ printall('rq4(RawImageFile) - Are there any raw images for which there are no co
 printall('rq5(Cassette) - What cassette held the sample from which run/data/DRT240/DRT240_10000eV_010.img was derived?', rq5(_)).
 
 END_XSB_STDIN
-
-

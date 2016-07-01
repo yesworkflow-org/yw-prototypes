@@ -8,7 +8,6 @@ YW_VIEWS = $(FACTS_DIR)/yw_views.P
 YW_MODEL_OPTIONS = -c extract.language=python \
         	       -c extract.factsfile=$(YW_EXTRACT_FACTS) \
                    -c model.factsfile=$(YW_MODEL_FACTS) \
-			       -c recon.factsfile=$(YW_RECON_FACTS) \
                    -c query.engine=xsb
 YW_RECON_OPTIONS = -c extract.language=python \
 			       -c recon.factsfile=$(YW_RECON_FACTS) \
@@ -45,9 +44,10 @@ GRAPHS = $(YW_GRAPHS)
 PNGS = $(GRAPHS:.gv=.png)
 PDFS = $(GRAPHS:.gv=.pdf)
 
-all: run yw query graph
+all: run yw query graph $(CUSTOM_TARGETS)
 run: $(RUN_OUTPUTS)
 yw: $(YW_FACTS) $(YW_VIEWS)
+recon: $(YW_RECON_FACTS)
 query: $(QUERY_OUTPUTS)
 graph: $(GRAPHS)
 png: $(PNGS)
@@ -69,19 +69,21 @@ endif
 
 
 
-yw_setup:
+.yw_setup:
 ifdef YW_JAR
 	mkdir -p facts
-	java -jar $(YW_JAR) model $(WORKFLOW_SCRIPT) $(YW_MODEL_OPTIONS)
+	touch .yw_setup
 else
 	$(error Must set YW_JAR environment variable to path to YesWorkflow jar)
 endif
 
-$(YW_EXTRACT_FACTS) $(YW_MODEL_FACTS): yw_setup $(WORKFLOW_SCRIPT)
-	java -jar $(YW_JAR) model $(WORKFLOW_SCRIPT) $(YW_MODEL_OPTIONS)
+YW_CMD = java -jar $(YW_JAR)
 
-$(YW_RECON_FACTS): yw_setup $(WORKFLOW_SCRIPT)
-	java -jar $(YW_JAR) recon $(WORKFLOW_SCRIPT) $(YW_RECON_OPTIONS)
+$(YW_EXTRACT_FACTS) $(YW_MODEL_FACTS): .yw_setup $(WORKFLOW_SCRIPT)
+	$(YW_CMD) model $(WORKFLOW_SCRIPT) $(YW_MODEL_OPTIONS)
+
+$(YW_RECON_FACTS): .yw_setup $(RUN_OUTPUTS)
+	$(YW_CMD) recon $(WORKFLOW_SCRIPT) $(YW_RECON_OPTIONS)
 
 $(YW_VIEWS): $(YW_FACTS)
 	bash $(SCRIPTS_DIR)/materialize_yw_views.sh > $(YW_VIEWS)
@@ -112,7 +114,7 @@ $(QUERY_OUTPUTS): $(QUERY_SCRIPT) $(YW_VIEWS) $(RULES)
 	bash $(QUERY_SCRIPT) > $(QUERY_OUTPUTS)
 
 clean:
-	rm -rf $(FACTS_DIR) $(GRAPHS_DIR) run *.xwam *.gv *.png *.pdf *.P *.txt $(RULES_DIR)/*.xwam
+	rm -rf $(FACTS_DIR) $(GRAPHS_DIR) run *.xwam *.gv *.png *.pdf *.P *.txt $(RULES_DIR)/*.xwam .yw_setup $(CUSTOM_TARGETS) $(CUSTOM_CLEAN)
 
 repl: $(YW_VIEWS)
 	expect $(RULES_DIR)/start_xsb.exp
