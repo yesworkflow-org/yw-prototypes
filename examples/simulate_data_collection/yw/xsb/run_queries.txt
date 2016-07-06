@@ -7,22 +7,22 @@ XSB Version 3.6. (Gazpatcho) of April 22, 2015
 [Build date: 2016-05-25]
 
 | ?- [Compiling ./xsb_rules]
-[xsb_rules compiled, cpu time used: 0.0120 seconds]
+[xsb_rules compiled, cpu time used: 0.0110 seconds]
 [xsb_rules loaded]
 
 yes
 | ?- [Compiling ./extract_facts]
-[extract_facts compiled, cpu time used: 0.0100 seconds]
-[extract_facts loaded]
+[extract_facts compiled, cpu time used: 0.0090 seconds]
+[extract_facts loaded, cpu time used: 0.0010 seconds]
 
 yes
 | ?- [Compiling ./model_facts]
-[model_facts compiled, cpu time used: 0.0140 seconds]
-[model_facts loaded, cpu time used: 0.0010 seconds]
+[model_facts compiled, cpu time used: 0.0150 seconds]
+[model_facts loaded]
 
 yes
 | ?- [Compiling ./recon_facts]
-[recon_facts compiled, cpu time used: 0.1860 seconds]
+[recon_facts compiled, cpu time used: 0.1820 seconds]
 [recon_facts loaded, cpu time used: 0.0040 seconds]
 
 yes
@@ -32,8 +32,8 @@ yes
 
 yes
 | ?- [Compiling ./model_queries]
-[model_queries compiled, cpu time used: 0.0060 seconds]
-[model_queries loaded, cpu time used: 0.0010 seconds]
+[model_queries compiled, cpu time used: 0.0050 seconds]
+[model_queries loaded]
 
 yes
 | ?- [Compiling ./recon_queries]
@@ -52,16 +52,16 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 eq2(ProgramName) - What are the names N of all program blocks?
 ---------------------------------------------------------------------------------------------------------------------------
-eq2(load_screening_results)
-eq2(transform_images)
-eq2(log_rejected_sample)
-eq2(collect_next_image)
-eq2(initialize_run)
-eq2(collect_data_set)
-eq2(transform_image)
 eq2(calculate_strategy)
-eq2(simulate_data_collection)
+eq2(collect_next_image)
+eq2(transform_image)
+eq2(load_screening_results)
 eq2(log_average_image_intensity)
+eq2(log_rejected_sample)
+eq2(initialize_run)
+eq2(transform_images)
+eq2(simulate_data_collection)
+eq2(collect_data_set)
 
 yes
 | ?- 
@@ -222,15 +222,15 @@ yes
 ---------------------------------------------------------------------------------------------------------------------------
 mq17(DownstreamDataName) - What data is downstream of accepted_sample?
 ---------------------------------------------------------------------------------------------------------------------------
-mq17(energy)
-mq17(corrected_image)
-mq17(frame_number)
-mq17(run_log)
-mq17(collection_log)
+mq17(sample_id)
 mq17(raw_image)
 mq17(total_intensity)
 mq17(pixel_count)
-mq17(sample_id)
+mq17(corrected_image)
+mq17(energy)
+mq17(run_log)
+mq17(collection_log)
+mq17(frame_number)
 
 yes
 | ?- 
@@ -238,14 +238,14 @@ yes
 mq18(UpstreamDataName) - What data is upstream of raw_image?
 ---------------------------------------------------------------------------------------------------------------------------
 mq18(accepted_sample)
+mq18(sample_score_cutoff)
 mq18(num_images)
 mq18(energies)
-mq18(sample_score_cutoff)
 mq18(data_redundancy)
-mq18(sample_name)
 mq18(cassette_id)
-mq18(sample_quality)
+mq18(sample_name)
 mq18(sample_spreadsheet)
+mq18(sample_quality)
 
 yes
 | ?- 
@@ -313,4 +313,4 @@ rq5(q55)
 
 yes
 | ?- 
-End XSB (cputime 0.36 secs, elapsetime 0.38 secs)
+End XSB (cputime 0.35 secs, elapsetime 0.37 secs)

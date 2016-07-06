@@ -1,15 +1,17 @@
 #!/usr/bin/env bash -l
 
+source $SCRIPT_SETTINGS_FILE
+
 ProvidedDataName=$1
 
 xsb --quietload --noprompt --nofeedback --nobanner << END_XSB_STDIN
 
 set_prolog_flag(unknown, fail).
 
-['facts/yw_views'].
-['../../tools/rules/xsb/yw_rules'].
-['../../tools/rules/xsb/gv_rules'].
-['../../tools/rules/xsb/yw_graph_rules'].
+['$FACTS_DIR/yw_views'].
+['$RULES_DIR/yw_rules'].
+['$RULES_DIR/gv_rules'].
+['$RULES_DIR/yw_graph_rules'].
 
 [user].
 graph :-

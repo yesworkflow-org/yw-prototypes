@@ -1,4 +1,6 @@
 
+include ../default_script_settings.sh
+
 WORKFLOW_SCRIPT = simulate_data_collection.py
 
 PROSPECTIVE_LINEAGE_DATA = corrected_image
@@ -17,7 +19,6 @@ CUSTOM_TARGETS = yw/combined.gv yw/listing.txt \
 				yw/xsb/run_queries.txt
 CUSTOM_CLEAN = yw/xsb/*.xwam
 
-include ../defaults.Makefile
 include $(MAKEFILES_DIR)/common.Makefile
 
 yw/combined.gv:

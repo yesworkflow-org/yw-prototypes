@@ -2,12 +2,14 @@
 #
 # ./run_queries.sh &> run_queries.txt
 
+source $SCRIPT_SETTINGS_FILE
+
 xsb --quietload --noprompt --nofeedback --nobanner << END_XSB_STDIN
 
-['facts/yw_extract_facts'].
-['facts/yw_model_facts'].
-['../../tools/rules/xsb/general_rules'].
-['../../tools/rules/xsb/yw_views'].
+['$FACTS_DIR/yw_extract_facts'].
+['$FACTS_DIR/yw_model_facts'].
+['$RULES_DIR/general_rules'].
+['$RULES_DIR/yw_views'].
 
 set_prolog_flag(unknown, fail).
 
