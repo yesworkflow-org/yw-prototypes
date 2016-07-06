@@ -1,6 +1,43 @@
 
 
 ---------------------------------------------------------------------------------------------------
+EQ1 : What source files were YW annotations extracted from?
+
+eq1(SourceFile)
+...................................................................................................
+eq1('simulate_data_collection.py').
+
+
+---------------------------------------------------------------------------------------------------
+EQ2 : What are the names N of all program blocks?
+
+eq2(ProgramName)
+...................................................................................................
+eq2(log_rejected_sample).
+eq2(initialize_run).
+eq2(transform_images).
+eq2(load_screening_results).
+eq2(collect_next_image).
+eq2(calculate_strategy).
+eq2(log_average_image_intensity).
+eq2(simulate_data_collection).
+eq2(collect_data_set).
+eq2(transform_image).
+
+
+---------------------------------------------------------------------------------------------------
+EQ3 : What out ports are qualified with URIs
+
+eq3(PortName)
+...................................................................................................
+eq3(collection_log).
+eq3(corrected_image_file).
+eq3(raw_image_file).
+eq3(rejection_log).
+eq3(run_log).
+
+
+---------------------------------------------------------------------------------------------------
 YW_Q1 : What is the name and description of the workflow implemented by the script?
 
 yw_q1(WorkflowName, Description)
