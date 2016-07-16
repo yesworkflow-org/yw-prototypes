@@ -1,11 +1,12 @@
 :- import concat_atom/2 from string.
 
+eol :- write('\n').
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % graphviz styles for YW prospective provenance graphs
 
 gv_nodestyle__atomic_step :-
-    writeln('node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=1 fontname=Courier]').
+    write('node[shape=box style="filled" fillcolor="#CCFFCC" peripheries=1 fontname=Courier]'), eol.
 
 gv_nodestyle__subworkflow :-
     gv_nodestyle__atomic_step.
@@ -25,13 +26,13 @@ gv_node_style__workflow_port :-
 % graphviz styles for YW-NW retrospective provenance graphs
 
 gv_nodestyle__atomic_step_invocation :-
-    writeln('node[shape=box style=filled fillcolor="#66883F" peripheries=1 fontname="Courier-Bold" fontcolor=white]').
+    write('node[shape=box style=filled fillcolor="#66883F" peripheries=1 fontname="Courier-Bold" fontcolor=white]'), eol.
 
 gv_nodestyle__data_value :-
-    writeln('node[shape=box style="rounded,filled" fillcolor="#D18E2C" peripheries=1 fontname="Helvetica-Bold"]').
+    write('node[shape=box style="rounded,filled" fillcolor="#D18E2C" peripheries=1 fontname="Helvetica-Bold"]'), eol.
 
 gv_nodestyle__param_value :-
-    writeln('node[shape=box style="rounded,filled" fillcolor="#222222" peripheries=1 fontname="Helvetica-Bold"]').
+    write('node[shape=box style="rounded,filled" fillcolor="#222222" peripheries=1 fontname="Helvetica-Bold"]'), eol.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 gv_nodes__atomic_steps(WorkflowId) :-

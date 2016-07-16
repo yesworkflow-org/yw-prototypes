@@ -1,39 +1,41 @@
 
 
+eol :- write('\n').
+
 gv_graph(Name, Title, Layout) :-
-    nl,
-    fmt_write('digraph %S {',                           args(Name)), nl,
-    fmt_write('rankdir=%S',                             args(Layout)), nl,
-    fmt_write('fontname=%S; fontsize=%S; labelloc=%S',  args('Courier', 18, t)), nl,
-    fmt_write('label="%S"',                             args(Title)), nl.
+    eol,
+    fmt_write('digraph %S {',                           args(Name)), eol,
+    fmt_write('rankdir=%S',                             args(Layout)), eol,
+    fmt_write('fontname=%S; fontsize=%S; labelloc=%S',  args('Courier', 18, t)), eol,
+    fmt_write('label="%S"',                             args(Title)), eol.
 
 gv_graph_end() :-
-    write('}'), nl, nl.
+    write('}'), eol, eol.
 
 gv_cluster(Name, Color) :-
-    fmt_write('subgraph cluster_%S { label=%S; color=%S; penwidth=%S',  args(Name, '""', Color, 2)), nl,
-    fmt_write('subgraph cluster_%S_inner { label=%S; color=white',      args(Name, '""')), nl.
+    fmt_write('subgraph cluster_%S { label=%S; color=%S; penwidth=%S',  args(Name, '""', Color, 2)), eol,
+    fmt_write('subgraph cluster_%S_inner { label=%S; color=white',      args(Name, '""')), eol.
 
 gv_cluster_end() :-
-    write('}}'), nl.
+    write('}}'), eol.
 
 gv_nodestyle(Shape, Style, Fillcolor, Peripheries, Fontname) :-
     fmt_write('node[shape=%S style="%S" fillcolor="%S" peripheries=%S fontname=%S]',
-               args(Shape, Style, Fillcolor, Peripheries, Fontname)), nl.
+               args(Shape, Style, Fillcolor, Peripheries, Fontname)), eol.
 
 gv_nodestyle(Shape, Fillcolor, Peripheries, Width) :-
     fmt_write('node[shape=%S fillcolor="%S" peripheries=%S width=%S]',
-               args(Shape, Fillcolor, Peripheries, Width)), nl.
+               args(Shape, Fillcolor, Peripheries, Width)), eol.
 
 gv_labeled_node(Name) :-
-   write(Name), nl.
+   write(Name), eol.
 
-gv_unlabeled_node(Name) :-
-    fmt_write('%S [label=""]', args(Name)), nl.
+gv_ueolabeled_node(Name) :-
+    fmt_write('%S [label=""]', args(Name)), eol.
 
 gv_record_node(Name, TopText, BottomText) :-
     fmt_write('%S [shape=record rankdir=LR label="{<f0> %S |<f1> %S}"]',
-               args(Name, TopText, BottomText)), nl.
+               args(Name, TopText, BottomText)), eol.
 
-gv_unlabeled_edge(From, To) :-
-    fmt_write('%S -> %S', args(From, To)), nl.
+gv_ueolabeled_edge(From, To) :-
+    fmt_write('%S -> %S', args(From, To)), eol.
