@@ -2,7 +2,7 @@
 #
 # ./run_queries.sh &> run_queries.txt
 
-xsb << END_XSB_STDIN
+xsb --quietload --noprompt --nofeedback --nobanner << END_XSB_STDIN
 
 [xsb_rules].
 [extract_facts].
