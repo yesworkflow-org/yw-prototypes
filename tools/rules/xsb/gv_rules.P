@@ -30,12 +30,12 @@ gv_nodestyle(Shape, Fillcolor, Peripheries, Width) :-
 gv_labeled_node(Name) :-
    write(Name), eol.
 
-gv_ueolabeled_node(Name) :-
+gv_unlabeled_node(Name) :-
     fmt_write('%S [label=""]', args(Name)), eol.
 
 gv_record_node(Name, TopText, BottomText) :-
     fmt_write('%S [shape=record rankdir=LR label="{<f0> %S |<f1> %S}"]',
                args(Name, TopText, BottomText)), eol.
 
-gv_ueolabeled_edge(From, To) :-
+gv_unlabeled_edge(From, To) :-
     fmt_write('%S -> %S', args(From, To)), eol.

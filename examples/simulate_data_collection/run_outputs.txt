@@ -1,410 +1,410 @@
-2016-07-16 18:08:17 Processing samples in cassette q55
-2016-07-16 18:08:17 Sample quality cutoff: 12.0
-2016-07-16 18:08:17 Sample DRT110 had score of 10
-2016-07-16 18:08:17 Rejected sample DRT110
-2016-07-16 18:08:17 Sample DRT240 had score of 45
-2016-07-16 18:08:17 Collecting data set for sample DRT240
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_001.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_001.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_002.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_002.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_003.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_003.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_004.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_004.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_005.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_005.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_006.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_006.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_007.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_007.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_008.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_008.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_009.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_009.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_010.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_010.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_011.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_011.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_012.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_012.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_013.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_013.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_014.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_014.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_015.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_015.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_016.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_016.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_017.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_017.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_018.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_018.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_019.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_019.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_020.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_020.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_021.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_021.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_022.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_022.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_023.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_023.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_024.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_024.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_025.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_025.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_026.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_026.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_027.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_027.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_028.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_028.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_029.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_029.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_030.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_030.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_031.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_031.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_032.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_032.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_033.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_033.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_034.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_034.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_035.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_035.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_036.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_036.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_037.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_037.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_038.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_038.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_039.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_039.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_040.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_040.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_041.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_041.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_042.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_042.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_043.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_043.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_044.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_044.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_045.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_045.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_046.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_046.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e10000/image_047.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_10000eV_047.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_001.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_001.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_002.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_002.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_003.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_003.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_004.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_004.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_005.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_005.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_006.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_006.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_007.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_007.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_008.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_008.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_009.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_009.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_010.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_010.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_011.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_011.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_012.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_012.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_013.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_013.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_014.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_014.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_015.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_015.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_016.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_016.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_017.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_017.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_018.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_018.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_019.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_019.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_020.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_020.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_021.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_021.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_022.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_022.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_023.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_023.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_024.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_024.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_025.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_025.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_026.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_026.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_027.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_027.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_028.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_028.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_029.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_029.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_030.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_030.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_031.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_031.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_032.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_032.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_033.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_033.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_034.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_034.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_035.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_035.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_036.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_036.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_037.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_037.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_038.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_038.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_039.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_039.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_040.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_040.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_041.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_041.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_042.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_042.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_043.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_043.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_044.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_044.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_045.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_045.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_046.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_046.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e11000/image_047.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_11000eV_047.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_001.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_001.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_002.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_002.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_003.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_003.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_004.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_004.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_005.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_005.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_006.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_006.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_007.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_007.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_008.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_008.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_009.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_009.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_010.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_010.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_011.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_011.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_012.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_012.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_013.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_013.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_014.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_014.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_015.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_015.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_016.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_016.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_017.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_017.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_018.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_018.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_019.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_019.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_020.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_020.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_021.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_021.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_022.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_022.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_023.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_023.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_024.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_024.img
-2016-07-16 18:08:17 Collecting image run/raw/q55/DRT240/e12000/image_025.raw
-2016-07-16 18:08:17 Wrote transformed image run/data/DRT240/DRT240_12000eV_025.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_026.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_026.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_027.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_027.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_028.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_028.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_029.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_029.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_030.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_030.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_031.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_031.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_032.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_032.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_033.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_033.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_034.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_034.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_035.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_035.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_036.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_036.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_037.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_037.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_038.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_038.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_039.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_039.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_040.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_040.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_041.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_041.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_042.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_042.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_043.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_043.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_044.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_044.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_045.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_045.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_046.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_046.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT240/e12000/image_047.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT240/DRT240_12000eV_047.img
-2016-07-16 18:08:18 Sample DRT322 had score of 28
-2016-07-16 18:08:18 Collecting data set for sample DRT322
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_001.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_001.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_002.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_002.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_003.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_003.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_004.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_004.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_005.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_005.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_006.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_006.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_007.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_007.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_008.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_008.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_009.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_009.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_010.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_010.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_011.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_011.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_012.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_012.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_013.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_013.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_014.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_014.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_015.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_015.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_016.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_016.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_017.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_017.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_018.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_018.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_019.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_019.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_020.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_020.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_021.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_021.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_022.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_022.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_023.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_023.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_024.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_024.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_025.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_025.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_026.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_026.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_027.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_027.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_028.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_028.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_029.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_029.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e10000/image_030.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_10000eV_030.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_001.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_001.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_002.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_002.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_003.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_003.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_004.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_004.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_005.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_005.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_006.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_006.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_007.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_007.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_008.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_008.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_009.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_009.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_010.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_010.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_011.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_011.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_012.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_012.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_013.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_013.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_014.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_014.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_015.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_015.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_016.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_016.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_017.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_017.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_018.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_018.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_019.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_019.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_020.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_020.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_021.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_021.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_022.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_022.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_023.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_023.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_024.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_024.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_025.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_025.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_026.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_026.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_027.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_027.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_028.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_028.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_029.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_029.img
-2016-07-16 18:08:18 Collecting image run/raw/q55/DRT322/e11000/image_030.raw
-2016-07-16 18:08:18 Wrote transformed image run/data/DRT322/DRT322_11000eV_030.img
+2016-07-17 12:54:46 Processing samples in cassette q55
+2016-07-17 12:54:46 Sample quality cutoff: 12.0
+2016-07-17 12:54:46 Sample DRT110 had score of 10
+2016-07-17 12:54:46 Rejected sample DRT110
+2016-07-17 12:54:46 Sample DRT240 had score of 45
+2016-07-17 12:54:46 Collecting data set for sample DRT240
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_001.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_001.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_002.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_002.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_003.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_003.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_004.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_004.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_005.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_005.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_006.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_006.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_007.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_007.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_008.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_008.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_009.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_009.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_010.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_010.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_011.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_011.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_012.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_012.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_013.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_013.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_014.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_014.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_015.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_015.img
+2016-07-17 12:54:46 Collecting image run/raw/q55/DRT240/e10000/image_016.raw
+2016-07-17 12:54:46 Wrote transformed image run/data/DRT240/DRT240_10000eV_016.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_017.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_017.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_018.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_018.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_019.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_019.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_020.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_020.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_021.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_021.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_022.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_022.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_023.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_023.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_024.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_024.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_025.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_025.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_026.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_026.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_027.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_027.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_028.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_028.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_029.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_029.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_030.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_030.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_031.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_031.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_032.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_032.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_033.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_033.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_034.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_034.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_035.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_035.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_036.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_036.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_037.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_037.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_038.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_038.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_039.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_039.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_040.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_040.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_041.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_041.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_042.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_042.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_043.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_043.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_044.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_044.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_045.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_045.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_046.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_046.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e10000/image_047.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_10000eV_047.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_001.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_001.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_002.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_002.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_003.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_003.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_004.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_004.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_005.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_005.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_006.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_006.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_007.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_007.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_008.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_008.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_009.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_009.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_010.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_010.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_011.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_011.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_012.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_012.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_013.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_013.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_014.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_014.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_015.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_015.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_016.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_016.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_017.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_017.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_018.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_018.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_019.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_019.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_020.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_020.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_021.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_021.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_022.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_022.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_023.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_023.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_024.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_024.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_025.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_025.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_026.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_026.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_027.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_027.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_028.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_028.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_029.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_029.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_030.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_030.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_031.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_031.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_032.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_032.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_033.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_033.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_034.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_034.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_035.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_035.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_036.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_036.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_037.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_037.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_038.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_038.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_039.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_039.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_040.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_040.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_041.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_041.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_042.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_042.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_043.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_043.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_044.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_044.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_045.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_045.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_046.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_046.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e11000/image_047.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_11000eV_047.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_001.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_001.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_002.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_002.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_003.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_003.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_004.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_004.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_005.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_005.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_006.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_006.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_007.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_007.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_008.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_008.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_009.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_009.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_010.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_010.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_011.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_011.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_012.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_012.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_013.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_013.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_014.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_014.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_015.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_015.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_016.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_016.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_017.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_017.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_018.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_018.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_019.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_019.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_020.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_020.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_021.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_021.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_022.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_022.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_023.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_023.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_024.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_024.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_025.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_025.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_026.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_026.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_027.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_027.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_028.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_028.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_029.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_029.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_030.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_030.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_031.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_031.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_032.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_032.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_033.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_033.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_034.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_034.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_035.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_035.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_036.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_036.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_037.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_037.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_038.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_038.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_039.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_039.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_040.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_040.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_041.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_041.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_042.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_042.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_043.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_043.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_044.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_044.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_045.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_045.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_046.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_046.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT240/e12000/image_047.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT240/DRT240_12000eV_047.img
+2016-07-17 12:54:47 Sample DRT322 had score of 28
+2016-07-17 12:54:47 Collecting data set for sample DRT322
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_001.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_001.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_002.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_002.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_003.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_003.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_004.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_004.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_005.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_005.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_006.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_006.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_007.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_007.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_008.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_008.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_009.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_009.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_010.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_010.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_011.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_011.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_012.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_012.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_013.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_013.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_014.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_014.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_015.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_015.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_016.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_016.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_017.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_017.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_018.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_018.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_019.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_019.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_020.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_020.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_021.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_021.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_022.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_022.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_023.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_023.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_024.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_024.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_025.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_025.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_026.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_026.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_027.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_027.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_028.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_028.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_029.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_029.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e10000/image_030.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_10000eV_030.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_001.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_001.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_002.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_002.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_003.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_003.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_004.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_004.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_005.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_005.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_006.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_006.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_007.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_007.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_008.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_008.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_009.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_009.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_010.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_010.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_011.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_011.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_012.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_012.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_013.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_013.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_014.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_014.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_015.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_015.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_016.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_016.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_017.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_017.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_018.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_018.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_019.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_019.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_020.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_020.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_021.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_021.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_022.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_022.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_023.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_023.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_024.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_024.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_025.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_025.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_026.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_026.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_027.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_027.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_028.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_028.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_029.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_029.img
+2016-07-17 12:54:47 Collecting image run/raw/q55/DRT322/e11000/image_030.raw
+2016-07-17 12:54:47 Wrote transformed image run/data/DRT322/DRT322_11000eV_030.img

@@ -119,4 +119,4 @@ clean:
 	rm -rf $(FACTS_DIR) $(GRAPHS_DIR) run *.xwam *.gv *.png *.pdf *.P *.txt $(RULES_DIR)/*.xwam .yw_setup $(CUSTOM_TARGETS) $(CUSTOM_CLEAN)
 
 repl: $(YW_VIEWS)
-	expect $(RULES_DIR)/start_xsb.exp
+	expect $(SCRIPTS_DIR)/start_xsb.tcl
