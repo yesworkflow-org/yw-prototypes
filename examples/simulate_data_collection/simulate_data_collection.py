@@ -129,7 +129,7 @@ def simulate_data_collection(cassette_id, sample_score_cutoff, data_redundancy, 
                 """
                 average_intensity = total_intensity / pixel_count
                 with open('run/collected_images.csv', 'at') as collection_log_file:
-                    collection_log = csv.writer(collection_log_file, lineterminator=os.linesep)
+                    collection_log = csv.writer(collection_log_file, lineterminator='\n')
                     collection_log.writerow([cassette_id, sample_id, energy, average_intensity, corrected_image_file])
                 """
                 @end log_average_image_intensity

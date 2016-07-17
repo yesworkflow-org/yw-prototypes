@@ -13,16 +13,16 @@ EQ2 : What are the names N of all program blocks?
 
 eq2(ProgramName)
 ...................................................................................................
-eq2(log_rejected_sample).
-eq2(initialize_run).
-eq2(transform_images).
+eq2(transform_image).
 eq2(load_screening_results).
+eq2(initialize_run).
 eq2(collect_next_image).
 eq2(calculate_strategy).
-eq2(log_average_image_intensity).
+eq2(transform_images).
+eq2(log_rejected_sample).
 eq2(simulate_data_collection).
 eq2(collect_data_set).
-eq2(transform_image).
+eq2(log_average_image_intensity).
 
 
 ---------------------------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ yw_q2(log_average_image_intensity,'Record statistics about each diffraction imag
 yw_q2(transform_images,'Correct raw image using the detector calibration image.').
 yw_q2(collect_data_set,'Collect data set using the given data collection parameters.').
 yw_q2(log_rejected_sample,'Record which samples were rejected.').
-yw_q2(calculate_strategy,'Reject unsuitable crystals and compute 
+yw_q2(calculate_strategy,'Reject unsuitable crystals and compute 
  best data sets to collect for accepted crystals.').
 yw_q2(load_screening_results,'Load sample information from spreadsheet.').
 yw_q2(initialize_run,'Create run directory and initialize log files.').
