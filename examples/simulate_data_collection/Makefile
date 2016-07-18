@@ -31,4 +31,4 @@ yw/xsb/extract_facts.P yw/xsb/model_facts.P yw/xsb/recon_facts.P:
 
 yw/xsb/run_queries.txt:
 	cd yw/xsb; \
-	bash run_queries.sh &> run_queries.txt
+	bash run_queries.sh > run_queries.txt

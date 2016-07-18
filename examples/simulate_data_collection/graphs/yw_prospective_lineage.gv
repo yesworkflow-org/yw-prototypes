@@ -43,21 +43,21 @@ subgraph cluster_outflows_inner { label=""; color=white
 node[shape=circle fillcolor="#FFFFFF" peripheries=1 width=0.2]
 corrected_image_outflow [label=""]
 }}
-energy -> transform_images
+sample_quality -> calculate_strategy
+accepted_sample -> collect_data_set
+num_images -> collect_data_set
+energies -> collect_data_set
 cassette_id -> collect_data_set
 cassette_id -> load_screening_results
-accepted_sample -> collect_data_set
-frame_number -> transform_images
-sample_score_cutoff -> calculate_strategy
-raw_image -> transform_images
-data_redundancy -> calculate_strategy
-num_images -> collect_data_set
-sample_spreadsheet -> load_screening_results
-energies -> collect_data_set
-sample_name -> calculate_strategy
-calibration_image -> transform_images
 sample_id -> transform_images
-sample_quality -> calculate_strategy
+energy -> transform_images
+frame_number -> transform_images
+raw_image -> transform_images
+sample_score_cutoff -> calculate_strategy
+data_redundancy -> calculate_strategy
+sample_spreadsheet -> load_screening_results
+calibration_image -> transform_images
+sample_name -> calculate_strategy
 load_screening_results -> sample_name
 load_screening_results -> sample_quality
 calculate_strategy -> accepted_sample
