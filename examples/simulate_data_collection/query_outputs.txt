@@ -14,14 +14,14 @@ EQ2 : What are the names N of all program blocks?
 eq2(ProgramName)
 ...................................................................................................
 eq2(collect_next_image).
+eq2(transform_image).
 eq2(initialize_run).
 eq2(load_screening_results).
 eq2(collect_data_set).
-eq2(log_rejected_sample).
-eq2(transform_images).
-eq2(simulate_data_collection).
-eq2(transform_image).
 eq2(calculate_strategy).
+eq2(log_rejected_sample).
+eq2(simulate_data_collection).
+eq2(transform_images).
 eq2(log_average_image_intensity).
 
 
@@ -35,6 +35,7 @@ eq3(corrected_image_file).
 eq3(raw_image_file).
 eq3(rejection_log).
 eq3(run_log).
+../default_script_settings.sh
 
 
 ---------------------------------------------------------------------------------------------------
