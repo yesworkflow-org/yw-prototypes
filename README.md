@@ -64,7 +64,7 @@ And the combined view is:
 Try YesWorkflow in a web browser
 --------------------------------
 
-The easiest way to experiment with some of YesWorkflow's capabilities is to use the online [YesWorkflow Editor](http://try.yesworkflow.org) at [try.yesworkflow.org](http://try.yesworkflow.org). This web-based application displays YesWorkflow graphical representation of scripts entered into the editor and updates the graphics in real time as code is edited. Samples of scripts marked up with YesWorkflow annotations are available within the editor.
+The easiest way to experiment with YesWorkflow's basic capabilities is to use the online [YesWorkflow Editor](http://try.yesworkflow.org) at [try.yesworkflow.org](http://try.yesworkflow.org). This web-based application displays YesWorkflow graphical representations of scripts entered into the editor, and updates the graphics in real time as code is edited. Samples of scripts marked up with YesWorkflow annotations are available for experimentation within the editor.
 
 Install YesWorkflow on your own computer
 ----------------------------------------
@@ -90,7 +90,7 @@ YesWorkflow produces graphical representations that are rendered using Graphviz 
 
 ### 3. Download the YesWorkflow jar file
 
-The YesWorkflow prototype is distributed as a jar (Java archive) file that can be executed using the `java -jar` command. Download the executable jar file [yesworkflow-0.2.0-jar-with-dependencies.jar](https://github.com/yesworkflow-org/yw-prototypes/releases/download/v0.2.0/yesworkflow-0.2.0-jar-with-dependencies.jar) from the [YesWorkflow 0.2.0 prelease](https://github.com/yesworkflow-org/yw-prototypes/releases/tag/v0.2.0/) and save the file in a convenient location. YesWorkflow now can be run using the `java -jar` command.  Test that the jar works correctly using the `--help` option to display usage information and command line options for YesWorkflow:
+The YesWorkflow prototype is distributed as a jar (Java archive) file that can be executed using the `java -jar` command. Download [yesworkflow-0.2.0-jar-with-dependencies.jar](https://github.com/yesworkflow-org/yw-prototypes/releases/download/v0.2.0/yesworkflow-0.2.0-jar-with-dependencies.jar) from the [YesWorkflow 0.2.0 pre-release](https://github.com/yesworkflow-org/yw-prototypes/releases/tag/v0.2.0/) and save the file in a convenient location. YesWorkflow now can be run using the `java -jar` command.  Test that the jar works correctly using the `--help` option to display usage information and command line options for YesWorkflow:
 
     $ java -jar yesworkflow-0.2.0-jar-with-dependencies.jar --help
 
