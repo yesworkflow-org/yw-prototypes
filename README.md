@@ -61,16 +61,15 @@ And the combined view is:
 
 ![example](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example_combined.png)
 
+Try YesWorkflow in a web browser
+--------------------------------
 
-#### Getting started with YesWorkflow
+The easiest way to experiment with some of YesWorkflow's capabilities is to use the online [YesWorkflow Editor](http://try.yesworkflow.org) at [try.yesworkflow.org](http://try.yesworkflow.org). This web-based application displays YesWorkflow graphical representation of scripts entered into the editor and updates the graphics in real time as code is edited. Samples of scripts marked up with YesWorkflow annotations are available within the editor.
 
-The remainder of this README provides instructions for getting started with the YesWorkflow tools, either as a user or as a developer.  There currently are two YesWorkflow prototypes in this repository.  A python implementation can be found in `src/resources/main/python`.  A  README.txt in that directory provides further information and instructions.  The remainder of this file pertains to the Java implementation.
+Install YesWorkflow on your own computer
+----------------------------------------
 
-Instructions for users
-----------------------
-
-These instruction explain how to set up an environment for running the YesWorkflow prototype on a script that has been marked up with YW comments.
-
+To take advantage of all of the features of YesWorkflow you will need to install the software on your own computer.
 
 ### 1. Check installed version of Java
 
@@ -87,19 +86,13 @@ YesWorkflow requires Java (JRE) version 1.7 or higher. To determine the version 
 
 ### 2.  Install Graphviz visualization software
 
-YesWorkflow produces graphical representations that is rendered using Graphviz or other software capable of processing DOT graph files.  You can find instructions for installing Graphviz at [http://graphviz.org/Download.php](http://graphviz.org/Download.php "http://graphviz.org/Download.php").  Make sure that the `dot` command is in your path following installation.
+YesWorkflow produces graphical representations that are rendered using Graphviz or other software capable of processing DOT graph files.  You can find instructions for installing Graphviz at [http://graphviz.org/Download.php](http://graphviz.org/Download.php "http://graphviz.org/Download.php").  Make sure that the `dot` command is in your path following installation.
 
 ### 3. Download the YesWorkflow jar file
 
-The YesWorkflow prototype is distributed as a jar (Java archive) file that can be executed using the `java -jar` command.
+The YesWorkflow prototype is distributed as a jar (Java archive) file that can be executed using the `java -jar` command. Download the executable jar file [yesworkflow-0.2.0-jar-with-dependencies.jar](https://github.com/yesworkflow-org/yw-prototypes/releases/download/v0.2.0/yesworkflow-0.2.0-jar-with-dependencies.jar) from the [YesWorkflow 0.2.0 prelease](https://github.com/yesworkflow-org/yw-prototypes/releases/tag/v0.2.0/) and save the file in a convenient location. YesWorkflow now can be run using the `java -jar` command.  Test that the jar works correctly using the `--help` option to display usage information and command line options for YesWorkflow:
 
-If you will be building YesWorkflow yourself using Maven (see *Instructions for Developers* below) then you may simply use the file `target/yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar` produced by the `mvn package` command.
-
-Otherwise download the latest automatically built jar from the build server.  Navigate to the results for the [last successful build](https://opensource.ncsa.illinois.edu/bamboo/browse/KURATOR-YW/latestSuccessful "last successful build") of YesWorkflow, click the *Artifacts* tab, then download the `executable jar`.  The file will be named `yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar`.
-
-Once you have obtained the YesWorkflow jar, save the file in a convenient location.   YesWorkflow can now be run using the `java -jar` command.  Test that the jar works correctly using the `--help` option to display usage information and command line options for YesWorkflow:
-
-    $ java -jar yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar --help
+    $ java -jar yesworkflow-0.2.0-jar-with-dependencies.jar --help
 
     usage: yw <command> [source file(s)] [-c <name=value>]...
 
@@ -149,13 +142,13 @@ Once you have obtained the YesWorkflow jar, save the file in a convenient locati
 
 If you are running YesWorkflow on an Apple OSX or Linux system (or use Git Bash or Cygwin on Windows), you may define a bash alias to simplify running YesWorkflow at the command line.  On Windows platforms you similarly may define a macro for running YesWorkflow at the prompt.
 
-For example, if you have saved  `yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar` to the bin subdirectory of your home directory, the following command will create a bash alias for running YesWorkflow simply by typing `yw`:
+For example, if you have saved  `yesworkflow-0.2.0-jar-with-dependencies.jar` to the bin subdirectory of your home directory, the following command will create a bash alias for running YesWorkflow simply by typing `yw`:
 
-    alias yw='java -jar ~/bin/yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar'
+    alias yw='java -jar ~/bin/yesworkflow-0.2.0-jar-with-dependencies.jar'
 
 On Windows the command to create the `yw` macro is:
 
-    doskey yw=java -jar %USERPROFILE%\bin\yesworkflow-0.2-SNAPSHOT-jar-with-dependencies.jar $*
+    doskey yw=java -jar %USERPROFILE%\bin\yesworkflow-0.2.0-jar-with-dependencies.jar $*
 
 The command to display YesWorkflow command line options is now simply:
 
@@ -164,7 +157,7 @@ The command to display YesWorkflow command line options is now simply:
 
 ### 5. Run YesWorkflow on the example python script
 
-The [`example.py`](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.py "example.py") script  is useful for demonstrating YesWorkflow capabilities. You can download it to your computer [here](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.py "example.py"). (If you have cloned the `yw-prototypes` repository, the script is in the `src/main/resources` directory.)  In the examples below it is assumed that `example.py` is in your current working directory.
+The [`example.py`](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.py "example.py") script  is useful for demonstrating YesWorkflow capabilities. You can download it to your computer [here](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example.py "example.py").  In the examples below it is assumed that `example.py` is in your current working directory.
 
 #### Extracting YW comment lines
 
