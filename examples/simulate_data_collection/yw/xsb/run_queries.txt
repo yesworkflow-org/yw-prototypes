@@ -7,16 +7,16 @@ eq1(../simulate_data_collection.py)
 ---------------------------------------------------------------------------------------------------------------------------
 eq2(ProgramName) - What are the names N of all program blocks?
 ---------------------------------------------------------------------------------------------------------------------------
+eq2(log_rejected_sample)
+eq2(load_screening_results)
 eq2(calculate_strategy)
 eq2(collect_next_image)
-eq2(log_rejected_sample)
-eq2(collect_data_set)
 eq2(transform_images)
 eq2(simulate_data_collection)
-eq2(initialize_run)
 eq2(log_average_image_intensity)
-eq2(load_screening_results)
 eq2(transform_image)
+eq2(initialize_run)
+eq2(collect_data_set)
 
 ---------------------------------------------------------------------------------------------------------------------------
 eq3(PortName) - What out ports are qualified with URIs?
@@ -141,28 +141,28 @@ mq16(cassette_id)
 ---------------------------------------------------------------------------------------------------------------------------
 mq17(DownstreamDataName) - What data is downstream of accepted_sample?
 ---------------------------------------------------------------------------------------------------------------------------
-mq17(collection_log)
+mq17(run_log)
+mq17(sample_id)
+mq17(frame_number)
 mq17(raw_image)
 mq17(total_intensity)
 mq17(pixel_count)
-mq17(frame_number)
-mq17(run_log)
-mq17(corrected_image)
-mq17(sample_id)
 mq17(energy)
+mq17(collection_log)
+mq17(corrected_image)
 
 ---------------------------------------------------------------------------------------------------------------------------
 mq18(UpstreamDataName) - What data is upstream of raw_image?
 ---------------------------------------------------------------------------------------------------------------------------
 mq18(energies)
 mq18(sample_score_cutoff)
-mq18(accepted_sample)
+mq18(sample_name)
 mq18(sample_spreadsheet)
+mq18(accepted_sample)
 mq18(num_images)
 mq18(sample_quality)
-mq18(data_redundancy)
-mq18(sample_name)
 mq18(cassette_id)
+mq18(data_redundancy)
 
 ---------------------------------------------------------------------------------------------------------------------------
 mq19(UriVariableName) - What URI variables are associated with writes of data simulate_data_collection[corrected_image]?
