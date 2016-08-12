@@ -9,7 +9,7 @@ label=simulate_data_collection
 
 /* Start of double cluster for drawing box around nodes in workflow */
 subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
-subgraph cluster_workflow_box_inner { label=""; color=white
+subgraph cluster_workflow_box_inner { label=""; penwidth=0
 
 /* Style for nodes representing atomic programs in workflow */
 node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
@@ -104,8 +104,8 @@ corrected_image -> log_average_image_intensity
 }}
 
 /* Hidden double-cluster for grouping workflow input ports */
-subgraph cluster_input_ports_group_outer { label=""; color=white
-subgraph cluster_input_ports_group_inner { label=""; color=white
+subgraph cluster_input_ports_group_outer { label=""; penwidth=0
+subgraph cluster_input_ports_group_inner { label=""; penwidth=0
 
 /* Style for nodes representing workflow input ports */
 node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
@@ -121,8 +121,8 @@ calibration_image_input_port [label=""]
 }}
 
 /* Hidden double-cluster for grouping workflow output ports */
-subgraph cluster_output_ports_group_outer { label=""; color=white
-subgraph cluster_output_ports_group_inner { label=""; color=white
+subgraph cluster_output_ports_group_outer { label=""; penwidth=0
+subgraph cluster_output_ports_group_inner { label=""; penwidth=0
 
 /* Style for nodes representing workflow output ports */
 node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]

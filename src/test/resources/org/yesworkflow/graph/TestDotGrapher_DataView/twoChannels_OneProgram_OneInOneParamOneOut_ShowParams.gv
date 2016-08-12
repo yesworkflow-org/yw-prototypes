@@ -5,7 +5,7 @@ rankdir=LR
 
 /* Start of double cluster for drawing box around nodes in workflow */
 subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
-subgraph cluster_workflow_box_inner { label=""; color=white
+subgraph cluster_workflow_box_inner { label=""; penwidth=0
 
 /* Style for nodes representing parameter and non-parameter data channels in workflow */
 node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]

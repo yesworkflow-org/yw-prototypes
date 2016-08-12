@@ -4,7 +4,7 @@ rankdir=LR
 fontname=Courier; fontsize=18; labelloc=t
 label="simulate_data_collection"
 subgraph cluster_workflow { label=""; color=black; penwidth=2
-subgraph cluster_workflow_inner { label=""; color=white
+subgraph cluster_workflow_inner { label=""; penwidth=0
 node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
 run_log
 sample_spreadsheet
@@ -29,8 +29,8 @@ data_redundancy
 cassette_id
 sample_score_cutoff
 }}
-subgraph cluster_inflows { label=""; color=white; penwidth=2
-subgraph cluster_inflows_inner { label=""; color=white
+subgraph cluster_inflows { label=""; penwidth=0; penwidth=2
+subgraph cluster_inflows_inner { label=""; penwidth=0
 node[shape=circle fillcolor="#FFFFFF" peripheries=1 width=0.2]
 calibration_image_inflow [label=""]
 data_redundancy_inflow [label=""]
@@ -38,8 +38,8 @@ sample_spreadsheet_inflow [label=""]
 cassette_id_inflow [label=""]
 sample_score_cutoff_inflow [label=""]
 }}
-subgraph cluster_outflows { label=""; color=white; penwidth=2
-subgraph cluster_outflows_inner { label=""; color=white
+subgraph cluster_outflows { label=""; penwidth=0; penwidth=2
+subgraph cluster_outflows_inner { label=""; penwidth=0
 node[shape=circle fillcolor="#FFFFFF" peripheries=1 width=0.2]
 rejection_log_outflow [label=""]
 collection_log_outflow [label=""]

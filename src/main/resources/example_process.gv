@@ -9,7 +9,7 @@ label=main
 
 /* Start of double cluster for drawing box around nodes in workflow */
 subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
-subgraph cluster_workflow_box_inner { label=""; color=white
+subgraph cluster_workflow_box_inner { label=""; penwidth=0
 
 /* Style for nodes representing atomic programs in workflow */
 node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
