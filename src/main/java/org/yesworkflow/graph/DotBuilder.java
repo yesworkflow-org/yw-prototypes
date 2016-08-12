@@ -90,10 +90,10 @@ public class DotBuilder {
         if (visible) {
             _buffer.append(String.format(   "subgraph %s { label=%s; color=black; penwidth=2", q(outer), q("") ));
         } else {
-            _buffer.append(String.format(   "subgraph %s { label=%s; color=white", q(outer), q("")             ));
+            _buffer.append(String.format(   "subgraph %s { label=%s; penwidth=0", q(outer), q("")             ));
         }
         _buffer.append(                     EOL                                                                 );
-        _buffer.append(String.format(       "subgraph %s { label=%s; color=white", q(inner), q("")             ));
+        _buffer.append(String.format(       "subgraph %s { label=%s; penwidth=0", q(inner), q("")             ));
         _buffer.append(                     EOL                                                                 );
         
         return this;
