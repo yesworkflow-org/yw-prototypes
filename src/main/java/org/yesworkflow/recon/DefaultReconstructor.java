@@ -17,7 +17,7 @@ public class DefaultReconstructor implements Reconstructor  {
     private PrintStream stderrStream = null;
     private Run run = null;
     private String factsFile = null;
-    private String reconFacts = null;
+    private Map<String, String> reconFacts = null;
     private QueryEngine queryEngine = DEFAULT_QUERY_ENGINE;
     private ResourceFinder resourceFinder = null;
     private Map<String,Object> finderConfiguration = null;
@@ -98,13 +98,13 @@ public class DefaultReconstructor implements Reconstructor  {
     @Override
     public DefaultReconstructor recon() throws Exception {
         if (factsFile != null) {
-            writeTextToFileOrStdout(factsFile, getFacts());
+            writeTextsToFilesOrStdout(factsFile, getFacts());
         }
         return this;
     }
     
     @Override
-    public String getFacts() throws Exception {
+    public Map<String, String> getFacts() throws Exception {
         
         if (resourceFinder == null) {
             resourceFinder= new FileResourceFinder();
@@ -115,16 +115,28 @@ public class DefaultReconstructor implements Reconstructor  {
         }
         
         if (reconFacts == null) {
-            reconFacts = new ReconFacts(queryEngine, run, resourceFinder).build().toString();
+            reconFacts = new ReconFacts(queryEngine, run, resourceFinder).build().facts();
         }
         return reconFacts;
     }
     
-    private void writeTextToFileOrStdout(String path, String text) throws IOException {  
-        PrintStream stream = (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
-                             this.stdoutStream : new PrintStream(path);
-        stream.print(text);
-        if (stream != this.stdoutStream) {
+    private void writeTextsToFilesOrStdout(String path, Map<String,String> texts) throws IOException {
+        
+        if (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) {
+            for (Map.Entry<String, String> entry : texts.entrySet()) {
+                this.stdoutStream.print(entry.getValue());            
+            }
+        } else if (queryEngine == QueryEngine.CSV) {
+             for (Map.Entry<String, String> entry : texts.entrySet()) {
+                PrintStream stream = new PrintStream(path + "_" + entry.getKey() + ".csv");
+                stream.print(entry.getValue());
+                stream.close();
+            }
+        } else {
+            PrintStream stream = new PrintStream(path);
+            for (Map.Entry<String, String> entry : texts.entrySet()) {
+                stream.print(entry.getValue());
+            }
             stream.close();
         }
     }

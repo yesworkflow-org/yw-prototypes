@@ -8,8 +8,7 @@
 
     <groupId>org.yesworkflow</groupId>
     <artifactId>yesworkflow</artifactId>
-    <!-- <version>0.2-SNAPSHOT</version> -->
-    <version>0.2.0</version>
+    <version>0.2.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <organization>
@@ -106,10 +105,53 @@
             <version>3.6.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.1</version>
+        </dependency>
+    
     </dependencies>
 
     <build>
+    
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>maven.properties</include>
+                </includes>
+            </resource>
+        </resources>
+    
         <plugins>
+
+             <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/classes/examples</outputDirectory>
+                            <resources>          
+                                <resource>
+                                    <directory>examples</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>              
+                        </configuration>       
+                    </execution>
+                </executions>
+            </plugin>
 
             <!-- Set Java compiler source and target versions -->
             <plugin>
@@ -182,7 +224,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>yesworkflow-0.2-SNAPSHOT</finalName>
+                    <finalName>yesworkflow-0.2.1-SNAPSHOT</finalName>
                 </configuration>
                 <executions>
                     <execution>
@@ -233,6 +275,26 @@
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions><execution><goals><goal>revision</goal></goals></execution></executions>
+                <configuration>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                    <format>properties</format>
+                    <skipPoms>true</skipPoms>
+                    <failOnNoGitDirectory>true</failOnNoGitDirectory>
+                    <failOnUnableToExtractRepoInfo>true</failOnUnableToExtractRepoInfo>
+                    <skip>false</skip>
+                    <runOnlyOnce>false</runOnlyOnce>
+                    <useNativeGit>false</useNativeGit>
+                    <abbrevLength>7</abbrevLength>
+                    <commitIdGenerationMode>flat</commitIdGenerationMode>
                 </configuration>
             </plugin>
 

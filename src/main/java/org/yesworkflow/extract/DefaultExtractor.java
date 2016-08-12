@@ -26,6 +26,7 @@ import org.yesworkflow.annotations.Desc;
 import org.yesworkflow.annotations.End;
 import org.yesworkflow.annotations.FileUri;
 import org.yesworkflow.annotations.In;
+import org.yesworkflow.annotations.Log;
 import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Param;
 import org.yesworkflow.annotations.Qualification;
@@ -36,7 +37,6 @@ import org.yesworkflow.db.Table;
 import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.exceptions.YWToolUsageException;
 import org.yesworkflow.query.QueryEngine;
-import org.yesworkflow.query.QueryEngineModel;
 
 import static org.yesworkflow.db.Table.*;
 import static org.yesworkflow.db.Column.*;
@@ -60,7 +60,7 @@ public class DefaultExtractor implements Extractor {
     private String factsFile = null;
     private String skeletonFile = null;
     private String skeleton = null;
-    private String extractFacts = null;
+    private Map<String, String> extractFacts = null;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
 
@@ -151,9 +151,9 @@ public class DefaultExtractor implements Extractor {
     }
 	
 	@Override
-    public String getFacts(QueryEngineModel queryEngineModel) {
+    public Map<String, String>  getFacts() throws IOException {
         if (extractFacts == null) {
-            extractFacts = new ExtractFacts(ywdb, queryEngineModel, allAnnotations).build().toString();
+            extractFacts = new ExtractFacts(ywdb, this.queryEngine, allAnnotations).build().facts();
         }
         return extractFacts;
     }	
@@ -170,9 +170,8 @@ public class DefaultExtractor implements Extractor {
             stderrStream.println("WARNING: No YW comments found in source code.");
         }
 
-        if (factsFile != null) {
-            QueryEngineModel queryEngineModel = new QueryEngineModel(queryEngine);
-            writeTextToFileOrStdout(factsFile, getFacts(queryEngineModel));
+        if (factsFile != null) {;
+            writeTextsToFilesOrStdout(factsFile, getFacts());
         }
         
         return this;
@@ -253,6 +252,25 @@ public class DefaultExtractor implements Extractor {
         }
     }
 
+    private void writeTextsToFilesOrStdout(String path, Map<String,String> texts) throws IOException {
+    
+        if (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) {
+            for (Map.Entry<String, String> entry : texts.entrySet()) {
+                this.stdoutStream.print(entry.getValue());            
+            }
+        } else if (queryEngine == QueryEngine.CSV) {
+             for (Map.Entry<String, String> entry : texts.entrySet()) {
+                writeTextToFileOrStdout(path + "_" + entry.getKey() + ".csv", entry.getValue());            
+            }
+        } else {
+            PrintStream stream = new PrintStream(path);
+            for (Map.Entry<String, String> entry : texts.entrySet()) {
+                stream.print(entry.getValue());            
+            }
+            stream.close();
+        }
+    }
+    
     private void writeTextToFileOrStdout(String path, String text) throws IOException {  
         PrintStream stream = (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) ?
                              this.stdoutStream : new PrintStream(path);
@@ -300,6 +318,8 @@ public class DefaultExtractor implements Extractor {
                     case FILE:      annotation = new FileUri(id, sourceId, lineNumber, annotationString, primaryAnnotation);
                                     break;
                     case IN:        annotation = new In(id, sourceId, lineNumber, annotationString);
+                                    break;
+                    case LOG:       annotation = new Log(id, sourceId, lineNumber, annotationString, (Out) primaryAnnotation);
                                     break;
                     case OUT:       annotation = new Out(id, sourceId, lineNumber, annotationString);
                                     break;

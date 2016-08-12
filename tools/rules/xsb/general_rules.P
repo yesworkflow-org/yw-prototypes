@@ -1,0 +1,37 @@
+compiler_options([xpp_on]).
+
+eol :- write('\n').
+
+llength([],0).
+llength([_|T], N) :- llength(T, Nt), N is Nt + 1.
+
+banner(Name, Description, Signature) :-
+    eol,
+    eol,
+    write('---------------------------------------------------------------------------------------------------'), eol,
+    write(Name),
+    write(' : '),
+    write(Description), eol,
+    eol,
+    write(Signature), eol,
+    write('...................................................................................................'), eol.
+
+rule_banner(Description) :-
+    eol,
+    eol,
+    write('%---------------------------------------------------------------------------------------------------'), eol,
+    write('% FACT: '),
+    write(Description), eol,
+    write('%...................................................................................................'), eol.
+
+printall(Q) :-
+    call(Q),
+    writeq(Q),
+    write('.'), eol,
+    fail
+    ;
+    true.
+
+count(Goal, Count) :-
+    findall(_, Goal, List),
+    llength(List, Count).

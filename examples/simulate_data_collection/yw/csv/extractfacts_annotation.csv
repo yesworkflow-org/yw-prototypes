@@ -1,0 +1,133 @@
+annotation_id,source_id,line_number,tag,keyword,value
+1,1,12,begin,@begin,simulate_data_collection
+2,1,12,desc,@desc,Workflow for collecting diffraction data from high quality crystals in a cassette.
+3,1,14,param,@param,cassette_id
+4,1,14,desc,@desc,The unique ID of the cassette containing the crystals.
+5,1,15,param,@param,sample_score_cutoff
+6,1,15,desc,@desc,The minimum quality score required of crystals.
+7,1,16,param,@param,data_redundancy
+8,1,16,desc,@desc,The desired redundancy of the data sets collected.
+9,1,17,in,@in,sample_spreadsheet
+10,1,17,desc,@desc,CSV file giving quality score for each crystal.
+11,1,18,uri,@uri,file:cassette_{cassette_id}_spreadsheet.csv
+12,1,19,in,@in,calibration_image
+13,1,19,desc,@desc,File used to correct raw diffraction images.
+14,1,20,uri,@uri,file:calibration.img
+15,1,22,out,@out,corrected_image
+16,1,22,desc,@desc,The corrected diffraction images collected on all crystals.
+17,1,23,uri,@uri,file:run/data/{}/{}_{}eV_{}.img
+18,1,24,out,@out,run_log
+19,1,24,uri,@uri,file:run/run_log.txt
+20,1,25,out,@out,collection_log
+21,1,25,uri,@uri,file:run/collected_images.csv
+22,1,26,out,@out,rejection_log
+23,1,26,uri,@uri,file:run/rejected_samples.txt
+24,1,31,begin,@begin,initialize_run
+25,1,31,desc,@desc,Create run directory and initialize log files.
+26,1,32,param,@param,cassette_id
+27,1,33,param,@param,sample_score_cutoff
+28,1,34,out,@out,run_log
+29,1,48,end,@end,initialize_run
+30,1,52,begin,@begin,load_screening_results
+31,1,52,desc,@desc,Load sample information from spreadsheet.
+32,1,53,param,@param,cassette_id
+33,1,54,in,@in,sample_spreadsheet
+34,1,54,uri,@uri,file:cassette_{cassette_id}_spreadsheet.csv
+35,1,55,out,@out,sample_name
+36,1,56,out,@out,sample_quality
+37,1,57,out,@out,run_log
+38,1,64,end,@end,load_screening_results
+39,1,68,begin,@begin,calculate_strategy
+40,1,68,desc,@desc,Reject unsuitable crystals and compute \n best data sets to collect for accepted crystals.
+41,1,69,param,@param,sample_score_cutoff
+42,1,70,param,@param,data_redundancy
+43,1,71,in,@in,sample_name
+44,1,72,in,@in,sample_quality
+45,1,73,out,@out,accepted_sample
+46,1,74,out,@out,rejected_sample
+47,1,75,out,@out,num_images
+48,1,76,out,@out,energies
+49,1,81,end,@end,calculate_strategy
+50,1,85,begin,@begin,log_rejected_sample
+51,1,85,desc,@desc,Record which samples were rejected.
+52,1,86,param,@param,cassette_id
+53,1,87,in,@in,rejected_sample
+54,1,88,out,@out,rejection_log
+55,1,88,uri,@uri,file:run/rejected_samples.txt
+56,1,98,end,@end,log_rejected_sample
+57,1,102,begin,@begin,collect_data_set
+58,1,102,desc,@desc,Collect data set using the given data collection parameters.
+59,1,103,call,@call,collect_next_image
+60,1,104,param,@param,cassette_id
+61,1,105,param,@param,num_images
+62,1,106,in,@in,accepted_sample
+63,1,107,in,@in,energies
+64,1,108,out,@out,sample_id
+65,1,108,desc,@desc,The crystal that the diffraction image was collected from.
+66,1,109,out,@out,energy
+67,1,109,desc,@desc,Energy (in eV) at which the diffraction image was collected.
+68,1,110,out,@out,frame_number
+69,1,110,desc,@desc,Index of diffraction image within data set.
+70,1,111,out,@out,raw_image_path
+71,1,111,desc,@desc,Path of file storing the raw diffraction image.
+72,1,112,uri,@uri,file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw
+73,1,113,as,@as,raw_image
+74,1,114,out,@out,run_log
+75,1,125,end,@end,collect_data_set
+76,1,129,begin,@begin,transform_images
+77,1,129,desc,@desc,Correct raw image using the detector calibration image.
+78,1,130,call,@call,transform_image
+79,1,131,in,@in,sample_id
+80,1,132,in,@in,energy
+81,1,133,in,@in,frame_number
+82,1,134,in,@in,raw_image_path
+83,1,134,as,@as,raw_image
+84,1,135,in,@in,calibration_image
+85,1,135,uri,@uri,file:calibration.img
+86,1,136,out,@out,corrected_image
+87,1,136,uri,@uri,file:run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img
+88,1,137,out,@out,corrected_image_path
+89,1,138,out,@out,total_intensity
+90,1,139,out,@out,pixel_count
+91,1,140,out,@out,run_log
+92,1,149,end,@end,transform_images
+93,1,153,begin,@begin,log_average_image_intensity
+94,1,153,desc,@desc,Record statistics about each diffraction image.
+95,1,154,param,@param,cassette_id
+96,1,155,param,@param,sample_id
+97,1,156,param,@param,frame_number
+98,1,157,in,@in,corrected_image_path
+99,1,158,in,@in,total_intensity
+100,1,159,in,@in,pixel_count
+101,1,160,out,@out,collection_log
+102,1,160,uri,@uri,file:run/collected_images.csv
+103,1,169,end,@end,log_average_image_intensity
+104,1,173,end,@end,simulate_data_collection
+105,1,177,begin,@begin,calculate_strategy
+106,1,178,param,@param,sample_name
+107,1,179,param,@param,sample_quality
+108,1,180,param,@param,sample_score_cutoff
+109,1,181,param,@param,data_redundancy
+110,1,182,return,@return,accepted_sample
+111,1,183,return,@return,rejected_sample
+112,1,184,return,@return,num_images
+113,1,185,return,@return,energies
+114,1,201,end,@end,calculate_strategy
+115,1,205,begin,@begin,collect_next_image
+116,1,206,param,@param,cassette_id
+117,1,207,param,@param,sample_id
+118,1,208,param,@param,num_images
+119,1,209,param,@param,energies
+120,1,210,param,@param,image_path_template
+121,1,211,return,@return,energy
+122,1,212,return,@return,frame_number
+123,1,213,return,@return,intensity
+124,1,214,return,@return,raw_image_path
+125,1,227,end,@end,collect_next_image
+126,1,231,begin,@begin,transform_image
+127,1,232,param,@param,raw_image_path
+128,1,233,param,@param,corrected_image_path
+129,1,234,param,@param,calibration_image_path
+130,1,235,return,@return,total_intensity
+131,1,236,return,@return,pixel_count
+132,1,257,end,@end,transform_image

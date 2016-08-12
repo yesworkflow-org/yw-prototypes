@@ -16,60 +16,24 @@ import java.util.Set;
  */
 public class YWKeywords {
 
-    /** Enumeration of unique YW tags, each corresponding to one or more 
-     * recognized YW keywords. 
-     */
-    public enum Tag {
-        AS,
-        BEGIN,
-        CALL,
-        DESC,
-        END,
-        FILE,
-        IN,
-        OUT,
-        PARAM,
-        RETURN,
-        URI;
-    }
+    /** Enumeration of unique YW tags. */
+    public enum Tag { AS, BEGIN, CALL, DESC, END, FILE, IN, LOG, OUT, PARAM, RETURN, URI;}
     
-    /** Definition of the standard keyword for the AS tag. */
+    /** Definitions of the standard keyword for the each tag. */
     public static final String STANDARD_AS_KEYWORD              = "@as";
-
-    /** Definition of the standard keyword for the BEGIN tag. */
     public static final String STANDARD_BEGIN_KEYWORD           = "@begin";
-    
-    /** Definition of the standard keyword for the CALL tag. */
     public static final String STANDARD_CALL_KEYWORD            = "@call";
-
-    /** Definition of the standard keyword for the DESC tag. */
     public static final String STANDARD_DESC_KEYWORD            = "@desc";
-
-    /** Definition of the standard keyword for the END tag. */
     public static final String STANDARD_END_KEYWORD             = "@end";
-    
-    /** Definition of the standard keyword for the FILE tag. */
     public static final String STANDARD_FILE_KEYWORD            = "@file";
-
-    /** Definition of the standard keyword for the IN tag. */
     public static final String STANDARD_IN_KEYWORD              = "@in";
-    
-    /** Definition of the standard keyword for the OUT tag. */
+    public static final String STANDARD_LOG_KEYWORD             = "@log";
     public static final String STANDARD_OUT_KEYWORD             = "@out";
-
-    /** Definition of the standard keyword for the PARAM tag. */
     public static final String STANDARD_PARAM_KEYWORD           = "@param";
-
-    /** Definition of the standard keyword for the RETURN tag. */
     public static final String STANDARD_RETURN_KEYWORD          = "@return";
-
-    /** Definition of the standard keyword for the URI tag. */
     public static final String STANDARD_URI_KEYWORD             = "@uri";
-    
-    /** Backing for one-to-one mapping from tag to standard keyword */
-    private Map<Tag,String> standardkeywordForTag = new HashMap<Tag,String>();
 
-    /** Backing for many-to-one mapping from keyword to tag */
+    private Map<Tag,String> standardkeywordForTag = new HashMap<Tag,String>();
     private Map<String,Tag> tagForKeyword = new HashMap<String,Tag>();
     
     /** Default constructor that assigns the standard keyword to each tag. */
@@ -81,6 +45,7 @@ public class YWKeywords {
         setStandardKeyword(    STANDARD_END_KEYWORD,    Tag.END     );
         setStandardKeyword(    STANDARD_FILE_KEYWORD,   Tag.FILE    );
         setStandardKeyword(    STANDARD_IN_KEYWORD,     Tag.IN      );
+        setStandardKeyword(    STANDARD_LOG_KEYWORD,    Tag.LOG     );
         setStandardKeyword(    STANDARD_OUT_KEYWORD,    Tag.OUT     );
         setStandardKeyword(    STANDARD_PARAM_KEYWORD,  Tag.PARAM   );
         setStandardKeyword(    STANDARD_RETURN_KEYWORD, Tag.RETURN  );

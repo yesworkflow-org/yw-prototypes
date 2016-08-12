@@ -1,0 +1,403 @@
+
+% FACT: program(program_id, program_name, qualified_program_name, begin_annotation_id, end_annotation_id).
+program(1, 'simulate_data_collection', 'simulate_data_collection', 1, 111).
+program(2, 'initialize_run', 'simulate_data_collection.initialize_run', 19, 27).
+program(3, 'load_screening_results', 'simulate_data_collection.load_screening_results', 28, 39).
+program(4, 'calculate_strategy', 'simulate_data_collection.calculate_strategy', 40, 50).
+program(5, 'log_rejected_sample', 'simulate_data_collection.log_rejected_sample', 51, 58).
+program(6, 'collect_data_set', 'simulate_data_collection.collect_data_set', 59, 79).
+program(7, 'transform_images', 'simulate_data_collection.transform_images', 80, 97).
+program(8, 'log_average_image_intensity', 'simulate_data_collection.log_average_image_intensity', 98, 110).
+program(9, 'calculate_strategy', 'calculate_strategy', 112, 121).
+program(10, 'collect_next_image', 'collect_next_image', 122, 132).
+program(11, 'transform_image', 'transform_image', 133, 140).
+
+% FACT: workflow(program_id).
+workflow(1).
+workflow(11).
+
+% FACT: function(program_id).
+function(9).
+function(10).
+function(11).
+
+% FACT: has_subprogram(program_id, subprogram_id).
+has_subprogram(1, 2).
+has_subprogram(1, 3).
+has_subprogram(1, 4).
+has_subprogram(1, 5).
+has_subprogram(1, 6).
+has_subprogram(1, 7).
+has_subprogram(1, 8).
+
+% FACT: port(port_id, port_type, port_name, qualified_port_name, port_annotation_id, data_id).
+port(1, 'param', 'cassette_id', 'simulate_data_collection<-cassette_id', 3, 1).
+port(2, 'param', 'sample_score_cutoff', 'simulate_data_collection<-sample_score_cutoff', 5, 2).
+port(3, 'param', 'data_redundancy', 'simulate_data_collection<-data_redundancy', 7, 3).
+port(4, 'in', 'sample_spreadsheet', 'simulate_data_collection<-sample_spreadsheet', 9, 4).
+port(5, 'in', 'calibration_image_file', 'simulate_data_collection<-calibration_image_file', 11, 5).
+port(6, 'out', 'corrected_image', 'simulate_data_collection->corrected_image', 14, 6).
+port(7, 'out', 'run_log', 'simulate_data_collection->run_log', 16, 7).
+port(8, 'out', 'collection_log', 'simulate_data_collection->collection_log', 17, 8).
+port(9, 'out', 'rejection_log', 'simulate_data_collection->rejection_log', 18, 9).
+port(10, 'param', 'cassette_id', 'simulate_data_collection.initialize_run<-cassette_id', 21, 10).
+port(11, 'param', 'sample_score_cutoff', 'simulate_data_collection.initialize_run<-sample_score_cutoff', 22, 11).
+port(12, 'out', 'run_log', 'simulate_data_collection.initialize_run->run_log', 23, 12).
+port(13, 'param', 'cassette_id', 'simulate_data_collection.load_screening_results<-cassette_id', 30, 10).
+port(14, 'in', 'sample_spreadsheet_file', 'simulate_data_collection.load_screening_results<-sample_spreadsheet_file', 31, 13).
+port(15, 'out', 'sample_name', 'simulate_data_collection.load_screening_results->sample_name', 34, 14).
+port(16, 'out', 'sample_quality', 'simulate_data_collection.load_screening_results->sample_quality', 35, 15).
+port(17, 'out', 'run_log', 'simulate_data_collection.load_screening_results->run_log', 36, 12).
+port(18, 'param', 'sample_score_cutoff', 'simulate_data_collection.calculate_strategy<-sample_score_cutoff', 42, 11).
+port(19, 'param', 'data_redundancy', 'simulate_data_collection.calculate_strategy<-data_redundancy', 43, 16).
+port(20, 'param', 'sample_name', 'simulate_data_collection.calculate_strategy<-sample_name', 44, 14).
+port(21, 'param', 'sample_quality', 'simulate_data_collection.calculate_strategy<-sample_quality', 45, 15).
+port(22, 'out', 'accepted_sample', 'simulate_data_collection.calculate_strategy->accepted_sample', 46, 17).
+port(23, 'out', 'rejected_sample', 'simulate_data_collection.calculate_strategy->rejected_sample', 47, 18).
+port(24, 'out', 'num_images', 'simulate_data_collection.calculate_strategy->num_images', 48, 19).
+port(25, 'out', 'energies', 'simulate_data_collection.calculate_strategy->energies', 49, 20).
+port(26, 'param', 'cassette_id', 'simulate_data_collection.log_rejected_sample<-cassette_id', 53, 10).
+port(27, 'param', 'rejected_sample', 'simulate_data_collection.log_rejected_sample<-rejected_sample', 54, 18).
+port(28, 'out', 'rejection_log', 'simulate_data_collection.log_rejected_sample->rejection_log', 55, 21).
+port(29, 'param', 'cassette_id', 'simulate_data_collection.collect_data_set<-cassette_id', 61, 10).
+port(30, 'param', 'num_images', 'simulate_data_collection.collect_data_set<-num_images', 62, 19).
+port(31, 'param', 'accepted_sample', 'simulate_data_collection.collect_data_set<-accepted_sample', 63, 17).
+port(32, 'param', 'energies', 'simulate_data_collection.collect_data_set<-energies', 64, 20).
+port(33, 'out', 'sample_id', 'simulate_data_collection.collect_data_set->sample_id', 65, 22).
+port(34, 'out', 'energy', 'simulate_data_collection.collect_data_set->energy', 67, 23).
+port(35, 'out', 'frame_number', 'simulate_data_collection.collect_data_set->frame_number', 69, 24).
+port(36, 'out', 'raw_image_file', 'simulate_data_collection.collect_data_set->raw_image_file', 71, 25).
+port(37, 'out', 'run_log', 'simulate_data_collection.collect_data_set->run_log', 75, 12).
+port(38, 'param', 'sample_id', 'simulate_data_collection.transform_images<-sample_id', 82, 22).
+port(39, 'param', 'energy', 'simulate_data_collection.transform_images<-energy', 83, 23).
+port(40, 'param', 'frame_number', 'simulate_data_collection.transform_images<-frame_number', 84, 24).
+port(41, 'in', 'raw_image_file', 'simulate_data_collection.transform_images<-raw_image_file', 85, 25).
+port(42, 'in', 'calibration_image_file', 'simulate_data_collection.transform_images<-calibration_image_file', 87, 26).
+port(43, 'out', 'corrected_image_file', 'simulate_data_collection.transform_images->corrected_image_file', 89, 27).
+port(44, 'out', 'total_intensity', 'simulate_data_collection.transform_images->total_intensity', 92, 28).
+port(45, 'out', 'pixel_count', 'simulate_data_collection.transform_images->pixel_count', 93, 29).
+port(46, 'out', 'run_log', 'simulate_data_collection.transform_images->run_log', 94, 12).
+port(47, 'param', 'cassette_id', 'simulate_data_collection.log_average_image_intensity<-cassette_id', 100, 10).
+port(48, 'param', 'sample_id', 'simulate_data_collection.log_average_image_intensity<-sample_id', 101, 22).
+port(49, 'param', 'frame_number', 'simulate_data_collection.log_average_image_intensity<-frame_number', 102, 24).
+port(50, 'param', 'total_intensity', 'simulate_data_collection.log_average_image_intensity<-total_intensity', 103, 28).
+port(51, 'param', 'pixel_count', 'simulate_data_collection.log_average_image_intensity<-pixel_count', 104, 29).
+port(52, 'in', 'corrected_image_file', 'simulate_data_collection.log_average_image_intensity<-corrected_image_file', 105, 27).
+port(53, 'out', 'collection_log', 'simulate_data_collection.log_average_image_intensity->collection_log', 107, 30).
+port(54, 'param', 'sample_name', 'calculate_strategy<-sample_name', 113, 14).
+port(55, 'param', 'sample_quality', 'calculate_strategy<-sample_quality', 114, 15).
+port(56, 'param', 'sample_score_cutoff', 'calculate_strategy<-sample_score_cutoff', 115, 11).
+port(57, 'param', 'data_redundancy', 'calculate_strategy<-data_redundancy', 116, 16).
+port(62, 'param', 'cassette_id', 'collect_next_image<-cassette_id', 123, 10).
+port(63, 'param', 'sample_id', 'collect_next_image<-sample_id', 124, 22).
+port(64, 'param', 'num_images', 'collect_next_image<-num_images', 125, 19).
+port(65, 'param', 'energies', 'collect_next_image<-energies', 126, 20).
+port(66, 'param', 'image_path_template', 'collect_next_image<-image_path_template', 127, 31).
+port(71, 'param', 'raw_image_path', 'transform_image<-raw_image_path', 134, 33).
+port(72, 'param', 'corrected_image_path', 'transform_image<-corrected_image_path', 135, 34).
+port(73, 'param', 'calibration_image_path', 'transform_image<-calibration_image_path', 136, 35).
+
+% FACT: port_alias(port_id, alias).
+port_alias(5, 'calibration_image').
+port_alias(14, 'sample_spreadsheet').
+port_alias(36, 'raw_image').
+port_alias(41, 'raw_image').
+port_alias(42, 'calibration_image').
+port_alias(43, 'corrected_image').
+port_alias(52, 'corrected_image').
+
+% FACT: port_uri_template(port_id, uri).
+port_uri_template(12, 'file:run/run_log.txt').
+port_uri_template(14, 'file:cassette_{cassette_id}_spreadsheet.csv').
+port_uri_template(17, 'file:run/run_log.txt').
+port_uri_template(28, 'file:run/rejected_samples.txt').
+port_uri_template(36, 'file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw').
+port_uri_template(37, 'file:run/run_log.txt').
+port_uri_template(43, 'file:run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img').
+port_uri_template(46, 'file:run/run_log.txt').
+port_uri_template(53, 'file:run/collected_images.csv').
+
+% FACT: has_in_port(block_id, port_id).
+has_in_port(1, 1).
+has_in_port(1, 2).
+has_in_port(1, 3).
+has_in_port(1, 4).
+has_in_port(1, 5).
+has_in_port(2, 10).
+has_in_port(2, 11).
+has_in_port(3, 13).
+has_in_port(3, 14).
+has_in_port(4, 18).
+has_in_port(4, 19).
+has_in_port(4, 20).
+has_in_port(4, 21).
+has_in_port(5, 26).
+has_in_port(5, 27).
+has_in_port(6, 29).
+has_in_port(6, 30).
+has_in_port(6, 31).
+has_in_port(6, 32).
+has_in_port(7, 38).
+has_in_port(7, 39).
+has_in_port(7, 40).
+has_in_port(7, 41).
+has_in_port(7, 42).
+has_in_port(8, 47).
+has_in_port(8, 48).
+has_in_port(8, 49).
+has_in_port(8, 50).
+has_in_port(8, 51).
+has_in_port(8, 52).
+has_in_port(9, 54).
+has_in_port(9, 55).
+has_in_port(9, 56).
+has_in_port(9, 57).
+has_in_port(10, 62).
+has_in_port(10, 63).
+has_in_port(10, 64).
+has_in_port(10, 65).
+has_in_port(10, 66).
+has_in_port(11, 71).
+has_in_port(11, 72).
+has_in_port(11, 73).
+
+% FACT: has_out_port(block_id, port_id).
+has_out_port(1, 6).
+has_out_port(1, 7).
+has_out_port(1, 8).
+has_out_port(1, 9).
+has_out_port(2, 12).
+has_out_port(3, 15).
+has_out_port(3, 16).
+has_out_port(3, 17).
+has_out_port(4, 22).
+has_out_port(4, 23).
+has_out_port(4, 24).
+has_out_port(4, 25).
+has_out_port(5, 28).
+has_out_port(6, 33).
+has_out_port(6, 34).
+has_out_port(6, 35).
+has_out_port(6, 36).
+has_out_port(6, 37).
+has_out_port(7, 43).
+has_out_port(7, 44).
+has_out_port(7, 45).
+has_out_port(7, 46).
+has_out_port(8, 53).
+
+% FACT: data(data_id, data_name, qualified_data_name).
+data(1, 'cassette_id', '[cassette_id]').
+data(2, 'sample_score_cutoff', '[sample_score_cutoff]').
+data(3, 'data_redundancy', '[data_redundancy]').
+data(4, 'sample_spreadsheet', '[sample_spreadsheet]').
+data(5, 'calibration_image', '[calibration_image]').
+data(6, 'corrected_image', '[corrected_image]').
+data(7, 'run_log', '[run_log]').
+data(8, 'collection_log', '[collection_log]').
+data(9, 'rejection_log', '[rejection_log]').
+data(10, 'cassette_id', 'simulate_data_collection[cassette_id]').
+data(11, 'sample_score_cutoff', 'simulate_data_collection[sample_score_cutoff]').
+data(12, 'run_log', 'simulate_data_collection[run_log]').
+data(13, 'sample_spreadsheet', 'simulate_data_collection[sample_spreadsheet]').
+data(14, 'sample_name', 'simulate_data_collection[sample_name]').
+data(15, 'sample_quality', 'simulate_data_collection[sample_quality]').
+data(16, 'data_redundancy', 'simulate_data_collection[data_redundancy]').
+data(17, 'accepted_sample', 'simulate_data_collection[accepted_sample]').
+data(18, 'rejected_sample', 'simulate_data_collection[rejected_sample]').
+data(19, 'num_images', 'simulate_data_collection[num_images]').
+data(20, 'energies', 'simulate_data_collection[energies]').
+data(21, 'rejection_log', 'simulate_data_collection[rejection_log]').
+data(22, 'sample_id', 'simulate_data_collection[sample_id]').
+data(23, 'energy', 'simulate_data_collection[energy]').
+data(24, 'frame_number', 'simulate_data_collection[frame_number]').
+data(25, 'raw_image', 'simulate_data_collection[raw_image]').
+data(26, 'calibration_image', 'simulate_data_collection[calibration_image]').
+data(27, 'corrected_image', 'simulate_data_collection[corrected_image]').
+data(28, 'total_intensity', 'simulate_data_collection[total_intensity]').
+data(29, 'pixel_count', 'simulate_data_collection[pixel_count]').
+data(30, 'collection_log', 'simulate_data_collection[collection_log]').
+
+% FACT: channel(channel_id, data_id).
+channel(1, 6).
+channel(2, 27).
+channel(3, 7).
+channel(4, 8).
+channel(5, 9).
+channel(6, 10).
+channel(7, 10).
+channel(8, 10).
+channel(9, 10).
+channel(10, 10).
+channel(11, 11).
+channel(12, 11).
+channel(13, 13).
+channel(14, 16).
+channel(15, 14).
+channel(16, 15).
+channel(17, 18).
+channel(18, 19).
+channel(19, 17).
+channel(20, 20).
+channel(21, 22).
+channel(22, 22).
+channel(23, 23).
+channel(24, 24).
+channel(25, 24).
+channel(26, 25).
+channel(27, 26).
+channel(28, 28).
+channel(29, 29).
+channel(30, 1).
+channel(31, 1).
+channel(32, 1).
+channel(33, 1).
+channel(34, 1).
+channel(35, 2).
+channel(36, 2).
+channel(37, 3).
+channel(38, 4).
+channel(39, 5).
+channel(40, 27).
+channel(41, 12).
+channel(42, 30).
+channel(43, 21).
+channel(44, 34).
+channel(45, 34).
+
+% FACT: port_connects_to_channel(port_id, channel_id).
+port_connects_to_channel(43, 1).
+port_connects_to_channel(43, 2).
+port_connects_to_channel(52, 2).
+port_connects_to_channel(46, 3).
+port_connects_to_channel(53, 4).
+port_connects_to_channel(28, 5).
+port_connects_to_channel(10, 6).
+port_connects_to_channel(13, 7).
+port_connects_to_channel(26, 8).
+port_connects_to_channel(29, 9).
+port_connects_to_channel(47, 10).
+port_connects_to_channel(11, 11).
+port_connects_to_channel(18, 12).
+port_connects_to_channel(14, 13).
+port_connects_to_channel(19, 14).
+port_connects_to_channel(15, 15).
+port_connects_to_channel(20, 15).
+port_connects_to_channel(16, 16).
+port_connects_to_channel(21, 16).
+port_connects_to_channel(23, 17).
+port_connects_to_channel(27, 17).
+port_connects_to_channel(24, 18).
+port_connects_to_channel(30, 18).
+port_connects_to_channel(22, 19).
+port_connects_to_channel(31, 19).
+port_connects_to_channel(25, 20).
+port_connects_to_channel(32, 20).
+port_connects_to_channel(33, 21).
+port_connects_to_channel(38, 21).
+port_connects_to_channel(33, 22).
+port_connects_to_channel(48, 22).
+port_connects_to_channel(34, 23).
+port_connects_to_channel(39, 23).
+port_connects_to_channel(35, 24).
+port_connects_to_channel(40, 24).
+port_connects_to_channel(35, 25).
+port_connects_to_channel(49, 25).
+port_connects_to_channel(36, 26).
+port_connects_to_channel(41, 26).
+port_connects_to_channel(42, 27).
+port_connects_to_channel(44, 28).
+port_connects_to_channel(50, 28).
+port_connects_to_channel(45, 29).
+port_connects_to_channel(51, 29).
+port_connects_to_channel(10, 30).
+port_connects_to_channel(13, 31).
+port_connects_to_channel(26, 32).
+port_connects_to_channel(29, 33).
+port_connects_to_channel(47, 34).
+port_connects_to_channel(11, 35).
+port_connects_to_channel(18, 36).
+port_connects_to_channel(19, 37).
+port_connects_to_channel(14, 38).
+port_connects_to_channel(42, 39).
+port_connects_to_channel(43, 40).
+port_connects_to_channel(46, 41).
+port_connects_to_channel(53, 42).
+port_connects_to_channel(28, 43).
+
+% FACT: inflow_connects_to_channel(port_id, channel_id).
+inflow_connects_to_channel(1, 6).
+inflow_connects_to_channel(1, 7).
+inflow_connects_to_channel(1, 8).
+inflow_connects_to_channel(1, 9).
+inflow_connects_to_channel(1, 10).
+inflow_connects_to_channel(2, 11).
+inflow_connects_to_channel(2, 12).
+inflow_connects_to_channel(4, 13).
+inflow_connects_to_channel(3, 14).
+inflow_connects_to_channel(5, 27).
+inflow_connects_to_channel(1, 30).
+inflow_connects_to_channel(1, 31).
+inflow_connects_to_channel(1, 32).
+inflow_connects_to_channel(1, 33).
+inflow_connects_to_channel(1, 34).
+inflow_connects_to_channel(2, 35).
+inflow_connects_to_channel(2, 36).
+inflow_connects_to_channel(3, 37).
+inflow_connects_to_channel(4, 38).
+inflow_connects_to_channel(5, 39).
+inflow_connects_to_channel(72, 44).
+inflow_connects_to_channel(72, 45).
+
+% FACT: outflow_connects_to_channel(port_id, channel_id).
+outflow_connects_to_channel(6, 1).
+outflow_connects_to_channel(7, 3).
+outflow_connects_to_channel(8, 4).
+outflow_connects_to_channel(9, 5).
+outflow_connects_to_channel(6, 40).
+outflow_connects_to_channel(7, 41).
+outflow_connects_to_channel(8, 42).
+outflow_connects_to_channel(9, 43).
+outflow_connects_to_channel(76, 44).
+outflow_connects_to_channel(76, 45).
+
+% FACT: uri_variable(uri_variable_id, variable_name, port_id).
+uri_variable(1, 'cassette_id', 14).
+uri_variable(2, 'cassette_id', 36).
+uri_variable(3, 'sample_id', 36).
+uri_variable(4, 'energy', 36).
+uri_variable(5, 'frame_number', 36).
+uri_variable(6, 'sample_id', 43).
+uri_variable(7, 'energy', 43).
+uri_variable(8, 'frame_number', 43).
+
+% FACT: log_template(log_template_id, port_id, entry_template, log_annotation_id).
+log_template(1, 12, '{timestamp} Processing samples in cassette {cassette_id}', 25).
+log_template(2, 12, 'Sample quality cutoff: {sample_score_cutoff}', 26).
+log_template(3, 17, '{timestamp} Sample {sample_id} had score of {sample_quality}', 38).
+log_template(4, 28, 'Rejected sample {rejected_sample} in cassette {cassette_id}', 57).
+log_template(5, 37, '{timestamp} Collecting data set for sample {sample_id}', 77).
+log_template(6, 37, '{timestamp} Collecting image {raw_image_path}', 78).
+log_template(7, 46, '{timestamp} Wrote transformed image {corrected_image_path}', 96).
+log_template(8, 53, '{cassette_id},{sample_id},{energy},{average_intensity},{corrected_image_path}', 109).
+
+% FACT: log_template_variable(log_variable_id, variable_name, log_template_id).
+log_template_variable(1, 'timestamp', 1).
+log_template_variable(2, 'cassette_id', 1).
+log_template_variable(3, 'sample_score_cutoff', 2).
+log_template_variable(4, 'timestamp', 3).
+log_template_variable(5, 'sample_id', 3).
+log_template_variable(6, 'sample_quality', 3).
+log_template_variable(7, 'rejected_sample', 4).
+log_template_variable(8, 'cassette_id', 4).
+log_template_variable(9, 'timestamp', 5).
+log_template_variable(10, 'sample_id', 5).
+log_template_variable(11, 'timestamp', 6).
+log_template_variable(12, 'raw_image_path', 6).
+log_template_variable(13, 'timestamp', 7).
+log_template_variable(14, 'corrected_image_path', 7).
+log_template_variable(15, 'cassette_id', 8).
+log_template_variable(16, 'sample_id', 8).
+log_template_variable(17, 'energy', 8).
+log_template_variable(18, 'average_intensity', 8).
+log_template_variable(19, 'corrected_image_path', 8).

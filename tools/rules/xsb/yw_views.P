@@ -1,0 +1,104 @@
+
+
+yw_source_file(SourceId, SourceFile) :-
+    extract_source(SourceId, SourceFile).
+
+yw_workflow_script(WorkflowId, WorkflowName, SourceId, SourceFile) :-
+    yw_workflow(WorkflowId, WorkflowName, nil, SourceId,_,_),
+    yw_source_file(SourceId, SourceFile).
+
+yw_program(ProgramId, ProgramName, ParentWorkflowId, SourceId, BeginLine, EndLine) :-
+    program(ProgramId, ProgramName, _, BeginId, EndId),
+    annotation(BeginId, SourceId, BeginLine, _, _, _),
+    annotation(EndId, SourceId, EndLine, _, _, _),
+    yw_parent_workflow(ProgramId, ParentWorkflowId, _).
+
+yw_workflow(WorkflowId, WorkflowName, ParentWorkflowId, SourceId, BeginLine, EndLine) :-
+    yw_program(WorkflowId, WorkflowName, ParentWorkflowId, SourceId, BeginLine, EndLine),
+    workflow(WorkflowId).
+
+yw_workflow_step(StepId, StepName, WorkflowId, SourceId, BeginLine, EndLine) :-
+    yw_program(StepId, StepName, WorkflowId, SourceId, BeginLine, EndLine),
+    not function(StepId),
+    WorkflowId \== 'nil'.
+
+yw_function(FunctionId, FunctionName, ParentWorkflowId, SourceId, BeginLine, EndLine) :-
+    yw_program(FunctionId, FunctionName, ParentWorkflowId, SourceId, BeginLine, EndLine),
+    function(FunctionId).
+
+:- table yw_data/4.
+yw_data(DataId, DataName, WorkflowId, WorkflowName) :-
+    data(DataId, DataName, _),
+    port(PortId, _, _, _, _, DataId),
+    yw_program_has_port(ProgramId, PortId),
+    yw_parent_workflow(ProgramId, WorkflowId, WorkflowName).
+
+yw_program_has_port(BlockId, PortId) :-
+    has_in_port(BlockId, PortId).
+yw_program_has_port(BlockId, PortId) :-
+    has_out_port(BlockId, PortId).
+
+:- table yw_step_input/7.
+yw_step_input(ProgramId, ProgramName, PortType, PortId, PortName, DataId, DataName) :-
+    _yw_input_port(PortId, PortType, PortName, DataId),
+    has_in_port(ProgramId, PortId),
+    yw_program(ProgramId, ProgramName,_,_,_,_),
+    data(DataId,DataName,_).
+
+_yw_input_port(PortId, in, PortName, DataId) :-
+    port(PortId, in, PortName, _, _, DataId).
+_yw_input_port(PortId, param, PortName, DataId) :-
+    port(PortId, param, PortName, _, _, DataId).
+
+yw_step_output(ProgramId, ProgramName, PortType, PortId, PortName, DataId, DataName) :-
+    port(PortId, 'out', PortName, _, _, DataId),
+    has_out_port(ProgramId, PortId),
+    yw_program(ProgramId, ProgramName,_,_,_,_),
+    data(DataId,DataName,_),
+    PortType = out.
+
+yw_inflow(WorkflowId, WorkflowName, StepInputDataId, StepInputDataName, StepId, StepName) :-
+    yw_step_input(StepId, StepName, _, _, _, StepInputDataId, StepInputDataName),
+    yw_step_input(WorkflowId, WorkflowName, _, _, _, _, StepInputDataName),
+    yw_parent_workflow(StepId, WorkflowId, _),
+    data(StepInputDataId, StepInputDataName, _).
+
+yw_flow(SourceProgramId, SourceProgramName, SourcePortId, SourcePortName, DataId, DataName, SinkPortId, SinkPortName, SinkProgramId, SinkProgramName) :-
+    yw_step_output(SourceProgramId, SourceProgramName, _, SourcePortId, SourcePortName, DataId, DataName),
+    yw_step_input(SinkProgramId, SinkProgramName, _, SinkPortId, SinkPortName, DataId, DataName).
+
+yw_outflow(StepId, StepName, StepOutDataId, StepOutDataName, WorkflowId, WorkflowName, WorkflowOutDataId, WorkflowOutDataName) :-
+    yw_step_output(WorkflowId, WorkflowName, _, _, _, WorkflowOutDataId, WorkflowOutDataName),
+    WorkflowOutDataName = StepOutDataName,
+    yw_step_output(StepId, StepName, _, _, _, StepOutDataId, StepOutDataName),
+    yw_parent_workflow(StepId, WorkflowId, _),
+    data(StepOutDataId, StepOutDataName,_).
+
+yw_qualified_name(EntityType, Id, QualifiedName) :-
+    program(Id, _, QualifiedName, _, _),
+    EntityType = program.
+yw_qualified_name(EntityType, Id, QualifiedName) :-
+    port(Id, _, _, QualifiedName, _, _),
+    EntityType = port.
+yw_qualified_name(EntityType, Id, QualifiedName) :-
+    data(Id, _, QualifiedName),
+    EntityType = data.
+
+yw_description(EntityType, Id, Name, Description) :-
+    program(Id, Name, _, BeginAnnotationId, _),
+    annotation_qualifies(DescAnnotationId, BeginAnnotationId),
+    annotation(DescAnnotationId, _, _, 'desc', _, Description),
+    EntityType = program.
+yw_description(EntityType, Id, Name, Description) :-
+    port(Id, _, Name,_, PortAnnotationId, _),
+    annotation_qualifies(DescAnnotationId, PortAnnotationId),
+    annotation(DescAnnotationId, _, _, 'desc', _, Description),
+    EntityType = port.
+
+% private helper rules for creating views
+
+yw_parent_workflow(ProgramId, WorkflowId, WorkflowName) :-
+    has_subprogram(WorkflowId, ProgramId),
+    program(WorkflowId, WorkflowName, _, _, _).
+yw_parent_workflow(ProgramId, nil, nil) :-
+    not has_subprogram(_,ProgramId).

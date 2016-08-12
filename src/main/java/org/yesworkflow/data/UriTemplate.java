@@ -27,15 +27,15 @@ import org.yesworkflow.util.FileIO;
  */
 public class UriTemplate extends UriBase {
 
-    private static Integer nextUriVariableId = 1;
+    private static Long nextUriVariableId = 1L;
     
 	///////////////////////////////////////////////////////////////////
 	////                    private data fields                    ////
 
 	public final String reducedPath;       // Fully reduced, directly matchable representation of the URI template
 	public final Path leadingPath;         // Portion of path preceding any path element that contains variables
-	public final UriVariable[] variables;  // Array of uri variables named in the URI template in order of their first appearnce
-    public final UriVariable[] instances;   // Array of references to URI variables in order of each occurrence in the template
+	public final TemplateVariable[] variables;  // Array of uri variables named in the URI template in order of their first appearnce
+    public final TemplateVariable[] instances;   // Array of references to URI variables in order of each occurrence in the template
 	public final String[] fragments;       // Array of strings representing non-variable portions of the template path
 	
 	///////////////////////////////////////////////////////////////////
@@ -55,23 +55,23 @@ public class UriTemplate extends UriBase {
 		List<String> variableNames = new LinkedList<String>();
 		List<String> constantFragments = new LinkedList<String>();
 		reducedPath = reduceTemplateAndExtractVariables(path, variableNames, constantFragments);
-		instances = new UriVariable[variableNames.size()];
-		Map<String,UriVariable> uriVariableForName = new LinkedHashMap<String,UriVariable>();
+		instances = new TemplateVariable[variableNames.size()];
+		Map<String,TemplateVariable> uriVariableForName = new LinkedHashMap<String,TemplateVariable>();
 		int position = 0;
 		for (String name : variableNames) {
-		    UriVariable uriVariable = uriVariableForName.get(name);
+		    TemplateVariable uriVariable = uriVariableForName.get(name);
 		    if (!name.isEmpty()) {
     		    if (uriVariable == null) {
-    		        uriVariable = new UriVariable(nextUriVariableId++, name);
+    		        uriVariable = new TemplateVariable(nextUriVariableId++, name);
     		        uriVariableForName.put(name, uriVariable);
     		    }
 		    }
 		    instances[position++] = uriVariable;
 		}
 		
-		variables = new UriVariable[uriVariableForName.size()];
+		variables = new TemplateVariable[uriVariableForName.size()];
 		int i = 0;
-		for (Map.Entry<String, UriVariable> entry : uriVariableForName.entrySet()) {
+		for (Map.Entry<String, TemplateVariable> entry : uriVariableForName.entrySet()) {
 		    variables[i++] = entry.getValue();
 		}
 
@@ -133,7 +133,7 @@ public class UriTemplate extends UriBase {
            int valueStart = start + fragments[i].length();
            int valueEnd = path.indexOf(fragments[i+1], valueStart);
            if (valueEnd == -1) throw new Exception("Cannot find fragment '" + fragments[i+1] + "' in '" + path.substring(valueStart));
-           UriVariable variable = instances[i];
+           TemplateVariable variable = instances[i];
            // TODO make sure values in concrete URI match for multiple instances of a variable
            if (variable != null && variableValues.get(variable.name) == null) {
                String value = path.substring(valueStart, valueEnd);

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.yesworkflow.Language;
+import org.yesworkflow.VersionInfo;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.cli.ExitCode;
 import org.yesworkflow.cli.YesWorkflowCLI;
@@ -16,7 +17,6 @@ import org.yesworkflow.config.YWConfiguration;
 import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.extract.DefaultExtractor;
 import org.yesworkflow.extract.Extractor;
-import org.yesworkflow.query.QueryEngineModel;
 import org.yesworkflow.YesWorkflowTestCase;
 
 public class TestYesWorkflowCLI extends YesWorkflowTestCase {
@@ -26,17 +26,39 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     private YesWorkflowDB ywdb;
     
     private static String EXPECTED_HELP_OUTPUT =
-            ""                                                                      + EOL +
-            YesWorkflowCLI.YW_CLI_USAGE_HELP                                        + EOL +
-            YesWorkflowCLI.YW_CLI_COMMAND_HELP                                      + EOL +
-            "Option                     Description                         "       + EOL +
-            "------                     -----------                         "       + EOL +
-            "-c, --config <name=value>  Assign value to configuration option"       + EOL +
-            "-h, --help                 Display this help                   "       + EOL +
-            ""                                                                      + EOL +
-             YesWorkflowCLI.YW_CLI_CONFIG_HELP                                      + EOL +
-             YesWorkflowCLI.YW_CLI_EXAMPLES_HELP                                    + EOL;
+            "-----------------------------------------------------------------------------" + EOL +
+            "YesWorkflow 0.2.1-SNAPSHOT-34 (BRANCH log-file-parsing, commit 43285b1)"       + EOL +
+            "-----------------------------------------------------------------------------" + EOL +
+            YesWorkflowCLI.YW_CLI_USAGE_HELP                                                + EOL +
+            YesWorkflowCLI.YW_CLI_COMMAND_HELP                                              + EOL +
+            "Option                     Description                           "             + EOL +
+            "------                     -----------                           "             + EOL +
+            "-c, --config <name=value>  Assigns a value to a configuration    "             + EOL +
+            "                             option.                             "             + EOL +
+            "-h, --help                 Displays this help.                   "             + EOL +
+            "-v, --version              Shows version, git, and build details."             + EOL +
+            ""                                                                              + EOL +
+             YesWorkflowCLI.YW_CLI_CONFIG_HELP                                              + EOL +
+             YesWorkflowCLI.YW_CLI_EXAMPLES_HELP                                            + EOL;
 
+    private static String EXPECTED_VERSION_OUTPUT =
+            "-----------------------------------------------------------------------------" + EOL +
+            "YesWorkflow 0.2.1-SNAPSHOT-34 (BRANCH log-file-parsing, commit 43285b1)"       + EOL +
+            "-----------------------------------------------------------------------------" + EOL +
+            "Remote repo: https://github.com/yesworkflow-org/yw-prototypes.git"             + EOL +
+            "Git branch: log-file-parsing"                                                  + EOL +
+            "Last commit: 43285b1391e48d5797344bb40c76ee7b6f0bfaa8"                         + EOL +
+            "Commit time: 24.06.2016 @ 01:08:56 PDT"                                        + EOL +
+            "Most recent tag: v0.2.0"                                                       + EOL +
+            "Commits since tag: 34"                                                         + EOL +
+            "Builder name: Timothy McPhillips"                                              + EOL +
+            "Builder email: tmcphillips@absoluteflow.org"                                   + EOL +
+            "Build host: calypso.local"                                                     + EOL +
+            "Build platform: Mac OS X 10.11.5 (x86_64)"                                     + EOL +
+            "Build Java VM: Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)"         + EOL +
+            "Build Java version: JDK 1.8.0_65"                                              + EOL +
+            "Build time: 24.06.2016 @ 10:35:34 PDT"                                         + EOL;
+    
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -56,25 +78,47 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
     }
 
     public void testYesWorkflowCLI_HelpOption() throws Exception {
-        String[] args = {"--help"};
-        ExitCode returnValue = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream).runForArgs(args);
-        assertEquals(ExitCode.SUCCESS, returnValue);
-        assertEquals("", stdoutBuffer.toString());
-        assertEquals(
-            EXPECTED_HELP_OUTPUT,
-            stderrBuffer.toString());
+        helper_TestYesWorkflowCLI_HelpOption(new String[] {"--help"});
     }
 
     public void testYesWorkflowCLI_HelpOption_Abbreviation() throws Exception {
-        String[] args = {"-h"};
-        ExitCode returnValue = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream).runForArgs(args);
-        assertEquals(ExitCode.SUCCESS, returnValue);
-        assertEquals("", stdoutBuffer.toString());
-        assertEquals(
-            EXPECTED_HELP_OUTPUT,
-            stderrBuffer.toString());
+        helper_TestYesWorkflowCLI_HelpOption(new String[] {"-h"});
     }
 
+    private void helper_TestYesWorkflowCLI_HelpOption(String[] args) throws Exception {
+        YesWorkflowCLI cli = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream);
+        cli.versionInfo = VersionInfo.loadVersionInfoFromResource(
+                "YesWorkflow", 
+                "https://github.com/yesworkflow-org/yw-prototypes.git",
+                "org/yesworkflow/testYesWorkflowCLI/git.properties",
+                "org/yesworkflow/testYesWorkflowCLI/maven.properties");
+        ExitCode returnValue = cli.runForArgs(args);
+        assertEquals(ExitCode.SUCCESS, returnValue);
+        assertEquals("", stdoutBuffer.toString());
+        assertEquals(EXPECTED_HELP_OUTPUT, stderrBuffer.toString());
+    }
+    
+    public void testYesWorkflowCLI_VersionOption() throws Exception {
+        helper_TestYesWorkflowCLI_VersionOption(new String[] {"--version"});
+    }
+    
+    public void testYesWorkflowCLI_VersionOption_Abbreviation() throws Exception {
+        helper_TestYesWorkflowCLI_VersionOption(new String[] {"-v"});
+    }
+    
+    private void helper_TestYesWorkflowCLI_VersionOption(String[] args) throws Exception {
+        YesWorkflowCLI cli = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream);
+        cli.versionInfo = VersionInfo.loadVersionInfoFromResource(
+                "YesWorkflow", 
+                "https://github.com/yesworkflow-org/yw-prototypes.git",
+                "org/yesworkflow/testYesWorkflowCLI/git.properties",
+                "org/yesworkflow/testYesWorkflowCLI/maven.properties");
+        ExitCode returnValue = cli.runForArgs(args);
+        assertEquals(ExitCode.SUCCESS, returnValue);
+        assertEquals("", stdoutBuffer.toString());
+        assertEquals(EXPECTED_VERSION_OUTPUT, stderrBuffer.toString());
+    }
+    
     public void testYesWorkflowCLI_NoArgument() throws Exception {
         String[] args = new String[]{};
         ExitCode returnValue = new YesWorkflowCLI(this.ywdb, stdoutStream, stderrStream).runForArgs(args);
@@ -426,7 +470,7 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         @Override public Extractor configure(Map<String, Object> config) throws Exception { return this; }
         @Override public Extractor configure(String key, Object value) throws Exception { return this; }
         @Override public Extractor reader(Reader reader) { return this; }
-        @Override public String getFacts(QueryEngineModel qem) { return null; }
+        @Override public Map<String, String> getFacts() { return null; }
         @Override public String getSkeleton() { return null; }
     }
 }

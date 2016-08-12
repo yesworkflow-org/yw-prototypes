@@ -1,0 +1,23 @@
+log_template_id,port_id,entry_template,log_annotation_id
+1,11,{timestamp} Reading input records from {input1_data_file_name},26
+2,20,{timestamp} Reading input record {RecordID},48
+3,25,{timestamp} Trying {check_type} {source_used} {match_method} match for validating {field_name}: {field_name_value},60
+4,25,{timestamp} Checking if {field_name} value is Empty: {check_result},61
+5,31,{timestamp} {final_result} record {RecordID},72
+6,40,{timestamp} Trying {check_type} {source_used} {match_method} match for validating {field_name}: {field_name_value},91
+7,40,"{timestamp} {match_method} match was {match_result}, compliant with {source_used}: {compliant_result}.",92
+8,45,{timestamp} {final_result} record {RecordID},103
+9,56,{timestamp} UPDATING {field_name} from {original_value} to {updated_value},128
+10,61,{timestamp} {final_result} record {RecordID},138
+11,71,{timestamp} Wrote {accepted_record_count} ACCEPTED records to {output1_data_file_name},159
+12,71,{timestamp} Wrote {rejected_record_count} UNABLE-to-determine-validity records to {output1_data_file_name},160
+13,76,{timestamp} Reading input records from {input2_data_file_name},175
+14,82,{timestamp} Reading input record {RecordID},189
+15,87,{timestamp} Trying {check_type} {source_used} {match_method} match for validating {field_name}: {field_name_value},201
+16,87,{timestamp} Checking if {field_name} value is Empty: {check_result},202
+17,93,{timestamp} {final_result} record {RecordID},214
+18,98,"{timestamp} {match_method} match was {match_result}, compliant with {source_used}: {match_result}.",226
+19,102,{timestamp} UPDATING {field_name} from {original_value} to {updated_value},236
+20,108,{timestamp} {final_result} record {RecordID},249
+21,116,{timestamp} Wrote {accepted2_record_count} accepted records to {output2_data_file_name},270
+22,116,{timestamp} Wrote {rejected2_record_count} UNABLE-to-determine-validity records to {rejected2_data_file_name},271

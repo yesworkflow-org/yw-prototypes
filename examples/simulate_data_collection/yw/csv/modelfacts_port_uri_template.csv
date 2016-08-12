@@ -1,0 +1,13 @@
+port_id,uri
+4,file:cassette_{cassette_id}_spreadsheet.csv
+5,file:calibration.img
+6,file:run/data/{}/{}_{}eV_{}.img
+7,file:run/run_log.txt
+8,file:run/collected_images.csv
+9,file:run/rejected_samples.txt
+14,file:cassette_{cassette_id}_spreadsheet.csv
+28,file:run/rejected_samples.txt
+36,file:run/raw/{cassette_id}/{sample_id}/e{energy}/image_{frame_number}.raw
+42,file:calibration.img
+43,file:run/data/{sample_id}/{sample_id}_{energy}eV_{frame_number}.img
+54,file:run/collected_images.csv

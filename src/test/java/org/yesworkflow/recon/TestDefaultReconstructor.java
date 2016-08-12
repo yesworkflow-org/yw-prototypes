@@ -34,7 +34,7 @@ public class TestDefaultReconstructor extends YesWorkflowTestCase {
 
         List<Annotation> annotations = extractor
                .configure("language", "python")
-               .reader(new FileReader("src/main/resources/examples/simulate_data_collection/simulate_data_collection.py"))
+               .reader(new FileReader("examples/simulate_data_collection/simulate_data_collection.py"))
                .extract()
                .getAnnotations();
         
@@ -42,7 +42,7 @@ public class TestDefaultReconstructor extends YesWorkflowTestCase {
                              .model()
                              .getModel();
         
-        Run run = new Run(model, "src/main/resources/examples/simulate_data_collection");
+        Run run = new Run(model, "examples/simulate_data_collection");
         
         reconstructor.run(run)
                      .recon()

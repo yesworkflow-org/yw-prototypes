@@ -162,9 +162,9 @@ public class WorkflowBuilder {
 			String binding = outPort.flowAnnotation.binding();
 			
 			// ensure no other writers to this @out binding
-			if (nestedProgramOutPorts.containsKey(binding)) {
-				throw new Exception("Multiple @out comments bound to " + binding);
-			}
+//			if (nestedProgramOutPorts.containsKey(binding)) {
+//				throw new Exception("Multiple @out comments bound to " + binding);
+//			}
 			
 			// store the @out comment
 			this.nestedProgramOutPorts.put(binding, outPort);

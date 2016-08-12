@@ -1,0 +1,193 @@
+
+eol :- write('\n').
+
+
+llength([],0).
+llength([_|T], N) :- llength(T, Nt), N is Nt + 1.
+
+printall(Header, G) :-
+    eol,
+    write('---------------------------------------------------------------------------------------------------------------------------'), eol,
+    write(Header), eol,
+    write('---------------------------------------------------------------------------------------------------------------------------'), eol,
+    call(G),
+    write(G), eol,
+    fail
+    ;
+    true.
+
+count(Goal, Count) :-
+    findall(_, Goal, List),
+    llength(List, Count).
+
+% Program P has description D.
+:- table program_description/2.
+program_description(P,D) :-
+    program(P, _, _, BA, _),
+    annotation_qualifies(DA, BA),
+    annotation(DA, _, _, 'desc', _, D).
+
+% Port P has description D.
+:- table port_description/2.
+port_description(P,D) :-
+    port(P, _, _, _, PA, _),
+    annotation_qualifies(DA, PA),
+    annotation(DA, _, _, 'desc', _, D).
+
+% Program with qualified name QN is defined in source file SF from first line F to last line L.
+:- table program_source/4.
+program_source(QN, SF, F, L) :-
+    program(_, _, QN, BA, EA),
+    annotation(BA, S, F, _, _, _),
+    annotation(EA, S, L, _, _, _),
+    extract_source(S, SF).
+
+% Program P is a subprogram of another program (workflow) W.
+:- table subprogram/1.
+subprogram(P) :-
+    program(P, _, _, _, _),
+    program(W, _, _, _, _),
+    has_subprogram(W, P).
+
+% Workflow W is the top-level workflow.
+:- table top_workflow/1.
+top_workflow(W) :-
+    workflow(W),
+    not subprogram(W).
+
+% Port P reads or writes data D with name N and qualified name QN.
+:- table port_data/3.
+port_data(P, N, QN) :-
+    port_connects_to_channel(P, C),
+    channel(C, D),
+    data(D, N, QN).
+
+% Port P is an input for data D.
+:- table data_in_port/2.
+data_in_port(P, D) :-
+    port_connects_to_channel(P, C),
+    channel(C, D),
+    has_in_port(_, P).
+
+% Program P1 is immediately downstream of Program P2.
+:- table program_immediately_downstream/2.
+program_immediately_downstream(P1, P2) :-
+    has_in_port(P1, In),
+    port_connects_to_channel(In, C),
+    port_connects_to_channel(Out, C),
+    has_out_port(P2, Out).
+ 
+% Program P1 is downstream of Program P2.
+:- table program_downstream/2.
+program_downstream(P1, P2) :-
+    program_immediately_downstream(P1, P2).
+program_downstream(P1, P2) :-
+    program_downstream(P1, P),
+    program_immediately_downstream(P, P2).
+
+% Program P1 is immediately upstream of Program P2.
+:- table program_immediately_upstream/2.
+program_immediately_upstream(P1, P2) :-
+    program_immediately_downstream(P2, P1).
+
+% Program P1 is upstream of Program P2.
+:- table program_upstream/2.
+program_upstream(P1, P2) :-
+    program_downstream(P2, P1).
+    
+% Data D1 is immediately downstream of data D2.
+:- table data_immediately_downstream/2.
+data_immediately_downstream(D1, D2) :-
+    channel(C2, D2),
+    port_connects_to_channel(In, C2),
+    has_in_port(P, In),
+    has_out_port(P, Out),
+    port_connects_to_channel(Out, C1),
+    channel(C1, D1).
+
+% Data D1 is immediately upstream of data D2.
+:- table data_immediately_upstream/2.
+data_immediately_upstream(D1, D2) :-
+    data_immediately_downstream(D2, D1).
+
+% Data D1 is downstream of data D2.
+:- table data_downstream/2.
+data_downstream(D1, D2) :-
+    data_immediately_downstream(D1, D2).
+data_downstream(D1, D2):-
+    data_immediately_downstream(D, D2),
+    data_downstream(D1, D).
+
+% Data D1 is upstream of Data D2
+:- table data_upstream/2.
+data_upstream(D1, D2) :-
+    data_downstream(D2, D1).
+
+% Resource R1 is upstream of resource R2.
+:- table resource_upstream/2.
+resource_upstream(R1, R2) :-
+    data_resource(D1, R1),
+    data_resource(D2, R2),
+    data_upstream(D1, D2).
+
+% Resource R1 is downstream of resource R2.
+:- table resource_downstream/2.
+resource_downstream(R1, R2) :-
+    resource_upstream(R2, R1).
+
+% Data D with URI variable V passed through output port P.
+:- table output_data_has_uri_variable/2.
+output_data_has_uri_variable(D, V) :-
+    channel(C, D),
+    port_connects_to_channel(P, C),
+    has_out_port(_, P),
+    uri_variable(V, _, P).   
+
+% Data D with URI variable V passed through input port P.
+:- table input_data_has_uri_variable/2.
+input_data_has_uri_variable(D, V) :-
+    channel(C, D),
+    port_connects_to_channel(P, C),
+    has_in_port(_, P),
+    uri_variable(V, _, P).
+
+% Resource R with uri variable U named N with value V passed through Port P.
+:- table resource_metadata/4.
+resource_metadata(R, N, V, P) :-
+    data_resource(D, R),
+    channel(C, D),
+    port_connects_to_channel(P, C),
+    uri_variable(U, N, P),
+    uri_variable_value(R, U, V).
+
+% Resource R was read with a metadata variable named N with value V.
+:- table read_resource_metadata/3.
+read_resource_metadata(R, N, V) :-
+    resource_metadata(R, N, V, P),
+    has_in_port(_, P).
+
+% Resource R was written with a metadata variable named N with value V.
+:- table written_resource_metadata/3.
+written_resource_metadata(R, N, V) :-
+    resource_metadata(R, N, V, P),
+    has_out_port(_, P).
+
+% Resources R1 and R2 have metadata variables with shared name N.
+:- table common_metadata_variable/2.
+common_metadata_variable(R1, R2) :-
+    resource_metadata(R1, N, _, _),
+    resource_metadata(R2, N, _, _).
+
+% Resources R1 and R2 have metadata variables with shared name N but different values V1 and V2.
+:- table common_metadata_values_differ/2.
+common_metadata_values_differ(R1, R2) :-
+    resource_metadata(R1, N, V1, _),
+    resource_metadata(R2, N, V2, _),
+    V1 \== V2.
+
+% Resource R1 depends on resource R2.
+depends_on(R1, R2) :-
+    common_metadata_variable(R1, R2),
+    not common_metadata_values_differ(R1, R2),
+    resource_downstream(R1, R2),
+    R1 \== R2.

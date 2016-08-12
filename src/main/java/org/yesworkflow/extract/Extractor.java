@@ -1,5 +1,6 @@
 package org.yesworkflow.extract;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +9,6 @@ import org.yesworkflow.Language;
 import org.yesworkflow.YWStage;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.config.Configurable;
-import org.yesworkflow.query.QueryEngineModel;
 
 public interface Extractor extends YWStage, Configurable {
     Extractor configure(String key, Object value) throws Exception;
@@ -18,6 +18,6 @@ public interface Extractor extends YWStage, Configurable {
     Language getLanguage();
     String getSkeleton();
     List<Annotation> getAnnotations();
-    String getFacts(QueryEngineModel qem);
+    Map<String, String> getFacts() throws IOException;
 }
 

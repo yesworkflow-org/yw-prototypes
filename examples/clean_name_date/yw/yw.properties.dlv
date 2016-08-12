@@ -1,0 +1,33 @@
+
+# extract configuration
+extract.sources     = ../clean_name_date_yw.py
+extract.listfile    = listing.txt
+extract.language    = python
+extract.factsfile   = dlv/extractfacts.dlv
+
+# model configuration
+model.workflow      = clean_name_and_date_workflow
+model.factsfile     = dlv/modelfacts.dlv
+
+recon.rundir        = ../
+recon.factsfile     = dlv/reconfacts.dlv
+
+# graph configuration
+graph.view          = combined
+graph.layout        = tb
+graph.dotcomments   = on
+graph.dotfile       = combined.gv
+graph.workflowbox   = show
+graph.edgelabels    = show
+graph.portlayout    = group
+graph.programlabel  = both
+graph.datalabel     = both
+graph.params        = reduce
+graph.titleposition = top
+# graph.subworkflow   = clean_name_and_date_workflow.validate_eventDate_field_of_data
+# graph.dotfile       = subgraph_date_val.gv
+# graph.subworkflow   = clean_name_and_date_workflow.validate_scientificName_field_of_data
+# graph.dotfile       = subgraph_name_val.gv
+
+# query configuration
+query.engine        = dlv
