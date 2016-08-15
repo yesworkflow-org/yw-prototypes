@@ -20,7 +20,9 @@ public enum Language {
         if (lang instanceof String) {
             String langString = (String)lang; 
             if (langString.equalsIgnoreCase("BASH"))        return Language.BASH;
+            if (langString.equalsIgnoreCase("SH"))        	return Language.BASH;
             if (langString.equalsIgnoreCase("C"))           return Language.C;
+            if (langString.equalsIgnoreCase("C_CPP"))      	return Language.CPLUSPLUS;
             if (langString.equalsIgnoreCase("CPLUSPLUS"))   return Language.CPLUSPLUS;
             if (langString.equalsIgnoreCase("GENERIC"))     return Language.GENERIC;
             if (langString.equalsIgnoreCase("JAVA"))        return Language.JAVA;
