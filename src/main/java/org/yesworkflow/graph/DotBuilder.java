@@ -20,9 +20,9 @@ public class DotBuilder {
     private String nodeStyle = "filled";
     private String nodeFillcolor = "#FFFFFF";
     private int nodePeripheries = 1;
-    private String nodeFont = "Courier";
+    private String nodeFont = "Helvetica";
     private Double nodeWidth = null;
-    private String edgeFont = "Courier";
+    private String edgeFont = "Helvetica";
     
     private boolean horizontalLayout = true;
     private StringBuilder _buffer = new StringBuilder();

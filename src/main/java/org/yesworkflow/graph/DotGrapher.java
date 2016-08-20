@@ -31,7 +31,7 @@ public class DotGrapher implements Grapher  {
     public static String  DEFAULT_PROGRAM_SHAPE = "box";
     public static String  DEFAULT_PROGRAM_STYLE = "filled";
     public static String  DEFAULT_PROGRAM_FILL_COLOR = "#CCFFCC";
-    public static String  DEFAULT_PROGRAM_FONT = "Courier";
+    public static String  DEFAULT_PROGRAM_FONT = "Helvetica";
     public static Integer DEFAULT_PROGRAM_PERIPHERIES = 1;
     public static String  DEFAULT_SUBWORKFLOW_SHAPE = "box";
     public static String  DEFAULT_SUBWORKFLOW_STYLE = "filled";

@@ -1,8 +1,8 @@
 digraph Workflow {
 rankdir=LR
-graph[fontname=Courier]
+graph[fontname=Helvetica]
 edge[fontname=Helvetica]
-node[fontname=Courier]
+node[fontname=Helvetica]
 node[shape=circle style="filled" fillcolor="#FFFFFF" peripheries=1 label="" width=0.1]
 subgraph cluster0 {
 label=""

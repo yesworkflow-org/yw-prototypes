@@ -13,7 +13,7 @@ node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname
 /* Nodes representing non-parameter data channels in workflow */
 
 /* Style for edges representing programs connecting data channels in workflow */
-edge[fontname=Courier]
+edge[fontname=Helvetica]
 
 /* Edges representing programs connecting data channels in workflow */
 

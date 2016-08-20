@@ -8,14 +8,14 @@ subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
 subgraph cluster_workflow_box_inner { label=""; penwidth=0
 
 /* Style for nodes representing atomic programs in workflow */
-node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Helvetica]
 
 /* Nodes representing atomic programs in workflow */
 program0
 program1
 
 /* Style for nodes representing composite programs (sub-workflows) in workflow */
-node[shape=box style=filled fillcolor="#CCFFCC" peripheries=2 fontname=Courier]
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=2 fontname=Helvetica]
 
 /* Nodes representing composite programs (sub-workflows) in workflow */
 subWorkflow
@@ -35,7 +35,7 @@ subgraph cluster_input_ports_group_outer { label=""; penwidth=0
 subgraph cluster_input_ports_group_inner { label=""; penwidth=0
 
 /* Style for nodes representing workflow input ports */
-node[shape=circle style=filled fillcolor="#FFFFFF" peripheries=1 fontname=Courier width=0.2]
+node[shape=circle style=filled fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
 
 /* Nodes representing workflow input ports */
 channel0_input_port [label=""]
@@ -48,7 +48,7 @@ subgraph cluster_output_ports_group_outer { label=""; penwidth=0
 subgraph cluster_output_ports_group_inner { label=""; penwidth=0
 
 /* Style for nodes representing workflow output ports */
-node[shape=circle style=filled fillcolor="#FFFFFF" peripheries=1 fontname=Courier width=0.2]
+node[shape=circle style=filled fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
 
 /* Nodes representing workflow output ports */
 channel3_output_port [label=""]

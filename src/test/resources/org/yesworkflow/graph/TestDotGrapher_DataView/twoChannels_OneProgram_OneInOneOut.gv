@@ -15,7 +15,7 @@ d
 x
 
 /* Style for edges representing programs connecting data channels in workflow */
-edge[fontname=Courier]
+edge[fontname=Helvetica]
 
 /* Edges representing programs connecting data channels in workflow */
 x -> d [label=program]

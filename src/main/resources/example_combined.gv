@@ -7,8 +7,8 @@ fontsize=18
 subgraph cluster1 {
 label=""
 color="white"
-graph[fontname=Courier]
-node[fontname=Courier]
+graph[fontname=Helvetica]
+node[fontname=Helvetica]
 node[shape=box3d style="filled" fillcolor="#CCFFCC" peripheries=1 label=""]
 node1 [label="fetch_mask"]
 node2 [label="load_data"]
