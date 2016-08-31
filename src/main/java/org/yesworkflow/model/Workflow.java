@@ -49,16 +49,43 @@ public class Workflow extends Program {
 	}
 
 	public static Workflow createFromProgram(Program p) {
+
 		Program[] programs;
+		Channel[] channels;
+		
     	 if (p.programs.length > 0) {
     		 programs = p.programs;
+    		 channels = p.channels;
     	 } else {
+    		 
+    		 Port[] inPorts = new Port[p.inPorts.length];
+    		 Port[] outPorts = new Port[p.outPorts.length];
+    		 for (int i = 0; i < p.outPorts.length; ++i) {
+    			 Port outerPort = p.outPorts[i];
+    			 outPorts[i] = new Port(100, outerPort.data, outerPort.flowAnnotation, outerPort.beginAnnotation);
+    		 }
+    		 for (int i = 0; i < p.inPorts.length; ++i) {
+    			 Port outerPort = p.inPorts[i];
+    			 inPorts[i] = new Port(100, outerPort.data, outerPort.flowAnnotation, outerPort.beginAnnotation);
+    		 }
+    		 
     		 Program program = new Program(80L, p.name, p.beginAnnotation, p.endAnnotation, 
-    				 					   new Data[] {}, new Port[] {}, new Port[] {}, 
+    				 					   new Data[] {}, inPorts, outPorts,  
     				 					   new Program[] {}, new Channel[] {}, new Function[] {});
+
+    		 channels = new Channel[p.inPorts.length + p.outPorts.length];
+    		 int channelIndex = 0;
+    		 for (int i = 0; i < p.outPorts.length; ++i) {
+    			 channels[channelIndex++] = new Channel(100, p.outPorts[i].data, program, outPorts[i], p, p.outPorts[i]);
+    		 }
+    		 for (int i = 0; i < p.inPorts.length; ++i) {
+    			 channels[channelIndex++] = new Channel(100, p.inPorts[i].data, p, p.inPorts[i], program, inPorts[i]);
+    		 }
+
     		 programs = new Program[] { program };
+
     	 }
-    	 
+    	
     	 return new Workflow(
     			 		p.id, 
     	    			p.name, 
@@ -68,10 +95,9 @@ public class Workflow extends Program {
     	                p.inPorts,
     	                p.outPorts,
     	                programs,
-    	                p.channels,
+    	                channels,
     	                p.functions
     	                );
-    	 
     }
     
     @Override
