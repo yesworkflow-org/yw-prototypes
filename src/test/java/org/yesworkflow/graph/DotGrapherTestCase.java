@@ -47,7 +47,7 @@ public abstract class DotGrapherTestCase extends YesWorkflowTestCase {
          
         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                               .model()
-                                              .getModel().program;
+                                              .getModel().workflow;
 
         grapher.workflow(workflow)
                 .graph();

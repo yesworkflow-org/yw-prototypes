@@ -45,7 +45,7 @@ public class TestDefaultModer_ExtractTopPorts extends YesWorkflowTestCase {
                                 .annotations(annotations)
                                 .model()
                                 .getModel()
-                                .program;
+                                .workflow;
 
         Port[] inPorts = program.inPorts;
         Port[] outPorts = program.outPorts;

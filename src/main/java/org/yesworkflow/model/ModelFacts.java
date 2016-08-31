@@ -41,7 +41,7 @@ public class ModelFacts {
 
         if (queryEngine == null) throw new IllegalArgumentException("Null logicLanguage argument passed to ModelFacts constructor.");
         if (model == null) throw new IllegalArgumentException("Null model argument passed to ModelFacts constructor.");
-        if (model.program == null) throw new IllegalArgumentException("Null program field in model argument passed to ModelFacts constructor.");
+        if (model.workflow == null) throw new IllegalArgumentException("Null workflow field in model argument passed to ModelFacts constructor.");
         
         this.model = model;
 
@@ -66,7 +66,7 @@ public class ModelFacts {
 
     public ModelFacts build() throws IOException {
         
-        if (model.program == null) throw new NullPointerException("Null program field in ModelFacts.model.");
+        if (model.workflow == null) throw new NullPointerException("Null workflow field in ModelFacts.model.");
         if (model.functions == null) throw new NullPointerException("Null functions field in ModelFacts.model.");
 
         for (Data data : model.data) {
@@ -74,7 +74,7 @@ public class ModelFacts {
             dataFacts.addRow(data.id, data.name, qualifiedDataName);
         }
 
-        buildProgramFactsRecursively(model.program, null, null);
+        buildProgramFactsRecursively(model.workflow, null, null);
         
         for (Function function : model.functions) {
             buildProgramFactsRecursively(function, null, null);

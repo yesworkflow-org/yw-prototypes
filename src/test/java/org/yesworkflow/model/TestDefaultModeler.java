@@ -90,7 +90,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Program program = modeler.annotations(annotations)
                                  .model()
                                  .getModel()
-                                 .program;
+                                 .workflow;
         
         assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.value());
@@ -129,7 +129,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Program program = modeler.annotations(annotations)
                                  .model()
                                  .getModel()
-                                 .program;
+                                 .workflow;
         
         assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.value());
@@ -176,7 +176,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Program program = modeler.annotations(annotations)
                                  .model()
                                  .getModel()
-                                 .program;
+                                 .workflow;
         
         assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.value());
@@ -227,7 +227,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Program program = modeler.annotations(annotations)
                                  .model()
                                  .getModel()
-                                 .program;
+                                 .workflow;
  
         assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.value());
@@ -285,7 +285,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Program program = modeler.annotations(annotations)
                                              .model()
                                              .getModel()
-                                             .program;
+                                             .workflow;
 
         assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.value());
@@ -408,7 +408,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Program program = modeler.annotations(annotations)
                                              .model()
                                              .getModel()
-                                             .program;
+                                             .workflow;
         
         assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.value());
@@ -482,7 +482,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Program program = modeler.annotations(annotations)
                                  .model()
                                  .getModel()
-                                     .program;
+                                 .workflow;
         
         assertEquals("program", program.name);
         assertEquals("program", program.beginAnnotation.value());
@@ -557,7 +557,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Program program = modeler.annotations(annotations)
                                  .model()
                                  .getModel()
-                                 .program;
+                                 .workflow;
         
         assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.value());
@@ -616,7 +616,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Program program = modeler.annotations(annotations)
                                  .model()
                                  .getModel()
-                                 .program;
+                                 .workflow;
         
         assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.value());
@@ -675,7 +675,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Program program = modeler.annotations(annotations)
                                  .model()
                                  .getModel()
-                                 .program;
+                                 .workflow;
         
         assertEquals("script", program.name);
         assertEquals("script", program.beginAnnotation.value());
@@ -734,7 +734,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                              .model()
                                              .getModel()
-                                             .program;
+                                             .workflow;
         
         assertEquals("script", workflow.name);
         assertEquals("script", workflow.beginAnnotation.value());
@@ -821,7 +821,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                              .model()
                                              .getModel()
-                                             .program;
+                                             .workflow;
         
         assertEquals("script", workflow.name);
         assertEquals("script", workflow.beginAnnotation.value());
@@ -914,7 +914,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                              .model()
                                              .getModel()
-                                             .program;
+                                             .workflow;
         
         assertEquals("script", workflow.name);
         assertEquals("script", workflow.beginAnnotation.value());
@@ -1007,7 +1007,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         Workflow workflow = (Workflow)modeler.annotations(annotations)
                                              .model()
                                              .getModel()
-                                             .program;
+                                             .workflow;
         
         assertEquals("script", workflow.name);
         assertEquals("script", workflow.beginAnnotation.value());

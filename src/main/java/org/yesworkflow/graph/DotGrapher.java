@@ -101,8 +101,8 @@ public class DotGrapher implements Grapher  {
     @Override
     public DotGrapher model(Model model) {        
         if (model == null) throw new IllegalArgumentException("Null model passed to DotGrapher.");
-        if (model.program == null) throw new IllegalArgumentException("Model with null program passed to DotGrapher.");
-        this.topWorkflow = model.program;
+        if (model.workflow == null) throw new IllegalArgumentException("Model with null workflow passed to DotGrapher.");
+        this.topWorkflow = model.workflow;
         return this;
     }
 
@@ -268,6 +268,9 @@ public class DotGrapher implements Grapher  {
         if (layoutClusterView == LayoutClusterView.ON) {
             dot.comment("Start of double cluster for drawing box around nodes in workflow")
                .beginSubgraph("workflow_box", workflowBoxMode == WorkflowBoxMode.SHOW);
+//            if (workflow.programs.length == 0) {
+//            	dot.invisibleNode("xxxxxxxx", "XXXXXXX");
+//            }
         }
     }
     
@@ -293,7 +296,7 @@ public class DotGrapher implements Grapher  {
         dot.comment("Nodes representing atomic programs in workflow");
         for (Program p : workflow.programs) {
             if (! (p.isWorkflow())) {
-                drawProgramNode(p);
+                drawProgramNode(p.beginAnnotation.value(), p.beginAnnotation.description());;
                 if (paramVisibility != ParamVisibility.HIDE) {
                     channelBindings.addAll(p.outerBindings());
                 } else {
@@ -319,7 +322,7 @@ public class DotGrapher implements Grapher  {
         dot.comment("Nodes representing composite programs (sub-workflows) in workflow");
         for (Program p : workflow.programs) {
             if (p.isWorkflow()) {
-                drawProgramNode(p);
+                drawProgramNode(p.beginAnnotation.value(), p.beginAnnotation.description());
                 if (paramVisibility == ParamVisibility.SHOW) {
                     channelBindings.addAll(p.outerBindings());
                 } else {
@@ -329,10 +332,7 @@ public class DotGrapher implements Grapher  {
         }
     }
 
-    private void drawProgramNode(Program p) {
-        
-        String name = p.beginAnnotation.value();
-        String description = p.beginAnnotation.description();
+    private void drawProgramNode(String name, String description) {
         
         if (description == null) {
             dot.node(name);

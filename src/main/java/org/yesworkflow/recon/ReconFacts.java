@@ -59,7 +59,7 @@ public class ReconFacts {
 
     public ReconFacts build() throws Exception {
 
-        buildReconFactsRecursively(run.model.program);
+        buildReconFactsRecursively(run.model.workflow);
         
         for (Function function : run.model.functions) {
             buildReconFactsRecursively(function);

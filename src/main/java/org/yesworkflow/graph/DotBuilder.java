@@ -117,6 +117,11 @@ public class DotBuilder {
 
         return this;
     }
+    
+//    public DotBuilder invisibleNode(String name, String spacer) {
+//        _buffer.append(String.format("node[fillcolor=blue color=green]") + EOL);
+//        return node(name, spacer);
+//    }
       
     public DotBuilder node(String name, String label) {
         if (nodeIsUnique(name)) {
