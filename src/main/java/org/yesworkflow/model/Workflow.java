@@ -76,10 +76,10 @@ public class Workflow extends Program {
     		 channels = new Channel[p.inPorts.length + p.outPorts.length];
     		 int channelIndex = 0;
     		 for (int i = 0; i < p.outPorts.length; ++i) {
-    			 channels[channelIndex++] = new Channel(100, p.outPorts[i].data, program, outPorts[i], p, p.outPorts[i]);
+    			 channels[channelIndex++] = new Channel(100, p.outPorts[i].data, program, outPorts[i], null, p.outPorts[i]);
     		 }
     		 for (int i = 0; i < p.inPorts.length; ++i) {
-    			 channels[channelIndex++] = new Channel(100, p.inPorts[i].data, p, p.inPorts[i], program, inPorts[i]);
+    			 channels[channelIndex++] = new Channel(100, p.inPorts[i].data, null, p.inPorts[i], program, inPorts[i]);
     		 }
 
     		 programs = new Program[] { program };
