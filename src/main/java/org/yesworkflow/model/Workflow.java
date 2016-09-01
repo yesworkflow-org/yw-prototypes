@@ -44,64 +44,76 @@ public class Workflow extends Program {
 
     public Workflow(Long id, String name, Begin beginAnnotation, End endAnnotation, Data[] data, Port[] inPorts,
 			Port[] outPorts, Program[] programs, Channel[] channels, Function[] functions) {
-	   	 super(	id, name, beginAnnotation, endAnnotation, data,
+	   	 super(id, name, beginAnnotation, endAnnotation, data,
 	         	inPorts, outPorts, programs, channels, functions);	
 	}
-
-	public static Workflow createFromProgram(Program p) {
-
-		Program[] programs;
-		Channel[] channels;
-		
-    	 if (p.programs.length > 0) {
-    		 programs = p.programs;
-    		 channels = p.channels;
-    	 } else {
-    		 
-    		 Port[] inPorts = new Port[p.inPorts.length];
-    		 Port[] outPorts = new Port[p.outPorts.length];
-    		 for (int i = 0; i < p.outPorts.length; ++i) {
-    			 Port outerPort = p.outPorts[i];
-    			 outPorts[i] = new Port(100, outerPort.data, outerPort.flowAnnotation, outerPort.beginAnnotation);
-    		 }
-    		 for (int i = 0; i < p.inPorts.length; ++i) {
-    			 Port outerPort = p.inPorts[i];
-    			 inPorts[i] = new Port(100, outerPort.data, outerPort.flowAnnotation, outerPort.beginAnnotation);
-    		 }
-    		 
-    		 Program program = new Program(80L, p.name, p.beginAnnotation, p.endAnnotation, 
-    				 					   new Data[] {}, inPorts, outPorts,  
-    				 					   new Program[] {}, new Channel[] {}, new Function[] {});
-
-    		 channels = new Channel[p.inPorts.length + p.outPorts.length];
-    		 int channelIndex = 0;
-    		 for (int i = 0; i < p.outPorts.length; ++i) {
-    			 channels[channelIndex++] = new Channel(100, p.outPorts[i].data, program, outPorts[i], null, p.outPorts[i]);
-    		 }
-    		 for (int i = 0; i < p.inPorts.length; ++i) {
-    			 channels[channelIndex++] = new Channel(100, p.inPorts[i].data, null, p.inPorts[i], program, inPorts[i]);
-    		 }
-
-    		 programs = new Program[] { program };
-
-    	 }
-    	
-    	 return new Workflow(
-    			 		p.id, 
-    	    			p.name, 
-    	    			p.beginAnnotation, 
-    	    			p.endAnnotation, 
-    	                p.data,
-    	                p.inPorts,
-    	                p.outPorts,
-    	                programs,
-    	                channels,
-    	                p.functions
-    	                );
-    }
     
     @Override
     public boolean isWorkflow() {
         return true;
     }
+
+	public static Workflow createFromProgram(Program program) {
+		if (program.programs.length > 0) {
+			return workflowFromProgramWithChildren(program);
+		} else {
+			return workflowFromProgramWithNoChildren(program);
+		}
+	}
+	
+    private static Workflow workflowFromProgramWithChildren(Program program) {
+    	return new Workflow( 
+    			program.id, 
+    			program.name, 
+    			program.beginAnnotation, 
+    			program.endAnnotation, 
+    			program.data,
+    			program.inPorts,
+    			program.outPorts,
+    			program.programs,
+    			program.channels,
+    			program.functions
+    			);
+    }
+		
+	private static Workflow workflowFromProgramWithNoChildren(Program parent) {
+		
+		 Port[] childInPorts = new Port[parent.inPorts.length];
+		 for (int i = 0; i < parent.inPorts.length; ++i) {
+			 Port parentInPort = parent.inPorts[i];
+			 childInPorts[i] = new Port(100, parentInPort.data, parentInPort.flowAnnotation, parentInPort.beginAnnotation);
+		 }
+		 
+		 Port[] childOutPorts = new Port[parent.outPorts.length];
+		 for (int i = 0; i < parent.outPorts.length; ++i) {
+			 Port parentOutPort = parent.outPorts[i];
+			 childOutPorts[i] = new Port(100, parentOutPort.data, parentOutPort.flowAnnotation, parentOutPort.beginAnnotation);
+		 }
+		 
+		 
+		 Program child = new Program(80L, parent.name, parent.beginAnnotation, parent.endAnnotation, 
+				 					   new Data[] {}, childInPorts, childOutPorts,  
+				 					   new Program[] {}, new Channel[] {}, new Function[] {});
+
+		 Channel[] childChannels = new Channel[parent.inPorts.length + parent.outPorts.length];
+		 int childChannelIndex = 0;
+		 for (int i = 0; i < parent.outPorts.length; ++i) {
+			 childChannels[childChannelIndex++] = new Channel(100, parent.outPorts[i].data, child, childOutPorts[i], null, parent.outPorts[i]);
+		 }
+		 for (int i = 0; i < parent.inPorts.length; ++i) {
+			 childChannels[childChannelIndex++] = new Channel(100, parent.inPorts[i].data, null, parent.inPorts[i], child, childInPorts[i]);
+		 }
+
+		 return new Workflow( parent.id, 
+	    			parent.name, 
+	    			parent.beginAnnotation, 
+	    			parent.endAnnotation, 
+	                parent.data,
+	                parent.inPorts,
+	                parent.outPorts,
+	                new Program[] { child },
+	                childChannels,
+	                parent.functions
+	                );
+	}
 }
