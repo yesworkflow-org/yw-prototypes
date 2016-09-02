@@ -215,7 +215,7 @@ public class DefaultModeler implements Modeler {
             if (functions.size() == 0) throw new Exception("No program or functions found in script.");
         }
         
-        Workflow workflow = Workflow.createFromProgram(topProgram);
+        Workflow workflow = Workflow.createFromProgram(ywdb, topProgram);
         model = new Model(workflow, functions, superBuilder.getData());
     }
 }

@@ -42,9 +42,6 @@ public class WorkflowBuilder {
         private Map<String,Function> functionForName = new HashMap<String,Function>();        
         private Map<String,Data> dataForBinding = new HashMap<String,Data>();
         
-        private static Integer nextChannelId = 1;
-        private static Integer nextPortId = 1;
-        
         @SuppressWarnings("unused")
         private PrintStream stdoutStream = null;
         
@@ -126,7 +123,7 @@ public class WorkflowBuilder {
         private Port addPort(Flow portAnnotation) throws SQLException {
             Data data = parentBuilder.addNestedData(portAnnotation.binding());
 //            Long portId = ywdb.insertPort();
-            Port port = new Port(nextPortId++, data, portAnnotation, beginAnnotation);
+            Port port = new Port(data, portAnnotation, beginAnnotation);
             return port;
         }
 
@@ -296,7 +293,7 @@ public class WorkflowBuilder {
                 for (Port inPort : boundInPorts) {
                     String inProgramName = inPort.beginAnnotation.value();
                     Program inProgram = programForName.get(inProgramName);
-                    Channel channel = new Channel(nextChannelId++, inPort.data, outProgram, boundOutPort, inProgram, inPort);
+                    Channel channel = new Channel(inPort.data, outProgram, boundOutPort, inProgram, inPort);
                     nestedChannels.add(channel);
                 }   
             }
@@ -310,7 +307,7 @@ public class WorkflowBuilder {
                     for (Port inPort : matchingInPorts) {
                         String inProgramName = inPort.beginAnnotation.value();
                         Program inProgram = programForName.get(inProgramName);
-                        Channel channel = new Channel(nextChannelId++, workflowPort.data, null, workflowPort, inProgram, inPort);
+                        Channel channel = new Channel(workflowPort.data, null, workflowPort, inProgram, inPort);
                         nestedChannels.add(channel);
                     }
                 }
@@ -324,7 +321,7 @@ public class WorkflowBuilder {
                 if (matchingOutPort != null) {
                     String outProgramName = matchingOutPort.beginAnnotation.value();
                     Program outProgram = programForName.get(outProgramName);
-                    Channel channel = new Channel(nextChannelId++, matchingOutPort.data, outProgram, matchingOutPort, null, workflowPort);
+                    Channel channel = new Channel(matchingOutPort.data, outProgram, matchingOutPort, null, workflowPort);
                     nestedChannels.add(channel);
                 }
             }

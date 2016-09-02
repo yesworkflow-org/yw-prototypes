@@ -8,14 +8,14 @@ public class Channel {
     public final Data data;
     public final Program sourceProgram;
 	public final Port sourcePort;
-	
 	public final Program sinkProgram;
 	public final Port sinkPort;
-
     public final boolean isParam;
+    
+    private static Integer nextChannelId = 1;
 	
-	public Channel(Integer id, Data data, Program sourceProgram, Port sourcePort, Program sinkProgram, Port sinkPort) {
-	    this.id = id;
+	public Channel(Data data, Program sourceProgram, Port sourcePort, Program sinkProgram, Port sinkPort) {
+	    this.id = nextChannelId++;
 	    this.data = data;
 	    this.sourceProgram = sourceProgram;
 		this.sourcePort = sourcePort;

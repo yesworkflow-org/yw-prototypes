@@ -99,18 +99,22 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(0, program.outPorts.length);
         
         assertEquals(
-            "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"    + EOL +
-            "|id  |in_program_block|begin_annotation|end_annotation|name  |qualified_name|is_workflow|is_function|"    + EOL +
-            "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"    + EOL +
-            "|1   |{null}          |1               |2             |script|script        |0          |0          |"    + EOL +
-            "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+",
+                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"	+ EOL +
+                "|id  |in_program_block|begin_annotation|end_annotation|name  |qualified_name|is_workflow|is_function|" + EOL +
+                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+" + EOL +
+                "|1   |{null}          |1               |2             |script|script        |1          |0          |"	+ EOL + 
+                "|2   |1               |1               |2             |script|script.script |0          |0          |" + EOL +
+                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+",
                 FileIO.localizeLineEndings(selectPrograms().toString()));
-
-        assertEquals(
-            "+----+----------------+----+--------------+"    + EOL +
-            "|id  |in_program_block|name|qualified_name|"    + EOL +
-            "+----+----------------+----+--------------+",
-            FileIO.localizeLineEndings(selectData().toString()));
+            
+            assertEquals(
+                    "+--------------+-----------------+---------------+"    + EOL +
+                    "|qualified_name|begin_line_number|end_line_number|"    + EOL +
+                    "+--------------+-----------------+---------------+"    + EOL +
+                    "|script        |1                |3              |"    + EOL +
+                    "|script.script |1                |3              |"	+ EOL +
+                    "+--------------+-----------------+---------------+",
+                        FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
     }
 
     public void testExtract_GetModel_OneProgram_OneComment() throws Exception {
@@ -138,10 +142,11 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(0, program.outPorts.length);
         
         assertEquals(
-                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"    + EOL +
-                "|id  |in_program_block|begin_annotation|end_annotation|name  |qualified_name|is_workflow|is_function|"    + EOL +
-                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"    + EOL +
-                "|1   |{null}          |1               |2             |script|script        |0          |0          |"    + EOL +
+                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+" + EOL +
+                "|id  |in_program_block|begin_annotation|end_annotation|name  |qualified_name|is_workflow|is_function|" + EOL +
+                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+" + EOL +
+                "|1   |{null}          |1               |2             |script|script        |1          |0          |"	+ EOL +
+                "|2   |1               |1               |2             |script|script.script |0          |0          |" + EOL +
                 "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+",
                     FileIO.localizeLineEndings(selectPrograms().toString()));
         
@@ -150,6 +155,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|qualified_name|begin_line_number|end_line_number|"    + EOL +
                 "+--------------+-----------------+---------------+"    + EOL +
                 "|script        |1                |1              |"    + EOL +
+                "|script.script |1                |1              |"	+ EOL +
                 "+--------------+-----------------+---------------+",
                     FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
 
@@ -185,10 +191,11 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(0, program.outPorts.length);
         
         assertEquals(
-            "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"    + EOL +
-            "|id  |in_program_block|begin_annotation|end_annotation|name  |qualified_name|is_workflow|is_function|"    + EOL +
-            "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"    + EOL +
-            "|1   |{null}          |1               |2             |script|script        |0          |0          |"    + EOL +
+            "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"	+ EOL +
+            "|id  |in_program_block|begin_annotation|end_annotation|name  |qualified_name|is_workflow|is_function|" + EOL +
+            "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+" + EOL +
+            "|1   |{null}          |1               |2             |script|script        |1          |0          |"	+ EOL + 
+            "|2   |1               |1               |2             |script|script.script |0          |0          |" + EOL +
             "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+",
             FileIO.localizeLineEndings(selectPrograms().toString()));
         
@@ -197,6 +204,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|qualified_name|begin_line_number|end_line_number|"    + EOL +
                 "+--------------+-----------------+---------------+"    + EOL +
                 "|script        |1                |1              |"    + EOL +
+                "|script.script |1                |1              |"	+ EOL +
                 "+--------------+-----------------+---------------+",
                     FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
 
@@ -569,20 +577,22 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(Out.class, program.outPorts[0].flowAnnotation.getClass());
 
         assertEquals(
-                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"    + EOL +
-                "|id  |in_program_block|begin_annotation|end_annotation|name  |qualified_name|is_workflow|is_function|"    + EOL +
-                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"    + EOL +
-                "|1   |{null}          |1               |5             |script|script        |0          |0          |"    + EOL +
+                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"	+ EOL +
+                "|id  |in_program_block|begin_annotation|end_annotation|name  |qualified_name|is_workflow|is_function|" + EOL +
+                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+" + EOL +
+                "|1   |{null}          |1               |5             |script|script        |1          |0          |"	+ EOL + 
+                "|2   |1               |1               |5             |script|script.script |0          |0          |" + EOL +
                 "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+",
                 FileIO.localizeLineEndings(selectPrograms().toString()));
-        
-        assertEquals(
-                "+--------------+-----------------+---------------+"    + EOL +
-                "|qualified_name|begin_line_number|end_line_number|"    + EOL +
-                "+--------------+-----------------+---------------+"    + EOL +
-                "|script        |1                |6              |"    + EOL +
-                "+--------------+-----------------+---------------+",
-                FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
+            
+            assertEquals(
+                    "+--------------+-----------------+---------------+"    + EOL +
+                    "|qualified_name|begin_line_number|end_line_number|"    + EOL +
+                    "+--------------+-----------------+---------------+"    + EOL +
+                    "|script        |1                |6              |"    + EOL +
+                    "|script.script |1                |6              |"	+ EOL +
+                    "+--------------+-----------------+---------------+",
+                        FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
 
         assertEquals(
                 "+----+----------------+----+--------------+"    + EOL +
@@ -631,10 +641,11 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals("z", program.outPorts[0].flowAnnotation.binding());
         
         assertEquals(
-                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"    + EOL +
-                "|id  |in_program_block|begin_annotation|end_annotation|name  |qualified_name|is_workflow|is_function|"    + EOL +
-                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"    + EOL +
-                "|1   |{null}          |1               |5             |script|script        |0          |0          |"    + EOL +
+                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+" + EOL +
+                "|id  |in_program_block|begin_annotation|end_annotation|name  |qualified_name|is_workflow|is_function|" + EOL +
+                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+" + EOL +
+                "|1   |{null}          |1               |5             |script|script        |1          |0          |"	+ EOL +
+                "|2   |1               |1               |5             |script|script.script |0          |0          |" + EOL +
                 "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+",
                 FileIO.localizeLineEndings(selectPrograms().toString()));
         
@@ -643,6 +654,7 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
                 "|qualified_name|begin_line_number|end_line_number|"    + EOL +
                 "+--------------+-----------------+---------------+"    + EOL +
                 "|script        |1                |6              |"    + EOL +
+                "|script.script |1                |6              |"	+ EOL +
                 "+--------------+-----------------+---------------+",
                 FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
 
@@ -684,20 +696,22 @@ public class TestDefaultModeler extends YesWorkflowTestCase {
         assertEquals(1, program.outPorts.length);
         
         assertEquals(
-                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"    + EOL +
-                "|id  |in_program_block|begin_annotation|end_annotation|name  |qualified_name|is_workflow|is_function|"    + EOL +
-                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"    + EOL +
-                "|1   |{null}          |1               |5             |script|script        |0          |0          |"    + EOL +
+                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"	+ EOL +
+                "|id  |in_program_block|begin_annotation|end_annotation|name  |qualified_name|is_workflow|is_function|" + EOL +
+                "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+" + EOL +
+                "|1   |{null}          |1               |5             |script|script        |1          |0          |"	+ EOL + 
+                "|2   |1               |1               |5             |script|script.script |0          |0          |" + EOL +
                 "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+",
                 FileIO.localizeLineEndings(selectPrograms().toString()));
-        
-        assertEquals(
-                "+--------------+-----------------+---------------+"    + EOL +
-                "|qualified_name|begin_line_number|end_line_number|"    + EOL +
-                "+--------------+-----------------+---------------+"    + EOL +
-                "|script        |1                |3              |"    + EOL +
-                "+--------------+-----------------+---------------+",
-                FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
+            
+            assertEquals(
+                    "+--------------+-----------------+---------------+"    + EOL +
+                    "|qualified_name|begin_line_number|end_line_number|"    + EOL +
+                    "+--------------+-----------------+---------------+"    + EOL +
+                    "|script        |1                |3              |"    + EOL +
+                    "|script.script |1                |3              |"	+ EOL +
+                    "+--------------+-----------------+---------------+",
+                        FileIO.localizeLineEndings(selectProgramLineNumbers().toString()));
         
         assertEquals(
                 "+----+----------------+----+--------------+"    + EOL +

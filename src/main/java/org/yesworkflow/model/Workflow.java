@@ -1,9 +1,11 @@
 package org.yesworkflow.model;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.yesworkflow.annotations.Begin;
 import org.yesworkflow.annotations.End;
+import org.yesworkflow.db.YesWorkflowDB;
 
 public class Workflow extends Program {
 
@@ -53,11 +55,11 @@ public class Workflow extends Program {
         return true;
     }
 
-	public static Workflow createFromProgram(Program program) {
+	public static Workflow createFromProgram(YesWorkflowDB ywdb, Program program) throws SQLException {
 		if (program.programs.length > 0) {
 			return workflowFromProgramWithChildren(program);
 		} else {
-			return workflowFromProgramWithNoChildren(program);
+			return workflowFromProgramWithNoChildren(ywdb, program);
 		}
 	}
 	
@@ -76,35 +78,40 @@ public class Workflow extends Program {
     			);
     }
 		
-	private static Workflow workflowFromProgramWithNoChildren(Program parent) {
+	private static Workflow workflowFromProgramWithNoChildren(YesWorkflowDB ywdb, Program parent) throws SQLException {
 		
 		 Port[] childInPorts = new Port[parent.inPorts.length];
 		 for (int i = 0; i < parent.inPorts.length; ++i) {
 			 Port parentInPort = parent.inPorts[i];
-			 childInPorts[i] = new Port(100, parentInPort.data, parentInPort.flowAnnotation, parentInPort.beginAnnotation);
+			 childInPorts[i] = new Port(parentInPort.data, parentInPort.flowAnnotation, parentInPort.beginAnnotation);
 		 }
 		 
 		 Port[] childOutPorts = new Port[parent.outPorts.length];
 		 for (int i = 0; i < parent.outPorts.length; ++i) {
 			 Port parentOutPort = parent.outPorts[i];
-			 childOutPorts[i] = new Port(100, parentOutPort.data, parentOutPort.flowAnnotation, parentOutPort.beginAnnotation);
+			 childOutPorts[i] = new Port(parentOutPort.data, parentOutPort.flowAnnotation, parentOutPort.beginAnnotation);
 		 }
+		 		 
+		 Long childProgramId = ywdb.insertDefaultProgramBlock(parent.id);
+		 String qualifiedChilidName = parent.name + "." + parent.name;
+		 ywdb.updateProgramBlock(childProgramId, parent.beginAnnotation.id, parent.endAnnotation.id, parent.name, qualifiedChilidName, false, false);
+		 ywdb.updateProgramBlock(parent.id, parent.beginAnnotation.id, parent.endAnnotation.id, parent.name, parent.name, true, false);
 		 
-		 
-		 Program child = new Program(80L, parent.name, parent.beginAnnotation, parent.endAnnotation, 
+		 Program child = new Program(childProgramId, parent.name, parent.beginAnnotation, parent.endAnnotation, 
 				 					   new Data[] {}, childInPorts, childOutPorts,  
 				 					   new Program[] {}, new Channel[] {}, new Function[] {});
 
 		 Channel[] childChannels = new Channel[parent.inPorts.length + parent.outPorts.length];
 		 int childChannelIndex = 0;
 		 for (int i = 0; i < parent.outPorts.length; ++i) {
-			 childChannels[childChannelIndex++] = new Channel(100, parent.outPorts[i].data, child, childOutPorts[i], null, parent.outPorts[i]);
+			 childChannels[childChannelIndex++] = new Channel(parent.outPorts[i].data, child, childOutPorts[i], null, parent.outPorts[i]);
 		 }
 		 for (int i = 0; i < parent.inPorts.length; ++i) {
-			 childChannels[childChannelIndex++] = new Channel(100, parent.inPorts[i].data, null, parent.inPorts[i], child, childInPorts[i]);
+			 childChannels[childChannelIndex++] = new Channel(parent.inPorts[i].data, null, parent.inPorts[i], child, childInPorts[i]);
 		 }
 
-		 return new Workflow( parent.id, 
+		 return new Workflow(
+				 	parent.id, 
 	    			parent.name, 
 	    			parent.beginAnnotation, 
 	    			parent.endAnnotation, 

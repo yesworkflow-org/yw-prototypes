@@ -13,9 +13,11 @@ public class Port {
 	public final UriTemplate uriTemplate;
 	public final Data data;
 	
-	public Port(Integer id, Data data, Flow flowAnnotation, Begin beginAnnotation) {
+    private static Integer nextPortId = 1;
+	
+	public Port(Data data, Flow flowAnnotation, Begin beginAnnotation) {
 	    
-	    this.id = id;
+	    this.id = nextPortId++;
 	    this.data = data;
 		this.flowAnnotation = flowAnnotation;
 		this.beginAnnotation = beginAnnotation;
