@@ -8,7 +8,7 @@
 
     <groupId>org.yesworkflow</groupId>
     <artifactId>yesworkflow</artifactId>
-    <version>0.2.1.1</version>
+    <version>0.2.1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <organization>
@@ -224,7 +224,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>yesworkflow-0.2.1.1</finalName>
+                    <finalName>yesworkflow-0.2.1.2-SNAPSHOT</finalName>
                 </configuration>
                 <executions>
                     <execution>
