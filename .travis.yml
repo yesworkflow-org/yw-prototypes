@@ -1,4 +1,4 @@
 language: java
 script: 
-  - mvn test
-  - travis whoami
+- mvn test
+- travis whoami
