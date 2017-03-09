@@ -142,7 +142,7 @@ public class DotBuilder {
         if (nodeIsUnique(name)) {
             _buffer.append(String.format(           "%s [shape=record rankdir=LR label=\"{", q(name) ));
             if (horizontalLayout) _buffer.append(   "{"                                               );
-            _buffer.append(String.format(           "<f0> %s |<f1> %s", q(label1), esc(label2))       );
+            _buffer.append(String.format(           "<f0> %s |<f1> %s", esc(label1), esc(label2))       );
             if (horizontalLayout) _buffer.append(   "}"                                               );
             _buffer.append(                         "}\"];"                                           )
                    .append(                         EOL                                               );
