@@ -8,7 +8,7 @@
 
     <groupId>org.yesworkflow</groupId>
     <artifactId>yesworkflow</artifactId>
-    <version>0.2.1.2-SNAPSHOT</version>
+    <version>0.2.1.2</version>
     <packaging>jar</packaging>
 
     <organization>
@@ -27,7 +27,7 @@
     <scm>
       <connection>https://github.com/yesworkflow-org/yw-prototypes.git</connection>
       <developerConnection>https://github.com/yesworkflow-org/yw-prototypes.git</developerConnection>
-      <tag>v0.2.1.1</tag>
+      <tag>v0.2.1.2</tag>
       <url>https://github.com/yesworkflow-org/yw-prototypes</url>
     </scm>
 
@@ -224,7 +224,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>yesworkflow-0.2.1.2-SNAPSHOT</finalName>
+                    <finalName>yesworkflow-0.2.1.2</finalName>
                 </configuration>
                 <executions>
                     <execution>
