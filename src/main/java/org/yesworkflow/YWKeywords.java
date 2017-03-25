@@ -17,10 +17,11 @@ import java.util.Set;
 public class YWKeywords {
 
     /** Enumeration of unique YW tags. */
-    public enum Tag { AS, BEGIN, CALL, DESC, END, FILE, IN, LOG, OUT, PARAM, RETURN, URI;}
+    public enum Tag { AS, ASSERT, BEGIN, CALL, DESC, END, FILE, IN, LOG, OUT, PARAM, RETURN, URI;}
     
     /** Definitions of the standard keyword for the each tag. */
     public static final String STANDARD_AS_KEYWORD              = "@as";
+    public static final String STANDARD_ASSERT_KEYWORD          = "@assert";
     public static final String STANDARD_BEGIN_KEYWORD           = "@begin";
     public static final String STANDARD_CALL_KEYWORD            = "@call";
     public static final String STANDARD_DESC_KEYWORD            = "@desc";
@@ -39,6 +40,7 @@ public class YWKeywords {
     /** Default constructor that assigns the standard keyword to each tag. */
     public YWKeywords() {
         setStandardKeyword(    STANDARD_AS_KEYWORD,     Tag.AS      );
+        setStandardKeyword(    STANDARD_ASSERT_KEYWORD, Tag.ASSERT  );
         setStandardKeyword(    STANDARD_BEGIN_KEYWORD,  Tag.BEGIN   );
         setStandardKeyword(    STANDARD_CALL_KEYWORD,   Tag.CALL    );
         setStandardKeyword(    STANDARD_DESC_KEYWORD,   Tag.DESC    );

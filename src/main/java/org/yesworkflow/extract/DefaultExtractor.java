@@ -20,6 +20,7 @@ import org.yesworkflow.YWKeywords;
 import org.yesworkflow.YWKeywords.Tag;
 import org.yesworkflow.annotations.Annotation;
 import org.yesworkflow.annotations.As;
+import org.yesworkflow.annotations.Assertion;
 import org.yesworkflow.annotations.Begin;
 import org.yesworkflow.annotations.Call;
 import org.yesworkflow.annotations.Desc;
@@ -307,6 +308,8 @@ public class DefaultExtractor implements Extractor {
                 Long id = nextAnnotationId++;
                 switch(tag) {
                 
+                    case ASSERT:    annotation = new Assertion(id, sourceId, lineNumber, annotationString, tag);
+                                    break;
                     case BEGIN:     annotation = new Begin(id, sourceId, lineNumber, annotationString);
                                     break;
                     case CALL:      annotation = new Call(id, sourceId, lineNumber, annotationString);
