@@ -5,6 +5,7 @@ import static org.jooq.impl.DSL.table;
 public class Table {
 
     public static org.jooq.Table<?> ANNOTATION          = table("annotation");
+    public static org.jooq.Table<?> ASSERTION           = table("assertion");
     public static org.jooq.Table<?> CHANNEL             = table("channel");
     public static org.jooq.Table<?> COMMENT             = table("comment");
     public static org.jooq.Table<?> DATA                = table("data");

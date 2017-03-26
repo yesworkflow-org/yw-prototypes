@@ -12,6 +12,7 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.yesworkflow.util.FileIO;
 import org.yesworkflow.db.Table;
+import org.yesworkflow.db.Column.DATA;
 
 import static org.yesworkflow.db.Column.*;
 
@@ -32,8 +33,8 @@ public abstract class YesWorkflowDB {
     }
 
     public static YesWorkflowDB createInMemoryDB() throws Exception {
-        return YesWorkflowH2DB.createInMemoryDB();
-//        return YesWorkflowSQLiteDB.createInMemoryDB();
+//        return YesWorkflowH2DB.createInMemoryDB();
+        return YesWorkflowSQLiteDB.createInMemoryDB();
     }
 
     public static YesWorkflowDB openFileDB(Path dbFilePath) throws Exception {
@@ -139,6 +140,18 @@ public abstract class YesWorkflowDB {
         return getGeneratedId();
     }
 
+    public Long insertAssertion(Long programId, long subjectId, String predicate, long objectId) throws SQLException {
+
+        jooq.insertInto(Table.ASSERTION)
+            .set(PROGRAM_ID, programId)
+            .set(SUBJECT_ID, subjectId)
+            .set(PREDICATE, predicate)
+            .set(OBJECT_ID, objectId)
+            .execute();
+        
+        return getGeneratedId();
+    }
+    
     public Long insertDefaultProgramBlock(Long inProgramBlockId) throws SQLException {
 
         jooq.insertInto(Table.PROGRAM_BLOCK)
@@ -219,5 +232,27 @@ public abstract class YesWorkflowDB {
             caught = e;
         }
         return caught == null;
+    }
+    
+    public Long getDataId(Long programId, String dataName) {
+            
+        Record subjectRecord = (programId == null) ? 
+                        
+                (Record) jooq().select(ID)
+                               .from(Table.DATA)
+                               .where(DATA.IN_PROGRAM_BLOCK.isNull())
+                               .and(DATA.NAME.equal(dataName))
+                               .fetch()
+                               .get(0)
+                :
+ 
+                (Record) jooq().select(ID)
+                                .from(Table.DATA)
+                                .where(DATA.IN_PROGRAM_BLOCK.equal(programId))
+                                .and(DATA.NAME.equal(dataName))
+                                .fetch()
+                                .get(0);
+    
+            return getLongValue(subjectRecord, ID);
     }
 }

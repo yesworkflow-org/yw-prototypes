@@ -58,6 +58,14 @@ CREATE TABLE data (
     qualified_name      TEXT            NOT NULL
 );
 
+CREATE TABLE assertion (
+    id                  INTEGER         NOT NULL        PRIMARY KEY,
+    in_program_block    INTEGER         NULL            REFERENCES program_block(id),
+    subject             INTEGER         NOT NULL        REFERENCES data(id),
+    predicate           TEXT            NOT NULL,
+    object              INTEGER         NOT NULL        REFERENCES data(id)
+);
+
 CREATE TABLE port (
     id                  INTEGER         NOT NULL        PRIMARY KEY,
     port_annotation     INTEGER         NULL            REFERENCES annotation(id),

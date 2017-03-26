@@ -20,12 +20,15 @@ public class Column {
     public static Field LINE_TEXT           = field("line_text");
     public static Field LINE_NUMBER         = field("line_number");
     public static Field NAME                = field("name");
+    public static Field OBJECT_ID           = field("object");
     public static Field PATH                = field("path");
+    public static Field PREDICATE           = field("predicate");
     public static Field PROGRAM_ID          = field("in_program_block");
     public static Field QUALIFIED_NAME      = field("qualified_name");
     public static Field QUALIFIES           = field("qualifies");
     public static Field RANK_IN_LINE        = field("rank_in_line");
     public static Field RANK_IN_COMMENT     = field("rank_in_comment");
+    public static Field SUBJECT_ID          = field("subject");
     public static Field SOURCE_ID           = field("source");
     public static Field TAG                 = field("tag");
     public static Field VALUE               = field("value");
@@ -33,7 +36,9 @@ public class Column {
     public static class DATA {
         public static Field ID                  = field("data.id");
         public static Field IN_PROGRAM_BLOCK    = field("data.in_program_block");
-    }    
+        public static Field NAME                = field("data.name");
+    }
+    
     public static class SOURCE {
         public static Field ID                  = field("source.id");
         public static Field PATH                = field("source.path");
@@ -52,6 +57,14 @@ public class Column {
         public static Field LINE_NUMBER     = field("comment.line_number");
         public static Field RANK_IN_LINE    = field("comment.rank_in_line");
         public static Field COMMENT_TEXT    = field("comment.comment_text");
+    }
+    
+    public static class ASSERTION {
+        public static Field ID              = field("assertion.id");
+        public static Field PROGRAM_ID      = field("assertion.in_program_block");
+        public static Field SUBJECT_ID      = field("assertion.subject");
+        public static Field PREDICATE       = field("assertion.predicate");
+        public static Field OBJECT_ID       = field("assertion.object");
     }
     
     public static class ANNOTATION {

@@ -1,5 +1,6 @@
 package org.yesworkflow.model;
 
+
 import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.yesworkflow.annotations.Assertion;
 import org.yesworkflow.annotations.Begin;
 import org.yesworkflow.annotations.End;
 import org.yesworkflow.annotations.Flow;
@@ -26,6 +28,7 @@ public class WorkflowBuilder {
         private String name;
         private Begin beginAnnotation;
         private End endAnnotation;
+        private List<Assertion> assertions = new LinkedList<Assertion>();
         private List<Port> workflowInPorts = new LinkedList<Port>();
         private List<Port> workflowOutPorts = new LinkedList<Port>();
         private List<Port> workflowReturnPorts = new LinkedList<Port>();
@@ -98,8 +101,12 @@ public class WorkflowBuilder {
             this.nestedFunctions.add(function);
             this.functionForName.put(function.beginAnnotation.value(), function);
             return this;
+        }		
+
+        public void assertion(Assertion assertion) {
+            assertions.add(assertion);
         }
-		
+        
         public void inPort(In inPortAnnotation) throws Exception {
             Port inPort = addPort(inPortAnnotation);
             workflowInPorts.add(inPort);
@@ -194,10 +201,23 @@ public class WorkflowBuilder {
 		}
 		
 		public Program build() throws Exception {
+		    expandAssertions();
 		    if (workflowReturnPorts.size() > 0) return buildFunction();
             buildChannels();
             if (nestedChannels.size() > 0) return buildWorkflow();
             return buildProgram();
+		}
+		
+		private void expandAssertions() throws SQLException {
+		    
+		    for (Assertion assertion : assertions) {
+
+		        Long subjectId = ywdb.getDataId(parentBuilder.programId, assertion.subject);
+		        for (String object : assertion.objects) {
+		            Long objectId = ywdb.getDataId(parentBuilder.programId, object);
+		            ywdb.insertAssertion(parentBuilder.programId, subjectId, assertion.predicate, objectId);
+		        }
+		    }
 		}
 		
 		public Function buildFunction() throws Exception {

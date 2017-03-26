@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.yesworkflow.annotations.Annotation;
+import org.yesworkflow.annotations.Assertion;
 import org.yesworkflow.annotations.Begin;
 import org.yesworkflow.annotations.End;
 import org.yesworkflow.annotations.In;
@@ -154,6 +155,9 @@ public class DefaultModeler implements Modeler {
                         topWorkflowBuilder = workflowBuilder;
                     }
                 }
+                
+            } else if (annotation instanceof Assertion) {
+                workflowBuilder.assertion((Assertion)annotation);
 
             } else if (annotation instanceof Return) {
                 workflowBuilder.returnPort((Return)annotation);
