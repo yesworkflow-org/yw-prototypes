@@ -19,6 +19,7 @@ import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Return;
 import org.yesworkflow.db.YesWorkflowDB;
+import org.yesworkflow.exceptions.YWMarkupException;
 
 public class WorkflowBuilder {
 		
@@ -108,29 +109,30 @@ public class WorkflowBuilder {
         }
         
         public void inPort(In inPortAnnotation) throws Exception {
-            Port inPort = addPort(inPortAnnotation);
+            Port inPort = addPort(inPortAnnotation, true);
             workflowInPorts.add(inPort);
             nestedOutPort(inPort);
             parentBuilder.nestedInPort(inPort);
         }
         
         public void outPort(Out outPortAnnotation) throws Exception {
-            Port outPort = addPort(outPortAnnotation);
+            Port outPort = addPort(outPortAnnotation, false);
             workflowOutPorts.add(outPort);
             nestedInPort(outPort);
             parentBuilder.nestedOutPort(outPort);
         }
 
         public void returnPort(Return returnAnnotation) throws SQLException {
-            Port returnPort = addPort(returnAnnotation);
+            Port returnPort = addPort(returnAnnotation, false);
             workflowReturnPorts.add(returnPort);
             nestedInPort(returnPort);
         }
         
-        private Port addPort(Flow portAnnotation) throws SQLException {
+        private Port addPort(Flow portAnnotation, boolean isInput) throws SQLException {
             Data data = parentBuilder.addNestedData(portAnnotation.binding());
-//            Long portId = ywdb.insertPort();
-            Port port = new Port(data, portAnnotation, beginAnnotation);
+            Long portId = ywdb.insertPort(portAnnotation.id, programId, data.id, portAnnotation.value(), 
+                    portAnnotation.value(), isInput);
+            Port port = new Port(portId, data, portAnnotation, beginAnnotation);
             return port;
         }
 
@@ -208,13 +210,22 @@ public class WorkflowBuilder {
             return buildProgram();
 		}
 		
-		private void expandAssertions() throws SQLException {
+		private void expandAssertions() throws SQLException, YWMarkupException {
 		    
 		    for (Assertion assertion : assertions) {
 
 		        Long subjectId = ywdb.getDataId(parentBuilder.programId, assertion.subject);
+		        if (subjectId == null) {
+		            throw new YWMarkupException("Subject of assertion '" + assertion.subject + "' does not exist");
+		        }
+		        if (!ywdb.dataIsOutputOfProgram(subjectId, programId)) {
+                    throw new YWMarkupException("Subject of assertion '" + assertion.subject + "' is not an output");
+		        }
 		        for (String object : assertion.objects) {
 		            Long objectId = ywdb.getDataId(parentBuilder.programId, object);
+	                if (objectId == null) {
+	                    throw new YWMarkupException("Object of assertion '" + object + "' does not exist");
+	                }
 		            ywdb.insertAssertion(parentBuilder.programId, subjectId, assertion.predicate, objectId);
 		        }
 		    }

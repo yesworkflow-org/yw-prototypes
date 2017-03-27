@@ -26,7 +26,6 @@ public abstract class Flow extends AliasableAnnotation {
         return uriAnnotation;
     }
 
-    
     @Override
     public String toString() {
         

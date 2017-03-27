@@ -80,21 +80,30 @@ public class Workflow extends Program {
 		
 	private static Workflow workflowFromProgramWithNoChildren(YesWorkflowDB ywdb, Program parent) throws SQLException {
 		
+        Long childProgramId = ywdb.insertDefaultProgramBlock(parent.id);
+	    
 		 Port[] childInPorts = new Port[parent.inPorts.length];
 		 for (int i = 0; i < parent.inPorts.length; ++i) {
 			 Port parentInPort = parent.inPorts[i];
-			 childInPorts[i] = new Port(parentInPort.data, parentInPort.flowAnnotation, parentInPort.beginAnnotation);
+			 String portName =  parentInPort.flowAnnotation.value();
+			 String qualifiedPortName = parent.name + "." + portName;
+			 Long portId = ywdb.insertPort(parentInPort.flowAnnotation.id, childProgramId, parentInPort.data.id, portName, 
+			         qualifiedPortName, true);
+			 childInPorts[i] = new Port(portId, parentInPort.data, parentInPort.flowAnnotation, parentInPort.beginAnnotation);
 		 }
 		 
 		 Port[] childOutPorts = new Port[parent.outPorts.length];
 		 for (int i = 0; i < parent.outPorts.length; ++i) {
 			 Port parentOutPort = parent.outPorts[i];
-			 childOutPorts[i] = new Port(parentOutPort.data, parentOutPort.flowAnnotation, parentOutPort.beginAnnotation);
+             String portName =  parentOutPort.flowAnnotation.value();
+             String qualifiedPortName = parent.name + "." + portName;
+             Long portId = ywdb.insertPort(parentOutPort.flowAnnotation.id, childProgramId, parentOutPort.data.id, portName, 
+                     qualifiedPortName, false);
+			 childOutPorts[i] = new Port(portId,parentOutPort.data, parentOutPort.flowAnnotation, parentOutPort.beginAnnotation);
 		 }
 		 		 
-		 Long childProgramId = ywdb.insertDefaultProgramBlock(parent.id);
-		 String qualifiedChilidName = parent.name + "." + parent.name;
-		 ywdb.updateProgramBlock(childProgramId, parent.beginAnnotation.id, parent.endAnnotation.id, parent.name, qualifiedChilidName, false, false);
+		 String qualifiedChildName = parent.name + "." + parent.name;
+		 ywdb.updateProgramBlock(childProgramId, parent.beginAnnotation.id, parent.endAnnotation.id, parent.name, qualifiedChildName, false, false);
 		 ywdb.updateProgramBlock(parent.id, parent.beginAnnotation.id, parent.endAnnotation.id, parent.name, parent.name, true, false);
 		 
 		 Program child = new Program(childProgramId, parent.name, parent.beginAnnotation, parent.endAnnotation, 

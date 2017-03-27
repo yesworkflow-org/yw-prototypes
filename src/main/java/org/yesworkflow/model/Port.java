@@ -7,17 +7,15 @@ import org.yesworkflow.data.UriTemplate;
 
 public class Port {
 
-    public final Integer id;
+    public final Long id;
     public final Begin beginAnnotation;
 	public final Flow flowAnnotation;
 	public final UriTemplate uriTemplate;
 	public final Data data;
 	
-    private static Integer nextPortId = 1;
-	
-	public Port(Data data, Flow flowAnnotation, Begin beginAnnotation) {
+	public Port(Long portId, Data data, Flow flowAnnotation, Begin beginAnnotation) {
 	    
-	    this.id = nextPortId++;
+	    this.id = portId;
 	    this.data = data;
 		this.flowAnnotation = flowAnnotation;
 		this.beginAnnotation = beginAnnotation;
