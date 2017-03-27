@@ -73,10 +73,8 @@ CREATE TABLE port (
     data                INTEGER         NOT NULL        REFERENCES data(id),
     name                TEXT            NOT NULL,
     qualified_name      TEXT            NOT NULL,
-    alias               TEXT            NULL,
     uri_template        TEXT            NULL,
-    is_inport           INTEGER         NOT NULL,
-    is_outport          INTEGER         NOT NULL
+    direction           TEXT            NOT NULL
 );
 
 CREATE TABLE channel (

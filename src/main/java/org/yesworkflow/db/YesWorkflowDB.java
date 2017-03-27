@@ -10,6 +10,7 @@ import java.util.logging.LogManager;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Result;
 import org.yesworkflow.util.FileIO;
 import org.yesworkflow.db.Table;
 import org.yesworkflow.db.Column.DATA;
@@ -204,12 +205,16 @@ public abstract class YesWorkflowDB {
         return getGeneratedId();
     }
     
-    public Long insertPort(String name, String qualifiedName, Long programId) throws SQLException {
+    public Long insertPort(Long portAnnotationId, Long programId, Long dataId,  String name, 
+                           String qualifiedName, boolean isInput) throws SQLException {
 
-        jooq.insertInto(Table.DATA)
+        jooq.insertInto(Table.PORT)
+            .set(PORT_ANNOTATION_ID, portAnnotationId)
+            .set(ON_PROGRAM_BLOCK, programId)
+            .set(DATA_ID, dataId)
             .set(NAME, name)
             .set(QUALIFIED_NAME, qualifiedName)
-            .set(PROGRAM_ID, programId)
+            .set(DIRECTION, isInput ? "IN" : "OUT")
             .execute();
         
         return getGeneratedId();
@@ -236,23 +241,50 @@ public abstract class YesWorkflowDB {
     
     public Long getDataId(Long programId, String dataName) {
             
-        Record subjectRecord = (programId == null) ? 
+        Result<Record> result = (programId == null) ? 
                         
-                (Record) jooq().select(ID)
-                               .from(Table.DATA)
-                               .where(DATA.IN_PROGRAM_BLOCK.isNull())
-                               .and(DATA.NAME.equal(dataName))
-                               .fetch()
-                               .get(0)
+                jooq().select(ID)
+                      .from(Table.DATA)
+                      .where(DATA.IN_PROGRAM_BLOCK.isNull())
+                      .and(DATA.NAME.equal(dataName))
+                      .fetch()
                 :
  
-                (Record) jooq().select(ID)
-                                .from(Table.DATA)
-                                .where(DATA.IN_PROGRAM_BLOCK.equal(programId))
-                                .and(DATA.NAME.equal(dataName))
-                                .fetch()
-                                .get(0);
+                jooq().select(ID)
+                      .from(Table.DATA)
+                      .where(DATA.IN_PROGRAM_BLOCK.equal(programId))
+                      .and(DATA.NAME.equal(dataName))
+                      .fetch();
     
-            return getLongValue(subjectRecord, ID);
+        if (result.size() == 1) {
+            return getLongValue(result.get(0), ID);
+        } else {
+            return null;
+        }
     }
+    
+    public boolean dataIsOutputOfProgram(Long dataId, Long programId) {
+        
+        Result<Record> result = (programId == null) ? 
+                
+                jooq().select(DIRECTION)
+                      .from(Table.PORT)
+                      .where(PORT.ON_PROGRAM_BLOCK.isNull())
+                      .and(PORT.DATA_ID.equal(dataId))
+                      .fetch()
+                :
+ 
+                jooq().select(DIRECTION)
+                    .from(Table.PORT)
+                    .where(PORT.ON_PROGRAM_BLOCK.equal(programId))
+                    .and(PORT.DATA_ID.equal(dataId))
+                    .fetch();
+        
+        if (result.size() == 1) {
+            return result.get(0).getValue(DIRECTION).equals("OUT");
+        } else {
+            return false;
+        }
+    }
+
 }
