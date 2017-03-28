@@ -144,7 +144,7 @@ public abstract class YesWorkflowDB {
     public Long insertAssertion(Long programId, long subjectId, String predicate, long objectId) throws SQLException {
 
         jooq.insertInto(Table.ASSERTION)
-            .set(PROGRAM_ID, programId)
+            .set(ABOUT_PROGRAM, programId)
             .set(SUBJECT_ID, subjectId)
             .set(PREDICATE, predicate)
             .set(OBJECT_ID, objectId)

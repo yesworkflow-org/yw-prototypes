@@ -43,7 +43,7 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
     @SuppressWarnings("unchecked")
     private Result<Record> selectAssertions() {
         
-        return ywdb.jooq().select(ID, PROGRAM_ID, SUBJECT_ID, PREDICATE, OBJECT_ID)
+        return ywdb.jooq().select(ID, ABOUT_PROGRAM, SUBJECT_ID, PREDICATE, OBJECT_ID)
                           .from(Table.ASSERTION)
                           .fetch();
     }
@@ -116,11 +116,11 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
                 FileIO.localizeLineEndings(selectPort().toString()));
         
         assertEquals(
-                "+----+----------------+-------+----------+------+"    + EOL +
-                "|id  |in_program_block|subject|predicate |object|"    + EOL +
-                "+----+----------------+-------+----------+------+"    + EOL +
-                "|1   |{null}          |3      |depends-on|2     |"    + EOL +
-                "+----+----------------+-------+----------+------+",
+                "+----+-------------+-------+----------+------+"    + EOL +
+                "|id  |about_program|subject|predicate |object|"    + EOL +
+                "+----+-------------+-------+----------+------+"    + EOL +
+                "|1   |{null}       |3      |depends-on|2     |"    + EOL +
+                "+----+-------------+-------+----------+------+",
                 FileIO.localizeLineEndings(selectAssertions().toString()));
     }
 
@@ -163,12 +163,12 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
                 FileIO.localizeLineEndings(selectData().toString()));
         
         assertEquals(
-                "+----+----------------+-------+----------+------+"    + EOL +
-                "|id  |in_program_block|subject|predicate |object|"    + EOL +
-                "+----+----------------+-------+----------+------+"    + EOL +
-                "|1   |{null}          |3      |depends-on|1     |"    + EOL +
-                "|2   |{null}          |3      |depends-on|2     |"    + EOL +
-                "+----+----------------+-------+----------+------+",
+                "+----+-------------+-------+----------+------+"    + EOL +
+                "|id  |about_program|subject|predicate |object|"    + EOL +
+                "+----+-------------+-------+----------+------+"    + EOL +
+                "|1   |{null}       |3      |depends-on|1     |"    + EOL +
+                "|2   |{null}       |3      |depends-on|2     |"    + EOL +
+                "+----+-------------+-------+----------+------+",
                 FileIO.localizeLineEndings(selectAssertions().toString()));
     }
     
@@ -211,12 +211,12 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
                 FileIO.localizeLineEndings(selectData().toString()));
         
         assertEquals(
-                "+----+----------------+-------+----------+------+"    + EOL +
-                "|id  |in_program_block|subject|predicate |object|"    + EOL +
-                "+----+----------------+-------+----------+------+"    + EOL +
-                "|1   |{null}          |3      |depends-on|1     |"    + EOL +
-                "|2   |{null}          |3      |depends-on|2     |"    + EOL +
-                "+----+----------------+-------+----------+------+",
+                "+----+-------------+-------+----------+------+"    + EOL +
+                "|id  |about_program|subject|predicate |object|"    + EOL +
+                "+----+-------------+-------+----------+------+"    + EOL +
+                "|1   |{null}       |3      |depends-on|1     |"    + EOL +
+                "|2   |{null}       |3      |depends-on|2     |"    + EOL +
+                "+----+-------------+-------+----------+------+",
                 FileIO.localizeLineEndings(selectAssertions().toString()));
     }
     
@@ -263,12 +263,12 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
                 FileIO.localizeLineEndings(selectPort().toString()));
         
         assertEquals(
-                "+----+----------------+-------+----------+------+"    + EOL +
-                "|id  |in_program_block|subject|predicate |object|"    + EOL +
-                "+----+----------------+-------+----------+------+"    + EOL +
-                "|1   |{null}          |2      |depends-on|1     |"    + EOL +
-                "|2   |{null}          |3      |depends-on|2     |"    + EOL +
-                "+----+----------------+-------+----------+------+",
+                "+----+-------------+-------+----------+------+"    + EOL +
+                "|id  |about_program|subject|predicate |object|"    + EOL +
+                "+----+-------------+-------+----------+------+"    + EOL +
+                "|1   |{null}       |2      |depends-on|1     |"    + EOL +
+                "|2   |{null}       |3      |depends-on|2     |"    + EOL +
+                "+----+-------------+-------+----------+------+",
                 FileIO.localizeLineEndings(selectAssertions().toString()));
     }
     

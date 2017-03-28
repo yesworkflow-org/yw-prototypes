@@ -7,6 +7,7 @@ import org.jooq.Field;
 @SuppressWarnings("rawtypes")
 public class Column {
 
+    public static Field ABOUT_PROGRAM       = field("about_program");
     public static Field BEGIN_ANNOTATION_ID = field("begin_annotation");
     public static Field COMMENT_ID          = field("comment");
     public static Field COMMENT_TEXT        = field("comment_text");
@@ -66,7 +67,7 @@ public class Column {
     
     public static class ASSERTION {
         public static Field ID              = field("assertion.id");
-        public static Field PROGRAM_ID      = field("assertion.in_program_block");
+        public static Field ABOUT_PROGRAM   = field("assertion.in_program_block");
         public static Field SUBJECT_ID      = field("assertion.subject");
         public static Field PREDICATE       = field("assertion.predicate");
         public static Field OBJECT_ID       = field("assertion.object");
@@ -85,7 +86,7 @@ public class Column {
 
     public static class PROGRAM_BLOCK {
         public static Field ID                  = field("program_block.id");
-        public static Field IN_PROGRAM_BLOCK    = field("program_block.in_program_block");
+        public static Field ABOUT_PROGRAM       = field("program_block.about_program");
         public static Field BEGIN_ANNOTATION_ID = field("program_block.begin_annotation");
         public static Field END_ANNOTATION_ID   = field("program_block.end_annotation");
         public static Field NAME                = field("program_block.name");
