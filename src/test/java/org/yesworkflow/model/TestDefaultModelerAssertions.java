@@ -6,6 +6,7 @@ import static org.yesworkflow.db.Column.*;
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.List;
+import java.util.Map;
 
 import org.jooq.Record;
 import org.jooq.Result;
@@ -37,14 +38,6 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
         return ywdb.jooq().select(ID, IN_PROGRAM_BLOCK, BEGIN_ANNOTATION_ID, END_ANNOTATION_ID, NAME, 
                                   QUALIFIED_NAME, IS_WORKFLOW, IS_FUNCTION)
                           .from(Table.PROGRAM_BLOCK)
-                          .fetch();
-    }
-
-    @SuppressWarnings("unchecked")
-    private Result<Record> selectAssertions() {
-        
-        return ywdb.jooq().select(ID, ABOUT_PROGRAM, SUBJECT_ID, PREDICATE, OBJECT_ID)
-                          .from(Table.ASSERTION)
                           .fetch();
     }
     
@@ -81,7 +74,7 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
                 .extract()
                 .getAnnotations();
 
-        modeler.annotations(annotations).model();
+        Model model = modeler.annotations(annotations).model().getModel();
         
         assertEquals(
                 "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+"	+ EOL +
@@ -121,7 +114,14 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
                 "+----+-------------+-------+----------+------+"    + EOL +
                 "|1   |{null}       |3      |depends-on|2     |"    + EOL +
                 "+----+-------------+-------+----------+------+",
-                FileIO.localizeLineEndings(selectAssertions().toString()));
+                FileIO.localizeLineEndings(ywdb.selectAssertions().toString()));
+        
+        Map<String, String> facts = new ModelFacts(ywdb, DefaultModeler.DEFAULT_QUERY_ENGINE, model).build().facts();
+
+        assertEquals(
+                "% FACT: assert(program_id, subject_id, predicate, object_id)." + EOL +
+                "assert(nil, 3, 'depends-on', 2)."                              + EOL,
+                facts.get("assert"));
     }
 
     
@@ -141,7 +141,7 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
                 .extract()
                 .getAnnotations();
 
-        modeler.annotations(annotations).model();
+        Model model = modeler.annotations(annotations).model().getModel();
         
         assertEquals(
                 "+----+----------------+----------------+--------------+------+--------------+-----------+-----------+" + EOL +
@@ -169,7 +169,15 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
                 "|1   |{null}       |3      |depends-on|1     |"    + EOL +
                 "|2   |{null}       |3      |depends-on|2     |"    + EOL +
                 "+----+-------------+-------+----------+------+",
-                FileIO.localizeLineEndings(selectAssertions().toString()));
+                FileIO.localizeLineEndings(ywdb.selectAssertions().toString()));
+        
+        Map<String, String> facts = new ModelFacts(ywdb, DefaultModeler.DEFAULT_QUERY_ENGINE, model).build().facts();
+
+        assertEquals(
+                "% FACT: assert(program_id, subject_id, predicate, object_id)." + EOL +
+                "assert(nil, 3, 'depends-on', 1)."                              + EOL +
+                "assert(nil, 3, 'depends-on', 2)."                              + EOL,
+                facts.get("assert"));
     }
     
     public void testModelAssertions_AssertDependencyOnTwoInputsOfTwoWithTwoAsserts() throws Exception {
@@ -217,7 +225,7 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
                 "|1   |{null}       |3      |depends-on|1     |"    + EOL +
                 "|2   |{null}       |3      |depends-on|2     |"    + EOL +
                 "+----+-------------+-------+----------+------+",
-                FileIO.localizeLineEndings(selectAssertions().toString()));
+                FileIO.localizeLineEndings(ywdb.selectAssertions().toString()));
     }
     
     public void testModelAssertions_AssertDependencyOneOutputOnAnotherOutput() throws Exception {
@@ -269,7 +277,7 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
                 "|1   |{null}       |2      |depends-on|1     |"    + EOL +
                 "|2   |{null}       |3      |depends-on|2     |"    + EOL +
                 "+----+-------------+-------+----------+------+",
-                FileIO.localizeLineEndings(selectAssertions().toString()));
+                FileIO.localizeLineEndings(ywdb.selectAssertions().toString()));
     }
     
     public void testModelAssertions_NonexistentObject() throws Exception {

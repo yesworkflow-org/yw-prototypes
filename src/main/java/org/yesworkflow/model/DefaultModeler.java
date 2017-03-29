@@ -21,7 +21,7 @@ import org.yesworkflow.query.QueryEngine;
 
 public class DefaultModeler implements Modeler {
 
-    static private QueryEngine DEFAULT_QUERY_ENGINE = QueryEngine.SWIPL;
+    static QueryEngine DEFAULT_QUERY_ENGINE = QueryEngine.SWIPL;
 
     private YesWorkflowDB ywdb;
     private List<Annotation> annotations;
@@ -88,7 +88,7 @@ public class DefaultModeler implements Modeler {
     @Override
     public Map<String, String> getFacts() throws IOException {
         if (modelFacts == null) {
-            modelFacts = new ModelFacts(queryEngine, model).build().facts();
+            modelFacts = new ModelFacts(ywdb, queryEngine, model).build().facts();
         }
         return modelFacts;
     }
@@ -97,16 +97,18 @@ public class DefaultModeler implements Modeler {
         
         if (path.equals(YWConfiguration.EMPTY_VALUE) || path.equals("-")) {
             for (Map.Entry<String, String> entry : texts.entrySet()) {
-                this.stdoutStream.print(entry.getValue());            
+                this.stdoutStream.print(entry.getValue());
+                this.stdoutStream.print(EOL);
             }
         } else if (queryEngine == QueryEngine.CSV) {
              for (Map.Entry<String, String> entry : texts.entrySet()) {
-                writeTextToFileOrStdout(path + "_" + entry.getKey() + ".csv", entry.getValue());            
+                writeTextToFileOrStdout(path + "_" + entry.getKey() + ".csv", entry.getValue());  
             }
         } else {
             PrintStream stream = new PrintStream(path);
             for (Map.Entry<String, String> entry : texts.entrySet()) {
                 stream.print(entry.getValue());            
+                stream.print(EOL);
             }
             stream.close();
         }

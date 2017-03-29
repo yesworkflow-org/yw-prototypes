@@ -48,8 +48,7 @@ public class FactsExportBuilder extends DataExportBuilder {
 	
     public FactsExportBuilder comment(String c) {
         if (queryEngineModel.showComments) {
-            _buffer.append(     EOL                             )
-                   .append(     queryEngineModel.commentStart   )
+            _buffer.append(     queryEngineModel.commentStart   )
                    .append(     c                               )
                    .append(     EOL                             );
         }        
@@ -58,6 +57,9 @@ public class FactsExportBuilder extends DataExportBuilder {
 
     // TODO Apply quotes only when required by facts file format
     private String quote(Object value) {
+        if (value == null) {
+            return "nil";
+        }
         if (value instanceof Number) {
             return value.toString();
         } else {

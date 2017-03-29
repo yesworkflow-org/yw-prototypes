@@ -1,24 +1,32 @@
 package org.yesworkflow.model;
 
+import static org.yesworkflow.db.Column.*;
+
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.jooq.Field;
+import org.jooq.Record;
+import org.jooq.Result;
 import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Log;
 import org.yesworkflow.annotations.Out;
 import org.yesworkflow.data.TemplateVariable;
+import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.query.DataExportBuilder;
 import org.yesworkflow.query.QueryEngine;
 
 public class ModelFacts {
 
+    private final YesWorkflowDB ywdb;
     private final Model model;
     private Map<String,String> facts = new LinkedHashMap<String,String>();
     
-    private DataExportBuilder programFacts ;
+    private DataExportBuilder programFacts;
+    private DataExportBuilder assertionFacts;
     private DataExportBuilder workflowFacts;
     private DataExportBuilder functionFacts;
     private DataExportBuilder subprogramFacts;
@@ -37,12 +45,14 @@ public class ModelFacts {
     private DataExportBuilder logTemplateVariableFacts;
     private Long nextLogId = 1L;
 
-    public ModelFacts(QueryEngine queryEngine, Model model) throws IOException {
+    public ModelFacts(YesWorkflowDB ywdb, QueryEngine queryEngine, Model model) throws IOException {
 
+        if (ywdb == null) throw new IllegalArgumentException("Null ywdb argument passed to ModelFacts constructor.");
         if (queryEngine == null) throw new IllegalArgumentException("Null logicLanguage argument passed to ModelFacts constructor.");
         if (model == null) throw new IllegalArgumentException("Null model argument passed to ModelFacts constructor.");
         if (model.workflow == null) throw new IllegalArgumentException("Null workflow field in model argument passed to ModelFacts constructor.");
         
+        this.ywdb = ywdb;
         this.model = model;
 
         this.programFacts  = DataExportBuilder.create(queryEngine, "program", "program_id", "program_name", "qualified_program_name", "begin_annotation_id", "end_annotation_id");
@@ -62,6 +72,7 @@ public class ModelFacts {
         this.portUriVariableFacts = DataExportBuilder.create(queryEngine, "uri_variable", "uri_variable_id", "variable_name", "port_id");
         this.portLogFacts = DataExportBuilder.create(queryEngine, "log_template", "log_template_id", "port_id", "entry_template", "log_annotation_id");
         this.logTemplateVariableFacts = DataExportBuilder.create(queryEngine, "log_template_variable", "log_variable_id", "variable_name", "log_template_id");
+        this.assertionFacts = DataExportBuilder.create(queryEngine, "assert", "program_id", "subject_id", "predicate", "object_id");
     }
 
     public ModelFacts build() throws IOException {
@@ -80,6 +91,8 @@ public class ModelFacts {
             buildProgramFactsRecursively(function, null, null);
         }
         
+        buildAssertionFacts();
+        
         facts.put(programFacts.name, programFacts.toString());
         facts.put(workflowFacts.name, workflowFacts.toString());
         facts.put(functionFacts.name, functionFacts.toString());
@@ -97,6 +110,7 @@ public class ModelFacts {
         facts.put(portUriVariableFacts.name, portUriVariableFacts.toString());
         facts.put(portLogFacts.name, portLogFacts.toString());
         facts.put(logTemplateVariableFacts.name, logTemplateVariableFacts.toString());
+        facts.put(assertionFacts.name, assertionFacts.toString());
 
         return this;
     }
@@ -218,7 +232,29 @@ public class ModelFacts {
         }
     }
 
+    private void buildAssertionFacts() throws IOException {
+        Result<Record> assertionRows = ywdb.selectAssertions();
+        for (Record assertionRow : assertionRows) {
+            Long programId = ywdb.getLongValue(assertionRow, ABOUT_PROGRAM);
+            long subjectId = ywdb.getLongValue(assertionRow,SUBJECT_ID);
+            String predicate = (String)assertionRow.getValue(PREDICATE);
+            long objectId = ywdb.getLongValue(assertionRow,OBJECT_ID);
+            assertionFacts.addRow(programId, subjectId, predicate, objectId);
+        }
+    }
+    
     public Map<String,String> facts() {
         return facts;
+    }
+    
+    public String toString() {
+        
+        StringBuffer factsBuffer = new StringBuffer();
+        
+        for (String factsBlock : facts.values()) {
+            factsBuffer.append(factsBlock);
+        }
+        
+        return factsBuffer.toString();
     }
 }
