@@ -62,6 +62,15 @@ CREATE TABLE data (
     qualified_name      VARCHAR         NOT NULL,
 );
 
+
+CREATE TABLE assertion (
+    id                  IDENTITY        NOT NULL        PRIMARY KEY,
+    about_program       BIGINT          NULL            REFERENCES program_block(id),
+    subject             BIGINT          NOT NULL        REFERENCES data(id),
+    predicate           VARCHAR         NOT NULL,
+    object              BIGINT          NOT NULL        REFERENCES data(id)
+);
+
 CREATE TABLE port (
     id                  IDENTITY        NOT NULL        PRIMARY KEY,
     port_annotation     BIGINT          NULL            REFERENCES annotation(id),
@@ -69,10 +78,8 @@ CREATE TABLE port (
     data                BIGINT          NOT NULL        REFERENCES data(id),
     name                VARCHAR         NOT NULL,
     qualified_name      VARCHAR         NOT NULL,
-    alias               VARCHAR         NULL,
     uri_template        VARCHAR         NULL,
-    is_inport           TINYINT         NOT NULL,
-    is_outport          TINYINT         NOT NULL
+    direction           VARCHAR         NOT NULL
 );
 
 CREATE TABLE channel (

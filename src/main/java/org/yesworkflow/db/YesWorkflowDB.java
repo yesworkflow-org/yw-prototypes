@@ -34,8 +34,8 @@ public abstract class YesWorkflowDB {
     }
 
     public static YesWorkflowDB createInMemoryDB() throws Exception {
-//        return YesWorkflowH2DB.createInMemoryDB();
-        return YesWorkflowSQLiteDB.createInMemoryDB();
+        return YesWorkflowH2DB.createInMemoryDB();
+//        return YesWorkflowSQLiteDB.createInMemoryDB();
     }
 
     public static YesWorkflowDB openFileDB(Path dbFilePath) throws Exception {
@@ -285,6 +285,13 @@ public abstract class YesWorkflowDB {
         } else {
             return false;
         }
+    }
+
+    public Result<Record> selectAssertions() {
+    
+        return jooq().select(ID, ABOUT_PROGRAM, SUBJECT_ID, PREDICATE, OBJECT_ID)
+                     .from(Table.ASSERTION)
+                     .fetch();
     }
 
 }
