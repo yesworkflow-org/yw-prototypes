@@ -65,7 +65,7 @@ CREATE TABLE data (
 
 CREATE TABLE assertion (
     id                  IDENTITY        NOT NULL        PRIMARY KEY,
-    about_program       BIGINT          NULL            REFERENCES program_block(id),
+    in_program_block    BIGINT          NULL            REFERENCES program_block(id),
     subject             BIGINT          NOT NULL        REFERENCES data(id),
     predicate           VARCHAR         NOT NULL,
     object              BIGINT          NOT NULL        REFERENCES data(id)

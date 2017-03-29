@@ -7,7 +7,6 @@ import org.jooq.Field;
 @SuppressWarnings("rawtypes")
 public class Column {
 
-    public static Field ABOUT_PROGRAM       = field("about_program");
     public static Field BEGIN_ANNOTATION_ID = field("begin_annotation");
     public static Field COMMENT_ID          = field("comment");
     public static Field COMMENT_TEXT        = field("comment_text");
