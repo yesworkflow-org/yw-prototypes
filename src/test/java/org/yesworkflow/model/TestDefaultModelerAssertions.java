@@ -110,9 +110,9 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
         
         assertEquals(
                 "+----+----------------+-------+----------+------+"    + EOL +
-                "|id  |in_program_block|subject|predicate |object|"    + EOL +
+                "|id  |on_program_block|subject|predicate |object|"    + EOL +
                 "+----+----------------+-------+----------+------+"    + EOL +
-                "|1   |{null}          |3      |depends-on|2     |"    + EOL +
+                "|1   |1               |3      |depends-on|2     |"    + EOL +
                 "+----+----------------+-------+----------+------+",
                 FileIO.localizeLineEndings(ywdb.selectAssertions().toString()));
         
@@ -120,7 +120,7 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
 
         assertEquals(
                 "% FACT: assert(program_id, subject_id, predicate, object_id)." + EOL +
-                "assert(nil, 3, 'depends-on', 2)."                              + EOL,
+                "assert(1, 3, 'depends-on', 2)."                                + EOL,
                 facts.get("assert"));
     }
 
@@ -164,10 +164,10 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
         
         assertEquals(
                 "+----+----------------+-------+----------+------+"    + EOL +
-                "|id  |in_program_block|subject|predicate |object|"    + EOL +
+                "|id  |on_program_block|subject|predicate |object|"    + EOL +
                 "+----+----------------+-------+----------+------+"    + EOL +
-                "|1   |{null}          |3      |depends-on|1     |"    + EOL +
-                "|2   |{null}          |3      |depends-on|2     |"    + EOL +
+                "|1   |1               |3      |depends-on|1     |"    + EOL +
+                "|2   |1               |3      |depends-on|2     |"    + EOL +
                 "+----+----------------+-------+----------+------+",
                 FileIO.localizeLineEndings(ywdb.selectAssertions().toString()));
         
@@ -175,8 +175,8 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
 
         assertEquals(
                 "% FACT: assert(program_id, subject_id, predicate, object_id)." + EOL +
-                "assert(nil, 3, 'depends-on', 1)."                              + EOL +
-                "assert(nil, 3, 'depends-on', 2)."                              + EOL,
+                "assert(1, 3, 'depends-on', 1)."                                + EOL +
+                "assert(1, 3, 'depends-on', 2)."                                + EOL,
                 facts.get("assert"));
     }
     
@@ -220,10 +220,10 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
         
         assertEquals(
                 "+----+----------------+-------+----------+------+"    + EOL +
-                "|id  |in_program_block|subject|predicate |object|"    + EOL +
+                "|id  |on_program_block|subject|predicate |object|"    + EOL +
                 "+----+----------------+-------+----------+------+"    + EOL +
-                "|1   |{null}          |3      |depends-on|1     |"    + EOL +
-                "|2   |{null}          |3      |depends-on|2     |"    + EOL +
+                "|1   |1               |3      |depends-on|1     |"    + EOL +
+                "|2   |1               |3      |depends-on|2     |"    + EOL +
                 "+----+----------------+-------+----------+------+",
                 FileIO.localizeLineEndings(ywdb.selectAssertions().toString()));
     }
@@ -272,10 +272,10 @@ public class TestDefaultModelerAssertions extends YesWorkflowTestCase {
         
         assertEquals(
                 "+----+----------------+-------+----------+------+"    + EOL +
-                "|id  |in_program_block|subject|predicate |object|"    + EOL +
+                "|id  |on_program_block|subject|predicate |object|"    + EOL +
                 "+----+----------------+-------+----------+------+"    + EOL +
-                "|1   |{null}          |2      |depends-on|1     |"    + EOL +
-                "|2   |{null}          |3      |depends-on|2     |"    + EOL +
+                "|1   |1               |2      |depends-on|1     |"    + EOL +
+                "|2   |1               |3      |depends-on|2     |"    + EOL +
                 "+----+----------------+-------+----------+------+",
                 FileIO.localizeLineEndings(ywdb.selectAssertions().toString()));
     }

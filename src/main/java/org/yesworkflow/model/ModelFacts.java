@@ -239,7 +239,7 @@ public class ModelFacts {
         
         for (Record assertionRow : assertionRows) {
             
-            Long programId = ywdb.getLongValue(assertionRow, IN_PROGRAM_BLOCK);
+            Long programId = ywdb.getLongValue(assertionRow, ON_PROGRAM_BLOCK);
             long subjectId = ywdb.getLongValue(assertionRow,SUBJECT_ID);
             String predicate = (String)assertionRow.getValue(PREDICATE);
             long objectId = ywdb.getLongValue(assertionRow,OBJECT_ID);

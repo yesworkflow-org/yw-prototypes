@@ -65,11 +65,11 @@ public class Column {
     }
     
     public static class ASSERTION {
-        public static Field ID              = field("assertion.id");
-        public static Field ABOUT_PROGRAM   = field("assertion.in_program_block");
-        public static Field SUBJECT_ID      = field("assertion.subject");
-        public static Field PREDICATE       = field("assertion.predicate");
-        public static Field OBJECT_ID       = field("assertion.object");
+        public static Field ID                  = field("assertion.id");
+        public static Field ON_PROGRAM_BLOCK    = field("assertion.in_program_block");
+        public static Field SUBJECT_ID          = field("assertion.subject");
+        public static Field PREDICATE           = field("assertion.predicate");
+        public static Field OBJECT_ID           = field("assertion.object");
     }
     
     public static class ANNOTATION {
