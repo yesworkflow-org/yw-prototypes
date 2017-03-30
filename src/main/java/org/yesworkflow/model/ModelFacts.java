@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.yesworkflow.annotations.In;
@@ -81,8 +80,7 @@ public class ModelFacts {
         if (model.functions == null) throw new NullPointerException("Null functions field in ModelFacts.model.");
 
         for (Data data : model.data) {
-            String qualifiedDataName = qualifiedName("", "[", data.name, "]");
-            dataFacts.addRow(data.id, data.name, qualifiedDataName);
+            dataFacts.addRow(data.id, data.name, data.name);
         }
 
         buildProgramFactsRecursively(model.workflow, null, null);
@@ -122,7 +120,7 @@ public class ModelFacts {
         if (program.programs == null) throw new IllegalArgumentException("Null programs field in program argument.");
         if (program.functions == null) throw new IllegalArgumentException("Null functions field in program argument.");
         
-        String qualifiedProgramName = qualifiedName(parentName, ".", program.beginAnnotation.value(), "");
+        String qualifiedProgramName = qualifiedName(parentName, "/", program.beginAnnotation.value(), "");
         programFacts.addRow(program.id, program.beginAnnotation.value(), qualifiedProgramName, program.beginAnnotation.id, program.endAnnotation.id);
         
         if (program.channels.length > 0) {
@@ -138,7 +136,7 @@ public class ModelFacts {
         }
         
         for (Data data : program.data) {
-            String qualifiedDataName = qualifiedName(qualifiedProgramName, "[", data.name, "]");
+            String qualifiedDataName = qualifiedName(qualifiedProgramName, ".", data.name, "");
             dataFacts.addRow(data.id, data.name, qualifiedDataName);
         }
         
@@ -240,9 +238,9 @@ public class ModelFacts {
         for (Record assertionRow : assertionRows) {
             
             Long programId = ywdb.getLongValue(assertionRow, ON_PROGRAM_BLOCK);
-            long subjectId = ywdb.getLongValue(assertionRow,SUBJECT_ID);
+            long subjectId = ywdb.getLongValue(assertionRow, SUBJECT_ID);
             String predicate = (String)assertionRow.getValue(PREDICATE);
-            long objectId = ywdb.getLongValue(assertionRow,OBJECT_ID);
+            long objectId = ywdb.getLongValue(assertionRow, OBJECT_ID);
             
             assertionFacts.addRow(programId, subjectId, predicate, objectId);
         }
