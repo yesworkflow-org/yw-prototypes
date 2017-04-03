@@ -11,7 +11,8 @@ import org.yesworkflow.exceptions.YWMarkupException;
 public class Assertion extends Annotation {
 
     public final String subject;
-    public final String predicate;
+    public final String predicateText;
+    public final Predicate predicate;
     public final String[] objects;
     
     public Assertion(Long id, Long sourceId, Long lineNumber, String comment) throws Exception {
@@ -31,13 +32,15 @@ public class Assertion extends Annotation {
         }
 
         try {
-            predicate = commentTokens.nextToken().toLowerCase();
+            predicateText = commentTokens.nextToken().toLowerCase();
         } catch (NoSuchElementException e) {
             throw new YWMarkupException("No predicate provided to @assert keyword on line " + lineNumber);
         }
 
-        if (!predicate.equals("depends-on")) {
-            throw new YWMarkupException("Unrecognized predicate '" + predicate + 
+        try {
+            predicate = Predicate.toPredicate(predicateText);
+        } catch (YWMarkupException e) {            
+            throw new YWMarkupException("Unrecognized predicate '" + predicateText + 
                                         "' given to @assert keyword on line " + lineNumber);
         }
         
@@ -55,7 +58,7 @@ public class Assertion extends Annotation {
         StringBuffer valueBuffer = new StringBuffer();
         valueBuffer.append(subject)
                    .append(" ")
-                   .append(predicate);
+                   .append(predicateText);
 
         for (String obj : objects) {
             valueBuffer.append(" ")
@@ -63,6 +66,33 @@ public class Assertion extends Annotation {
         }
         
         value = valueBuffer.toString();
+    }
+    
+    public static enum Predicate {
+        
+        DOWNSTREAM_OF,
+        DEPENDS_ON,
+        ACQUIRED_USING,
+        DERIVES_FROM,
+        TAKES_VALUE_OF,
+        IS;
+        
+        public static Predicate toPredicate(Object predicate) throws YWMarkupException {
+            
+            if (predicate instanceof Predicate) return (Predicate)predicate;
+            
+            if (predicate instanceof String) {
+                String predicateString = (String)predicate; 
+                if (predicateString.equalsIgnoreCase("DOWNSTREAM-OF"))      return Predicate.DOWNSTREAM_OF;
+                if (predicateString.equalsIgnoreCase("DEPENDS-ON"))         return Predicate.DEPENDS_ON;
+                if (predicateString.equalsIgnoreCase("ACQUIRED-USING"))     return Predicate.ACQUIRED_USING;
+                if (predicateString.equalsIgnoreCase("DERIVES-FROM"))       return Predicate.DERIVES_FROM;
+                if (predicateString.equalsIgnoreCase("TAKES-VALUE-OF"))     return Predicate.TAKES_VALUE_OF;
+                if (predicateString.equalsIgnoreCase("IS"))                 return Predicate.IS;
+            }
+            
+            throw new YWMarkupException("Unrecognized assertion predicate: " + predicate);
+        }
     }
  }
 

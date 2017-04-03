@@ -8,7 +8,7 @@ public class TestAssertion extends YesWorkflowTestCase {
     public void testAssertion_OneDependency() throws Exception {
         Assertion assertion = new Assertion(1L, 1L, 1L, "@assert y depends-on a");
         assertEquals("y", assertion.subject);
-        assertEquals("depends-on", assertion.predicate);
+        assertEquals("depends-on", assertion.predicateText);
         assertEquals(1, assertion.objects.length); 
         assertEquals("a", assertion.objects[0]);
     }
@@ -16,7 +16,7 @@ public class TestAssertion extends YesWorkflowTestCase {
     public void testAssertion_TwoDependencies() throws Exception {
         Assertion assertion = new Assertion(1L, 1L, 1L, "@assert y depends-on a b");
         assertEquals("y", assertion.subject);
-        assertEquals("depends-on", assertion.predicate);
+        assertEquals("depends-on", assertion.predicateText);
         assertEquals(2, assertion.objects.length); 
         assertEquals("a", assertion.objects[0]);
         assertEquals("b", assertion.objects[1]);
@@ -25,7 +25,7 @@ public class TestAssertion extends YesWorkflowTestCase {
     public void testAssertion_ThreeDependency() throws Exception {
         Assertion assertion = new Assertion(1L, 1L, 1L, "@assert y depends-on a b c");
         assertEquals("y", assertion.subject);
-        assertEquals("depends-on", assertion.predicate);
+        assertEquals("depends-on", assertion.predicateText);
         assertEquals(3, assertion.objects.length); 
         assertEquals("a", assertion.objects[0]);
         assertEquals("b", assertion.objects[1]);

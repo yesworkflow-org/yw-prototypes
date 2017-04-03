@@ -226,7 +226,7 @@ public class WorkflowBuilder {
 	                if (objectId == null) {
 	                    throw new YWMarkupException("Object of assertion '" + object + "' does not exist");
 	                }
-		            ywdb.insertAssertion(programId, subjectId, assertion.predicate, objectId);
+		            ywdb.insertAssertion(programId, subjectId, assertion.predicateText, objectId);
 		        }
 		    }
 		}
