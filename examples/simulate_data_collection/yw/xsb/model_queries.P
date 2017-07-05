@@ -1,3 +1,5 @@
+% -*- Mode: Prolog -*-
+
 % MQ1:  Where is the definition of block simulate_data_collection.collect_data_set?
 :- table mq1/3.
 mq1(SourceFile, StartLine, EndLine) :-
