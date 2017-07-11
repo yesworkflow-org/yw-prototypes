@@ -6,11 +6,13 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.yesworkflow.util.FileIO;
-
 public class LogEntryTemplate {
 
     private static Long nextVariableId = 1L;
+    
+    public static void resetIds() {
+        nextVariableId = 1L;
+    }
     
     public final String template;
     public final String reducedTemplate;       // Fully reduced, directly matchable representation of the template

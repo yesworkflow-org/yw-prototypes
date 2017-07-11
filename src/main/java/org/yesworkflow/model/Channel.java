@@ -13,7 +13,11 @@ public class Channel {
     public final boolean isParam;
     
     private static Integer nextChannelId = 1;
-	
+    
+    public static void resetIds() {
+        nextChannelId = 1;
+    }
+    
 	public Channel(Data data, Program sourceProgram, Port sourcePort, Program sinkProgram, Port sinkPort) {
 	    this.id = nextChannelId++;
 	    this.data = data;

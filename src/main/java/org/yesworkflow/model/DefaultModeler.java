@@ -14,6 +14,8 @@ import org.yesworkflow.annotations.In;
 import org.yesworkflow.annotations.Out;
 import org.yesworkflow.annotations.Return;
 import org.yesworkflow.config.YWConfiguration;
+import org.yesworkflow.data.LogEntryTemplate;
+import org.yesworkflow.data.UriTemplate;
 import org.yesworkflow.db.YesWorkflowDB;
 import org.yesworkflow.exceptions.YWMarkupException;
 import org.yesworkflow.query.QueryEngine;
@@ -40,6 +42,10 @@ public class DefaultModeler implements Modeler {
         this.ywdb = ywdb;
         this.stdoutStream = stdoutStream;
         this.stderrStream = stderrStream;
+        Port.resetIds();
+        Channel.resetIds();
+        UriTemplate.resetIds();
+        LogEntryTemplate.resetIds();
     }
     
     @Override

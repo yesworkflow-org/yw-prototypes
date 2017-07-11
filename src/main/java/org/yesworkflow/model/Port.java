@@ -13,8 +13,12 @@ public class Port {
 	public final UriTemplate uriTemplate;
 	public final Data data;
 	
-    private static Integer nextPortId = 1;
-	
+    private static Integer nextPortId;
+    
+    public static void resetIds() {
+        nextPortId = 1;
+    }
+
 	public Port(Data data, Flow flowAnnotation, Begin beginAnnotation) {
 	    
 	    this.id = nextPortId++;

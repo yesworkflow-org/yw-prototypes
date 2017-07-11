@@ -29,6 +29,10 @@ public class UriTemplate extends UriBase {
 
     private static Long nextUriVariableId = 1L;
     
+    public static void resetIds() {
+        nextUriVariableId = 1L;
+    }
+    
 	///////////////////////////////////////////////////////////////////
 	////                    private data fields                    ////
 
