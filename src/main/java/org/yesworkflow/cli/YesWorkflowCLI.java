@@ -23,6 +23,8 @@ import org.yesworkflow.model.Modeler;
 import org.yesworkflow.recon.DefaultReconstructor;
 import org.yesworkflow.recon.Reconstructor;
 import org.yesworkflow.recon.Run;
+import org.yesworkflow.save.Saver;
+import org.yesworkflow.save.HttpSaver;
 
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
@@ -73,6 +75,7 @@ public class YesWorkflowCLI {
     private Model model = null;
     private YWConfiguration config = null;
     private Reconstructor reconstructor;
+    private Saver saver;
     
     /** Method invoked first when the YesWorkflow CLI is run from the 
      * command line. Creates an instance of {@link YesWorkflowCLI},
@@ -287,6 +290,10 @@ public class YesWorkflowCLI {
                     model();
                     recon();
                     return ExitCode.SUCCESS;
+
+                case SAVE:
+                    save();
+                    return ExitCode.SUCCESS;
             }
             
         } catch (YWToolUsageException e) {
@@ -326,7 +333,10 @@ public class YesWorkflowCLI {
         "recon                      Reconstructs a run from persisted data products and log files."     + EOL +
         "                             Implicitly performs *extract* and *model* commands first."        + EOL +
         "graph                      Graphically renders workflow model of script. Implicitly performs"  + EOL +
-        "                             *extract* and *model* commands first."                            + EOL;
+        "                             *extract* and *model* commands first."                            + EOL +
+        "save                       Export the last run data to a YW web-components server. Implicitly" + EOL +
+        "                             performs *extract*, *model*, *graph*, and *recon* first. *save*"  + EOL +
+        "                             is still under development"                                       + EOL;
 
     public static final String YW_CLI_CONFIG_HELP = 
         "Configuration Name         Value"                                                              + EOL +
@@ -435,4 +445,11 @@ public class YesWorkflowCLI {
                      .recon();
     }
 
+    private void save() throws Exception {
+        if (saver == null) {
+            saver = new HttpSaver();
+        }
+
+        saver.save();
+    }
 }

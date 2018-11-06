@@ -33,17 +33,15 @@
 
     <developers>
       <developer>
-        <id>tmcphillips</id>
-        <name>Timothy McPhillips</name>
-        <email>tmcphillips@absoluteflow.org</email>
-        <url>http://www.absoluteflow.org</url>
-        <organization>UIUC</organization>
-        <organizationUrl>http://illinois.edu/</organizationUrl>
+        <id>aniehuser</id>
+        <name>Anthony Niehuser</name>
+        <email>tniehuser@gmail.com</email>
+        <organization>Gonzaga University</organization>
+        <organizationUrl>https://www.gonzaga.edu/</organizationUrl>
         <roles>
-          <role>architect</role>
           <role>developer</role>
         </roles>
-        <timezone>America/Los_Angeles</timezone>
+        <timezone>America/Seattle</timezone>
         <properties>
         </properties>
       </developer>
@@ -110,6 +108,12 @@
             <artifactId>commons-csv</artifactId>
             <version>1.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.6</version>
+        </dependency>
     
     </dependencies>
 
@@ -157,10 +161,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
+                <version>3.5</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
 
@@ -257,7 +261,7 @@
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.5</version>
                 <executions>
-                    <execution>
+                    <execution>/usr/libexec/java_home -v 1.7
                         <id>sign-artifacts</id>
                         <phase>verify</phase>
                         <goals>
