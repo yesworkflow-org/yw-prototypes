@@ -1,7 +1,5 @@
 language: java
-sudo: required
-install: true
 script: mvn test
 jdk:
-  - openjdk7
-  - oraclejdk7
+  - openjdk10
+  - oraclejdk10
