@@ -276,7 +276,7 @@
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.5</version>
                 <executions>
-                    <execution>/usr/libexec/java_home -v 1.7
+                    <execution>
                         <id>sign-artifacts</id>
                         <phase>verify</phase>
                         <goals>
