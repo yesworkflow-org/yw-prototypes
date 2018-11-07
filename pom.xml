@@ -33,10 +33,25 @@
 
     <developers>
       <developer>
+        <id>tmcphillips</id>
+        <name>Timothy McPhillips</name>
+        <email>tmcphillips@absoluteflow.org</email>
+        <url>http://www.absoluteflow.org</url>
+        <organization>UIUC</organization>
+        <organizationUrl>http://illinois.edu/</organizationUrl>
+        <roles>
+            <role>architect</role>
+            <role>developer</role>
+        </roles>
+        <timezone>America/LosAngeles</timezone>
+          <properties>
+          </properties>
+      </developer>
+      <developer>
         <id>aniehuser</id>
         <name>Anthony Niehuser</name>
         <email>tniehuser@gmail.com</email>
-        <organization>Gonzaga University</organization>
+        <organization>GonzagaUniversity</organization>
         <organizationUrl>https://www.gonzaga.edu/</organizationUrl>
         <roles>
           <role>developer</role>

@@ -10,3 +10,4 @@ bin
 *.xwam
 .idea/**
 *.iml
+out/**
