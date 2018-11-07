@@ -40,12 +40,12 @@
         <organization>UIUC</organization>
         <organizationUrl>http://illinois.edu/</organizationUrl>
         <roles>
-            <role>architect</role>
-            <role>developer</role>
+          <role>architect</role>
+          <role>developer</role>
         </roles>
         <timezone>America/LosAngeles</timezone>
-          <properties>
-          </properties>
+        <properties>
+        </properties>
       </developer>
       <developer>
         <id>aniehuser</id>
