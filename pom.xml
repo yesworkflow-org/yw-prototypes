@@ -43,7 +43,7 @@
           <role>architect</role>
           <role>developer</role>
         </roles>
-        <timezone>America/LosAngeles</timezone>
+        <timezone>America/Los_Angeles</timezone>
         <properties>
         </properties>
       </developer>
