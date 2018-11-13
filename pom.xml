@@ -47,6 +47,19 @@
         <properties>
         </properties>
       </developer>
+      <developer>
+        <id>aniehuser</id>
+        <name>Anthony Niehuser</name>
+        <email>tniehuser@gmail.com</email>
+        <organization>GonzagaUniversity</organization>
+        <organizationUrl>https://www.gonzaga.edu/</organizationUrl>
+        <roles>
+          <role>developer</role>
+        </roles>
+        <timezone>America/Seattle</timezone>
+        <properties>
+        </properties>
+      </developer>
     </developers>
 
     <properties>
@@ -110,6 +123,12 @@
             <artifactId>commons-csv</artifactId>
             <version>1.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.6</version>
+        </dependency>
     
     </dependencies>
 
@@ -157,10 +176,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
+                <version>3.5</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
 

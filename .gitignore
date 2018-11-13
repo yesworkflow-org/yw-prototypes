@@ -8,3 +8,6 @@ bin
 .DS_Store
 .yw
 *.xwam
+.idea/**
+*.iml
+out/**
