@@ -23,6 +23,7 @@ import org.yesworkflow.model.Modeler;
 import org.yesworkflow.recon.DefaultReconstructor;
 import org.yesworkflow.recon.Reconstructor;
 import org.yesworkflow.recon.Run;
+import org.yesworkflow.save.JSONSerializer;
 import org.yesworkflow.save.Saver;
 import org.yesworkflow.save.HttpSaver;
 
@@ -292,6 +293,10 @@ public class YesWorkflowCLI {
                     return ExitCode.SUCCESS;
 
                 case SAVE:
+                    extract();
+                    model();
+                    graph();
+                    recon();
                     save();
                     return ExitCode.SUCCESS;
             }
@@ -365,7 +370,10 @@ public class YesWorkflowCLI {
         "graph.title                Graph title (defaults to workflow name)"                            + EOL +
         "graph.titleposition        Where to place graph title: TOP, BOTTOM, or HIDE"                   + EOL +
         "graph.view                 Workflow view to render: PROCESS, DATA or COMBINED"                 + EOL +
-        "graph.workflowbox          SHOW or HIDE box around nodes internal to workflow"                 + EOL;
+        "graph.workflowbox          SHOW or HIDE box around nodes internal to workflow"                 + EOL +
+        ""                                                                                              + EOL +
+        "save.serveraddress         Specify the webcomponents server to save runs to."                  + EOL +
+        "save.username              Your username on the webcomponents server."                         + EOL;
     
     public static final String YW_CLI_EXAMPLES_HELP = 
         "Examples"                                                                                      + EOL +
@@ -447,9 +455,11 @@ public class YesWorkflowCLI {
 
     private void save() throws Exception {
         if (saver == null) {
-            saver = new HttpSaver();
+            saver = new HttpSaver(new JSONSerializer());
         }
 
-        saver.save();
+        saver.configure(config.getSection("save"))
+                .build("placeholder model", grapher.toString(), "placeholder recon")
+                .save();
     }
 }
