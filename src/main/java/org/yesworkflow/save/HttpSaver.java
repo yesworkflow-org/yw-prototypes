@@ -9,7 +9,7 @@ public class HttpSaver implements Saver{
 
     IYwSerializer ywSerializer = null;
     IClient client = null;
-    String baseURL = "https://localhost:8000/";
+    String baseURL = "http://localhost:8000/";
     String username = null;
     String title = "Title";
     String description = "Description";
