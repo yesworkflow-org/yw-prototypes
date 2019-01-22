@@ -11,48 +11,50 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class YwClient implements IClient {
-    CloseableHttpClient client;
-    String baseUrl;
-    IYwSerializer serializer;
+    private CloseableHttpClient client;
+    private String baseUrl;
+    private IYwSerializer serializer;
 
     public YwClient(String connection, IYwSerializer serializer)
     {
         client = HttpClients.custom()
-                .build();
+                            .build();
         baseUrl = connection;
         this.serializer = serializer;
     }
 
-    public HttpResponse Get(String route) {
-        HttpGet httpGet = new HttpGet(String.join(baseUrl, route));
-        return executeGetRequest(httpGet);
-    }
-
-    public HttpResponse Ping()
+    // TODO::create ping response
+    public SaveResponse Ping()
     {
-        return executeGetRequest(new HttpGet(String.join("",baseUrl, "save/ping/")));
+        return executeGetRequest(new HttpGet(String.join("", baseUrl, "save/ping/")),
+                                 SaveResponse.class);
     }
 
-    public HttpResponse SaveRun(Object runPOJO)
+    public SaveResponse SaveRun(Object runPOJO)
     {
-        return executePostRequest(new HttpPost(String.join("", baseUrl, "save/")), runPOJO);
+        return executePostRequest(new HttpPost(String.join("", baseUrl, "save/")),
+                                  runPOJO,
+                                  SaveResponse.class);
     }
 
-    private HttpResponse executeGetRequest(HttpGet getRequest)
+    private <Response extends YwResponse<?>> Response executeGetRequest(HttpGet getRequest,
+                                                                        Class<Response> rClass)
     {
         getRequest.addHeader("accept", "application/json");
-        return executeRequest(getRequest);
+        return executeRequest(getRequest, rClass);
     }
 
-    private HttpResponse executePostRequest(HttpPost postRequest, Object RequestPOJO)
+    private <Response extends YwResponse<?>> Response executePostRequest(HttpPost postRequest,
+                                                                         Object RequestPOJO,
+                                                                         Class<Response> rClass)
     {
-        HttpResponse response = null;
+        Response response = null;
         try
         {
             StringEntity json = new StringEntity(serializer.Serialize(RequestPOJO));
             json.setContentType("application/json");
             postRequest.setEntity(json);
-            response = executeRequest(postRequest);
+            response = executeRequest(postRequest, rClass);
         } catch (UnsupportedEncodingException e)
         {
             System.out.println(e.getMessage());
@@ -60,22 +62,30 @@ public class YwClient implements IClient {
         return response;
     }
 
-    private HttpResponse executeRequest(HttpRequestBase request)
+    private <Response extends YwResponse<?>> Response executeRequest(HttpRequestBase request,
+                                                                     Class<Response> rClass)
     {
         HttpResponse httpResponse = null;
         Exception exception = null;
         try {
             httpResponse = client.execute(request);
         } catch (IOException e) {
-            exception = e;
-        } catch (Exception e){
-            exception = e;
-        } finally {
-            if(exception != null) {
-                System.out.println(exception.getMessage());
-            }
+            //TODO:: think about handling
+            System.out.println(exception.getMessage());
         }
-        return httpResponse;
+
+        Response ywResponse = null;
+        try
+        {
+            ywResponse = rClass.getConstructor().newInstance();
+            ywResponse.Build(httpResponse, serializer);
+        }
+        catch (ReflectiveOperationException e)
+        {
+            //TODO:: handle better
+        }
+
+        return ywResponse;
     }
 
     public IClient Close()
@@ -84,6 +94,7 @@ public class YwClient implements IClient {
             client.close();
         } catch (IOException e)
         {
+            // TODO:: handle better
             System.out.println(e.getMessage());
         }
 

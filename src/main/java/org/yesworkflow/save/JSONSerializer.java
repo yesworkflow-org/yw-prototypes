@@ -4,7 +4,8 @@ import com.google.gson.Gson;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-public class JSONSerializer implements IYwSerializer {
+public class JSONSerializer implements IYwSerializer
+{
 
     private Gson gson;
     public JSONSerializer(){
@@ -21,5 +22,8 @@ public class JSONSerializer implements IYwSerializer {
         return gson.toJson(object);
     }
 
-    // TODO:: Add deserialization methods
+    public <T> T Deserialize(String json, Class<T> Dto)
+    {
+        return gson.fromJson(json, Dto);
+    }
 }

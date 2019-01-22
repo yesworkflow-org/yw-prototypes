@@ -3,10 +3,7 @@ package org.yesworkflow.save;
 import java.util.Map;
 import java.util.Scanner;
 
-import org.apache.http.HttpResponse;
-
 public class HttpSaver implements Saver{
-
     IYwSerializer ywSerializer = null;
     IClient client = null;
     String baseURL = "http://localhost:8000/";
@@ -30,21 +27,17 @@ public class HttpSaver implements Saver{
         return this;
     }
 
-
     public Saver save()
     {
         client = new YwClient(baseURL, ywSerializer);
 
         Scanner scanner;
 
-        RunPOJO run = new RunPOJO(username, title, description, model, model_checksum, graph, recon);
+        RunDto run = new RunDto(username, title, description, model, model_checksum, graph, recon);
         try {
-            HttpResponse httpResponse = client.SaveRun(run);
-            scanner = new Scanner(httpResponse.getEntity().getContent(), "UTF-8").useDelimiter("\\A");
-
-            System.out.println(String.format("Status: %d %s", httpResponse.getStatusLine().getStatusCode(), httpResponse.getStatusLine().getReasonPhrase()));
-
-            System.out.println(String.format("Body:   %s", scanner.next()));
+            SaveResponse response = client.SaveRun(run);
+            System.out.println(String.format("Status: %d %s ", response.statusCode, response.statusReason));
+            System.out.println(String.format("Body:   %s", response.ResponseBody));
         } catch (Exception e) {
             System.out.println("error " + e.getMessage());
         }
@@ -72,7 +65,6 @@ public class HttpSaver implements Saver{
             default:
                 break;
         }
-
 
         return this;
     }
