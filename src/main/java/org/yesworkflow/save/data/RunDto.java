@@ -1,4 +1,4 @@
-package org.yesworkflow.save;
+package org.yesworkflow.save.data;
 
 public class RunDto {
     public String username;

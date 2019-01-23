@@ -1,11 +1,15 @@
 package org.yesworkflow.save;
 
-import java.util.Map;
-import java.util.Scanner;
+import org.yesworkflow.save.data.RunDto;
+import org.yesworkflow.save.response.YwResponse;
 
-public class HttpSaver implements Saver{
+import java.util.Map;
+
+public class HttpSaver implements Saver
+{
     IYwSerializer ywSerializer = null;
     IClient client = null;
+    Integer workflowId = null;
     String baseURL = "http://localhost:8000/";
     String username = null;
     String title = "Title";
@@ -31,12 +35,15 @@ public class HttpSaver implements Saver{
     {
         client = new YwClient(baseURL, ywSerializer);
 
-        Scanner scanner;
-
         RunDto run = new RunDto(username, title, description, model, model_checksum, graph, recon);
         try {
-            SaveResponse response = client.SaveRun(run);
-            System.out.println(String.format("Status: %d %s ", response.statusCode, response.statusReason));
+            YwResponse<RunDto> response;
+            if(workflowId == null)
+                response = client.SaveRun(run);
+            else
+                response = client.UpdateWorkflow(workflowId, run);
+
+            System.out.println(String.format("Status: %d %s ", response.GetStatusCode(), response.GetStatusReason()));
             System.out.println(String.format("Body:   %s", response.ResponseBody));
         } catch (Exception e) {
             System.out.println("error " + e.getMessage());
@@ -62,6 +69,10 @@ public class HttpSaver implements Saver{
                 break;
             case "username":
                 username = (String) value;
+                break;
+            case "workflow":
+                workflowId = (Integer) value;
+                break;
             default:
                 break;
         }

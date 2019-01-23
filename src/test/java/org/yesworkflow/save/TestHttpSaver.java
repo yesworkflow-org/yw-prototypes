@@ -18,6 +18,8 @@ import org.yesworkflow.model.DefaultModeler;
 import org.yesworkflow.model.Modeler;
 import org.yesworkflow.recon.DefaultReconstructor;
 import org.yesworkflow.recon.Reconstructor;
+import org.yesworkflow.save.response.SaveResponse;
+import org.yesworkflow.save.response.UpdateResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,8 +31,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class TestHttpSaver extends YesWorkflowTestCase
 {
-    private static final String testDtoString = "{\"one\":\"first\",\"two\":\"second\",\"three\":\"third\"}";
-    private static final String testSaveDtoString = "{\"username\":\"crandoms\",\"title\":\"workflow\",\"description\":\"desc\",\"model\":\"mod\",\"model_checksum\":\"mod_check\",\"graph\":\"graph\",\"recon\":\"recon\"}";
+    private static final String testDtoJson = "{\"one\":\"first\",\"two\":\"second\",\"three\":\"third\"}";
+    private static final String runDtoJson = "{\"username\":\"crandoms\",\"title\":\"workflow\",\"description\":\"desc\",\"model\":\"mod\",\"model_checksum\":\"mod_check\",\"graph\":\"graph\",\"recon\":\"recon\"}";
 
     private YesWorkflowDB ywdb = null;
     private Extractor extractor = null;
@@ -55,7 +57,7 @@ public class TestHttpSaver extends YesWorkflowTestCase
         IYwSerializer serializer = new JSONSerializer();
 
         TestDto testDto = new TestDto("first", "second", "third");
-        String expectedOutput = testDtoString;
+        String expectedOutput = testDtoJson;
         String actualOutput = serializer.Serialize(testDto);
 
         Assert.assertEquals(expectedOutput, actualOutput);
@@ -66,7 +68,7 @@ public class TestHttpSaver extends YesWorkflowTestCase
     {
         IYwSerializer serializer = new JSONSerializer();
 
-        TestDto actual = serializer.Deserialize(testDtoString, TestDto.class);
+        TestDto actual = serializer.Deserialize(testDtoJson, TestDto.class);
         TestDto expected = new TestDto("first", "second", "third");
 
         Assert.assertEquals(expected.one, actual.one);
@@ -80,27 +82,16 @@ public class TestHttpSaver extends YesWorkflowTestCase
         String headerName = "Content-Type";
         String headerValue = "application/json";
 
-        HttpResponse httpResponse = mock(HttpResponse.class);
-        StatusLine statusLine = mock(StatusLine.class);
         Header header = mock(Header.class);
         Header[] headers = { header };
-        HttpEntity httpEntity = mock(HttpEntity.class);
-        InputStream inputStream = IOUtils.toInputStream(testDtoString, StandardCharsets.UTF_8);
-
-        when(statusLine.getStatusCode()).thenReturn(200);
-        when(statusLine.getReasonPhrase()).thenReturn("Ok");
 
         when(header.getName()).thenReturn(headerName);
         when(header.getValue()).thenReturn(headerValue);
 
-        when(httpEntity.getContent()).thenReturn(inputStream);
+        HttpResponse httpResponse = mockResponse(null, null, headers);
 
-        when(httpResponse.getStatusLine()).thenReturn(statusLine);
-        when(httpResponse.getAllHeaders()).thenReturn(headers);
-        when(httpResponse.getEntity()).thenReturn(httpEntity);
-
-        TestYwResponse ywResponse = new TestYwResponse();
-        ywResponse.build(httpResponse, new JSONSerializer());
+        ResponseTest ywResponse = new ResponseTest();
+        ywResponse.Build(httpResponse, new JSONSerializer());
 
         Assert.assertEquals(headerValue, ywResponse.GetHeaderValue(headerName));
     }
@@ -111,23 +102,15 @@ public class TestHttpSaver extends YesWorkflowTestCase
         int statusCode = 500;
         String statusReason = "Bad Request";
 
-        HttpResponse httpResponse = mock(HttpResponse.class);
         StatusLine statusLine = mock(StatusLine.class);
-        Header[] headers = {};
-        HttpEntity httpEntity = mock(HttpEntity.class);
-        InputStream inputStream = IOUtils.toInputStream(testDtoString, StandardCharsets.UTF_8);
 
         when(statusLine.getStatusCode()).thenReturn(statusCode);
         when(statusLine.getReasonPhrase()).thenReturn(statusReason);
 
-        when(httpEntity.getContent()).thenReturn(inputStream);
+        HttpResponse httpResponse = mockResponse(null, statusLine, null);
 
-        when(httpResponse.getStatusLine()).thenReturn(statusLine);
-        when(httpResponse.getAllHeaders()).thenReturn(headers);
-        when(httpResponse.getEntity()).thenReturn(httpEntity);
-
-        TestYwResponse ywResponse = new TestYwResponse();
-        ywResponse.build(httpResponse, new JSONSerializer());
+        ResponseTest ywResponse = new ResponseTest();
+        ywResponse.Build(httpResponse, new JSONSerializer());
 
         Assert.assertTrue(ywResponse.BadRequest);
         Assert.assertFalse(ywResponse.OK);
@@ -141,23 +124,15 @@ public class TestHttpSaver extends YesWorkflowTestCase
         int statusCode = 200;
         String statusReason = "OK";
 
-        HttpResponse httpResponse = mock(HttpResponse.class);
         StatusLine statusLine = mock(StatusLine.class);
-        Header[] headers = {};
-        HttpEntity httpEntity = mock(HttpEntity.class);
-        InputStream inputStream = IOUtils.toInputStream(testDtoString, StandardCharsets.UTF_8);
 
         when(statusLine.getStatusCode()).thenReturn(statusCode);
         when(statusLine.getReasonPhrase()).thenReturn(statusReason);
 
-        when(httpEntity.getContent()).thenReturn(inputStream);
+        HttpResponse httpResponse = mockResponse(null, statusLine, null);
 
-        when(httpResponse.getStatusLine()).thenReturn(statusLine);
-        when(httpResponse.getAllHeaders()).thenReturn(headers);
-        when(httpResponse.getEntity()).thenReturn(httpEntity);
-
-        TestYwResponse ywResponse = new TestYwResponse();
-        ywResponse.build(httpResponse, new JSONSerializer());
+        ResponseTest ywResponse = new ResponseTest();
+        ywResponse.Build(httpResponse, new JSONSerializer());
 
         Assert.assertFalse(ywResponse.BadRequest);
         Assert.assertTrue(ywResponse.OK);
@@ -169,29 +144,17 @@ public class TestHttpSaver extends YesWorkflowTestCase
     public void testYwResponse_Content() throws IOException
     {
         IYwSerializer serializer = new JSONSerializer();
+        InputStream inputStream = IOUtils.toInputStream(testDtoJson, StandardCharsets.UTF_8);
 
-        HttpResponse httpResponse = mock(HttpResponse.class);
-        StatusLine statusLine = mock(StatusLine.class);
-        Header[] headers = {};
-        HttpEntity httpEntity = mock(HttpEntity.class);
-        InputStream inputStream = IOUtils.toInputStream(testDtoString, StandardCharsets.UTF_8);
+        HttpResponse httpResponse = mockResponse(inputStream, null, null);
 
-        when(statusLine.getStatusCode()).thenReturn(200);
-        when(statusLine.getReasonPhrase()).thenReturn("Ok");
+        ResponseTest ywResponse = new ResponseTest();
+        ywResponse.Build(httpResponse, serializer);
 
-        when(httpEntity.getContent()).thenReturn(inputStream);
-
-        when(httpResponse.getStatusLine()).thenReturn(statusLine);
-        when(httpResponse.getAllHeaders()).thenReturn(headers);
-        when(httpResponse.getEntity()).thenReturn(httpEntity);
-
-        TestYwResponse ywResponse = new TestYwResponse();
-        ywResponse.build(httpResponse, serializer);
-
-        TestDto expectedObject = serializer.Deserialize(testDtoString, TestDto.class);
+        TestDto expectedObject = serializer.Deserialize(testDtoJson, TestDto.class);
         TestDto actualObject = ywResponse.ResponseObject;
 
-        Assert.assertEquals(testDtoString, ywResponse.ResponseBody);
+        Assert.assertEquals(testDtoJson, ywResponse.ResponseBody);
         Assert.assertEquals(expectedObject.one, actualObject.one);
         Assert.assertEquals(expectedObject.two, actualObject.two);
         Assert.assertEquals(expectedObject.three, actualObject.three);
@@ -201,26 +164,56 @@ public class TestHttpSaver extends YesWorkflowTestCase
     public void testSaveResponse_Content() throws IOException
     {
         IYwSerializer serializer = new JSONSerializer();
+        InputStream inputStream = IOUtils.toInputStream(runDtoJson, StandardCharsets.UTF_8);
 
-        HttpResponse httpResponse = mock(HttpResponse.class);
-        StatusLine statusLine = mock(StatusLine.class);
-        Header[] headers = {};
-        HttpEntity httpEntity = mock(HttpEntity.class);
-        InputStream inputStream = IOUtils.toInputStream(testSaveDtoString, StandardCharsets.UTF_8);
-
-        when(statusLine.getStatusCode()).thenReturn(200);
-        when(statusLine.getReasonPhrase()).thenReturn("Ok");
-
-        when(httpEntity.getContent()).thenReturn(inputStream);
-
-        when(httpResponse.getStatusLine()).thenReturn(statusLine);
-        when(httpResponse.getAllHeaders()).thenReturn(headers);
-        when(httpResponse.getEntity()).thenReturn(httpEntity);
+        HttpResponse httpResponse = mockResponse(inputStream, null, null);
 
         SaveResponse ywResponse = new SaveResponse();
-        ywResponse.build(httpResponse, serializer);
+        ywResponse.Build(httpResponse, serializer);
 
-        Assert.assertEquals(testSaveDtoString, ywResponse.ResponseBody);
+        Assert.assertEquals(runDtoJson, ywResponse.ResponseBody);
+    }
+
+    @Test
+    public void testUpdateResponse_Content() throws IOException
+    {
+        IYwSerializer serializer = new JSONSerializer();
+        InputStream inputStream = IOUtils.toInputStream(runDtoJson, StandardCharsets.UTF_8);
+
+        HttpResponse httpResponse = mockResponse(inputStream, null, null);
+
+        UpdateResponse ywResponse = new UpdateResponse();
+        ywResponse.Build(httpResponse, serializer);
+
+        Assert.assertEquals(runDtoJson, ywResponse.ResponseBody);
+    }
+    
+    private HttpResponse mockResponse(InputStream istream, StatusLine status, Header[] headers) throws IOException
+    {
+        HttpResponse res = mock(HttpResponse.class);
+        HttpEntity entity = mock(HttpEntity.class);
+
+        if(istream == null)
+            istream = IOUtils.toInputStream(testDtoJson, StandardCharsets.UTF_8);
+
+        if(status == null)
+        {
+            status = mock(StatusLine.class);
+
+            when(status.getStatusCode()).thenReturn(200);
+            when(status.getReasonPhrase()).thenReturn("OK");
+        }
+
+        if(headers == null)
+            headers = new Header[] {};
+
+        when(entity.getContent()).thenReturn(istream);
+
+        when(res.getEntity()).thenReturn(entity);
+        when(res.getAllHeaders()).thenReturn(headers);
+        when(res.getStatusLine()).thenReturn(status);
+
+        return res;
     }
 
     @Test

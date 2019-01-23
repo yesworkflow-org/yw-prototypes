@@ -373,7 +373,8 @@ public class YesWorkflowCLI {
         "graph.workflowbox          SHOW or HIDE box around nodes internal to workflow"                 + EOL +
         ""                                                                                              + EOL +
         "save.serveraddress         Specify the webcomponents server to save runs to."                  + EOL +
-        "save.username              Your username on the webcomponents server."                         + EOL;
+        "save.username              Your username on the webcomponents server."                         + EOL +
+        "save.workflow              The workflow id of a workflow to add a run to."                     + EOL;
     
     public static final String YW_CLI_EXAMPLES_HELP = 
         "Examples"                                                                                      + EOL +

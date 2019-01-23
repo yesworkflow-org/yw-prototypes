@@ -7,6 +7,11 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.yesworkflow.save.data.RunDto;
+import org.yesworkflow.save.response.SaveResponse;
+import org.yesworkflow.save.response.UpdateResponse;
+import org.yesworkflow.save.response.YwResponse;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
@@ -26,28 +31,32 @@ public class YwClient implements IClient {
     // TODO::create ping response
     public SaveResponse Ping()
     {
-        return executeGetRequest(new HttpGet(String.join("", baseUrl, "save/ping/")),
-                                 SaveResponse.class);
+        return executeGetRequest("save/ping/", SaveResponse.class);
     }
 
-    public SaveResponse SaveRun(Object runPOJO)
+    public SaveResponse SaveRun(RunDto runDto)
     {
-        return executePostRequest(new HttpPost(String.join("", baseUrl, "save/")),
-                                  runPOJO,
-                                  SaveResponse.class);
+        return executePostRequest("save/", runDto, SaveResponse.class);
     }
 
-    private <Response extends YwResponse<?>> Response executeGetRequest(HttpGet getRequest,
+    public UpdateResponse UpdateWorkflow(Integer workflowId, RunDto runDto)
+    {
+        return executePostRequest(String.format("save/%d/", workflowId), runDto, UpdateResponse.class);
+    }
+
+    private <Response extends YwResponse<?>> Response executeGetRequest(String route,
                                                                         Class<Response> rClass)
     {
+        HttpGet getRequest = new HttpGet(String.join("", baseUrl, route));
         getRequest.addHeader("accept", "application/json");
         return executeRequest(getRequest, rClass);
     }
 
-    private <Response extends YwResponse<?>> Response executePostRequest(HttpPost postRequest,
+    private <Response extends YwResponse<?>> Response executePostRequest(String route,
                                                                          Object RequestPOJO,
                                                                          Class<Response> rClass)
     {
+        HttpPost postRequest = new HttpPost(String.join("", baseUrl, route));
         Response response = null;
         try
         {
