@@ -24,6 +24,7 @@ import org.yesworkflow.save.response.UpdateResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -187,6 +188,22 @@ public class TestHttpSaver extends YesWorkflowTestCase
 
         Assert.assertEquals(runDtoJson, ywResponse.ResponseBody);
     }
+
+    @Test
+    public void testTagParse() throws Exception 
+    {
+        IYwSerializer serializer = new JSONSerializer();
+        HttpSaver saver = new HttpSaver(serializer);
+        
+        saver.configure("tags", "a, b, c, d, e");
+        ArrayList<String> x = new ArrayList<String>();
+        x.add("a");
+        x.add("b");
+        x.add("c");
+        x.add("d");
+        x.add("e");
+        Assert.assertEquals(x, saver.tags);
+    }
     
     private HttpResponse mockResponse(InputStream istream, StatusLine status, Header[] headers) throws IOException
     {
@@ -217,8 +234,9 @@ public class TestHttpSaver extends YesWorkflowTestCase
     }
 
     @Test
-    public void testSave()
+    public void testSave() throws Exception
     {
         //TODO:: Integration Tests and Client Tests
+
     }
 }
