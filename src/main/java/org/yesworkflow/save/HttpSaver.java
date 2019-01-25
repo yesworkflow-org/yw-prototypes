@@ -1,5 +1,6 @@
 package org.yesworkflow.save;
 
+import org.mockito.internal.runners.StrictRunner;
 import org.yesworkflow.save.data.RunDto;
 import org.yesworkflow.save.response.YwResponse;
 
@@ -73,6 +74,11 @@ public class HttpSaver implements Saver
             case "workflow":
                 workflowId = (Integer) value;
                 break;
+            case "title":
+                title = (String) value;
+                break;
+            case "description":
+                description = (String) value;
             default:
                 break;
         }

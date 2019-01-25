@@ -374,7 +374,9 @@ public class YesWorkflowCLI {
         ""                                                                                              + EOL +
         "save.serveraddress         Specify the webcomponents server to save runs to."                  + EOL +
         "save.username              Your username on the webcomponents server."                         + EOL +
-        "save.workflow              The workflow id of a workflow to add a run to."                     + EOL;
+        "save.workflow              The workflow id of a workflow to add a run to."                     + EOL +
+        "save.title                 Set the title of your workflow."                                    + EOL +
+        "save.description           Set the description of your workflow."                              + EOL;
     
     public static final String YW_CLI_EXAMPLES_HELP = 
         "Examples"                                                                                      + EOL +
