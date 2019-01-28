@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 import org.jooq.Record;
 import org.jooq.Result;
@@ -63,6 +64,7 @@ public class DefaultExtractor implements Extractor {
     private Map<String, String> extractFacts = null;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
+    private List<String> sourceCodeList = new ArrayList<String>();
 
     private Long nextAnnotationId = 1L;
 
@@ -149,6 +151,15 @@ public class DefaultExtractor implements Extractor {
 	    
         return skeleton;
     }
+
+    @Override
+    public List<String> getSourceCodeList() {
+        if (sourceCodeList == null) {
+            return null;
+        }
+
+        return sourceCodeList;
+    }
 	
 	@Override
     public Map<String, String>  getFacts() throws IOException {
@@ -183,12 +194,14 @@ public class DefaultExtractor implements Extractor {
         if (sourceReader != null) {
             
             extractLinesCommentsFromReader(null, sourceReader, globalLanguageModel);
+            extractSourceCode(sourceReader);
         
         // otherwise read source code from stdin if source path is empty or just a dash
         } else if (sourcePathsEmptyOrDash(sourcePaths)) {
             
             Reader reader = new InputStreamReader(System.in);
             extractLinesCommentsFromReader(null, new BufferedReader(reader), globalLanguageModel);
+            extractSourceCode(new BufferedReader(reader));
         
         // else read source code from each file in the list of source paths
         } else {
@@ -197,6 +210,7 @@ public class DefaultExtractor implements Extractor {
                 Long sourceId = ywdb.insertSource(path);
                 LanguageModel languageModel = languageModelForSourceFile(path);
                 extractLinesCommentsFromReader(sourceId, fileReaderForPath(path), languageModel);
+                extractSourceCode(fileReaderForPath(path));
             }
         }
     }
@@ -238,6 +252,15 @@ public class DefaultExtractor implements Extractor {
         }
 
         return reader;
+    }
+
+    private void extractSourceCode(BufferedReader reader) throws IOException {
+        String currLine = "";
+        String fullSource = "";
+        while((currLine = reader.readLine()) != null) {
+            fullSource = fullSource + currLine;
+        }
+        sourceCodeList.add(fullSource);
     }
         
     private void writeCommentListing() throws IOException {

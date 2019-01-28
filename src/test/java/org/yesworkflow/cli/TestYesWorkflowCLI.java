@@ -472,5 +472,6 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         @Override public Extractor reader(Reader reader) { return this; }
         @Override public Map<String, String> getFacts() { return null; }
         @Override public String getSkeleton() { return null; }
+        @Override public List<String> getSourceCodeList() { return null; }
     }
 }

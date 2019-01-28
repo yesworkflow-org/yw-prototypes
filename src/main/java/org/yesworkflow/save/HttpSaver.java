@@ -6,6 +6,7 @@ import org.yesworkflow.save.response.YwResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.List;
 
 public class HttpSaver implements Saver
 {
@@ -21,16 +22,24 @@ public class HttpSaver implements Saver
     String model_checksum = "";
     String recon = "";
     ArrayList<String> tags = new ArrayList<String>();
+    List<String> sourceCodeList;
+    List<String> sourceCodeListHash;
 
     public HttpSaver(IYwSerializer ywSerializer){
         this.ywSerializer = ywSerializer;
     }
 
-    public Saver build(String model, String graph, String recon)
+    public Saver build(String model, String graph, String recon, List<String> sourceCodeList)
     {
         this.model = model;
         this.graph = graph;
         this.recon = recon;
+        this.sourceCodeList = sourceCodeList;
+        
+        for (int i = 0; i < sourceCodeList.size(); i++) {
+            this.sourceCodeListHash.add(Hash.getStringHash(sourceCodeList.get(i)));
+        }
+
         return this;
     }
 
@@ -38,7 +47,7 @@ public class HttpSaver implements Saver
     {
         client = new YwClient(baseURL, ywSerializer);
 
-        RunDto run = new RunDto(username, title, description, model, model_checksum, graph, recon, tags);
+        RunDto run = new RunDto(username, title, description, model, model_checksum, graph, recon, tags, sourceCodeList, sourceCodeListHash);
         try {
             YwResponse<RunDto> response;
             if(workflowId == null)
