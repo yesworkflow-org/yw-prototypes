@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 import org.jooq.Record;
 import org.jooq.Result;
@@ -63,7 +64,7 @@ public class DefaultExtractor implements Extractor {
     private Map<String, String> extractFacts = null;
     private PrintStream stdoutStream = null;
     private PrintStream stderrStream = null;
-    private List<String> sourceCodeList;
+    private List<String> sourceCodeList = new ArrayList<String>();
 
     private Long nextAnnotationId = 1L;
 
