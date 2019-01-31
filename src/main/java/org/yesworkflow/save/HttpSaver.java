@@ -2,7 +2,6 @@ package org.yesworkflow.save;
 
 import org.yesworkflow.save.data.RunDto;
 import org.yesworkflow.save.response.YwResponse;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -46,7 +45,6 @@ public class HttpSaver implements Saver
     public Saver save()
     {
         client = new YwClient(baseURL, ywSerializer);
-
         RunDto run = new RunDto(username, title, description, model, model_checksum, graph, recon, tags, sourceCodeList, sourceCodeListHash);
         try {
             YwResponse<RunDto> response;
@@ -83,7 +81,7 @@ public class HttpSaver implements Saver
                 username = (String) value;
                 break;
             case "workflow":
-                workflowId = (Integer) value;
+                workflowId = Integer.parseInt((String) value);
                 break;
             case "title":
                 title = (String) value;
