@@ -14,18 +14,27 @@ public class RunDto {
     public List<String> sourceCodeList;
     public List<String> sourceCodeListHash;
 
-    public RunDto(Builder builder)
+    public RunDto(String username,
+                  String title,
+                  String description,
+                  String model,
+                  String model_checksum,
+                  String graph,
+                  String recon,
+                  List<String> tags,
+                  List<String> sourceCodeList,
+                  List<String> sourceCodeListHash)
     {
-        this.username=builder.username;
-        this.title=builder.title;
-        this.description=builder.description;
-        this.model=builder.model;
-        this.model_checksum=builder.model_checksum;
-        this.graph=builder.graph;
-        this.recon=builder.recon;
-        this.tags=builder.tags;
-        this.sourceCodeList=builder.sourceCodeList;
-        this.sourceCodeListHash=builder.sourceCodeListHash;
+        this.username=username;
+        this.title=title;
+        this.description=description;
+        this.model=model;
+        this.model_checksum=model_checksum;
+        this.graph=graph;
+        this.recon=recon;
+        this.tags=tags;
+        this.sourceCodeList=sourceCodeList;
+        this.sourceCodeListHash=sourceCodeListHash;
     }
 
     public static class Builder
@@ -84,5 +93,19 @@ public class RunDto {
         {
             return new RunDto(this);
         }
+    }
+
+    public RunDto(Builder builder)
+    {
+        this.username=builder.username;
+        this.title=builder.title;
+        this.description=builder.description;
+        this.model=builder.model;
+        this.model_checksum=builder.model_checksum;
+        this.graph=builder.graph;
+        this.recon=builder.recon;
+        this.tags=builder.tags;
+        this.sourceCodeList=builder.sourceCodeList;
+        this.sourceCodeListHash=builder.sourceCodeListHash;
     }
 }

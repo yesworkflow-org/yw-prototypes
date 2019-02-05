@@ -8,6 +8,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.yesworkflow.save.data.RunDto;
+import org.yesworkflow.save.response.PingResponse;
 import org.yesworkflow.save.response.SaveResponse;
 import org.yesworkflow.save.response.UpdateResponse;
 import org.yesworkflow.save.response.YwResponse;
@@ -29,9 +30,10 @@ public class YwClient implements IClient {
     }
 
     // TODO::create ping response
-    public SaveResponse Ping()
+
+    public PingResponse Ping()
     {
-        return executeGetRequest("save/ping/", SaveResponse.class);
+        return executeGetRequest("save/ping/", PingResponse.class);
     }
 
     public SaveResponse SaveRun(RunDto runDto)
