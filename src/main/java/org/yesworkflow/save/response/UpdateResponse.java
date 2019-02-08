@@ -2,12 +2,12 @@ package org.yesworkflow.save.response;
 
 import org.apache.http.HttpResponse;
 import org.yesworkflow.save.IYwSerializer;
-import org.yesworkflow.save.data.RunDto;
+import org.yesworkflow.save.data.UpdatedDto;
 
-public class UpdateResponse extends YwResponse<RunDto>
+public class UpdateResponse extends YwResponse<UpdatedDto>
 {
     @Override
-    public YwResponse<RunDto> Build(HttpResponse response, IYwSerializer serializer)
+    public YwResponse<UpdatedDto> Build(HttpResponse response, IYwSerializer serializer)
     {
         this.build(response, serializer);
         this.ResponseObject = DeserializeResponseContent();
@@ -15,8 +15,8 @@ public class UpdateResponse extends YwResponse<RunDto>
     }
 
     @Override
-    protected RunDto DeserializeResponseContent()
+    protected UpdatedDto DeserializeResponseContent()
     {
-        return serializer.Deserialize(this.ResponseBody, RunDto.class);
+        return serializer.Deserialize(this.ResponseBody, UpdatedDto.class);
     }
 }

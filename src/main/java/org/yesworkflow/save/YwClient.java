@@ -7,11 +7,10 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.yesworkflow.save.data.LoginDto;
+import org.yesworkflow.save.data.RegisterDto;
 import org.yesworkflow.save.data.RunDto;
-import org.yesworkflow.save.response.PingResponse;
-import org.yesworkflow.save.response.SaveResponse;
-import org.yesworkflow.save.response.UpdateResponse;
-import org.yesworkflow.save.response.YwResponse;
+import org.yesworkflow.save.response.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -19,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 public class YwClient implements IClient {
     private CloseableHttpClient client;
     private String baseUrl;
+    private String token;
     private IYwSerializer serializer;
 
     public YwClient(String connection, IYwSerializer serializer)
@@ -34,6 +34,25 @@ public class YwClient implements IClient {
     public PingResponse Ping()
     {
         return executeGetRequest("save/ping/", PingResponse.class);
+    }
+
+    public RegisterResponse CreateUser(RegisterDto registerDto)
+    {
+        return executePostRequest("rest-auth/registration/", registerDto, RegisterResponse.class);
+    }
+
+    public LoginResponse Login(LoginDto loginDto)
+    {
+        LoginResponse response = executePostRequest("rest-auth/login/", loginDto, LoginResponse.class);
+        if(response.OK)
+            this.token = response.ResponseObject.key;
+
+        return response;
+    }
+
+    public LogoutResponse Logout()
+    {
+        return executePostRequest("rest-auth/logout/", null, LogoutResponse.class);
     }
 
     public SaveResponse SaveRun(RunDto runDto)
@@ -55,16 +74,18 @@ public class YwClient implements IClient {
     }
 
     private <Response extends YwResponse<?>> Response executePostRequest(String route,
-                                                                         Object RequestPOJO,
+                                                                         Object Dto,
                                                                          Class<Response> rClass)
     {
         HttpPost postRequest = new HttpPost(String.join("", baseUrl, route));
         Response response = null;
         try
         {
-            StringEntity json = new StringEntity(serializer.Serialize(RequestPOJO));
+            StringEntity json = new StringEntity(serializer.Serialize(Dto));
             json.setContentType("application/json");
             postRequest.setEntity(json);
+            if(token != null)
+                postRequest.addHeader("Authentication", token);
             response = executeRequest(postRequest, rClass);
         } catch (UnsupportedEncodingException e)
         {

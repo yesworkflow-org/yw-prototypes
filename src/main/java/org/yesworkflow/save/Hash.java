@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 
 
-
 public class Hash {
 
     private MessageDigest md;

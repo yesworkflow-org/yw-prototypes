@@ -13,6 +13,8 @@ import org.yesworkflow.YesWorkflowTestCase;
 import org.yesworkflow.save.data.DummyResponse;
 import org.yesworkflow.save.data.TestData;
 import org.yesworkflow.save.data.TestDto;
+import org.yesworkflow.save.response.LoginResponse;
+import org.yesworkflow.save.response.LogoutResponse;
 import org.yesworkflow.save.response.SaveResponse;
 import org.yesworkflow.save.response.UpdateResponse;
 
@@ -133,6 +135,34 @@ public class TestYesWorkflowResponse extends YesWorkflowTestCase
         HttpResponse httpResponse = mockResponse(inputStream, null, null);
 
         UpdateResponse ywResponse = new UpdateResponse();
+        ywResponse.Build(httpResponse, serializer);
+
+        Assert.assertEquals(TestData.runDtoJson, ywResponse.ResponseBody);
+    }
+
+    @Test
+    public void testLoginResponse_Content() throws IOException
+    {
+        IYwSerializer serializer = new JSONSerializer();
+        InputStream inputStream = IOUtils.toInputStream(TestData.runDtoJson, StandardCharsets.UTF_8);
+
+        HttpResponse httpResponse = mockResponse(inputStream, null, null);
+
+        LoginResponse ywResponse = new LoginResponse();
+        ywResponse.Build(httpResponse, serializer);
+
+        Assert.assertEquals(TestData.runDtoJson, ywResponse.ResponseBody);
+    }
+
+    @Test
+    public void testLogoutResponse_Content() throws IOException
+    {
+        IYwSerializer serializer = new JSONSerializer();
+        InputStream inputStream = IOUtils.toInputStream(TestData.runDtoJson, StandardCharsets.UTF_8);
+
+        HttpResponse httpResponse = mockResponse(inputStream, null, null);
+
+        LogoutResponse ywResponse = new LogoutResponse();
         ywResponse.Build(httpResponse, serializer);
 
         Assert.assertEquals(TestData.runDtoJson, ywResponse.ResponseBody);

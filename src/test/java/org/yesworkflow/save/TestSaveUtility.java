@@ -3,6 +3,8 @@ package org.yesworkflow.save;
 import org.junit.Test;
 import org.junit.Assert;
 import org.yesworkflow.YesWorkflowTestCase;
+import org.yesworkflow.save.data.RunDto;
+import org.yesworkflow.save.data.ScriptDto;
 import org.yesworkflow.save.data.TestData;
 import org.yesworkflow.save.data.TestDto;
 
@@ -11,6 +13,7 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 public class TestSaveUtility extends YesWorkflowTestCase
 {
@@ -24,6 +27,25 @@ public class TestSaveUtility extends YesWorkflowTestCase
         String actualOutput = serializer.Serialize(testDto);
 
         Assert.assertEquals(expectedOutput, actualOutput);
+    }
+
+    @Test
+    public void testJSONSerializer_serializeNestedDto()
+    {
+        IYwSerializer serializer = new JSONSerializer();
+        ScriptDto scriptDto = new ScriptDto("n", "c", "cs");
+        String scriptJson = serializer.Serialize(scriptDto);
+
+        String expected = String.format("{\"username\":\"u\",\"model\":\"m\",\"modelChecksum\":\"mc\",\"graph\":\"g\",\"recon\":\"r\",\"scripts\":[%s]}", scriptJson);
+
+        ArrayList<ScriptDto> s = new ArrayList<>();
+        s.add(scriptDto);
+        RunDto testRunDto = new RunDto.Builder("u", "m", "mc", "g", "r", s)
+                                                .build();
+
+        String actual = serializer.Serialize(testRunDto);
+
+        Assert.assertEquals(expected, actual);
     }
 
     @Test

@@ -1,7 +1,9 @@
 package org.yesworkflow.save;
 
 import org.yesworkflow.save.data.RunDto;
-import org.yesworkflow.save.response.YwResponse;
+import org.yesworkflow.save.data.ScriptDto;
+import org.yesworkflow.save.response.SaveResponse;
+import org.yesworkflow.save.response.UpdateResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,23 +23,24 @@ public class HttpSaver implements Saver
     String model = "";
     String model_checksum = "";
     String recon = "";
-    ArrayList<String> tags = new ArrayList<String>();
-    List<String> sourceCodeList;
-    List<String> sourceCodeListHash;
+    List<String> tags = new ArrayList<String>();
+    List<ScriptDto> scripts = null;
 
     public HttpSaver(IYwSerializer ywSerializer){
         this.ywSerializer = ywSerializer;
     }
 
-    public Saver build(String model, String graph, String recon, List<String> sourceCodeList)
+    public Saver build(String model, String graph, String recon, List<String> sourceCodeList, List<String> sourcePaths)
     {
         this.model = model;
         this.graph = graph;
         this.recon = recon;
-        this.sourceCodeList = sourceCodeList;
-        
-        for (int i = 0; i < sourceCodeList.size(); i++) {
-            this.sourceCodeListHash.add(Hash.getStringHash(sourceCodeList.get(i)));
+        this.scripts = new ArrayList<>();
+        for (int i = 0; i < sourceCodeList.size(); i++)
+        {
+            String checksum = Hash.getStringHash(sourceCodeList.get(i));
+            ScriptDto scriptDto = new ScriptDto(sourcePaths.get(i), sourceCodeList.get(i), checksum);
+            scripts.add(scriptDto);
         }
 
         return this;
@@ -47,22 +50,23 @@ public class HttpSaver implements Saver
     {
         client = new YwClient(baseURL, ywSerializer);
 
-        RunDto run = new RunDto.Builder(username, graph, model, model_checksum, recon)
+        RunDto run = new RunDto.Builder(username, graph, model, model_checksum, recon, scripts)
                                 .setTitle(title)
                                 .setDescription(description)
-                                .setSourceCodeList(sourceCodeList)
-                                .setSourceCodeListHash(sourceCodeListHash)
                                 .setTags(tags)
                                 .build();
         try {
-            YwResponse<RunDto> response;
-            if(workflowId == null)
-                response = client.SaveRun(run);
-            else
-                response = client.UpdateWorkflow(workflowId, run);
+            if(workflowId == null) {
+                SaveResponse response = client.SaveRun(run);
+                System.out.println(String.format("Status: %d %s ", response.GetStatusCode(), response.GetStatusReason()));
+                System.out.println(String.format("Body:   %s", response.ResponseBody));
+            }
+            else {
+                UpdateResponse response = client.UpdateWorkflow(workflowId, run);
+                System.out.println(String.format("Status: %d %s ", response.GetStatusCode(), response.GetStatusReason()));
+                System.out.println(String.format("Body:   %s", response.ResponseBody));
+            }
 
-            System.out.println(String.format("Status: %d %s ", response.GetStatusCode(), response.GetStatusReason()));
-            System.out.println(String.format("Body:   %s", response.ResponseBody));
         } catch (Exception e) {
             System.out.println("error " + e.getMessage());
         }
@@ -99,7 +103,7 @@ public class HttpSaver implements Saver
                 break;
             case "tags" :
                 String valTags = (String) value;
-                tags = new ArrayList<String>(Arrays.asList(valTags.split("\\s*,\\s*")));
+                tags = new ArrayList<>(Arrays.asList(valTags.split("\\s*,\\s*")));
                 break;
             default:
                 break;

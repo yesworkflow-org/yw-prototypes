@@ -2,13 +2,13 @@ package org.yesworkflow.save.response;
 
 import org.apache.http.HttpResponse;
 import org.yesworkflow.save.IYwSerializer;
-import org.yesworkflow.save.data.RunDto;
+import org.yesworkflow.save.data.CreatedDto;
 
-public class SaveResponse extends YwResponse<RunDto>
+public class SaveResponse extends YwResponse<CreatedDto>
 {
 
     @Override
-    public YwResponse<RunDto> Build(HttpResponse response, IYwSerializer serializer)
+    public YwResponse<CreatedDto> Build(HttpResponse response, IYwSerializer serializer)
     {
         build(response, serializer);
         this.ResponseObject = DeserializeResponseContent();
@@ -16,8 +16,8 @@ public class SaveResponse extends YwResponse<RunDto>
     }
 
     @Override
-    protected RunDto DeserializeResponseContent()
+    protected CreatedDto DeserializeResponseContent()
     {
-        return serializer.Deserialize(this.ResponseBody, RunDto.class);
+        return serializer.Deserialize(this.ResponseBody, CreatedDto.class);
     }
 }

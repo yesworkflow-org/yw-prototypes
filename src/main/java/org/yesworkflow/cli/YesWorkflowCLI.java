@@ -462,8 +462,9 @@ public class YesWorkflowCLI {
             saver = new HttpSaver(new JSONSerializer());
         }
         List<String> sourceCodeList = extractor.getSourceCodeList();
+        List<String> sourcePaths = extractor.getSourcePaths();
         saver.configure(config.getSection("save"))
-                .build("placeholder model", grapher.toString(), "placeholder recon", sourceCodeList)
+                .build("placeholder model", grapher.toString(), "placeholder recon", sourceCodeList, sourcePaths)
                 .save();
     }
 }

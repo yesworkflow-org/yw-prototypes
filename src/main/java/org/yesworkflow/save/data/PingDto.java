@@ -1,11 +1,14 @@
 package org.yesworkflow.save.data;
 
-public class PingDto {
+import com.google.gson.annotations.SerializedName;
+
+public class PingDto
+{
+    @SerializedName("data")
     public String data;
 
     public PingDto(String data)
     {
         this.data = data;
     }
-
 }

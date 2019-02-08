@@ -473,5 +473,6 @@ public class TestYesWorkflowCLI extends YesWorkflowTestCase {
         @Override public Map<String, String> getFacts() { return null; }
         @Override public String getSkeleton() { return null; }
         @Override public List<String> getSourceCodeList() { return null; }
+        @Override public List<String> getSourcePaths() {return null; }
     }
 }

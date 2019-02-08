@@ -160,6 +160,13 @@ public class DefaultExtractor implements Extractor {
 
         return sourceCodeList;
     }
+
+    @Override
+    public List<String> getSourcePaths()
+    {
+        return sourcePaths;
+    }
+
 	
 	@Override
     public Map<String, String>  getFacts() throws IOException {

@@ -1,6 +1,8 @@
 package org.yesworkflow.save;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -8,7 +10,8 @@ public class JSONSerializer implements IYwSerializer
 {
 
     private Gson gson;
-    public JSONSerializer(){
+    public JSONSerializer()
+    {
         gson = new Gson();
     }
 
@@ -24,6 +27,14 @@ public class JSONSerializer implements IYwSerializer
 
     public <T> T Deserialize(String json, Class<T> Dto)
     {
-        return gson.fromJson(json, Dto);
+        T object = null;
+        try
+        {
+            object = gson.fromJson(json, Dto);
+        }
+        catch (JsonParseException e)
+        {
+        }
+        return object;
     }
 }

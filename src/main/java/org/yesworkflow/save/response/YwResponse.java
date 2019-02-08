@@ -1,7 +1,6 @@
 package org.yesworkflow.save.response;
 
 import org.apache.http.Header;
-import org.apache.http.HeaderElement;
 import org.apache.http.HttpResponse;
 import org.yesworkflow.save.IYwSerializer;
 import org.yesworkflow.save.JSONSerializer;
@@ -9,7 +8,6 @@ import org.yesworkflow.save.JSONSerializer;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Scanner;
-
 
 public abstract class YwResponse<Dto>
 {
@@ -51,7 +49,7 @@ public abstract class YwResponse<Dto>
 
         this.statusCode = response.getStatusLine().getStatusCode();
         this.statusReason = response.getStatusLine().getReasonPhrase();
-        this.OK = this.statusCode == 200;
+        this.OK = this.statusCode >= 200 && this.statusCode < 300;
         this.BadRequest = this.statusCode >= 500;
         this.headers = AllocateHeaders(response);
         this.ResponseBody = ScanResponse(response);

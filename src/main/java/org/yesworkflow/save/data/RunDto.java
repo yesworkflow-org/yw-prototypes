@@ -1,63 +1,78 @@
 package org.yesworkflow.save.data;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class RunDto {
+
+    @SerializedName("username")
     public String username;
+    @SerializedName("title")
     public String title;
+    @SerializedName("description")
     public String description;
+    @SerializedName("model")
     public String model;
-    public String model_checksum;
+    @SerializedName("modelChecksum")
+    public String modelChecksum;
+    @SerializedName("graph")
     public String graph;
+    @SerializedName("recon")
     public String recon;
+    @SerializedName("tags")
     public List<String> tags;
-    public List<String> sourceCodeList;
-    public List<String> sourceCodeListHash;
+    @SerializedName("scripts")
+    public List<ScriptDto> scripts;
+    @SerializedName("files")
+    public List<FileDto> files;
 
     public RunDto(String username,
                   String title,
                   String description,
                   String model,
-                  String model_checksum,
+                  String modelChecksum,
                   String graph,
                   String recon,
                   List<String> tags,
-                  List<String> sourceCodeList,
-                  List<String> sourceCodeListHash)
-    {
-        this.username=username;
-        this.title=title;
-        this.description=description;
-        this.model=model;
-        this.model_checksum=model_checksum;
-        this.graph=graph;
-        this.recon=recon;
-        this.tags=tags;
-        this.sourceCodeList=sourceCodeList;
-        this.sourceCodeListHash=sourceCodeListHash;
+                  List<ScriptDto> scripts,
+                  List<FileDto> files) {
+        this.username = username;
+        this.title = title;
+        this.description = description;
+        this.model = model;
+        this.modelChecksum = modelChecksum;
+        this.graph = graph;
+        this.recon = recon;
+        this.tags = tags;
+        this.scripts = scripts;
+        this.files = files;
     }
+
 
     public static class Builder
     {
-        private String username;
-        private String model;
-        private String model_checksum;
-        private String graph;
-        private String recon;
-        private String title;
-        private String description;
-        private List<String> tags;
-        private List<String> sourceCodeList;
-        private List<String> sourceCodeListHash;
+        public String username;
+        public String title;
+        public String description;
+        public String model;
+        public String modelChecksum;
+        public String graph;
+        public String recon;
+        public List<String> tags;
+        public List<ScriptDto> scripts;
+        public List<FileDto> files;
 
-        public Builder(String username, String model, String model_checksum, String graph, String recon)
+        public Builder(String username, String model, String modelChecksum, String graph, String recon, List<ScriptDto> scripts)
         {
             this.username = username;
             this.model = model;
-            this.model_checksum = model_checksum;
+            this.modelChecksum = modelChecksum;
             this.graph = graph;
             this.recon = recon;
+            this.scripts = scripts;
         }
+
 
         public Builder setTitle(String title)
         {
@@ -77,17 +92,11 @@ public class RunDto {
             return this;
         }
 
-        public Builder setSourceCodeList(List<String> sourceCodeList)
+        public void setFiles(List<FileDto> files)
         {
-            this.sourceCodeList = sourceCodeList;
-            return this;
+            this.files = files;
         }
 
-        public Builder setSourceCodeListHash(List<String> sourceCodeLishHash)
-        {
-            this.sourceCodeListHash = sourceCodeLishHash;
-            return this;
-        }
 
         public RunDto build()
         {
@@ -101,11 +110,11 @@ public class RunDto {
         this.title=builder.title;
         this.description=builder.description;
         this.model=builder.model;
-        this.model_checksum=builder.model_checksum;
+        this.modelChecksum =builder.modelChecksum;
         this.graph=builder.graph;
         this.recon=builder.recon;
         this.tags=builder.tags;
-        this.sourceCodeList=builder.sourceCodeList;
-        this.sourceCodeListHash=builder.sourceCodeListHash;
+        this.scripts=builder.scripts;
+        this.files=builder.files;
     }
 }
