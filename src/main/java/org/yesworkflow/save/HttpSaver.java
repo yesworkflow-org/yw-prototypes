@@ -50,7 +50,7 @@ public class HttpSaver implements Saver
     {
         client = new YwClient(baseURL, ywSerializer);
 
-        RunDto run = new RunDto.Builder(username, graph, model, model_checksum, recon, scripts)
+        RunDto run = new RunDto.Builder(username, model, model_checksum, graph, recon, scripts)
                                 .setTitle(title)
                                 .setDescription(description)
                                 .setTags(tags)
