@@ -61,11 +61,6 @@ And the combined view is:
 
 ![example](https://raw.githubusercontent.com/yesworkflow-org/yw-prototypes/master/src/main/resources/example_combined.png)
 
-Try YesWorkflow in a web browser
---------------------------------
-
-The easiest way to experiment with YesWorkflow's basic capabilities is to use the online [YesWorkflow Editor](http://try.yesworkflow.org) at [try.yesworkflow.org](http://try.yesworkflow.org). This web-based application displays YesWorkflow graphical representations of scripts entered into the editor, and updates the graphics in real time as code is edited. Samples of scripts marked up with YesWorkflow annotations are available for experimentation within the editor.
-
 Install YesWorkflow on your own computer
 ----------------------------------------
 
